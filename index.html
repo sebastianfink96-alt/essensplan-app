@@ -84,10 +84,10 @@ body.appmode #app-host{display:block;position:fixed;inset:0;height:100%;height:1
 .phone.full .toast{top:calc(env(safe-area-inset-top,0px) + 56px)}
 .phone.full .tabbar{bottom:calc(env(safe-area-inset-bottom,0px) + 12px);left:16px;right:16px;background:rgba(255,255,255,.96)}
 /* Unter der Tab-Leiste: Inhalt blendet weich aus statt sichtbar darunter weiterzulaufen */
-.phone.full .scr:has(.tabbar)::after{content:'';position:absolute;left:0;right:0;bottom:0;height:calc(env(safe-area-inset-bottom,0px) + 120px);background:linear-gradient(rgba(246,247,252,0),var(--a-bg) 38%);z-index:35;pointer-events:none}
+.phone.full .scr:has(.tabbar)::after{content:'';position:absolute;left:0;right:0;bottom:0;height:calc(env(safe-area-inset-bottom,0px) + 112px);background:linear-gradient(rgba(246,247,252,0),var(--a-bg) 40%);z-index:35;pointer-events:none}
 .phone.full .view{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 132px)}
 .phone.full .bottom-cta{bottom:calc(env(safe-area-inset-bottom,0px) + 16px)}
-.phone.full .view.planv{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 100px)}
+.phone.full .view.planv{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 140px)}
 /* Vollbild auf kleinen Bildschirmhöhen: kompakter, damit Rad und Knöpfe über der Tab-Leiste Platz haben */
 .phone.full .wheel-wrap{min-height:96px}
 @media (max-height:800px){
@@ -110,8 +110,8 @@ body.appmode #app-host{display:block;position:fixed;inset:0;height:100%;height:1
   .phone.full .det-top{left:max(32px,calc((100% - 760px)/2));right:auto}
   .phone.full .rgrid{grid-template-columns:repeat(3,1fr);gap:16px}
   .phone.full .tiles{grid-template-columns:repeat(5,1fr)}
-  .phone.full .tabbar,.phone.full .scr:has(.orb) .tabbar{left:calc(50% - 283px);right:auto;width:480px}
-  .phone.full .orb{right:auto;left:calc(50% + 209px)}
+  .phone.full .tabbar{left:calc(50% - 260px);right:auto;width:520px}
+  .phone.full .orb{right:auto;left:calc(50% + 188px)}
   .phone.full .sheet-bg{align-items:center;justify-content:center}
   .phone.full .sheet{max-width:520px;margin:0 auto}
   .phone.full .h-title{font-size:42px}
@@ -122,7 +122,7 @@ body.appmode #app-host{display:block;position:fixed;inset:0;height:100%;height:1
   .phone.full .view.planv{padding-bottom:28px}
   .phone.full .det-top{left:max(140px,calc((100% - 1120px)/2 + 70px))}
   .phone.full .scr::after{display:none}
-  .phone.full .tabbar,.phone.full .scr:has(.orb) .tabbar{left:20px;right:auto;width:92px;top:calc(env(safe-area-inset-top,0px) + 20px);bottom:calc(env(safe-area-inset-bottom,0px) + 112px);height:auto;
+  .phone.full .tabbar{left:20px;right:auto;width:92px;top:calc(env(safe-area-inset-top,0px) + 20px);bottom:calc(env(safe-area-inset-bottom,0px) + 112px);height:auto;
     grid-template-columns:1fr;grid-auto-rows:86px;align-content:center;border-radius:30px;padding:8px 0}
   .phone.full .orb{left:29px;right:auto;bottom:calc(env(safe-area-inset-bottom,0px) + 22px)}
   .phone.full .view.planv>.z{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);grid-template-rows:auto auto auto auto 1fr;column-gap:36px;align-content:stretch}
@@ -145,13 +145,11 @@ body.appmode #app-host{display:block;position:fixed;inset:0;height:100%;height:1
   .phone.full .bottom-cta{left:max(140px,calc((100% - 1120px)/2 + 70px));right:max(40px,calc((100% - 1120px)/2 - 70px));bottom:24px}
 }
 /* ===== KI-Assistent ===== */
-.orb{position:absolute;right:14px;bottom:26px;width:74px;height:74px;border-radius:50%;border:0;padding:0;z-index:42;display:grid;place-items:center;color:#fff;
+.orb{position:absolute;right:22px;bottom:90px;width:56px;height:56px;border-radius:50%;border:0;padding:0;z-index:42;display:grid;place-items:center;color:#fff;
   box-shadow:0 0 22px -2px rgba(120,110,255,.55),0 14px 30px -12px rgba(20,10,60,.6),0 0 0 2px rgba(255,255,255,.55);overflow:hidden;animation:orbIn .5s cubic-bezier(.2,.8,.2,1)}
-.phone.full .orb{right:16px;bottom:calc(env(safe-area-inset-bottom,0px) + 12px)}
+.phone.full .orb{right:24px;bottom:calc(env(safe-area-inset-bottom,0px) + 76px)}
 /* Tab-Leiste rückt für den Orb nach links (wie die runde Suchtaste neben der Tab-Leiste in iOS 26) */
-.scr:has(.orb) .tabbar{right:98px}
-.phone.full .scr:has(.orb) .tabbar{right:100px}
-.scr:has(.orb) .tab{font-size:10.5px}
+
 /* Siri-artige Kugel: dunkler Kern, leuchtende Farbschleier (Blau, Cyan, Pink, Violett) drehen sich gegeneinander, heller Glanz in der Mitte */
 .orb,.ai-orb{background:radial-gradient(circle at 50% 50%,#24205a 0%,#0d0c26 62%,#07061a 100%)!important}
 .orb-c{position:absolute;inset:0;border-radius:50%;overflow:hidden;filter:saturate(1.3)}
@@ -163,11 +161,14 @@ body.appmode #app-host{display:block;position:fixed;inset:0;height:100%;height:1
 .orb-g{position:absolute;inset:30%;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.95),rgba(220,235,255,.45) 40%,rgba(255,255,255,0) 72%);mix-blend-mode:screen;animation:orbGlow 7s ease-in-out infinite}
 @keyframes orbGlow{50%{transform:scale(1.12);opacity:.8}}
 /* KI-Symbol in der Mitte; alle 9 s ein sanftes Aufleuchten als Hinweis */
-.orb .orb-s{position:relative;z-index:2;width:30px;height:30px;color:#fff;stroke:#fff;stroke-width:1.9;fill:none;filter:drop-shadow(0 0 6px rgba(255,255,255,.7))}
+.orb .orb-w{position:absolute;left:14%;right:14%;top:calc(50% - 9px);width:72%;height:18px;z-index:2;overflow:hidden;fill:none;stroke:#fff;stroke-linecap:round;filter:drop-shadow(0 0 4px rgba(255,255,255,.8));-webkit-mask-image:linear-gradient(90deg,transparent,#000 25%,#000 75%,transparent);mask-image:linear-gradient(90deg,transparent,#000 25%,#000 75%,transparent)}
+.orb .orb-w path{stroke-width:1.8;animation:orbWave 6s linear infinite}
+.orb .orb-w path.w2{stroke-width:1.2;opacity:.55;animation-duration:9s}
+@keyframes orbWave{to{transform:translateX(30px)}}
 .orb{animation:orbIn .5s cubic-bezier(.2,.8,.2,1),orbHint 9s ease-in-out 3s infinite}
 @keyframes orbHint{0%,78%,100%{box-shadow:0 0 22px -2px rgba(120,110,255,.55),0 14px 30px -12px rgba(20,10,60,.6),0 0 0 2px rgba(255,255,255,.55)}
   88%{box-shadow:0 0 34px 6px rgba(150,130,255,.75),0 14px 30px -12px rgba(20,10,60,.6),0 0 0 2px rgba(255,255,255,.8)}}
-@media (prefers-reduced-motion:reduce){.orb-c i,.orb-g,.orb{animation:none!important}}
+@media (prefers-reduced-motion:reduce){.orb-c i,.orb-g,.orb,.orb .orb-w path{animation:none!important}}
 .orb:active{transform:scale(.93)}
 @keyframes orbSpin{to{transform:rotate(360deg)}}
 @keyframes orbIn{from{transform:scale(.4);opacity:0}}
@@ -181,6 +182,9 @@ body.appmode #app-host{display:block;position:fixed;inset:0;height:100%;height:1
 .ai-sub{margin:2px 0 0!important;font-size:13px!important}
 .ai-ex{display:flex;flex-direction:column;gap:8px}
 .ai-chip{display:flex;align-items:center;gap:10px;text-align:left;border:0;border-radius:16px;padding:12px 14px;background:rgba(var(--a-glow),.07);font-size:14.5px;color:var(--a-ink);line-height:1.3}
+.ai-chip.two span{display:flex;flex-direction:column;gap:8px}
+.ai-chip.two button{border:0;background:none;padding:0;text-align:left;font:inherit;color:inherit;line-height:1.3}
+.ai-chip.two button+button{padding-top:8px;border-top:1px solid rgba(var(--a-glow),.15)}
 .ai-chip .ic{width:19px;height:19px;color:var(--a-blue);flex:none}
 .ai-in{display:flex;gap:8px;margin-top:12px}
 .ai-in input{flex:1;min-width:0;border:0;border-radius:999px;padding:12px 16px;font:15px var(--font);background:#fff;box-shadow:0 0 0 1px var(--a-line);color:var(--a-ink)}
@@ -213,6 +217,7 @@ body.appmode #app-host{display:block;position:fixed;inset:0;height:100%;height:1
 .ai-row>div:last-child{min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:3px}
 .ai-row b{font-weight:500;font-size:15px;line-height:1.25}
 .ai-row small{font-size:12.5px;color:var(--a-muted);line-height:1.3}
+.ai-row small.swap{color:var(--a-blue);font-weight:500}
 .ai-row small.warn{color:#B5832E;font-weight:500}
 .ai-row small.ok{color:#6C8A57;font-weight:500}
 .ai-cat{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--a-eyebrow)}
@@ -249,7 +254,7 @@ body.appmode #app-host{display:block;position:fixed;inset:0;height:100%;height:1
 .status svg{display:block}
 .homebar{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:136px;height:5px;border-radius:3px;background:#111;z-index:90;pointer-events:none}
 .view{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;padding:58px 16px 150px;scrollbar-width:none}
-.view.planv{display:flex;flex-direction:column;padding-bottom:114px}
+.view.planv{display:flex;flex-direction:column;padding-bottom:156px}
 .panel>.open-head,.panel>.dish,.panel>.acts,.panel>.efilter,.panel>.dots{touch-action:pan-y}
 .car{touch-action:pan-x pan-y;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
 .planv .wcard,.planv .dish{--t1:#FBEEEF;--t2:#F5DDE0;--t3:#FAEAE5;--tb:247,214,206;--ts:170,90,105;position:relative;overflow:hidden;
@@ -927,7 +932,7 @@ const PROD=[
  [/^radieschen/,'Radieschen','Stk',{Stk:1},['pack',12,'Bund']],[/^brokkoli/,'Brokkoli','g',{Handvoll:100,g:1},['pack',450,'Kopf']],
  [/^mango/,'Mango','g',{g:1},['pack',350,'Stk']],[/^champignons/,'Champignons','g',{g:1},['pack',250,'Schale']],
  [/^erbsen/,'Erbsen (TK)','g',{Handvoll:60,g:1},['pack',450,'Packung']],[/^edamame/,'Edamame (TK)','g',{g:1},['pack',400,'Packung']],
- [/^kartoffel/,'Kartoffeln','g',{g:1,Stk:80},['ca']],[/^süßkartoffel/,'Süßkartoffeln','g',{g:1,Stk:220},['ca']],[/^hokkaido/,'Hokkaido-Kürbis','g',{g:1},['pack',1000,'Stk (ca. 1 kg)']],
+ [/^(kartoffel|erdäpfel|erdapfel)/,'Kartoffeln','g',{g:1,Stk:80},['ca']],[/^süßkartoffel/,'Süßkartoffeln','g',{g:1,Stk:220},['ca']],[/^hokkaido/,'Hokkaido-Kürbis','g',{g:1},['pack',1000,'Stk (ca. 1 kg)']],
  [/^hähnchen/,'Hähnchenbrust','g',{g:1},['ca']],[/^rindersteak/,'Rindersteak','g',{g:1,Stk:200},['ca']],[/^lachs/,'Lachsfilet','g',{g:1},['ca']],
  [/^(weißes )?fischfilet/,'Fischfilet (weiß)','g',{g:1},['ca']],[/^gegarter fisch/,'Fisch (gegart oder Dose)','g',{g:1},['ca']],
  [/^sardinen/,'Sardinen','g',{g:1},['pack',90,'Dose']],
@@ -1022,7 +1027,7 @@ Phone.prototype.render=function(){
   else if(s.screen==='detail')body=this.vDetail();
   else if(s.screen==='settings')body=this.vSettings();
   const tabs=['plan','recipes','shop','favs'].includes(s.screen)?this.vTabs():'';
-  const orb=tabs?`<button class="orb" data-a="ai" aria-label="KI-Assistent öffnen"><span class="orb-c"><i></i><i></i><i></i><i></i></span><span class="orb-g"></span>${ic('micf','orb-s')}</button>`:'';
+  const orb=tabs?`<button class="orb" data-a="ai" aria-label="KI-Assistent öffnen"><span class="orb-c"><i></i><i></i><i></i><i></i></span><span class="orb-g"></span><svg class="orb-w" viewBox="0 0 60 24" aria-hidden="true"><path d="M-30 12 Q-22.5 4 -15 12 T0 12 T15 12 T30 12 T45 12 T60 12 T75 12 T90 12"/><path class="w2" d="M-30 12 Q-22.5 17 -15 12 T0 12 T15 12 T30 12 T45 12 T60 12 T75 12 T90 12"/></svg></button>`:'';
   this.scr.innerHTML=`<div class="island"></div>${this.vStatus()}${body}${tabs}${orb}${this.vSheet()}<div class="homebar"></div>`;
   const nv=this.scr.querySelector('.view');if(nv)nv.scrollTop=keep;
   clearTimeout(this.saveT);this.saveT=setTimeout(()=>this.save(),300);
@@ -1332,18 +1337,25 @@ Phone.prototype.fireworks=function(){const scr=this.scr;const old=scr.querySelec
     if(age<2800)requestAnimationFrame(tick);else box.remove()};
   requestAnimationFrame(tick)};
 /* ===== KI-Assistent (Klick-Demo, simulierte Antworten) ===== */
-const PANTRY=/^(salz|pfeffer|olivenöl|öl|wasser|gemüsebrühe|currypulver|paprikapulver|muskat|oregano|rosmarin|dill|kreuzkümmel|curry)/i;
+const PANTRY=/^(salz|pfeffer|olivenöl|öl|essig|wasser|gemüsebrühe|currypulver|paprikapulver|muskat|oregano|rosmarin|dill|kreuzkümmel|curry)/i;
 const stem=w=>w.toLowerCase().replace(/\(.*?\)/g,'').replace(/[^a-zäöüß]/g,'').slice(0,5);
 /* Foto-Ergebnis bewerten: Überschneidung, Hauptbestandteile (Fisch/Fleisch/Kartoffel/Reis …), grobe Mengenprüfung */
 const MAIN=/(lachs|fisch|sardin|hähnchen|steak|rind|tofu|kartoffel|reis|nudel|pasta|quinoa|couscous|linsen|kichererbsen|ei$|eier)/i;
-const hasMatch=(n,h)=>{const sn=stem(n),sh=stem(h);return sn.includes(sh)||sh.includes(sn)||n.toLowerCase().includes(h.toLowerCase())};
-function aiRank(have,amt,persons){return R.map(r=>{const used=r.i.filter(([n,q])=>q&&!PANTRY.test(n));let hit=0,main=0,short=[],ok=[];
-    used.forEach(([n,q,u])=>{const h=have.find(x=>hasMatch(n,x));if(!h)return;hit++;if(MAIN.test(n))main++;
+const syn=x=>x.replace(/erd(ä|a)pfel/i,'Kartoffeln').replace(/paradeiser/i,'Tomate');
+const hasMatch=(n,h0)=>{const h=syn(h0);const sn=stem(n),sh=stem(h);return sn.includes(sh)||sh.includes(sn)||n.toLowerCase().includes(h.toLowerCase())};
+/* Austauschbare Zutaten: Rezept wird leicht abgewandelt statt etwas Neues zu kaufen */
+const SUBS=[/(blattsalat|kopfsalat|eisberg|vogerl|feldsalat|rucola|babyspinat|spinat|pflücksalat|romana|salat)/i,/(cherrytomate|tomate|paradeiser)/i,
+  /(basmati|reis)/i,/(nudel|pasta|spaghetti|penne)/i,/(quinoa|couscous|bulgur)/i,/(zitrone|limette)/i,/(petersilie|schnittlauch|kresse|dill|kräuter|microgreens|koriander)/i,
+  /(naturjoghurt|joghurt|skyr|topfen|quark)/i,/(feta|schafskäse|hirtenkäse)/i,/(mozzarella|mini-mozz)/i,/(zwiebel|frühlingszwiebel|schalotte)/i,
+  /(fischfilet|kabeljau|seelachs|zander|weißes fisch)/i,/(champignon|pilz)/i];
+const subOf=(n,have,used)=>{const g=SUBS.find(re=>re.test(n));if(!g)return null;return have.find(h=>g.test(h)&&!used.includes(h))||null};
+function aiRank(have,amt,persons){return R.map(r=>{const used=r.i.filter(([n,q])=>q&&!PANTRY.test(n));let hit=0,main=0,short=[],ok=[],swap=[],taken=[];
+    used.forEach(([n,q,u])=>{let h=have.find(x=>hasMatch(n,x));if(!h){h=subOf(n,have,taken);if(h)swap.push([n,h])}if(!h)return;taken.push(h);hit++;if(MAIN.test(n))main++;
       const a=amt[h];if(a&&a.q){const pn=prodOf(n,u),ph=prodOf(h,a.u);let need=null,got=null;
         if(pn&&ph&&pn.key===ph.key&&pn.f&&ph.f){need=q*pn.f*persons;got=a.q*ph.f}else if(u===a.u){need=q*persons;got=a.q}
         if(need!==null){(got>=need*.7?ok:short).push(h)}}});
-    const miss=aiMissing(r,have);
-    return {r,hit,main,miss,short,ok,score:hit*2+main*3-miss.length*.6-short.length*1.5}}).filter(x=>x.hit).sort((x,y)=>y.score-x.score).slice(0,4)}
+    const miss=aiMissing(r,have).filter(([n])=>!swap.some(x=>x[0]===n));
+    return {r,hit,main,miss,short,ok,swap,score:hit*2+main*3-miss.length*.6-short.length*1.5}}).filter(x=>x.hit).sort((x,y)=>y.score-x.score).slice(0,4)}
 function aiMissing(r,have){return r.i.filter(([n,q])=>q&&!PANTRY.test(n)&&!have.some(h=>hasMatch(n,h)))}
 const AI_EX=[['rice','Ich habe Reis zuhause – schlag mir ein Gericht vor'],['week','Wochenvorschlag: 1× Fisch, 1× Fleisch, Rest Bowls']];
 /* Echte KI: im Claude-Artifact über die Fähigkeit „sample“ (läuft über das Claude-Konto des Nutzers). Sonst Demo. */
@@ -1382,7 +1394,7 @@ function shrink(file){return new Promise((ok,no)=>{const img=new Image(),u=URL.c
   c.toBlob(b=>b?ok(b):no(),'image/jpeg',.85)};img.onerror=no;img.src=u})}
 Phone.prototype.aiPhotoReal=function(){const s=this.s;const inp=document.createElement('input');inp.type='file';inp.accept='image/*';
   inp.onchange=async()=>{const f=inp.files&&inp.files[0];if(!f)return;s.ai={step:'snap',kind:'photo',real:true};try{s.ai.photo=URL.createObjectURL(f)}catch(e){}haptic();this.render();const a=s.ai;
-    try{const blob=await shrink(f);const r=await AI('Welche Lebensmittel und Zutaten siehst du auf diesem Foto? Nenne sie auf Deutsch so, wie man sie auf eine Einkaufsliste schreibt (z. B. Basmatireis, Karotten, Feta, Eier). Schätze grob die sichtbare Menge: bei Packungen die übliche Füllmenge bzw. was noch drin ist (z. B. 500 g Reis, 200 g Feta), bei Obst/Gemüse/Eiern die Stückzahl, bei Fleisch/Fisch das Gewicht in g. Gewürze, Öl und Salz weglassen. Antworte ausschließlich mit JSON: {"items": [{"name": "Basmatireis", "menge": 500, "einheit": "g"}, {"name": "Karotten", "menge": 3, "einheit": "Stk"}]} – einheit nur g, ml oder Stk.',{images:[blob],modelTier:'default'});
+    try{const blob=await shrink(f);const r=await AI('Welche Lebensmittel und Zutaten siehst du auf diesem Foto? Nenne sie auf Deutsch so, wie man sie auf eine Einkaufsliste schreibt (z. B. Basmatireis, Karotten, Feta, Eier). Prüfe die Mengen genau: Zähle sichtbare Stücke einzeln (auch in Netzen und Säcken nur die tatsächlich sichtbaren bzw. erkennbar noch vorhandenen). Bei angeschnittenem oder angebrochenem Gemüse/Obst den Rest als Bruchteil angeben (z. B. 0.75 Stk Tomate). Bei geöffneten Packungen schätze, wie viel noch drin ist (Füllmenge laut Packung × sichtbarer Füllstand). Fleisch/Fisch in g. Verwende österreichische oder deutsche Namen so, wie sie auf der Packung stehen (z. B. Vogerlsalat, Erdäpfel). Gewürze, Öl und Salz weglassen. Antworte ausschließlich mit JSON: {"items": [{"name": "Basmatireis", "menge": 500, "einheit": "g"}, {"name": "Tomate", "menge": 0.75, "einheit": "Stk"}]} – einheit nur g, ml oder Stk.',{images:[blob],modelTier:'default'});
       if(s.sheet!=='ai'||s.ai!==a)return;const j=aiParse(r&&r.text!==undefined?r.text:r);const raw=(j&&j.items||[]).slice(0,16);const it=[],amt={};raw.forEach(x=>{const n=typeof x==='string'?x:x&&x.name;if(!n||it.includes(n))return;it.push(n);if(x&&x.menge)amt[n]={q:+x.menge,u:x.einheit||'g'}});
       if(!it.length){s.ai={step:'idle'};this.render();this.toast('Keine Zutaten erkannt – versuch ein anderes Foto');return}
       a.all=it;a.have=it.slice();a.amt=amt;a.step='detect';haptic();this.render()}catch(e){this.aiFail(e)}};
@@ -1421,7 +1433,7 @@ Phone.prototype.vAI=function(){const s=this.s,a=s.ai||{step:'idle'};
   const head=`<div class="ai-head"><span class="ai-orb ${a.step==='listen'||a.step==='think'||a.step==='snap'?'live':''}"><span class="orb-c"><i></i><i></i><i></i><i></i></span><span class="orb-g"></span></span><div><h3 style="margin:0">${a.step==='idle'?'Was möchtest du?':a.step==='listen'?'Ich höre zu …':a.step==='think'?'Einen Moment …':a.step==='snap'?'Foto wird analysiert …':a.step==='detect'?(a.manual?'Was hast du zuhause?':'Das habe ich erkannt'):'Mein Vorschlag'}</h3><p class="ai-sub">${a.step==='idle'?'Sprich oder tippe deinen Wunsch':a.step==='detect'?(a.manual?'Tippe an, was auf dem Foto ist':'Tippe an, was nicht stimmt'):(AI?'KI-Assistent · Claude':'KI-Assistent · Demo')}</p></div></div>`;
   const plate2=r=>plate(r,56);
   let body='';
-  if(a.step==='idle'){body=`<div class="ai-ex">${AI_EX.map(([k,t])=>`<button class="ai-chip" data-a="aiex" data-q="${k}">${ic('spark')}<span>„${t}“</span></button>`).join('')}
+  if(a.step==='idle'){body=`<div class="ai-ex"><div class="ai-chip two">${ic('spark')}<span>${AI_EX.map(([k,t])=>`<button data-a="aiex" data-q="${k}">„${t}“</button>`).join('')}</span></div>
       <button class="ai-chip" data-a="aiphoto">${ic('cam')}<span>Foto meiner Zutaten – was kann ich kochen?</span></button></div>
     <div class="ai-in"><input data-k="aiq" enterkeyhint="send" placeholder="Wunsch tippen oder diktieren" value="${(s.aiQ||'').replace(/"/g,'&quot;')}" aria-label="Wunsch eingeben"><button class="ai-mic" data-a="aisend" aria-label="Senden">${ic('send')}</button></div>`}
   else if(a.step==='listen'){body=`<p class="ai-tr">${a.shown||''}</p><div class="ai-wave">${'<i></i>'.repeat(18)}</div>`}
@@ -1440,7 +1452,7 @@ Phone.prototype.vAI=function(){const s=this.s,a=s.ai||{step:'idle'};
        <button class="gbtn" style="width:100%;margin-top:14px" data-a="aiweek">${ic('check')}Übernehmen (${ks.length} Tage)</button>`}
     else if(a.kind==='photo'){const sc=aiRank(a.have,a.amt||{},s.persons);const cl=x=>x.replace(/\s*\(.*?\)/g,'');
       body+=sc.length?'':`<p class="ai-note">Zu diesen Zutaten habe ich kein passendes Rezept gefunden.</p>`;
-      body+=`<div class="ai-list">${sc.map(({r,miss:m,short,ok,hit})=>`<div class="ai-row">${plate2(r)}<div><b>${r.n}</b><small class="ok">✓ ${hit} Zutat${hit===1?'':'en'} vorhanden${ok.length?' · Menge reicht: '+ok.join(', '):''}</small>${short.length?`<small class="warn">Etwas knapp: ${short.join(', ')}</small>`:''}<small>${m.length?`Fehlt: ${m.map(x=>cl(x[0])).join(', ')}`:'Alles da!'}</small><button class="pill sm" data-a="aibuy" data-id="${r.id}">${ic('plus')}${m.length?'Einplanen + Fehlendes auf die Liste':'Einplanen'}</button></div></div>`).join('')}</div>`}
+      body+=`<div class="ai-list">${sc.map(({r,miss:m,short,ok,hit,swap})=>`<div class="ai-row">${plate2(r)}<div><b>${r.n}</b><small class="ok">✓ ${hit} Zutat${hit===1?'':'en'} vorhanden${ok.length?' · Menge reicht: '+ok.join(', '):''}</small>${swap.length?`<small class="swap">↻ Abgewandelt: ${swap.map(([n,h])=>`${h} statt ${cl(n)}`).join(', ')}</small>`:''}${short.length?`<small class="warn">Etwas knapp: ${short.join(', ')}</small>`:''}<small>${m.length?`Fehlt: ${m.map(x=>cl(x[0])).join(', ')}`:'Alles da!'}</small><button class="pill sm" data-a="aibuy" data-id="${r.id}">${ic('plus')}${m.length?'Einplanen + Fehlendes auf die Liste':'Einplanen'}</button></div></div>`).join('')}</div>`}
     else{body+=`${a.msg?'':`<p class="ai-tr done">„${a.text}“</p>`}<div class="ai-list">${a.list.map(r=>`<div class="ai-row">${plate2(r)}<div><b>${r.n}</b><small>${r.m} Min · ${r.k} kcal</small><button class="pill sm" data-a="aiplan" data-id="${r.id}">${ic('plus')}Für ${s.sel===TODAY?'heute':dn(s.sel)} einplanen</button></div></div>`).join('')}</div>`}
     body+=`<button class="ai-again" data-a="aiback">Neue Frage</button>`}
   return head+body};
@@ -1512,7 +1524,7 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
    case 'aiback':s.ai={step:'idle'};s.aiQ='';this.render();break;
    case 'aiplan':{const id=t.dataset.id,d=s.sel;const dd=this.planDish(d,id);s.sheet=null;this.backAfterPlan(d);this.anim='inF';this.pop=true;this.render();this.toast(`${RM[id].n} für ${dd} eingeplant`);break}
    case 'aiweek':{const W=s.ai.week;Object.keys(W).forEach(i=>s.plan[i]=W[i]);haptic();s.sheet=null;this.anim='inF';this.render();this.toast(`${Object.keys(W).length} Tage aus dem Vorschlag eingeplant`);break}
-   case 'aibuy':{const id=t.dataset.id,d=s.sel,miss=aiMissing(RM[id],s.ai.have);
+   case 'aibuy':{const id=t.dataset.id,d=s.sel,rk=aiRank(s.ai.have,s.ai.amt||{},s.persons).find(x=>x.r.id===id),miss=rk?rk.miss:aiMissing(RM[id],s.ai.have);
       addNeeds(s.shop,miss,s.persons,true);
       const dd=this.planDish(d,id);s.sheet=null;this.backAfterPlan(d);this.anim='inF';this.pop=true;this.render();this.toast(`Eingeplant · ${miss.length} fehlende Zutat${miss.length===1?'':'en'} auf der Liste`);break}
    case 'closesheet':this.closeSheet();break;
