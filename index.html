@@ -458,7 +458,9 @@ html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
 .hs{display:flex;gap:8px;overflow-x:auto;margin:0 -16px;padding:1px 16px;scrollbar-width:none}
 /* Chips in der Tages-Kachel: laufen genau bis zum Kartenrand und blenden dort weich aus, statt hart abgeschnitten über den Rand zu ragen */
 .panel .hs{margin:0 calc(-1 * var(--pp,16px));padding:1px var(--pp,16px);-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 var(--pp,16px),#000 calc(100% - 44px),transparent);mask-image:linear-gradient(90deg,transparent 0,#000 var(--pp,16px),#000 calc(100% - 44px),transparent)}
-.panel .hs::after{content:'';flex:none;width:8px}
+.wswap{animation:wswap .32s cubic-bezier(.2,.9,.3,1)}
+@keyframes wswap{from{opacity:0;transform:translateY(8px) scale(.985)}}
+.panel .hs::after{content:'';flex:none;width:30px}
 .chip{border:0;flex:none;display:inline-flex;align-items:center;gap:6px;background:var(--a-card);box-shadow:0 0 0 1px var(--a-line);border-radius:999px;padding:7px 13px;font-size:14px;font-weight:400}
 .chip .ic{width:17px;height:17px}
 .chip.on{background:var(--a-ink);color:#fff;box-shadow:none}
@@ -972,7 +974,7 @@ function stepIngs(r){if(STEPMAP[r.id])return STEPMAP[r.id];
 function emo(name){const l=name.toLowerCase();const c=CATALOG.find(x=>x[0].toLowerCase()===l);if(c)return c[1];const m=EMO.find(x=>l.startsWith(x[0]));return m?m[1]:'🛒'}
 function fq(q,u){if(u==='g'&&q>=1000)return fmtN(q/1000)+' kg';if(u==='ml'&&q>=1000)return fmtN(q/1000)+' l';return fmtN(q)+' '+u}
 function fmtN(n){return (Math.round(n*10)/10).toLocaleString('de-DE')}
-const plate=(r,s)=>r.img?`<div class="stage" style="--s:${s}px;--t1:${r.t[0]};--t2:${r.t[1]}"><span class="glow"></span><span class="ground"></span><img src="${r.img}" alt="${r.n}"></div>`:`<div class="plate" style="--s:${s}px;--t1:${r.t[0]};--t2:${r.t[1]}">${r.e}</div>`;
+const plate=(r,s)=>r.img?`<div class="stage" style="--s:${s}px;--t1:${r.t[0]};--t2:${r.t[1]}"><span class="glow"></span><span class="ground"></span><img src="${r.img}" alt="${r.n}" decoding="async"></div>`:`<div class="plate" style="--s:${s}px;--t1:${r.t[0]};--t2:${r.t[1]}">${r.e}</div>`;
 /* Haptik: Android per vibrate, iOS 18+ Safari per Switch-Trick; in der echten App UIImpactFeedbackGenerator */
 const hapLabel=(()=>{try{const l=document.createElement('label');l.setAttribute('aria-hidden','true');l.style.cssText='position:fixed;left:-99px;top:0;opacity:0;pointer-events:none';const i=document.createElement('input');i.type='checkbox';i.setAttribute('switch','');i.tabIndex=-1;l.appendChild(i);document.body.appendChild(l);return l}catch(e){return null}})();
 function curTheme(){const c=document.body.classList;return c.contains('th-beige')?'beige':c.contains('th-bunt')?'bunt':'rose'}
@@ -1241,6 +1243,17 @@ Phone.prototype.vPanel=function(i){const s=this.s;const id=s.plan[i];const r=RM[
    ${picker}
    <div class="acts"><button class="obtn" data-a="skip" title="${i===TODAY?'Heute':'Diesen Tag'} auslassen">${ic('out')}Auswärts</button>${L.length?`${twiceBtn(s.sel)}<button class="gbtn" data-a="take">${ic('check')}Wählen</button>`:''}</div>
   </div>`};
+/* Kategorie wechseln ohne die ganze Seite neu aufzubauen: nur Chips, Rad und Knopfzeile tauschen, Chip-Leiste bleibt wo sie ist, Rad blendet weich über */
+Phone.prototype.setCat=function(v){const s=this.s;if(s.cat===v)return;s.cat=v;s.pick=-1;haptic();
+  const pn=this.scr.querySelector('.view.planv .panel.picking');if(!pn){this.render();return}
+  const tmp=document.createElement('div');tmp.innerHTML=this.vPanel(s.sel);const np=tmp.firstElementChild;
+  pn.querySelectorAll('.hs .chip').forEach(c=>c.classList.toggle('on',c.dataset.v===v));
+  const oldW=pn.querySelector('.wcard')||pn.querySelector(':scope>.empty-st'),newW=np.querySelector('.wcard')||np.querySelector(':scope>.empty-st');
+  if(oldW&&newW){newW.classList.add('wswap');oldW.replaceWith(newW)}
+  const oa=pn.querySelector(':scope>.acts'),na=np.querySelector(':scope>.acts');if(oa&&na)oa.replaceWith(na);
+  const ch=pn.querySelector(`.hs .chip[data-v="${v}"]`),hs=ch&&ch.parentNode;
+  if(hs){const l=ch.offsetLeft-hs.offsetLeft,r=l+ch.offsetWidth,pad=40;let x=hs.scrollLeft;if(l-pad<x)x=l-pad;else if(r+pad>x+hs.clientWidth)x=r+pad-hs.clientWidth;hs.scrollTo({left:Math.max(0,x),behavior:'smooth'})}
+  this.initPicker();this.dockOrb()};
 Phone.prototype.initPicker=function(){const s=this.s,self=this;const w=this.scr.querySelector('.wheel-wrap');if(!w)return;
   const items=[...w.querySelectorAll('.wi')],n=items.length,L=this.list(),cap=this.scr.querySelector('.wcap'),dw=this.scr.querySelector('.wcard .dots');
   const STEP=0.62;let D=0,R=0; /* Tellergröße, Radradius, Winkel pro Gericht (rad) */
@@ -1656,7 +1669,7 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
       if(this.busy||i===s.sel)break;this.slideTo(i,i>s.sel?-1:1,0);break}
    case 'edit':this.anim='inF';s.edit=true;s.pick=-1;this.render();break;
    case 'cancel':this.anim='inF';s.edit=false;this.render();break;
-   case 'cat':s.cat=v;s.pick=-1;this.render();break;
+   case 'cat':this.setCat(v);break;
    case 'en':s.en=s.en===v?null:v;s.pick=-1;this.render();break;
    case 'rcat':s.recCat=v;this.render();break;
    case 'deck':s.deck=v;s.screen='deck';s.sheet=null;haptic();this.render();break;
