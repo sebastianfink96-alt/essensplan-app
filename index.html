@@ -161,7 +161,7 @@ body.appmode #app-host{display:block;position:fixed;inset:0;height:100%;height:1
 .orb-g{position:absolute;inset:30%;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.95),rgba(220,235,255,.45) 40%,rgba(255,255,255,0) 72%);mix-blend-mode:screen;animation:orbGlow 7s ease-in-out infinite}
 @keyframes orbGlow{50%{transform:scale(1.12);opacity:.8}}
 /* KI-Symbol in der Mitte; alle 9 s ein sanftes Aufleuchten als Hinweis */
-.orb .orb-w{position:absolute;left:28%;top:calc(50% - 6px);width:44%;height:12px;z-index:2;overflow:visible;fill:none;stroke:rgba(225,228,242,.62);stroke-linecap:round;mix-blend-mode:screen}
+.orb .orb-w{position:absolute;left:34%;top:calc(50% - 5px);width:32%;height:10px;z-index:2;overflow:visible;fill:none;stroke:rgba(225,228,242,.4);stroke-linecap:round;mix-blend-mode:screen}
 .orb .orb-w path{stroke-width:1.6;transform-origin:30px 12px;animation:orbWave 5s ease-in-out infinite}
 @keyframes orbWave{50%{transform:scaleY(.55)}}
 .orb{animation:orbIn .5s cubic-bezier(.2,.8,.2,1),orbHint 9s ease-in-out 3s infinite}
@@ -335,6 +335,9 @@ body.appmode #app-host{display:block;position:fixed;inset:0;height:100%;height:1
 .wdots{display:flex;gap:5px}
 .wdots i{width:6px;height:6px;border-radius:3px;background:rgba(120,120,140,.25);transition:width .3s,background .3s}
 .wdots i.on{width:16px;background:var(--a-grad)}
+.wnl{display:flex;align-items:center;gap:12px}
+.wclr{border:0;background:none;padding:2px 0;display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:500;color:var(--a-muted)}
+.wclr .ic{width:13px;height:13px}
 .wnext{border:0;background:none;padding:2px 0;display:inline-flex;align-items:center;gap:3px;font-size:12px;font-weight:500;color:var(--a-blue)}
 .wnext .ic{width:14px;height:14px;stroke-width:2}
 /* Einkauf: Woche wählen */
@@ -362,8 +365,22 @@ body.appmode #app-host{display:block;position:fixed;inset:0;height:100%;height:1
 .wd.on .ind.empty{border-color:rgba(255,255,255,.75);color:#fff}
 .wd.on .ind.out{background:rgba(255,255,255,.25);color:#fff}
 .wd.on .ok{box-shadow:0 0 0 1.5px rgba(255,255,255,.9)}
+.dgh{position:absolute;left:0;top:0;width:52px;height:52px;z-index:60;pointer-events:none;will-change:transform;transition:none}
+.dgh .ind{width:52px!important;height:52px!important;margin:0!important;border-radius:50%;transition:transform .18s cubic-bezier(.2,.9,.3,1),box-shadow .18s;box-shadow:0 0 0 2px #fff,0 6px 12px -6px rgba(60,40,140,.45)}
+.dgh.up .ind{transform:scale(1.12);box-shadow:0 0 0 2px #fff,0 18px 30px -10px rgba(var(--a-glow),.65)}
+.dgh.land{transition:transform .2s cubic-bezier(.2,.9,.3,1)}
+.dgh.land .ind{transform:scale(.7)}
+.dgh .ok{display:none}
+.dgh .ind{display:grid;place-items:center;overflow:hidden;font-size:24px;color:#5F6478}
+.dgh .ind.out{background:#EEF0F7}
+.dgh .ind.out .ic{width:18px;height:18px}
+.dgh .ind img{width:100%;height:100%;border-radius:50%;object-fit:cover;transform:scale(1.18);background:#fff}
+.wd img,.dgh img{-webkit-user-drag:none;pointer-events:none}
+.wd{-webkit-touch-callout:none}
+.wd.src .ind{opacity:.3;transition:opacity .15s}
+.wd{transition:box-shadow .15s,background .2s}
 .wd.lift{transform:scale(1.14) translateY(-4px);z-index:5;transition:none;box-shadow:0 18px 30px -12px rgba(var(--a-glow),.55)}
-.wd.drop{box-shadow:0 0 0 2.5px var(--a-violet),0 8px 18px -10px rgba(var(--a-glow),.5)}
+.wd.drop{box-shadow:0 0 0 2.5px var(--a-violet),0 8px 18px -10px rgba(var(--a-glow),.5);transform:scale(1.06)}
 /* Teller (Bild-Platzhalter) */
 /* Gericht in Szene: farbiger Schein + Bodenschatten, Foto freigestellt (Weiß verschmilzt per multiply) */
 .stage{position:relative;width:var(--s);height:var(--s);flex:none;display:grid;place-items:center}
@@ -1065,7 +1082,7 @@ Phone.prototype.vPlan=function(){const s=this.s;const w=s.wk||0,ks=Object.keys(s
    <div class="hbtns">${cooked?`<button class="iconbtn" data-a="mkshop" aria-label="Einkaufsliste erstellen" title="Einkaufsliste erstellen">${ic('bag')}</button>`:''}<button class="iconbtn" data-a="randweek" aria-label="Woche zufällig füllen" title="Woche zufällig füllen">${ic('dice')}</button><button class="iconbtn" data-a="go" data-v="settings" aria-label="Einstellungen">${ic('sliders')}</button></div></div>
   <div class="prog"><div class="bar"><b style="width:${n/7*100}%"></b></div></div>
   <div class="weeks"><div class="wtrack" style="transform:translateX(${-w*50}%)">${[0,1].map(k=>`<div class="week">${DAYS.map((d,j)=>this.vPill(k*7+j)).join('')}</div>`).join('')}</div></div>
-  <div class="wnav"><span class="wdots"><i class="${w===0?'on':''}"></i><i class="${w===1?'on':''}"></i></span><button class="wnext" data-a="wk" data-v="${1-w}">${w===0?`Nächste Woche · KW ${KW(1)}${ic('right')}`:`${ic('left')}Diese Woche · KW ${KW(0)}`}</button></div>
+  <div class="wnav"><span class="wnl"><span class="wdots"><i class="${w===0?'on':''}"></i><i class="${w===1?'on':''}"></i></span>${n?`<button class="wclr" data-a="clrwk">${ic('trash')}Woche leeren</button>`:''}</span><button class="wnext" data-a="wk" data-v="${1-w}">${w===0?`Nächste Woche · KW ${KW(1)}${ic('right')}`:`${ic('left')}Diese Woche · KW ${KW(0)}`}</button></div>
   <div class="wlist">${Array.from({length:7},(_,j)=>w*7+j).map(i=>{const id=s.plan[i],r=RM[id];return `<button class="wl ${s.sel===i?'on':''} ${i===TODAY?'today':''}" data-a="day" data-i="${i}"><span class="wl-d"><b>${ab(i)}</b>${dt(i)}</span>${r?`<span class="wl-p">${plate(r,40)}</span><span class="wl-n">${r.n}</span>`:id===OUT?`<span class="wl-p o">${ic('out')}</span><span class="wl-n m">Auswärts</span>`:`<span class="wl-p e">${ic('plus')}</span><span class="wl-n m">Noch frei</span>`}</button>`}).join('')}</div>
   ${this.vPanel(s.sel)}
   </div></div>`};
@@ -1170,18 +1187,26 @@ Phone.prototype.pdown=function(e){
   if(this.s.screen==='detail'&&!e.target.closest('button'))return this.swipeBack(e);
 };
 Phone.prototype.dragDay=function(e,wd){
-  const self=this,x0=e.clientX,y0=e.clientY,src=+wd.dataset.i;let lifted=false,target=null;
-  const timer=setTimeout(()=>{lifted=true;wd.classList.add('lift');haptic()},380);
-  const move=ev=>{const dx=ev.clientX-x0,dy=ev.clientY-y0;
-    if(!lifted){if(Math.hypot(dx,dy)>8){clearTimeout(timer);if(Math.abs(dx)>Math.abs(dy)*1.2){window.removeEventListener('pointermove',move);window.removeEventListener('pointerup',up);window.removeEventListener('pointercancel',up);self.swipeWeek(ev,x0)}}return}
-    ev.preventDefault();wd.style.transform=`translate(${dx/self.k}px,${dy/self.k-4}px) scale(1.14)`;
-    wd.style.pointerEvents='none';const el=document.elementFromPoint(ev.clientX,ev.clientY);wd.style.pointerEvents='';
-    const t=el&&el.closest('.wd');self.scr.querySelectorAll('.wd.drop').forEach(x=>x.classList.remove('drop'));
-    target=(t&&t!==wd&&self.scr.contains(t))?+t.dataset.i:null;if(target!==null)t.classList.add('drop')};
-  const up=()=>{clearTimeout(timer);window.removeEventListener('pointermove',move);window.removeEventListener('pointerup',up);window.removeEventListener('pointercancel',up);
-    if(!lifted)return;self.suppressClick=true;setTimeout(()=>self.suppressClick=false,50);
-    if(target!==null){const p=self.s.plan,a=p[src],b=p[target];if(b===undefined)delete p[src];else p[src]=b;if(a===undefined)delete p[target];else p[target]=a;
-      self.s.edit=false;self.render();self.toast(`${dn(src)} ↔ ${dn(target)} getauscht`)}else self.render()};
+  /* Gericht lange drücken (0,25 s) und frei herumschieben: Teller folgt dem Finger, Loslassen auf einem Tag verschiebt es dorthin (belegter Tag: tauschen) */
+  const self=this,x0=e.clientX,y0=e.clientY,src=+wd.dataset.i,has=this.s.plan[src]!==undefined;let lifted=false,target=null,gh=null,raf=0,px=x0,py=y0;
+  const sr=()=>self.scr.getBoundingClientRect();
+  const pos=(cx,cy)=>{const r=sr();return [(cx-r.left)/self.k,(cy-r.top)/self.k]};
+  const timer=has?setTimeout(()=>{lifted=true;haptic();const ind=wd.querySelector('.ind');gh=document.createElement('div');gh.className='dgh';gh.innerHTML=ind?ind.outerHTML:'';
+    self.scr.appendChild(gh);wd.classList.add('src');const [x,y]=pos(px,py);gh.style.transform=`translate3d(${x-26}px,${y-26}px,0)`;requestAnimationFrame(()=>gh.classList.add('up'))},250):0;
+  const paint=()=>{raf=0;if(!gh)return;const [x,y]=pos(px,py);gh.style.transform=`translate3d(${x-26}px,${y-34}px,0)`;
+    gh.style.pointerEvents='none';const el=document.elementFromPoint(px,py),tg=el&&el.closest('.wd');
+    const nt=(tg&&tg!==wd&&self.scr.contains(tg))?+tg.dataset.i:null;if(nt!==target){self.scr.querySelectorAll('.wd.drop').forEach(x=>x.classList.remove('drop'));target=nt;if(tg&&nt!==null){tg.classList.add('drop');haptic()}}};
+  const move=ev=>{const dx=ev.clientX-x0,dy=ev.clientY-y0;px=ev.clientX;py=ev.clientY;
+    if(!lifted){if(Math.hypot(dx,dy)>8){clearTimeout(timer);if(Math.abs(dx)>Math.abs(dy)*1.2){off();self.swipeWeek(ev,x0)}}return}
+    ev.preventDefault();if(!raf)raf=requestAnimationFrame(paint)};
+  const off=()=>{window.removeEventListener('pointermove',move);window.removeEventListener('pointerup',up);window.removeEventListener('pointercancel',up)};
+  const up=()=>{clearTimeout(timer);off();if(!lifted)return;cancelAnimationFrame(raf);self.suppressClick=true;setTimeout(()=>self.suppressClick=false,50);
+    const dest=self.scr.querySelector(`.wd[data-i="${target!==null?target:src}"] .ind`)||wd;const r=dest.getBoundingClientRect(),[x,y]=pos(r.left+r.width/2,r.top+r.height/2);
+    gh.classList.remove('up');gh.classList.add('land');gh.style.transform=`translate3d(${x-26}px,${y-26}px,0)`;
+    setTimeout(()=>{if(target!==null&&target!==src){const p=self.s.plan,a=p[src],b=p[target];self.prevPlan=Object.assign({},p);
+        p[target]=a;if(b===undefined)delete p[src];else p[src]=b;self.s.edit=false;self.render();
+        const pl=self.scr.querySelector(`.wd[data-i="${target}"]`);if(pl)pl.classList.add('pop');
+        self.toast(b===undefined?`Auf ${dn(target)} verschoben`:`${dn(src)} ↔ ${dn(target)} getauscht`,'Rückgängig','undo')}else self.render()},200)};
   window.addEventListener('pointermove',move,{passive:false});window.addEventListener('pointerup',up);window.addEventListener('pointercancel',up);
 };
 /* Wochenleiste seitwärts wischen: wechselt zwischen dieser und nächster Woche (mit Gummiband am Rand) */
@@ -1497,7 +1522,10 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
   switch(a){
    case 'tab':s.sheet=null;if(v==='plan'&&s.screen!=='plan'){this.goPlanToday()}else s.screen=v;this.render();break;
    case 'go':s.screen=v;this.render();break;
-   case 'day':{const i=+t.dataset.i;if(this.busy||i===s.sel)break;this.slideTo(i,i>s.sel?-1:1,0);break}
+   case 'day':{const i=+t.dataset.i,now=Date.now(),lt=this.lastTap;this.lastTap={i,t:now};
+      if(lt&&lt.i===i&&now-lt.t<350){this.lastTap=null;const id=s.plan[i];if(RM[id]&&i+1<NDAYS){this.prevPlan=Object.assign({},s.plan);s.plan[i+1]=id;haptic();this.render();
+        const pl=this.scr.querySelector(`.wd[data-i="${i+1}"]`);if(pl)pl.classList.add('pop');this.toast(`Auch am ${dn(i+1)} eingeplant`,'Rückgängig','undo')}break}
+      if(this.busy||i===s.sel)break;this.slideTo(i,i>s.sel?-1:1,0);break}
    case 'edit':this.anim='inF';s.edit=true;s.pick=-1;this.render();break;
    case 'cancel':this.anim='inF';s.edit=false;this.render();break;
    case 'cat':s.cat=v;s.pick=-1;this.render();break;
@@ -1514,6 +1542,8 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
    case 'randweek':{this.prevPlan=Object.assign({},s.plan);const used=new Set(Object.values(s.plan));let filled=0;
       for(let i=(s.wk||0)*7;i<(s.wk||0)*7+7;i++){if(s.plan[i])continue;const pool=R.filter(r=>!used.has(r.id));const r=pool[Math.floor(Math.random()*pool.length)];s.plan[i]=r.id;used.add(r.id);filled++}
       s.edit=false;this.render();this.toast(filled?`${filled} freie Tage zufällig gefüllt`:'Die Woche ist schon voll',filled?'Rückgängig':null,'undo');break}
+   case 'clrwk':{const w=s.wk||0;this.prevPlan=Object.assign({},s.plan);let k=0;for(let i=w*7;i<w*7+7;i++)if(s.plan[i]!==undefined){delete s.plan[i];k++}
+      s.edit=false;s.pick=-1;haptic();this.render();this.toast(`KW ${KW(w)} geleert`,'Rückgängig','undo');break}
    case 'undo':if(this.prevPlan){s.plan=this.prevPlan;this.prevPlan=null;this.render();this.toast('Rückgängig gemacht')}break;
    case 'fav':{const id=t.dataset.id;s.favs.has(id)?s.favs.delete(id):s.favs.add(id);this.render();break}
    case 'stepok':{const id=s.did,k=+t.dataset.k,d=s.done[id]=s.done[id]||[];const i=d.indexOf(k);const all=i<0&&d.length+1===RM[id].st.length;if(i<0){d.push(k);all?hapticSuccess():haptic()}else d.splice(i,1);t.classList.toggle('ok',i<0);this.save();
