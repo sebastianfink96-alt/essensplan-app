@@ -155,22 +155,28 @@ body.appmode #app-host{display:block;position:fixed;inset:0;height:100%;height:1
 /* Siri-artige Kugel: dunkler Kern, leuchtende Farbschleier (Blau, Cyan, Pink, Violett) drehen sich gegeneinander, heller Glanz in der Mitte */
 .orb,.ai-orb{background:radial-gradient(circle at 50% 50%,#24205a 0%,#0d0c26 62%,#07061a 100%)!important}
 .orb-c{position:absolute;inset:0;border-radius:50%;overflow:hidden;filter:saturate(1.3)}
-.orb-c i{position:absolute;inset:6%;border-radius:50%;mix-blend-mode:screen;filter:blur(5px);animation:orbSpin 5s linear infinite}
-.orb-c i:nth-child(1){background:conic-gradient(from 0deg,transparent 0 55%,#3E8BFF 70%,#9FE6FF 80%,transparent 92%);animation-duration:4.2s}
-.orb-c i:nth-child(2){background:conic-gradient(from 120deg,transparent 0 50%,#FF4FA8 66%,#FFB3D9 76%,transparent 90%);animation-duration:5.6s;animation-direction:reverse}
-.orb-c i:nth-child(3){background:conic-gradient(from 240deg,transparent 0 58%,#8C5BFF 72%,#D7C2FF 82%,transparent 94%);animation-duration:6.8s}
-.orb-c i:nth-child(4){inset:22%;background:conic-gradient(from 60deg,transparent 0 45%,#36E0D0 62%,#FFFFFF 70%,transparent 85%);animation-duration:3.4s;animation-direction:reverse;filter:blur(4px)}
-.orb-g{position:absolute;inset:30%;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.95),rgba(220,235,255,.45) 40%,rgba(255,255,255,0) 72%);mix-blend-mode:screen;animation:orbGlow 2.8s ease-in-out infinite}
-@keyframes orbGlow{50%{transform:scale(1.18);opacity:.75}}
+.orb-c i{position:absolute;inset:6%;border-radius:50%;mix-blend-mode:screen;filter:blur(6px);animation:orbSpin 24s linear infinite}
+.orb-c i:nth-child(1){background:conic-gradient(from 0deg,transparent 0 55%,#3E8BFF 70%,#9FE6FF 80%,transparent 92%);animation-duration:22s}
+.orb-c i:nth-child(2){background:conic-gradient(from 120deg,transparent 0 50%,#FF4FA8 66%,#FFB3D9 76%,transparent 90%);animation-duration:30s;animation-direction:reverse}
+.orb-c i:nth-child(3){background:conic-gradient(from 240deg,transparent 0 58%,#8C5BFF 72%,#D7C2FF 82%,transparent 94%);animation-duration:38s}
+.orb-c i:nth-child(4){inset:22%;background:conic-gradient(from 60deg,transparent 0 45%,#36E0D0 62%,#FFFFFF 70%,transparent 85%);animation-duration:18s;animation-direction:reverse;filter:blur(5px)}
+.orb-g{position:absolute;inset:30%;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.95),rgba(220,235,255,.45) 40%,rgba(255,255,255,0) 72%);mix-blend-mode:screen;animation:orbGlow 7s ease-in-out infinite}
+@keyframes orbGlow{50%{transform:scale(1.12);opacity:.8}}
+/* KI-Symbol in der Mitte; alle 9 s ein sanftes Aufleuchten als Hinweis */
+.orb .orb-s{position:relative;z-index:2;width:30px;height:30px;stroke:#fff;stroke-width:1.5;fill:rgba(255,255,255,.18);filter:drop-shadow(0 0 6px rgba(255,255,255,.7))}
+.orb{animation:orbIn .5s cubic-bezier(.2,.8,.2,1),orbHint 9s ease-in-out 3s infinite}
+@keyframes orbHint{0%,78%,100%{box-shadow:0 0 22px -2px rgba(120,110,255,.55),0 14px 30px -12px rgba(20,10,60,.6),0 0 0 2px rgba(255,255,255,.55)}
+  88%{box-shadow:0 0 34px 6px rgba(150,130,255,.75),0 14px 30px -12px rgba(20,10,60,.6),0 0 0 2px rgba(255,255,255,.8)}}
+@media (prefers-reduced-motion:reduce){.orb-c i,.orb-g,.orb{animation:none!important}}
 .orb:active{transform:scale(.93)}
 @keyframes orbSpin{to{transform:rotate(360deg)}}
 @keyframes orbIn{from{transform:scale(.4);opacity:0}}
 .ai-head{display:flex;align-items:center;gap:14px;margin:0 0 16px;padding-right:36px}
 .ai-head h3{font-size:21px!important;padding-right:0!important;white-space:nowrap}
 .ai-orb{position:relative;width:46px;height:46px;border-radius:50%;overflow:hidden;flex:none;box-shadow:0 8px 20px -8px rgba(var(--a-glow),.6)}
-.ai-orb.live{animation:orbPulse 1.2s ease-in-out infinite}
-.ai-orb.live .orb-c i{animation-duration:1.4s!important}
-.ai-orb.live .orb-g{animation-duration:.9s}
+.ai-orb.live{animation:orbPulse 2.4s ease-in-out infinite}
+.ai-orb.live .orb-c i{animation-duration:6s!important}
+.ai-orb.live .orb-g{animation-duration:2.4s}
 @keyframes orbPulse{50%{transform:scale(1.1)}}
 .ai-sub{margin:2px 0 0!important;font-size:13px!important}
 .ai-ex{display:flex;flex-direction:column;gap:8px}
@@ -204,6 +210,7 @@ body.appmode #app-host{display:block;position:fixed;inset:0;height:100%;height:1
 .ai-row>div:last-child{min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:3px}
 .ai-row b{font-weight:500;font-size:15px;line-height:1.25}
 .ai-row small{font-size:12.5px;color:var(--a-muted);line-height:1.3}
+.ai-row small.warn{color:#B5832E;font-weight:500}
 .ai-row small.ok{color:#6C8A57;font-weight:500}
 .ai-cat{font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--a-eyebrow)}
 .pill.sm{padding:6px 11px;font-size:12.5px;margin-top:3px}
@@ -1011,7 +1018,7 @@ Phone.prototype.render=function(){
   else if(s.screen==='detail')body=this.vDetail();
   else if(s.screen==='settings')body=this.vSettings();
   const tabs=['plan','recipes','shop','favs'].includes(s.screen)?this.vTabs():'';
-  const orb=tabs?`<button class="orb" data-a="ai" aria-label="KI-Assistent öffnen"><span class="orb-c"><i></i><i></i><i></i><i></i></span><span class="orb-g"></span></button>`:'';
+  const orb=tabs?`<button class="orb" data-a="ai" aria-label="KI-Assistent öffnen"><span class="orb-c"><i></i><i></i><i></i><i></i></span><span class="orb-g"></span>${ic('spark','orb-s')}</button>`:'';
   this.scr.innerHTML=`<div class="island"></div>${this.vStatus()}${body}${tabs}${orb}${this.vSheet()}<div class="homebar"></div>`;
   const nv=this.scr.querySelector('.view');if(nv)nv.scrollTop=keep;
   clearTimeout(this.saveT);this.saveT=setTimeout(()=>this.save(),300);
@@ -1323,7 +1330,17 @@ Phone.prototype.fireworks=function(){const scr=this.scr;const old=scr.querySelec
 /* ===== KI-Assistent (Klick-Demo, simulierte Antworten) ===== */
 const PANTRY=/^(salz|pfeffer|olivenöl|öl|wasser|gemüsebrühe|currypulver|paprikapulver|muskat|oregano|rosmarin|dill|kreuzkümmel|curry)/i;
 const stem=w=>w.toLowerCase().replace(/\(.*?\)/g,'').replace(/[^a-zäöüß]/g,'').slice(0,5);
-function aiMissing(r,have){const H=have.map(stem);return r.i.filter(([n,q])=>q&&!PANTRY.test(n)&&!H.some(h=>stem(n).includes(h)||n.toLowerCase().includes(h)))}
+/* Foto-Ergebnis bewerten: Überschneidung, Hauptbestandteile (Fisch/Fleisch/Kartoffel/Reis …), grobe Mengenprüfung */
+const MAIN=/(lachs|fisch|sardin|hähnchen|steak|rind|tofu|kartoffel|reis|nudel|pasta|quinoa|couscous|linsen|kichererbsen|ei$|eier)/i;
+const hasMatch=(n,h)=>{const sn=stem(n),sh=stem(h);return sn.includes(sh)||sh.includes(sn)||n.toLowerCase().includes(h.toLowerCase())};
+function aiRank(have,amt,persons){return R.map(r=>{const used=r.i.filter(([n,q])=>q&&!PANTRY.test(n));let hit=0,main=0,short=[],ok=[];
+    used.forEach(([n,q,u])=>{const h=have.find(x=>hasMatch(n,x));if(!h)return;hit++;if(MAIN.test(n))main++;
+      const a=amt[h];if(a&&a.q){const pn=prodOf(n,u),ph=prodOf(h,a.u);let need=null,got=null;
+        if(pn&&ph&&pn.key===ph.key&&pn.f&&ph.f){need=q*pn.f*persons;got=a.q*ph.f}else if(u===a.u){need=q*persons;got=a.q}
+        if(need!==null){(got>=need*.7?ok:short).push(h)}}});
+    const miss=aiMissing(r,have);
+    return {r,hit,main,miss,short,ok,score:hit*2+main*3-miss.length*.6-short.length*1.5}}).filter(x=>x.hit).sort((x,y)=>y.score-x.score).slice(0,4)}
+function aiMissing(r,have){return r.i.filter(([n,q])=>q&&!PANTRY.test(n)&&!have.some(h=>hasMatch(n,h)))}
 const AI_EX=[['rice','Ich habe Reis zuhause – schlag mir ein Gericht vor'],['week','Wochenvorschlag: 1× Fisch, 1× Fleisch, Rest Bowls']];
 /* Echte KI: im Claude-Artifact über die Fähigkeit „sample“ (läuft über das Claude-Konto des Nutzers). Sonst Demo. */
 let AI=null;
@@ -1361,10 +1378,10 @@ function shrink(file){return new Promise((ok,no)=>{const img=new Image(),u=URL.c
   c.toBlob(b=>b?ok(b):no(),'image/jpeg',.85)};img.onerror=no;img.src=u})}
 Phone.prototype.aiPhotoReal=function(){const s=this.s;const inp=document.createElement('input');inp.type='file';inp.accept='image/*';
   inp.onchange=async()=>{const f=inp.files&&inp.files[0];if(!f)return;s.ai={step:'snap',kind:'photo',real:true};try{s.ai.photo=URL.createObjectURL(f)}catch(e){}haptic();this.render();const a=s.ai;
-    try{const blob=await shrink(f);const r=await AI('Welche Lebensmittel und Zutaten siehst du auf diesem Foto? Nenne sie auf Deutsch so, wie man sie auf eine Einkaufsliste schreibt (z. B. Basmatireis, Karotten, Feta, Eier). Gewürze, Öl und Salz weglassen. Antworte ausschließlich mit JSON: {"items": ["…", "…"]}',{images:[blob],modelTier:'default'});
-      if(s.sheet!=='ai'||s.ai!==a)return;const j=aiParse(r&&r.text!==undefined?r.text:r);const it=(j&&j.items||[]).filter(x=>typeof x==='string').slice(0,16);
+    try{const blob=await shrink(f);const r=await AI('Welche Lebensmittel und Zutaten siehst du auf diesem Foto? Nenne sie auf Deutsch so, wie man sie auf eine Einkaufsliste schreibt (z. B. Basmatireis, Karotten, Feta, Eier). Schätze grob die sichtbare Menge: bei Packungen die übliche Füllmenge bzw. was noch drin ist (z. B. 500 g Reis, 200 g Feta), bei Obst/Gemüse/Eiern die Stückzahl, bei Fleisch/Fisch das Gewicht in g. Gewürze, Öl und Salz weglassen. Antworte ausschließlich mit JSON: {"items": [{"name": "Basmatireis", "menge": 500, "einheit": "g"}, {"name": "Karotten", "menge": 3, "einheit": "Stk"}]} – einheit nur g, ml oder Stk.',{images:[blob],modelTier:'default'});
+      if(s.sheet!=='ai'||s.ai!==a)return;const j=aiParse(r&&r.text!==undefined?r.text:r);const raw=(j&&j.items||[]).slice(0,16);const it=[],amt={};raw.forEach(x=>{const n=typeof x==='string'?x:x&&x.name;if(!n||it.includes(n))return;it.push(n);if(x&&x.menge)amt[n]={q:+x.menge,u:x.einheit||'g'}});
       if(!it.length){s.ai={step:'idle'};this.render();this.toast('Keine Zutaten erkannt – versuch ein anderes Foto');return}
-      a.all=it;a.have=it.slice();a.step='detect';haptic();this.render()}catch(e){this.aiFail(e)}};
+      a.all=it;a.have=it.slice();a.amt=amt;a.step='detect';haptic();this.render()}catch(e){this.aiFail(e)}};
   inp.click()};
 Phone.prototype.aiAsk=function(q,example){const s=this.s;const ql=q.toLowerCase();
   const kind=example?q:/woche|wochen/.test(ql)?'week':/foto|kamera|bild/.test(ql)?'photoask':/reis/.test(ql)?'rice':'search';
@@ -1390,20 +1407,20 @@ Phone.prototype.aiSolve=function(){const s=this.s,a=s.ai;
     a.list=R.map(r=>[r,ws.filter(w=>(r.n+' '+r.i.map(x=>x[0]).join(' ')).toLowerCase().includes(w)).length]).filter(x=>x[1]).sort((x,y)=>y[1]-x[1]).slice(0,3).map(x=>x[0]);
     if(!a.list.length)a.list=R.slice(0,3).sort(()=>Math.random()-.5)}};
 Phone.prototype.aiPhoto=function(){const s=this.s;if(AI){this.aiPhotoReal();return}s.ai={step:'snap',kind:'photo'};haptic();this.render();
-  setTimeout(()=>{if(s.sheet!=='ai')return;s.ai.step='detect';s.ai.have=['Basmatireis','Karotten','Zwiebel','Paprika','Feta','Eier'];haptic();this.render()},1400)};
+  setTimeout(()=>{if(s.sheet!=='ai')return;s.ai.step='detect';s.ai.have=['Basmatireis','Karotten','Zwiebel','Paprika','Feta','Eier'];s.ai.amt={Basmatireis:{q:500,u:'g'},Karotten:{q:3,u:'Stk'},Zwiebel:{q:2,u:'Stk'},Paprika:{q:1,u:'Stk'},Feta:{q:200,u:'g'},Eier:{q:4,u:'Stk'}};haptic();this.render()},1400)};
 Phone.prototype.vAI=function(){const s=this.s,a=s.ai||{step:'idle'};
   const head=`<div class="ai-head"><span class="ai-orb ${a.step==='listen'||a.step==='think'||a.step==='snap'?'live':''}"><span class="orb-c"><i></i><i></i><i></i><i></i></span><span class="orb-g"></span></span><div><h3 style="margin:0">${a.step==='idle'?'Was möchtest du?':a.step==='listen'?'Ich höre zu …':a.step==='think'?'Einen Moment …':a.step==='snap'?'Foto wird analysiert …':a.step==='detect'?'Das habe ich erkannt':'Mein Vorschlag'}</h3><p class="ai-sub">${a.step==='idle'?'Sprich oder tippe deinen Wunsch':a.step==='detect'?'Tippe an, was nicht stimmt':(AI?'KI-Assistent · Claude':'KI-Assistent · Demo')}</p></div></div>`;
   const plate2=r=>plate(r,56);
   let body='';
   if(a.step==='idle'){body=`<div class="ai-ex">${AI_EX.map(([k,t])=>`<button class="ai-chip" data-a="aiex" data-q="${k}">${ic('spark')}<span>„${t}“</span></button>`).join('')}
       <button class="ai-chip" data-a="aiphoto">${ic('cam')}<span>Foto meiner Zutaten – was kann ich kochen?</span></button></div>
-    <div class="ai-in"><input data-k="aiq" placeholder="Wunsch tippen oder diktieren 🎤" value="${(s.aiQ||'').replace(/"/g,'&quot;')}" aria-label="Wunsch eingeben"><button class="ai-mic" data-a="aisend" aria-label="Senden">${ic('send')}</button></div>`}
+    <div class="ai-in"><input data-k="aiq" enterkeyhint="send" placeholder="Wunsch tippen oder diktieren" value="${(s.aiQ||'').replace(/"/g,'&quot;')}" aria-label="Wunsch eingeben"><button class="ai-mic" data-a="aisend" aria-label="Senden">${ic('send')}</button></div>`}
   else if(a.step==='listen'){body=`<p class="ai-tr">${a.shown||''}</p><div class="ai-wave">${'<i></i>'.repeat(18)}</div>`}
   else if(a.step==='think'){body=`<p class="ai-tr done">„${a.text||'Zutaten'}“</p><div class="ai-dots"><i></i><i></i><i></i></div>`}
   else if(a.step==='snap'&&a.photo){body=`<div class="ai-photo scan" style="display:block;padding:0;height:220px"><img src="${a.photo}" alt="" style="width:100%;height:100%;object-fit:cover;display:block"><i class="ai-scan"></i></div>`}
   else if(a.step==='snap'){body=`<div class="ai-photo scan">${['🍚','🥕','🧅','🫑','🧀','🥚','🧈','🍋'].map(e=>`<span>${e}</span>`).join('')}<i class="ai-scan"></i></div>`}
   else if(a.step==='detect'){const all=a.all||['Basmatireis','Karotten','Zwiebel','Paprika','Feta','Eier','Zucchini','Tomate'];
-    body=`<div class="ai-tags">${all.map(n=>`<button class="ai-tag ${a.have.includes(n)?'on':''}" data-a="aitog" data-v="${n}"><span>${emo(n)}</span>${n}</button>`).join('')}</div>
+    body=`<div class="ai-tags">${all.map(n=>`<button class="ai-tag ${a.have.includes(n)?'on':''}" data-a="aitog" data-v="${n}"><span>${emo(n)}</span>${n}${a.amt&&a.amt[n]?`<small> · ca. ${fq(a.amt[n].q,a.amt[n].u)}</small>`:''}</button>`).join('')}</div>
       <p class="ai-note">Salz, Pfeffer, Öl und Gewürze setze ich als vorhanden voraus.</p>
       <button class="gbtn" style="width:100%;margin-top:14px" data-a="aifind">${ic('spark')}Gerichte finden</button>`}
   else if(a.step==='result'){
@@ -1412,8 +1429,9 @@ Phone.prototype.vAI=function(){const s=this.s,a=s.ai||{step:'idle'};
       body+=a.full?`<p class="ai-note">Diese Woche ist schon komplett geplant. Wechsle zur nächsten Woche, dann plane ich die.</p>`:
        `${a.msg?'':`<p class="ai-tr done">„${a.text}“</p>`}<div class="ai-list">${ks.map(d=>{const r=RM[a.week[d]];return `<div class="ai-row">${plate2(r)}<div><small>${dayLbl(d)}</small><b>${r.n}</b><span class="ai-cat">${r.c.includes('bowl')?'Bowl':r.c.includes('fisch')?'Fisch':r.c.includes('fleisch')?'Fleisch':r.c.includes('suppe')?'Suppe':'Vegetarisch'}</span></div></div>`}).join('')}</div>
        <button class="gbtn" style="width:100%;margin-top:14px" data-a="aiweek">${ic('check')}Übernehmen (${ks.length} Tage)</button>`}
-    else if(a.kind==='photo'){const sc=R.map(r=>[r,aiMissing(r,a.have)]).sort((x,y)=>x[1].length-y[1].length).slice(0,3);
-      body=`<div class="ai-list">${sc.map(([r,m])=>`<div class="ai-row">${plate2(r)}<div><b>${r.n}</b><small class="${m.length?'':'ok'}">${m.length?`Fehlt: ${m.map(x=>x[0].replace(/\s*\(.*?\)/g,'')).join(', ')}`:'Alles da!'}</small><button class="pill sm" data-a="aibuy" data-id="${r.id}">${ic('plus')}${m.length?'Einplanen + Fehlendes auf die Liste':'Einplanen'}</button></div></div>`).join('')}</div>`}
+    else if(a.kind==='photo'){const sc=aiRank(a.have,a.amt||{},s.persons);const cl=x=>x.replace(/\s*\(.*?\)/g,'');
+      body+=sc.length?'':`<p class="ai-note">Zu diesen Zutaten habe ich kein passendes Rezept gefunden.</p>`;
+      body+=`<div class="ai-list">${sc.map(({r,miss:m,short,ok,hit})=>`<div class="ai-row">${plate2(r)}<div><b>${r.n}</b><small class="ok">✓ ${hit} Zutat${hit===1?'':'en'} vorhanden${ok.length?' · Menge reicht: '+ok.join(', '):''}</small>${short.length?`<small class="warn">Etwas knapp: ${short.join(', ')}</small>`:''}<small>${m.length?`Fehlt: ${m.map(x=>cl(x[0])).join(', ')}`:'Alles da!'}</small><button class="pill sm" data-a="aibuy" data-id="${r.id}">${ic('plus')}${m.length?'Einplanen + Fehlendes auf die Liste':'Einplanen'}</button></div></div>`).join('')}</div>`}
     else{body+=`${a.msg?'':`<p class="ai-tr done">„${a.text}“</p>`}<div class="ai-list">${a.list.map(r=>`<div class="ai-row">${plate2(r)}<div><b>${r.n}</b><small>${r.m} Min · ${r.k} kcal</small><button class="pill sm" data-a="aiplan" data-id="${r.id}">${ic('plus')}Für ${s.sel===TODAY?'heute':dn(s.sel)} einplanen</button></div></div>`).join('')}</div>`}
     body+=`<button class="ai-again" data-a="aiback">Neue Frage</button>`}
   return head+body};
