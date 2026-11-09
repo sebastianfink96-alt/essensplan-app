@@ -6,7 +6,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Essensplan">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -75,19 +75,21 @@ figcaption ul{margin:0;padding-left:18px;color:var(--muted);font-size:14.5px;dis
 body.appmode{overflow:hidden;overscroll-behavior:none}
 body.appmode .page{display:none}
 body.appmode #app-host{display:block;position:fixed;inset:0;height:100%;height:100dvh;z-index:1000}
-.phone.full{position:absolute;inset:0;width:100%;height:100%;padding:0;border-radius:0;box-shadow:none;background:var(--a-bg)}
+.phone.full{position:absolute;inset:0;width:100%;height:100%;padding:0;border-radius:0;box-shadow:none;background:var(--a-bg);--sb:max(12px,calc(env(safe-area-inset-bottom,0px) - 12px))}
+/* Abstand der Tab-Leiste zum unteren Rand: wie die schwebende Tab-Leiste in iOS 26 knapp über dem Home-Balken */
 .phone.full .scr{width:100%;height:100%;border-radius:0}
 .phone.full .island,.phone.full .status,.phone.full .homebar{display:none}
 .phone.full .view{padding-top:calc(env(safe-area-inset-top,0px) + 16px)}
 .phone.full .view.det>.z>div:first-child{height:44px!important}
 .phone.full .det-top{top:calc(env(safe-area-inset-top,0px) + 12px)}
 .phone.full .toast{top:calc(env(safe-area-inset-top,0px) + 56px)}
-.phone.full .tabbar{bottom:calc(env(safe-area-inset-bottom,0px) + 12px);left:16px;right:16px;background:rgba(255,255,255,.96)}
+.phone.full .tabbar{bottom:var(--sb);left:16px;right:16px;background:rgba(255,255,255,.96)}
+@media (display-mode:standalone){.phone.full .scr::before{content:'';position:absolute;left:0;right:0;top:0;height:calc(env(safe-area-inset-top,0px) + 14px);background:linear-gradient(rgba(var(--a-glow),.5),rgba(var(--a-glow),0));z-index:45;pointer-events:none}}
 /* Unter der Tab-Leiste: Inhalt blendet weich aus statt sichtbar darunter weiterzulaufen */
 .phone.full .scr:has(.tabbar)::after{content:'';position:absolute;left:0;right:0;bottom:0;height:calc(env(safe-area-inset-bottom,0px) + 112px);background:linear-gradient(rgba(246,247,252,0),var(--a-bg) 40%);z-index:35;pointer-events:none}
-.phone.full .view{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 132px)}
+.phone.full .view{padding-bottom:calc(var(--sb) + 120px)}
 .phone.full .bottom-cta{bottom:calc(env(safe-area-inset-bottom,0px) + 16px)}
-.phone.full .view.planv{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 96px)}
+.phone.full .view.planv{padding-bottom:calc(var(--sb) + 84px)}
 /* Vollbild auf kleinen Bildschirmhöhen: kompakter, damit Rad und Knöpfe über der Tab-Leiste Platz haben */
 .phone.full .wheel-wrap{min-height:96px}
 @media (max-height:800px){
@@ -147,7 +149,7 @@ body.appmode #app-host{display:block;position:fixed;inset:0;height:100%;height:1
 /* ===== KI-Assistent ===== */
 .orb{position:absolute;right:22px;bottom:90px;width:62px;height:62px;border-radius:50%;border:0;padding:0;z-index:42;display:grid;place-items:center;color:#fff;
   box-shadow:0 12px 26px -8px rgba(30,20,80,.42),0 0 22px -2px rgba(120,110,255,.38);overflow:hidden;animation:orbIn .5s cubic-bezier(.2,.8,.2,1)}
-.phone.full .orb{right:24px;bottom:calc(env(safe-area-inset-bottom,0px) + 76px)}
+.phone.full .orb{right:24px;bottom:calc(var(--sb) + 64px)}
 /* Tab-Leiste rückt für den Orb nach links (wie die runde Suchtaste neben der Tab-Leiste in iOS 26) */
 
 /* Siri-artige Kugel: dunkler Kern, leuchtende Farbschleier (Blau, Cyan, Pink, Violett) drehen sich gegeneinander, heller Glanz in der Mitte */
