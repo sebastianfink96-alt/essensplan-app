@@ -104,7 +104,7 @@ html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
   .phone.full .wd .ind{width:30px;height:30px;margin-top:2px}
   .phone.full .weeks{padding-bottom:6px}
   .phone.full .wnav{margin-bottom:8px}
-  .phone.full .panel{padding:12px;gap:10px}
+  .phone.full .panel{padding:12px;gap:10px;--pp:12px}
   .phone.full .open-title{font-size:22px}
   .phone.full .wcap .nm{font-size:18px;min-height:0}
   .phone.full .wcard .dots{display:none}
@@ -456,6 +456,9 @@ html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
 .xbtn{width:34px;height:34px;border-radius:50%;border:0;background:var(--a-soft);display:grid;place-items:center;flex:none}
 .xbtn .ic{width:17px;height:17px}
 .hs{display:flex;gap:8px;overflow-x:auto;margin:0 -16px;padding:1px 16px;scrollbar-width:none}
+/* Chips in der Tages-Kachel: laufen genau bis zum Kartenrand und blenden dort weich aus, statt hart abgeschnitten über den Rand zu ragen */
+.panel .hs{margin:0 calc(-1 * var(--pp,16px));padding:1px var(--pp,16px);-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 var(--pp,16px),#000 calc(100% - 44px),transparent);mask-image:linear-gradient(90deg,transparent 0,#000 var(--pp,16px),#000 calc(100% - 44px),transparent)}
+.panel .hs::after{content:'';flex:none;width:8px}
 .chip{border:0;flex:none;display:inline-flex;align-items:center;gap:6px;background:var(--a-card);box-shadow:0 0 0 1px var(--a-line);border-radius:999px;padding:7px 13px;font-size:14px;font-weight:400}
 .chip .ic{width:17px;height:17px}
 .chip.on{background:var(--a-ink);color:#fff;box-shadow:none}
@@ -1440,7 +1443,7 @@ Phone.prototype.vSettings=function(){const s=this.s;
    ${li('cloud','#6B7B99','Rezept-Quelle','Lokal')}</div>
    ${this.opts.full?`<div class="grp">${li('sliders','var(--a-violet)','Farbvariante',({rose:'Altrosa',beige:'Beige',bunt:'Bunt'})[curTheme()],'nexttheme')}${window.EP_APP?'':li('book','#6B7B99','Prototyp-Übersicht',ic('right'),'overview')}</div>`:''}
    <div class="grp">${li('run','var(--a-pink)','Training & Sport','<span class="soon">bald</span>','','',true)}</div>
-   <p style="color:var(--a-muted);font-size:13px;text-align:center;margin-top:22px">Essensplan · Version 1.0</p>${this.opts.full?(()=>{const i=vpInfo();return `<p class="vpinfo">Technik: Bildschirm ${i.sw}×${i.sh} · innen ${i.ih} · sichtbar ${i.vv} · Seite ${i.ch} · Fläche bis ${i.pb} · oben ${i.st||0} · unten ${i.sb||0} · ${i.sa?"Home-App":"Browser"}</p>`})():''}
+   <p style="color:var(--a-muted);font-size:13px;text-align:center;margin-top:22px">Essensplan · Version 1.0</p>
   </div></div>`};
 
 /* ----- Intro (wischbar) ----- */
