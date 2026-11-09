@@ -1738,7 +1738,13 @@ SCREENS.forEach(([title,init,feats],k)=>{
 let dummy=null;
 const dummyInit=()=>({screen:store.get()?'plan':'intro',plan:{}});
 let app=null;
-function mode(m){if(m==='app'){document.body.classList.add('appmode');if(!app)app=new Phone(document.getElementById('app-host'),dummyInit(),{persist:true,full:true});
+/* iOS-Home-Bildschirm-App mit randloser Statusleiste: iOS meldet die Höhe um die Statusleiste zu klein -> unten bleibt ein Streifen. Dann volle Bildschirmhöhe setzen */
+function fitStandalone(){const h=document.getElementById('app-host');if(!h)return;h.style.height='';
+  if(!(navigator.standalone||matchMedia('(display-mode: standalone)').matches))return;
+  const por=matchMedia('(orientation: portrait)').matches,H=por?Math.max(screen.width,screen.height):Math.min(screen.width,screen.height);
+  if(H-innerHeight>8&&H-innerHeight<120)h.style.height=H+'px'}
+addEventListener('resize',fitStandalone);addEventListener('orientationchange',()=>setTimeout(fitStandalone,300));
+function mode(m){if(m==='app'){document.body.classList.add('appmode');if(!app)app=new Phone(document.getElementById('app-host'),dummyInit(),{persist:true,full:true});fitStandalone();
     try{history.replaceState(null,'','#app')}catch(e){}return}
   document.body.classList.remove('appmode');
   document.getElementById('v-screens').hidden=m!=='screens';document.getElementById('v-dummy').hidden=m!=='dummy';
