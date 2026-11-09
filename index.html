@@ -75,6 +75,9 @@ figcaption ul{margin:0;padding-left:18px;color:var(--muted);font-size:14.5px;dis
 body.appmode{overflow:hidden;overscroll-behavior:none}
 body.appmode .page{display:none}
 body.appmode #app-host{display:block;position:fixed;inset:0;height:100%;height:100dvh;z-index:1000}
+html{--sat:env(safe-area-inset-top,0px);--sab:env(safe-area-inset-bottom,0px)}
+html.sa{min-height:min(100lvh,calc(100% + env(safe-area-inset-top,0px)))}
+html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
 .phone.full{position:absolute;inset:0;width:100%;height:100%;padding:0;border-radius:0;box-shadow:none;background:var(--a-bg);--sb:max(12px,calc(env(safe-area-inset-bottom,0px) - 12px))}
 /* Abstand der Tab-Leiste zum unteren Rand: wie die schwebende Tab-Leiste in iOS 26 knapp über dem Home-Balken */
 .phone.full .scr{width:100%;height:100%;border-radius:0}
@@ -150,6 +153,7 @@ body.appmode #app-host{display:block;position:fixed;inset:0;height:100%;height:1
 }
 
 /* ===== Lerncenter ===== */
+.vpinfo{color:var(--a-muted);font-size:11px;text-align:center;margin:6px 0 0;opacity:.7}
 .lc-list{display:flex;flex-direction:column;gap:18px;margin-top:18px}
 .lc{position:relative;display:flex;align-items:center;gap:14px;border:0;text-align:left;background:var(--a-card);border-radius:24px;padding:16px 16px 16px 14px;color:var(--a-ink);
   box-shadow:0 0 0 1px var(--a-line),0 16px 30px -22px rgba(var(--a-glow),.55)}
@@ -1436,7 +1440,7 @@ Phone.prototype.vSettings=function(){const s=this.s;
    ${li('cloud','#6B7B99','Rezept-Quelle','Lokal')}</div>
    ${this.opts.full?`<div class="grp">${li('sliders','var(--a-violet)','Farbvariante',({rose:'Altrosa',beige:'Beige',bunt:'Bunt'})[curTheme()],'nexttheme')}${window.EP_APP?'':li('book','#6B7B99','Prototyp-Übersicht',ic('right'),'overview')}</div>`:''}
    <div class="grp">${li('run','var(--a-pink)','Training & Sport','<span class="soon">bald</span>','','',true)}</div>
-   <p style="color:var(--a-muted);font-size:13px;text-align:center;margin-top:22px">Essensplan · Version 1.0</p>
+   <p style="color:var(--a-muted);font-size:13px;text-align:center;margin-top:22px">Essensplan · Version 1.0</p>${this.opts.full?(()=>{const i=vpInfo();return `<p class="vpinfo">Technik: Bildschirm ${i.sw}×${i.sh} · innen ${i.ih} · sichtbar ${i.vv} · Seite ${i.ch} · Fläche bis ${i.pb} · oben ${i.st||0} · unten ${i.sb||0} · ${i.sa?"Home-App":"Browser"}</p>`})():''}
   </div></div>`};
 
 /* ----- Intro (wischbar) ----- */
@@ -1738,12 +1742,22 @@ SCREENS.forEach(([title,init,feats],k)=>{
 let dummy=null;
 const dummyInit=()=>({screen:store.get()?'plan':'intro',plan:{}});
 let app=null;
-/* iOS-Home-Bildschirm-App mit randloser Statusleiste: iOS meldet die Höhe um die Statusleiste zu klein -> unten bleibt ein Streifen. Dann volle Bildschirmhöhe setzen */
-function fitStandalone(){const h=document.getElementById('app-host');if(!h)return;h.style.height='';
-  if(!(navigator.standalone||matchMedia('(display-mode: standalone)').matches))return;
-  const por=matchMedia('(orientation: portrait)').matches,H=por?Math.max(screen.width,screen.height):Math.min(screen.width,screen.height);
-  if(H-innerHeight>8&&H-innerHeight<120)h.style.height=H+'px'}
-addEventListener('resize',fitStandalone);addEventListener('orientationchange',()=>setTimeout(fitStandalone,300));
+/* iOS 26, Home-Bildschirm-App mit randloser Statusleiste (WebKit-Fehler 301108): die Seite endet zu früh, unten bleibt ein Streifen.
+   Workaround: <html> mindestens so hoch wie Bildschirm (100lvh bzw. 100 % + Statusleiste); App-Fläche fix an allen Rändern.
+   Zusätzlich messen wir, wo eine fixe Fläche (oben 0, unten 0) wirklich endet, und strecken die App bis zur echten Unterkante. */
+const IS_SA=!!(navigator.standalone||(window.matchMedia&&matchMedia('(display-mode: standalone)').matches));
+if(IS_SA)document.documentElement.classList.add('sa');
+function vpInfo(){const pr=document.createElement('div');pr.style.cssText='position:fixed;top:0;bottom:0;left:0;width:1px;pointer-events:none;visibility:hidden';document.body.appendChild(pr);
+  const r=pr.getBoundingClientRect();pr.remove();const vv=window.visualViewport;
+  const st=getComputedStyle(document.documentElement);
+  return {sw:screen.width,sh:screen.height,ih:innerHeight,vv:vv?Math.round(vv.height):0,ch:document.documentElement.clientHeight,pb:Math.round(r.bottom),
+    st:st.getPropertyValue('--sat').trim(),sb:st.getPropertyValue('--sab').trim(),sa:IS_SA}}
+function fitStandalone(){const h=document.getElementById('app-host');if(!h||!IS_SA)return;h.style.height='';h.style.bottom='';
+  const i=vpInfo(),gap=i.ih-i.pb; /* iOS 26 meldet teils volle innerHeight, fixe Ebenen enden aber früher */
+  if(gap>4&&gap<120)h.style.height=(i.pb+gap)+'px'}
+['resize','pageshow','orientationchange'].forEach(ev=>addEventListener(ev,()=>setTimeout(fitStandalone,60)));
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)setTimeout(fitStandalone,60)});
+setTimeout(fitStandalone,500);
 function mode(m){if(m==='app'){document.body.classList.add('appmode');if(!app)app=new Phone(document.getElementById('app-host'),dummyInit(),{persist:true,full:true});fitStandalone();
     try{history.replaceState(null,'','#app')}catch(e){}return}
   document.body.classList.remove('appmode');
