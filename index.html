@@ -189,6 +189,7 @@ body.appmode #app-host{display:block;position:fixed;inset:0;height:100%;height:1
 .ai-tags{display:flex;flex-wrap:wrap;gap:8px}
 .ai-tag{display:inline-flex;align-items:center;gap:6px;border:0;border-radius:999px;padding:8px 13px;font-size:14px;background:#fff;box-shadow:0 0 0 1px var(--a-line);color:var(--a-muted)}
 .ai-tag.on{background:var(--a-today);box-shadow:0 0 0 1.5px var(--a-ring);color:var(--a-ink)}
+.ai-msg{font-size:15px!important;color:var(--a-ink)!important;line-height:1.4;margin:0 0 12px!important}
 .ai-note{font-size:12.5px!important;margin:12px 0 0!important}
 .ai-list{display:flex;flex-direction:column;gap:12px}
 .ai-row{display:flex;gap:12px;align-items:center}
@@ -1316,6 +1317,47 @@ const PANTRY=/^(salz|pfeffer|olivenöl|öl|wasser|gemüsebrühe|currypulver|papr
 const stem=w=>w.toLowerCase().replace(/\(.*?\)/g,'').replace(/[^a-zäöüß]/g,'').slice(0,5);
 function aiMissing(r,have){const H=have.map(stem);return r.i.filter(([n,q])=>q&&!PANTRY.test(n)&&!H.some(h=>stem(n).includes(h)||n.toLowerCase().includes(h)))}
 const AI_EX=[['rice','Ich habe Reis zuhause – schlag mir ein Gericht vor'],['week','Wochenvorschlag: 1× Fisch, 1× Fleisch, Rest Bowls']];
+/* Echte KI: im Claude-Artifact über die Fähigkeit „sample“ (läuft über das Claude-Konto des Nutzers). Sonst Demo. */
+let AI=null;
+(async()=>{for(let i=0;i<40&&!(window.claude&&window.claude.use);i++)await new Promise(r=>setTimeout(r,250));
+  try{if(window.claude&&window.claude.use)AI=await window.claude.use('sample')}catch(e){AI=null}})();
+const aiCatalog=()=>R.map(r=>`${r.id}: ${r.n} [${r.c.join(',')}] ${r.m} Min, ${r.k} kcal; Zutaten: ${r.i.filter(x=>x[1]).map(x=>x[0].replace(/\s*\(.*?\)/g,'')).join(', ')}`).join('\n');
+function aiParse(t){if(t&&typeof t==='object')return t;const m=String(t||'').match(/\{[\s\S]*\}/);return m?JSON.parse(m[0]):null}
+Phone.prototype.aiFail=function(e){const s=this.s;AI=e&&e.code==='not_granted'?null:AI;
+  s.ai={step:'idle'};this.render();this.toast(e&&e.code==='rate_limited'?'KI gerade ausgelastet – bitte gleich nochmal':'KI nicht erreichbar – bitte nochmal versuchen')};
+Phone.prototype.aiReal=async function(text){const s=this.s,a=s.ai;
+  const days=Array.from({length:NDAYS},(_,i)=>i).map(i=>`${i}: ${dayLbl(i)}${i===TODAY?' (heute)':''}${i<TODAY?' – vorbei':''} – ${RM[s.plan[i]]?'geplant: '+RM[s.plan[i]].n:s.plan[i]===OUT?'auswärts':'frei'}`).join('\n');
+  const prompt=`Du bist der Assistent einer deutschen Essensplan-App. Pro Tag gibt es ein Hauptgericht. Wähle NUR aus diesen Rezepten (ID: Name [Kategorien] …):
+${aiCatalog()}
+
+Tage (Index: Datum – Status). Woche 1 = Index 0–6, Woche 2 = 7–13. Gerade angezeigt: Woche ${(s.wk||0)+1}. Ausgewählter Tag: ${s.sel}.
+${days}
+
+Wunsch des Nutzers: „${text}“
+
+Regeln:
+- Möchte der Nutzer mehrere Tage oder eine Woche planen, antworte mit "days": Liste aus {"day": Index, "id": Rezept-ID}. Plane nur freie, nicht vergangene Tage – außer der Nutzer will ausdrücklich etwas ersetzen. Ohne Angabe: die freien Tage der angezeigten Woche. Keine Wiederholungen.
+- Sonst schlage 1 bis 3 passende Gerichte vor: "list": Liste von Rezept-IDs, bestes zuerst.
+- "message": ein kurzer, freundlicher Satz auf Deutsch (Du-Form), was du vorschlägst.
+Antworte ausschließlich mit JSON: {"message": "...", "days": [...]} oder {"message": "...", "list": [...]}`;
+  try{const r=await AI(prompt,{modelTier:'default'});if(s.sheet!=='ai'||s.ai!==a)return;
+    const j=aiParse(r&&r.text!==undefined?r.text:r);if(!j)throw {code:'parse'};
+    a.msg=j.message||'';
+    const ds=(j.days||[]).filter(x=>x&&RM[x.id]&&x.day>=TODAY&&x.day<NDAYS);
+    if(ds.length){a.kind='week';a.week={};ds.forEach(x=>a.week[x.day]=x.id);a.full=false}
+    else{a.kind='search';a.list=(j.list||[]).filter(id=>RM[id]).slice(0,3).map(id=>RM[id]);if(!a.list.length)throw {code:'parse'}}
+    a.step='result';haptic();this.render()}catch(e){this.aiFail(e)}};
+/* Foto: verkleinern (max. 1024 px) und Zutaten erkennen lassen */
+function shrink(file){return new Promise((ok,no)=>{const img=new Image(),u=URL.createObjectURL(file);img.onload=()=>{const k=Math.min(1,1024/Math.max(img.width,img.height));
+  const c=document.createElement('canvas');c.width=Math.round(img.width*k);c.height=Math.round(img.height*k);c.getContext('2d').drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(u);
+  c.toBlob(b=>b?ok(b):no(),'image/jpeg',.85)};img.onerror=no;img.src=u})}
+Phone.prototype.aiPhotoReal=function(){const s=this.s;const inp=document.createElement('input');inp.type='file';inp.accept='image/*';inp.setAttribute('capture','environment');
+  inp.onchange=async()=>{const f=inp.files&&inp.files[0];if(!f)return;s.ai={step:'snap',kind:'photo',real:true};try{s.ai.photo=URL.createObjectURL(f)}catch(e){}haptic();this.render();const a=s.ai;
+    try{const blob=await shrink(f);const r=await AI('Welche Lebensmittel und Zutaten siehst du auf diesem Foto? Nenne sie auf Deutsch so, wie man sie auf eine Einkaufsliste schreibt (z. B. Basmatireis, Karotten, Feta, Eier). Gewürze, Öl und Salz weglassen. Antworte ausschließlich mit JSON: {"items": ["…", "…"]}',{images:[blob],modelTier:'default'});
+      if(s.sheet!=='ai'||s.ai!==a)return;const j=aiParse(r&&r.text!==undefined?r.text:r);const it=(j&&j.items||[]).filter(x=>typeof x==='string').slice(0,16);
+      if(!it.length){s.ai={step:'idle'};this.render();this.toast('Keine Zutaten erkannt – versuch ein anderes Foto');return}
+      a.all=it;a.have=it.slice();a.step='detect';haptic();this.render()}catch(e){this.aiFail(e)}};
+  inp.click()};
 Phone.prototype.aiAsk=function(q,example){const s=this.s;const ql=q.toLowerCase();
   const kind=example?q:/woche|wochen/.test(ql)?'week':/foto|kamera|bild/.test(ql)?'photoask':/reis/.test(ql)?'rice':'search';
   const text=example?AI_EX.find(x=>x[0]===q)[1]:q;
@@ -1324,8 +1366,9 @@ Phone.prototype.aiAsk=function(q,example){const s=this.s;const ql=q.toLowerCase(
   const words=text.split(' ');let i=0;const tick=()=>{if(s.sheet!=='ai'||s.ai.text!==text)return;i++;s.ai.shown=words.slice(0,i).join(' ');
     const el=this.scr.querySelector('.ai-tr');if(el)el.textContent=s.ai.shown;
     if(i<words.length)setTimeout(tick,example?120:40);else setTimeout(()=>{if(s.sheet!=='ai')return;if(kind==='photoask'){this.aiPhoto();return}
-      s.ai.step='think';this.render();setTimeout(()=>{if(s.sheet!=='ai')return;this.aiSolve();s.ai.step='result';haptic();this.render()},1100)},350)};
-  setTimeout(tick,example?300:60)};
+      s.ai.step='think';this.render();if(AI){this.aiReal(text);return}
+      setTimeout(()=>{if(s.sheet!=='ai')return;this.aiSolve();s.ai.step='result';haptic();this.render()},1100)},350)};
+  setTimeout(tick,example?300:20)};
 Phone.prototype.aiSolve=function(){const s=this.s,a=s.ai;
   if(a.kind==='rice'){a.list=R.filter(r=>r.i.some(([n])=>/reis/i.test(n))).slice(0,3)}
   else if(a.kind==='week'){const w=s.wk||0,days=[];for(let i=w*7;i<w*7+7;i++)if(!s.plan[i])days.push(i);
@@ -1338,30 +1381,32 @@ Phone.prototype.aiSolve=function(){const s=this.s,a=s.ai;
   else{const ws=(a.text||'').toLowerCase().split(/[^a-zäöüß]+/).filter(w=>w.length>3).map(w=>w.slice(0,5));
     a.list=R.map(r=>[r,ws.filter(w=>(r.n+' '+r.i.map(x=>x[0]).join(' ')).toLowerCase().includes(w)).length]).filter(x=>x[1]).sort((x,y)=>y[1]-x[1]).slice(0,3).map(x=>x[0]);
     if(!a.list.length)a.list=R.slice(0,3).sort(()=>Math.random()-.5)}};
-Phone.prototype.aiPhoto=function(){const s=this.s;s.ai={step:'snap',kind:'photo'};haptic();this.render();
+Phone.prototype.aiPhoto=function(){const s=this.s;if(AI){this.aiPhotoReal();return}s.ai={step:'snap',kind:'photo'};haptic();this.render();
   setTimeout(()=>{if(s.sheet!=='ai')return;s.ai.step='detect';s.ai.have=['Basmatireis','Karotten','Zwiebel','Paprika','Feta','Eier'];haptic();this.render()},1400)};
 Phone.prototype.vAI=function(){const s=this.s,a=s.ai||{step:'idle'};
-  const head=`<div class="ai-head"><span class="ai-orb ${a.step==='listen'||a.step==='think'||a.step==='snap'?'live':''}"><span class="orb-c"></span></span><div><h3 style="margin:0">${a.step==='idle'?'Was möchtest du?':a.step==='listen'?'Ich höre zu …':a.step==='think'?'Einen Moment …':a.step==='snap'?'Foto wird analysiert …':a.step==='detect'?'Das habe ich erkannt':'Mein Vorschlag'}</h3><p class="ai-sub">${a.step==='idle'?'Sprich oder tippe deinen Wunsch':a.step==='detect'?'Tippe an, was nicht stimmt':'KI-Assistent · Demo'}</p></div></div>`;
+  const head=`<div class="ai-head"><span class="ai-orb ${a.step==='listen'||a.step==='think'||a.step==='snap'?'live':''}"><span class="orb-c"></span></span><div><h3 style="margin:0">${a.step==='idle'?'Was möchtest du?':a.step==='listen'?'Ich höre zu …':a.step==='think'?'Einen Moment …':a.step==='snap'?'Foto wird analysiert …':a.step==='detect'?'Das habe ich erkannt':'Mein Vorschlag'}</h3><p class="ai-sub">${a.step==='idle'?'Sprich oder tippe deinen Wunsch':a.step==='detect'?'Tippe an, was nicht stimmt':(AI?'KI-Assistent · Claude':'KI-Assistent · Demo')}</p></div></div>`;
   const plate2=r=>plate(r,56);
   let body='';
   if(a.step==='idle'){body=`<div class="ai-ex">${AI_EX.map(([k,t])=>`<button class="ai-chip" data-a="aiex" data-q="${k}">${ic('spark')}<span>„${t}“</span></button>`).join('')}
       <button class="ai-chip" data-a="aiphoto">${ic('cam')}<span>Foto meiner Zutaten – was kann ich kochen?</span></button></div>
-    <div class="ai-in"><input data-k="aiq" placeholder="z. B. etwas Schnelles mit Lachs" value="${(s.aiQ||'').replace(/"/g,'&quot;')}" aria-label="Wunsch eingeben"><button class="ai-mic" data-a="aisend" aria-label="Senden">${ic('send')}</button></div>`}
+    <div class="ai-in"><input data-k="aiq" placeholder="Wunsch tippen oder diktieren 🎤" value="${(s.aiQ||'').replace(/"/g,'&quot;')}" aria-label="Wunsch eingeben"><button class="ai-mic" data-a="aisend" aria-label="Senden">${ic('send')}</button></div>`}
   else if(a.step==='listen'){body=`<p class="ai-tr">${a.shown||''}</p><div class="ai-wave">${'<i></i>'.repeat(18)}</div>`}
   else if(a.step==='think'){body=`<p class="ai-tr done">„${a.text||'Zutaten'}“</p><div class="ai-dots"><i></i><i></i><i></i></div>`}
+  else if(a.step==='snap'&&a.photo){body=`<div class="ai-photo scan" style="display:block;padding:0;height:220px"><img src="${a.photo}" alt="" style="width:100%;height:100%;object-fit:cover;display:block"><i class="ai-scan"></i></div>`}
   else if(a.step==='snap'){body=`<div class="ai-photo scan">${['🍚','🥕','🧅','🫑','🧀','🥚','🧈','🍋'].map(e=>`<span>${e}</span>`).join('')}<i class="ai-scan"></i></div>`}
-  else if(a.step==='detect'){const all=['Basmatireis','Karotten','Zwiebel','Paprika','Feta','Eier','Zucchini','Tomate'];
+  else if(a.step==='detect'){const all=a.all||['Basmatireis','Karotten','Zwiebel','Paprika','Feta','Eier','Zucchini','Tomate'];
     body=`<div class="ai-tags">${all.map(n=>`<button class="ai-tag ${a.have.includes(n)?'on':''}" data-a="aitog" data-v="${n}"><span>${emo(n)}</span>${n}</button>`).join('')}</div>
       <p class="ai-note">Salz, Pfeffer, Öl und Gewürze setze ich als vorhanden voraus.</p>
       <button class="gbtn" style="width:100%;margin-top:14px" data-a="aifind">${ic('spark')}Gerichte finden</button>`}
   else if(a.step==='result'){
+    if(a.msg)body+=`<p class="ai-msg">${a.msg.replace(/</g,'&lt;')}</p>`;
     if(a.kind==='week'){const ks=Object.keys(a.week).map(Number).sort((x,y)=>x-y);
-      body=a.full?`<p class="ai-note">Diese Woche ist schon komplett geplant. Wechsle zur nächsten Woche, dann plane ich die.</p>`:
-       `<p class="ai-tr done">„${a.text}“</p><div class="ai-list">${ks.map(d=>{const r=RM[a.week[d]];return `<div class="ai-row">${plate2(r)}<div><small>${dayLbl(d)}</small><b>${r.n}</b><span class="ai-cat">${r.c.includes('bowl')?'Bowl':r.c.includes('fisch')?'Fisch':'Fleisch'}</span></div></div>`}).join('')}</div>
+      body+=a.full?`<p class="ai-note">Diese Woche ist schon komplett geplant. Wechsle zur nächsten Woche, dann plane ich die.</p>`:
+       `${a.msg?'':`<p class="ai-tr done">„${a.text}“</p>`}<div class="ai-list">${ks.map(d=>{const r=RM[a.week[d]];return `<div class="ai-row">${plate2(r)}<div><small>${dayLbl(d)}</small><b>${r.n}</b><span class="ai-cat">${r.c.includes('bowl')?'Bowl':r.c.includes('fisch')?'Fisch':r.c.includes('fleisch')?'Fleisch':r.c.includes('suppe')?'Suppe':'Vegetarisch'}</span></div></div>`}).join('')}</div>
        <button class="gbtn" style="width:100%;margin-top:14px" data-a="aiweek">${ic('check')}Übernehmen (${ks.length} Tage)</button>`}
     else if(a.kind==='photo'){const sc=R.map(r=>[r,aiMissing(r,a.have)]).sort((x,y)=>x[1].length-y[1].length).slice(0,3);
       body=`<div class="ai-list">${sc.map(([r,m])=>`<div class="ai-row">${plate2(r)}<div><b>${r.n}</b><small class="${m.length?'':'ok'}">${m.length?`Fehlt: ${m.map(x=>x[0].replace(/\s*\(.*?\)/g,'')).join(', ')}`:'Alles da!'}</small><button class="pill sm" data-a="aibuy" data-id="${r.id}">${ic('plus')}${m.length?'Einplanen + Fehlendes auf die Liste':'Einplanen'}</button></div></div>`).join('')}</div>`}
-    else{body=`<p class="ai-tr done">„${a.text}“</p><div class="ai-list">${a.list.map(r=>`<div class="ai-row">${plate2(r)}<div><b>${r.n}</b><small>${r.m} Min · ${r.k} kcal</small><button class="pill sm" data-a="aiplan" data-id="${r.id}">${ic('plus')}Für ${s.sel===TODAY?'heute':dn(s.sel)} einplanen</button></div></div>`).join('')}</div>`}
+    else{body+=`${a.msg?'':`<p class="ai-tr done">„${a.text}“</p>`}<div class="ai-list">${a.list.map(r=>`<div class="ai-row">${plate2(r)}<div><b>${r.n}</b><small>${r.m} Min · ${r.k} kcal</small><button class="pill sm" data-a="aiplan" data-id="${r.id}">${ic('plus')}Für ${s.sel===TODAY?'heute':dn(s.sel)} einplanen</button></div></div>`).join('')}</div>`}
     body+=`<button class="ai-again" data-a="aiback">Neue Frage</button>`}
   return head+body};
 Phone.prototype.picking=function(){const s=this.s;return s.screen==='plan'&&(s.edit||!RM[s.plan[s.sel]])};
