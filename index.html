@@ -87,7 +87,7 @@ body.appmode #app-host{display:block;position:fixed;inset:0;height:100%;height:1
 .phone.full .scr:has(.tabbar)::after{content:'';position:absolute;left:0;right:0;bottom:0;height:calc(env(safe-area-inset-bottom,0px) + 112px);background:linear-gradient(rgba(246,247,252,0),var(--a-bg) 40%);z-index:35;pointer-events:none}
 .phone.full .view{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 132px)}
 .phone.full .bottom-cta{bottom:calc(env(safe-area-inset-bottom,0px) + 16px)}
-.phone.full .view.planv{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 140px)}
+.phone.full .view.planv{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 96px)}
 /* Vollbild auf kleinen Bildschirmhöhen: kompakter, damit Rad und Knöpfe über der Tab-Leiste Platz haben */
 .phone.full .wheel-wrap{min-height:96px}
 @media (max-height:800px){
@@ -111,7 +111,7 @@ body.appmode #app-host{display:block;position:fixed;inset:0;height:100%;height:1
   .phone.full .rgrid{grid-template-columns:repeat(3,1fr);gap:16px}
   .phone.full .tiles{grid-template-columns:repeat(5,1fr)}
   .phone.full .tabbar{left:calc(50% - 260px);right:auto;width:520px}
-  .phone.full .orb{right:auto;left:calc(50% + 188px)}
+  .phone.full .orb{right:auto;left:calc(50% + 310px)}
   .phone.full .sheet-bg{align-items:center;justify-content:center}
   .phone.full .sheet{max-width:520px;margin:0 auto}
   .phone.full .h-title{font-size:42px}
@@ -145,9 +145,9 @@ body.appmode #app-host{display:block;position:fixed;inset:0;height:100%;height:1
   .phone.full .bottom-cta{left:max(140px,calc((100% - 1120px)/2 + 70px));right:max(40px,calc((100% - 1120px)/2 - 70px));bottom:24px}
 }
 /* ===== KI-Assistent ===== */
-.orb{position:absolute;right:22px;bottom:107px;width:62px;height:62px;border-radius:50%;border:0;padding:0;z-index:42;display:grid;place-items:center;color:#fff;
+.orb{position:absolute;right:22px;bottom:90px;width:62px;height:62px;border-radius:50%;border:0;padding:0;z-index:42;display:grid;place-items:center;color:#fff;
   box-shadow:0 12px 26px -8px rgba(30,20,80,.42),0 0 22px -2px rgba(120,110,255,.38);overflow:hidden;animation:orbIn .5s cubic-bezier(.2,.8,.2,1)}
-.phone.full .orb{right:24px;bottom:calc(env(safe-area-inset-bottom,0px) + 93px)}
+.phone.full .orb{right:24px;bottom:calc(env(safe-area-inset-bottom,0px) + 76px)}
 /* Tab-Leiste rückt für den Orb nach links (wie die runde Suchtaste neben der Tab-Leiste in iOS 26) */
 
 /* Siri-artige Kugel: dunkler Kern, leuchtende Farbschleier (Blau, Cyan, Pink, Violett) drehen sich gegeneinander, heller Glanz in der Mitte */
@@ -161,8 +161,8 @@ body.appmode #app-host{display:block;position:fixed;inset:0;height:100%;height:1
 .orb-g{position:absolute;inset:30%;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.95),rgba(220,235,255,.45) 40%,rgba(255,255,255,0) 72%);mix-blend-mode:screen;animation:orbGlow 7s ease-in-out infinite}
 @keyframes orbGlow{50%{transform:scale(1.12);opacity:.8}}
 /* KI-Symbol in der Mitte; alle 9 s ein sanftes Aufleuchten als Hinweis */
-.orb .orb-w{position:absolute;left:18%;top:calc(50% - 9px);width:64%;height:18px;z-index:2;overflow:visible;fill:none;stroke:#fff;stroke-linecap:round;filter:drop-shadow(0 0 2px rgba(255,255,255,.6))}
-.orb .orb-w path{stroke-width:1.4;transform-origin:30px 12px;animation:orbWave 5s ease-in-out infinite}
+.orb .orb-w{position:absolute;left:28%;top:calc(50% - 6px);width:44%;height:12px;z-index:2;overflow:visible;fill:none;stroke:rgba(225,228,242,.62);stroke-linecap:round;mix-blend-mode:screen}
+.orb .orb-w path{stroke-width:1.6;transform-origin:30px 12px;animation:orbWave 5s ease-in-out infinite}
 @keyframes orbWave{50%{transform:scaleY(.55)}}
 .orb{animation:orbIn .5s cubic-bezier(.2,.8,.2,1),orbHint 9s ease-in-out 3s infinite}
 @keyframes orbHint{0%,78%,100%{box-shadow:0 12px 26px -8px rgba(30,20,80,.42),0 0 22px -2px rgba(120,110,255,.38)}
@@ -253,7 +253,7 @@ body.appmode #app-host{display:block;position:fixed;inset:0;height:100%;height:1
 .status svg{display:block}
 .homebar{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:136px;height:5px;border-radius:3px;background:#111;z-index:90;pointer-events:none}
 .view{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;padding:58px 16px 150px;scrollbar-width:none}
-.view.planv{display:flex;flex-direction:column;padding-bottom:156px}
+.view.planv{display:flex;flex-direction:column;padding-bottom:110px}
 .panel>.open-head,.panel>.dish,.panel>.acts,.panel>.efilter,.panel>.dots{touch-action:pan-y}
 .car{touch-action:pan-x pan-y;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
 .planv .wcard,.planv .dish{--t1:#FBEEEF;--t2:#F5DDE0;--t3:#FAEAE5;--tb:247,214,206;--ts:170,90,105;position:relative;overflow:hidden;
@@ -1046,7 +1046,7 @@ Phone.prototype.dockOrb=function(){
   const place=()=>{if(!a.isConnected)return;a.style.paddingRight='';a.classList.remove('tight');const q=off(a),sc=v?v.scrollTop:0,top=q.y-sc,right=q.x+a.offsetWidth;
     const ol=o.offsetLeft,ot=o.offsetTop;
     if(ot<top+a.offsetHeight-4&&ot+o.offsetHeight>top+4&&ol<right){const pad=Math.ceil(right-ol+8);a.style.paddingRight=pad+'px';
-      const l=a.lastElementChild;if(l&&l.offsetLeft+l.offsetWidth>a.clientWidth-pad+1)a.classList.add('tight')}}; /* zu eng: Nebenknöpfe nur mit Symbol */
+      const l=a.lastElementChild,ar=a.getBoundingClientRect(),k=ar.width/(a.offsetWidth||1)||1;if(l&&l.getBoundingClientRect().right>ar.right-pad*k+1)a.classList.add('tight')}}; /* zu eng: Nebenknöpfe nur mit Symbol */
   place();if(v)v.addEventListener('scroll',place,{passive:true});
   this.orbRO=new ResizeObserver(place);this.orbRO.observe(a);this.orbRO.observe(this.scr);
 };
@@ -1402,13 +1402,19 @@ Antworte ausschließlich mit JSON: {"message": "...", "days": [...]} oder {"mess
     if(ds.length){a.kind='week';a.week={};ds.forEach(x=>a.week[x.day]=x.id);a.full=false}
     else{a.kind='search';a.list=(j.list||[]).filter(id=>RM[id]).slice(0,3).map(id=>RM[id]);if(!a.list.length)throw {code:'parse'}}
     a.step='result';haptic();this.render()}catch(e){this.aiFail(e)}};
+/* Mengen aus dem Foto natürlich anzeigen: dreiviertel, eine halbe, 1½ Stk, ca. 100 g */
+function natAmt(q,u){q=+q||0;
+  if(u==='Stk'){let r=Math.round(q*4)/4;if(r<=0)r=.25;const w=Math.floor(r),f=r-w;
+    if(!w)return {0.25:'ein Viertel',0.5:'eine halbe',0.75:'dreiviertel'}[f];
+    return w+({0.25:'¼',0.5:'½',0.75:'¾'}[f]||'')+' Stk'}
+  const r=q<100?Math.max(10,Math.round(q/10)*10):Math.round(q/50)*50;return 'ca. '+(r>=1000?(r/1000).toLocaleString('de-DE')+' '+(u==='ml'?'l':'kg'):r+' '+u)}
 /* Foto: verkleinern (max. 1024 px) und Zutaten erkennen lassen */
 function shrink(file){return new Promise((ok,no)=>{const img=new Image(),u=URL.createObjectURL(file);img.onload=()=>{const k=Math.min(1,1024/Math.max(img.width,img.height));
   const c=document.createElement('canvas');c.width=Math.round(img.width*k);c.height=Math.round(img.height*k);c.getContext('2d').drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(u);
   c.toBlob(b=>b?ok(b):no(),'image/jpeg',.85)};img.onerror=no;img.src=u})}
 Phone.prototype.aiPhotoReal=function(){const s=this.s;const inp=document.createElement('input');inp.type='file';inp.accept='image/*';
   inp.onchange=async()=>{const f=inp.files&&inp.files[0];if(!f)return;s.ai={step:'snap',kind:'photo',real:true};try{s.ai.photo=URL.createObjectURL(f)}catch(e){}haptic();this.render();const a=s.ai;
-    try{const blob=await shrink(f);const r=await AI('Welche Lebensmittel und Zutaten siehst du auf diesem Foto? Nenne sie auf Deutsch so, wie man sie auf eine Einkaufsliste schreibt (z. B. Basmatireis, Karotten, Feta, Eier). WICHTIG – Mengen: Gib an, was TATSÄCHLICH noch da ist, nicht was auf der Packung steht. Packungsangaben wie "2 kg", "150 g" oder "10 Stück" sind nur die ursprüngliche Füllmenge und dürfen NIE einfach übernommen werden, wenn die Packung offen, angerissen oder sichtbar nicht voll ist. Vorgehen: 1. Schau jedes Produkt genau an. 2. Zähle sichtbare Stücke einzeln (Kartoffeln/Erdäpfel, Zwiebeln, Äpfel, Eier, Tomaten usw. immer als Stk, auch in Netzen, Säcken und durch Sichtfenster – nur die erkennbar vorhandenen). 3. Ein offener Sack mit wenigen sichtbaren Knollen enthält nur diese wenigen. 4. Angeschnittenes Obst/Gemüse als Bruchteil (z. B. 0.75 Stk Tomate). 5. Blattsalat, Kresse, Kräuter: Füllstand schätzen (Füllmenge × sichtbarer Anteil). 6. Fleisch/Fisch in g. Im Zweifel lieber weniger angeben. Verwende österreichische oder deutsche Namen so, wie sie auf der Packung stehen (z. B. Vogerlsalat, Erdäpfel). Gewürze, Öl und Salz weglassen. Fertige Getränke/Smoothies weglassen. Antworte ausschließlich mit JSON. Beschreibe im Feld sichtbar zuerst kurz, was du zählst, dann die Menge: {"items": [{"name": "Erdäpfel", "sichtbar": "Sack offen, 3 Knollen im Netz erkennbar", "menge": 3, "einheit": "Stk"}, {"name": "Tomate", "sichtbar": "eine halbe Tomate plus 2 Scheiben", "menge": 0.75, "einheit": "Stk"}]} – einheit nur g, ml oder Stk.',{images:[blob],modelTier:'complex'});
+    try{const blob=await shrink(f);const r=await AI('Welche Lebensmittel und Zutaten siehst du auf diesem Foto? Nenne sie auf Deutsch so, wie man sie auf eine Einkaufsliste schreibt (z. B. Basmatireis, Karotten, Feta, Eier). WICHTIG – Mengen: Gib an, was TATSÄCHLICH noch da ist, nicht was auf der Packung steht. Packungsangaben wie "2 kg", "150 g" oder "10 Stück" sind nur die ursprüngliche Füllmenge und dürfen NIE einfach übernommen werden, wenn die Packung offen, angerissen oder sichtbar nicht voll ist. Vorgehen: 1. Schau jedes Produkt genau an. 2. Zähle sichtbare Stücke einzeln (Kartoffeln/Erdäpfel, Zwiebeln, Äpfel, Eier, Tomaten usw. immer als Stk, auch in Netzen, Säcken und durch Sichtfenster – nur die erkennbar vorhandenen). 3. Ein offener Sack mit wenigen sichtbaren Knollen enthält nur diese wenigen. 4. Angeschnittenes Obst/Gemüse als Bruchteil in Vierteln (0.25, 0.5 oder 0.75 – z. B. 0.75 Stk für eine dreiviertel Tomate, 0.5 für eine halbe). Eine angebrochene Kresse-Schale ebenso in Vierteln. 5. Blattsalat, Kresse, Kräuter: Füllstand schätzen (Füllmenge × sichtbarer Anteil). 6. Fleisch/Fisch in g. Im Zweifel lieber weniger angeben. Verwende österreichische oder deutsche Namen so, wie sie auf der Packung stehen (z. B. Vogerlsalat, Erdäpfel). Gewürze, Öl und Salz weglassen. Fertige Getränke/Smoothies weglassen. Antworte ausschließlich mit JSON. Beschreibe im Feld sichtbar zuerst kurz, was du zählst, dann die Menge: {"items": [{"name": "Erdäpfel", "sichtbar": "Sack offen, 3 Knollen im Netz erkennbar", "menge": 3, "einheit": "Stk"}, {"name": "Tomate", "sichtbar": "eine halbe Tomate plus 2 Scheiben", "menge": 0.75, "einheit": "Stk"}]} – einheit nur g, ml oder Stk.',{images:[blob],modelTier:'complex'});
       if(s.sheet!=='ai'||s.ai!==a)return;const j=aiParse(r&&r.text!==undefined?r.text:r);const raw=(j&&j.items||[]).slice(0,16);const it=[],amt={};raw.forEach(x=>{const n=typeof x==='string'?x:x&&x.name;if(!n||it.includes(n))return;it.push(n);if(x&&x.menge)amt[n]={q:+x.menge,u:x.einheit||'g'}});
       if(!it.length){s.ai={step:'idle'};this.render();this.toast('Keine Zutaten erkannt – versuch ein anderes Foto');return}
       a.all=it;a.have=it.slice();a.amt=amt;a.step='detect';haptic();this.render()}catch(e){this.aiFail(e)}};
@@ -1455,7 +1461,7 @@ Phone.prototype.vAI=function(){const s=this.s,a=s.ai||{step:'idle'};
   else if(a.step==='snap'&&a.photo){body=`<div class="ai-photo scan" style="display:block;padding:0;height:220px"><img src="${a.photo}" alt="" style="width:100%;height:100%;object-fit:cover;display:block"><i class="ai-scan"></i></div>`}
   else if(a.step==='snap'){body=`<div class="ai-photo scan">${['🍚','🥕','🧅','🫑','🧀','🥚','🧈','🍋'].map(e=>`<span>${e}</span>`).join('')}<i class="ai-scan"></i></div>`}
   else if(a.step==='detect'){if(a.manual&&a.photo)body+=`<div class="ai-thumb"><img src="${a.photo}" alt="Dein Foto"></div>`;const all=a.all||['Basmatireis','Karotten','Zwiebel','Paprika','Feta','Eier','Zucchini','Tomate'];
-    body+=`<div class="ai-tags${a.manual?' many':''}">${all.map(n=>`<button class="ai-tag ${a.have.includes(n)?'on':''}" data-a="aitog" data-v="${n}"><span>${emo(n)}</span>${n}${a.amt&&a.amt[n]?`<small> · ca. ${fq(a.amt[n].q,a.amt[n].u)}</small>`:''}</button>`).join('')}</div>
+    body+=`<div class="ai-tags${a.manual?' many':''}">${all.map(n=>`<button class="ai-tag ${a.have.includes(n)?'on':''}" data-a="aitog" data-v="${n}"><span>${emo(n)}</span>${n}${a.amt&&a.amt[n]?`<small> · ${natAmt(a.amt[n].q,a.amt[n].u)}</small>`:''}</button>`).join('')}</div>
       <p class="ai-note">Salz, Pfeffer, Öl und Gewürze setze ich als vorhanden voraus.</p>
       <button class="gbtn" style="width:100%;margin-top:14px" data-a="aifind">${ic('spark')}Gerichte finden</button>`}
   else if(a.step==='result'){
