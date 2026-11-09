@@ -145,9 +145,9 @@ body.appmode #app-host{display:block;position:fixed;inset:0;height:100%;height:1
   .phone.full .bottom-cta{left:max(140px,calc((100% - 1120px)/2 + 70px));right:max(40px,calc((100% - 1120px)/2 - 70px));bottom:24px}
 }
 /* ===== KI-Assistent ===== */
-.orb{position:absolute;right:22px;bottom:90px;width:56px;height:56px;border-radius:50%;border:0;padding:0;z-index:42;display:grid;place-items:center;color:#fff;
-  box-shadow:0 0 22px -2px rgba(120,110,255,.55),0 14px 30px -12px rgba(20,10,60,.6),0 0 0 2px rgba(255,255,255,.55);overflow:hidden;animation:orbIn .5s cubic-bezier(.2,.8,.2,1)}
-.phone.full .orb{right:24px;bottom:calc(env(safe-area-inset-bottom,0px) + 76px)}
+.orb{position:absolute;right:22px;bottom:107px;width:62px;height:62px;border-radius:50%;border:0;padding:0;z-index:42;display:grid;place-items:center;color:#fff;
+  box-shadow:0 12px 26px -8px rgba(30,20,80,.42),0 0 22px -2px rgba(120,110,255,.38);overflow:hidden;animation:orbIn .5s cubic-bezier(.2,.8,.2,1)}
+.phone.full .orb{right:24px;bottom:calc(env(safe-area-inset-bottom,0px) + 93px)}
 /* Tab-Leiste rückt für den Orb nach links (wie die runde Suchtaste neben der Tab-Leiste in iOS 26) */
 
 /* Siri-artige Kugel: dunkler Kern, leuchtende Farbschleier (Blau, Cyan, Pink, Violett) drehen sich gegeneinander, heller Glanz in der Mitte */
@@ -161,14 +161,12 @@ body.appmode #app-host{display:block;position:fixed;inset:0;height:100%;height:1
 .orb-g{position:absolute;inset:30%;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.95),rgba(220,235,255,.45) 40%,rgba(255,255,255,0) 72%);mix-blend-mode:screen;animation:orbGlow 7s ease-in-out infinite}
 @keyframes orbGlow{50%{transform:scale(1.12);opacity:.8}}
 /* KI-Symbol in der Mitte; alle 9 s ein sanftes Aufleuchten als Hinweis */
-.orb .orb-w{position:absolute;left:18%;top:calc(50% - 9px);width:64%;height:18px;z-index:2;overflow:visible;fill:none;stroke:#fff;stroke-linecap:round;filter:drop-shadow(0 0 3px rgba(255,255,255,.75))}
-.orb .orb-w path{stroke-width:2.2;transform-origin:30px 12px;animation:orbWave 5s ease-in-out infinite}
+.orb .orb-w{position:absolute;left:18%;top:calc(50% - 9px);width:64%;height:18px;z-index:2;overflow:visible;fill:none;stroke:#fff;stroke-linecap:round;filter:drop-shadow(0 0 2px rgba(255,255,255,.6))}
+.orb .orb-w path{stroke-width:1.4;transform-origin:30px 12px;animation:orbWave 5s ease-in-out infinite}
 @keyframes orbWave{50%{transform:scaleY(.55)}}
-/* Plan: Orb sitzt in der Aktionszeile über dem rechten Kartenrand; Ring in Kartenfarbe lässt ihn aus der Karte „herauswachsen“ */
-.orb.dock{box-shadow:0 0 0 4px var(--a-card),0 0 20px 2px rgba(120,110,255,.45),0 14px 28px -10px rgba(20,10,60,.55);animation:orbIn .5s cubic-bezier(.2,.8,.2,1)}
 .orb{animation:orbIn .5s cubic-bezier(.2,.8,.2,1),orbHint 9s ease-in-out 3s infinite}
-@keyframes orbHint{0%,78%,100%{box-shadow:0 0 22px -2px rgba(120,110,255,.55),0 14px 30px -12px rgba(20,10,60,.6),0 0 0 2px rgba(255,255,255,.55)}
-  88%{box-shadow:0 0 34px 6px rgba(150,130,255,.75),0 14px 30px -12px rgba(20,10,60,.6),0 0 0 2px rgba(255,255,255,.8)}}
+@keyframes orbHint{0%,78%,100%{box-shadow:0 12px 26px -8px rgba(30,20,80,.42),0 0 22px -2px rgba(120,110,255,.38)}
+  88%{box-shadow:0 12px 26px -8px rgba(30,20,80,.42),0 0 34px 4px rgba(150,130,255,.6)}}
 @media (prefers-reduced-motion:reduce){.orb-c i,.orb-g,.orb,.orb .orb-w path{animation:none!important}}
 .orb:active{transform:scale(.93)}
 @keyframes orbSpin{to{transform:rotate(360deg)}}
@@ -429,6 +427,7 @@ body.appmode #app-host{display:block;position:fixed;inset:0;height:100%;height:1
 .obtn{height:46px;border-radius:999px;border:0;background:var(--a-card);box-shadow:0 0 0 1px var(--a-line),0 6px 16px -10px rgba(60,50,140,.35);display:flex;align-items:center;gap:7px;padding:0 15px 0 13px;font-size:14.5px;flex:none}
 .ifoot .gbtn,.bottom-cta .gbtn{height:54px;font-size:16.5px;width:100%}
 .obtn .ic{width:20px;height:20px}
+.acts.tight .obtn{font-size:0;gap:0;padding:0 13px}
 .dish{display:flex;flex-direction:column;align-items:center;text-align:center}
 .dish .halo{width:236px;height:236px;margin:0 auto}
 .dish .nm{font-weight:300;font-size:28px;letter-spacing:-.02em;margin:4px 0 2px;line-height:1.15}
@@ -1037,20 +1036,19 @@ Phone.prototype.render=function(){
   this.initPicker();this.initIntro();this.dockOrb();
   if(focus){const el=this.scr.querySelector(`[data-k="${focus}"]`);if(el){el.focus({preventScroll:true});const L=el.value.length;try{el.setSelectionRange(L,L)}catch(e){}}}
 };
-/* KI-Orb im Plan an die Aktionszeile der Tages-Kachel andocken: überlappt den rechten Kartenrand, Buttons rücken nach links (kein Text verdeckt) */
+/* KI-Orb steht auf allen Tabs an derselben Stelle (rechts unten, überlappt die Kachel leicht). Verdeckt er die Buttons der Tages-Kachel, rücken diese nach links */
 Phone.prototype.dockOrb=function(){
-  const o=this.scr.querySelector('.orb'),pn=this.scr.querySelector('.view.planv .panel'),a=pn&&pn.querySelector(':scope>.acts');
+  const o=this.scr.querySelector('.orb'),a=this.scr.querySelector('.view.planv .panel>.acts');
   if(this.orbRO){this.orbRO.disconnect();this.orbRO=null}
-  if(!o||!a||(this.opts.full&&matchMedia('(min-width:1024px) and (orientation:landscape)').matches))return;
-  const v=this.scr.querySelector('.view'),S=56,GAP=8;
-  const off=el=>{let x=0,y=0;while(el&&el!==this.scr){x+=el.offsetLeft;y+=el.offsetTop;el=el.offsetParent}return{x,y}};
-  const place=()=>{if(!o.isConnected)return;a.style.paddingRight='';
-    const p=off(pn),q=off(a),sc=v?v.scrollTop:0,right=p.x+pn.offsetWidth+Math.min(8,this.scr.clientWidth-(p.x+pn.offsetWidth)-6);
-    const left=right-S,top=q.y-sc+a.offsetHeight/2-S/2;
-    o.classList.add('dock');o.style.left=left+'px';o.style.top=top+'px';o.style.right='auto';o.style.bottom='auto';
-    a.style.paddingRight=Math.max(0,q.x+a.offsetWidth-(left-GAP))+'px'};
+  if(!o||!a)return;
+  const v=this.scr.querySelector('.view');
+  const off=el=>{let x=0,y=0;while(el&&el!==this.scr){x+=el.offsetLeft;y+=el.offsetTop;el=el.offsetParent}return{x,y}}; /* Layout-Koordinaten, unabhängig von Animation/Skalierung */
+  const place=()=>{if(!a.isConnected)return;a.style.paddingRight='';a.classList.remove('tight');const q=off(a),sc=v?v.scrollTop:0,top=q.y-sc,right=q.x+a.offsetWidth;
+    const ol=o.offsetLeft,ot=o.offsetTop;
+    if(ot<top+a.offsetHeight-4&&ot+o.offsetHeight>top+4&&ol<right){const pad=Math.ceil(right-ol+8);a.style.paddingRight=pad+'px';
+      const l=a.lastElementChild;if(l&&l.offsetLeft+l.offsetWidth>a.clientWidth-pad+1)a.classList.add('tight')}}; /* zu eng: Nebenknöpfe nur mit Symbol */
   place();if(v)v.addEventListener('scroll',place,{passive:true});
-  this.orbRO=new ResizeObserver(place);this.orbRO.observe(pn);this.orbRO.observe(this.scr);
+  this.orbRO=new ResizeObserver(place);this.orbRO.observe(a);this.orbRO.observe(this.scr);
 };
 Phone.prototype.vStatus=function(){return `<div class="status"><span>9:41</span><span style="display:flex;gap:6px;align-items:center">
  <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#111"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#111"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#111"/><rect x="15" y="0" width="3" height="12" rx="1" fill="#111"/></svg>
@@ -1410,7 +1408,7 @@ function shrink(file){return new Promise((ok,no)=>{const img=new Image(),u=URL.c
   c.toBlob(b=>b?ok(b):no(),'image/jpeg',.85)};img.onerror=no;img.src=u})}
 Phone.prototype.aiPhotoReal=function(){const s=this.s;const inp=document.createElement('input');inp.type='file';inp.accept='image/*';
   inp.onchange=async()=>{const f=inp.files&&inp.files[0];if(!f)return;s.ai={step:'snap',kind:'photo',real:true};try{s.ai.photo=URL.createObjectURL(f)}catch(e){}haptic();this.render();const a=s.ai;
-    try{const blob=await shrink(f);const r=await AI('Welche Lebensmittel und Zutaten siehst du auf diesem Foto? Nenne sie auf Deutsch so, wie man sie auf eine Einkaufsliste schreibt (z. B. Basmatireis, Karotten, Feta, Eier). Prüfe die Mengen genau: Zähle sichtbare Stücke einzeln (auch in Netzen und Säcken nur die tatsächlich sichtbaren bzw. erkennbar noch vorhandenen). Bei angeschnittenem oder angebrochenem Gemüse/Obst den Rest als Bruchteil angeben (z. B. 0.75 Stk Tomate). Bei geöffneten Packungen schätze, wie viel noch drin ist (Füllmenge laut Packung × sichtbarer Füllstand). Fleisch/Fisch in g. Verwende österreichische oder deutsche Namen so, wie sie auf der Packung stehen (z. B. Vogerlsalat, Erdäpfel). Gewürze, Öl und Salz weglassen. Antworte ausschließlich mit JSON: {"items": [{"name": "Basmatireis", "menge": 500, "einheit": "g"}, {"name": "Tomate", "menge": 0.75, "einheit": "Stk"}]} – einheit nur g, ml oder Stk.',{images:[blob],modelTier:'default'});
+    try{const blob=await shrink(f);const r=await AI('Welche Lebensmittel und Zutaten siehst du auf diesem Foto? Nenne sie auf Deutsch so, wie man sie auf eine Einkaufsliste schreibt (z. B. Basmatireis, Karotten, Feta, Eier). WICHTIG – Mengen: Gib an, was TATSÄCHLICH noch da ist, nicht was auf der Packung steht. Packungsangaben wie "2 kg", "150 g" oder "10 Stück" sind nur die ursprüngliche Füllmenge und dürfen NIE einfach übernommen werden, wenn die Packung offen, angerissen oder sichtbar nicht voll ist. Vorgehen: 1. Schau jedes Produkt genau an. 2. Zähle sichtbare Stücke einzeln (Kartoffeln/Erdäpfel, Zwiebeln, Äpfel, Eier, Tomaten usw. immer als Stk, auch in Netzen, Säcken und durch Sichtfenster – nur die erkennbar vorhandenen). 3. Ein offener Sack mit wenigen sichtbaren Knollen enthält nur diese wenigen. 4. Angeschnittenes Obst/Gemüse als Bruchteil (z. B. 0.75 Stk Tomate). 5. Blattsalat, Kresse, Kräuter: Füllstand schätzen (Füllmenge × sichtbarer Anteil). 6. Fleisch/Fisch in g. Im Zweifel lieber weniger angeben. Verwende österreichische oder deutsche Namen so, wie sie auf der Packung stehen (z. B. Vogerlsalat, Erdäpfel). Gewürze, Öl und Salz weglassen. Fertige Getränke/Smoothies weglassen. Antworte ausschließlich mit JSON. Beschreibe im Feld sichtbar zuerst kurz, was du zählst, dann die Menge: {"items": [{"name": "Erdäpfel", "sichtbar": "Sack offen, 3 Knollen im Netz erkennbar", "menge": 3, "einheit": "Stk"}, {"name": "Tomate", "sichtbar": "eine halbe Tomate plus 2 Scheiben", "menge": 0.75, "einheit": "Stk"}]} – einheit nur g, ml oder Stk.',{images:[blob],modelTier:'complex'});
       if(s.sheet!=='ai'||s.ai!==a)return;const j=aiParse(r&&r.text!==undefined?r.text:r);const raw=(j&&j.items||[]).slice(0,16);const it=[],amt={};raw.forEach(x=>{const n=typeof x==='string'?x:x&&x.name;if(!n||it.includes(n))return;it.push(n);if(x&&x.menge)amt[n]={q:+x.menge,u:x.einheit||'g'}});
       if(!it.length){s.ai={step:'idle'};this.render();this.toast('Keine Zutaten erkannt – versuch ein anderes Foto');return}
       a.all=it;a.have=it.slice();a.amt=amt;a.step='detect';haptic();this.render()}catch(e){this.aiFail(e)}};
