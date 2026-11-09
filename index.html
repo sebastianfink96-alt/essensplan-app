@@ -85,8 +85,10 @@ body.appmode #app-host{display:block;position:fixed;inset:0;height:100%;height:1
 .phone.full .toast{top:calc(env(safe-area-inset-top,0px) + 56px)}
 .phone.full .tabbar{bottom:var(--sb);left:16px;right:16px;background:rgba(255,255,255,.96)}
 @media (display-mode:standalone){.phone.full .scr::before{content:'';position:absolute;left:0;right:0;top:0;height:calc(env(safe-area-inset-top,0px) + 14px);background:linear-gradient(rgba(var(--a-glow),.5),rgba(var(--a-glow),0));z-index:45;pointer-events:none}}
+/* Plan: Kachel endet über der Tab-Leiste, Ausblendung nur hinter der Leiste (sonst wirkt der Button blass) */
 /* Unter der Tab-Leiste: Inhalt blendet weich aus statt sichtbar darunter weiterzulaufen */
 .phone.full .scr:has(.tabbar)::after{content:'';position:absolute;left:0;right:0;bottom:0;height:calc(env(safe-area-inset-bottom,0px) + 112px);background:linear-gradient(rgba(246,247,252,0),var(--a-bg) 40%);z-index:35;pointer-events:none}
+.phone.full .scr:has(.view.planv)::after{height:calc(var(--sb) + 30px)}
 .phone.full .view{padding-bottom:calc(var(--sb) + 120px)}
 .phone.full .bottom-cta{bottom:calc(env(safe-area-inset-bottom,0px) + 16px)}
 .phone.full .view.planv{padding-bottom:calc(var(--sb) + 84px)}
@@ -146,6 +148,51 @@ body.appmode #app-host{display:block;position:fixed;inset:0;height:100%;height:1
   .phone.full .tiles{grid-template-columns:repeat(6,1fr)}
   .phone.full .bottom-cta{left:max(140px,calc((100% - 1120px)/2 + 70px));right:max(40px,calc((100% - 1120px)/2 - 70px));bottom:24px}
 }
+
+/* ===== Lerncenter ===== */
+.lc-list{display:flex;flex-direction:column;gap:18px;margin-top:18px}
+.lc{position:relative;display:flex;align-items:center;gap:14px;border:0;text-align:left;background:var(--a-card);border-radius:24px;padding:16px 16px 16px 14px;color:var(--a-ink);
+  box-shadow:0 0 0 1px var(--a-line),0 16px 30px -22px rgba(var(--a-glow),.55)}
+.lc-st{position:absolute;left:14px;right:14px;bottom:-7px;height:20px;border-radius:0 0 20px 20px;background:var(--a-card);box-shadow:0 0 0 1px var(--a-line);z-index:-1;opacity:.8}
+.lc-ic{width:58px;height:58px;flex:none;border-radius:18px;display:grid;place-items:center;font-size:30px;background:linear-gradient(140deg,var(--d1),var(--d2));box-shadow:inset 0 0 0 1px rgba(255,255,255,.5)}
+.lc-tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.lc-tx small{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--a-eyebrow);font-weight:600}
+.lc-tx b{font-weight:400;font-size:18px;line-height:1.2}
+.lc-m{font-size:12.5px;color:var(--a-muted)}
+.lc-bar{height:4px;border-radius:2px;background:rgba(120,120,140,.14);margin-top:6px;overflow:hidden}
+.lc-bar i{display:block;height:100%;border-radius:2px;background:var(--a-grad)}
+.lc-go{flex:none;min-width:58px;height:34px;padding:0 12px;border-radius:999px;display:grid;place-items:center;font-size:13px;font-weight:500;background:rgba(var(--a-glow),.1);color:var(--a-eyebrow)}
+.lc-go .ic{width:16px;height:16px;stroke-width:2.6}
+.lk{position:absolute;inset:0;z-index:5;overflow:hidden;background:var(--a-bg)}
+.lk-bg{position:absolute;inset:0;background:radial-gradient(120% 60% at 100% 0%,var(--d1),transparent 60%),radial-gradient(90% 50% at 0% 100%,var(--d1),transparent 70%);opacity:.75}
+.lk-top{position:absolute;left:16px;right:16px;top:54px;z-index:3;display:flex;align-items:center;gap:12px}
+.phone.full .lk-top{top:calc(env(safe-area-inset-top,0px) + 12px)}
+.lk-h{flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.2}
+.lk-h small{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--a-eyebrow);font-weight:600}
+.lk-h b{font-weight:400;font-size:19px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lk-c{font-size:13px;font-weight:500;color:var(--a-muted);font-variant-numeric:tabular-nums;background:rgba(255,255,255,.7);padding:5px 10px;border-radius:999px}
+.lk-dots{position:absolute;right:8px;top:50%;transform:translateY(-50%);z-index:3;display:flex;flex-direction:column;gap:6px}
+.lk-dots i{width:5px;height:5px;border-radius:3px;background:rgba(120,120,140,.28);transition:height .25s,background .25s}
+.lk-dots i.on{height:16px;background:var(--a-grad)}
+.lk-dots i.end{opacity:.5}
+.lk-sc{position:absolute;inset:0;overflow-y:auto;scroll-snap-type:y mandatory;overscroll-behavior:contain;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.lk-sc::-webkit-scrollbar{display:none}
+.lk-p{height:100%;scroll-snap-align:start;scroll-snap-stop:always;display:flex;align-items:center;justify-content:center;padding:108px 26px 40px}
+.phone.full .lk-p{padding:calc(env(safe-area-inset-top,0px) + 70px) 26px calc(env(safe-area-inset-bottom,0px) + 24px)}
+.lk-card{position:relative;width:100%;max-width:460px;max-height:100%;overflow:auto;background:rgba(255,255,255,.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-radius:30px;padding:26px 24px 24px;
+  box-shadow:0 0 0 1px rgba(255,255,255,.8),0 30px 50px -30px rgba(var(--a-glow),.55);display:flex;flex-direction:column;align-items:flex-start;gap:10px}
+.lk-n{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--a-eyebrow);font-weight:600}
+.lk-e{width:84px;height:84px;border-radius:26px;display:grid;place-items:center;font-size:44px;background:linear-gradient(140deg,var(--d1),var(--d2));margin:6px 0 4px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.5),0 14px 26px -16px rgba(60,40,90,.45)}
+.lk-card h3{margin:0;font-weight:300;font-size:27px;line-height:1.15;letter-spacing:-.01em}
+.lk-card p{margin:0;font-size:16.5px;line-height:1.55;color:#4A4E60;font-weight:300}
+.lk-tip{margin-top:6px;width:100%;border-radius:18px;padding:12px 14px;background:linear-gradient(120deg,rgba(var(--a-glow),.09),rgba(var(--a-glow),.04));font-size:14.5px;line-height:1.45;color:var(--a-ink)}
+.lk-tip b{display:block;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--a-eyebrow);font-weight:600;margin-bottom:2px}
+.lk-hint{display:flex;align-items:center;gap:6px;align-self:center;margin-top:10px;font-size:12.5px;color:var(--a-muted);animation:lkHint 2.4s ease-in-out infinite}
+.lk-hint .ic{width:14px;height:14px;transform:rotate(180deg)}
+@keyframes lkHint{50%{transform:translateY(-4px)}}
+.lk-done{align-items:center;text-align:center}
+.lk-done .gbtn{margin-top:8px;flex:none;width:100%;height:54px}
+.lk-back{width:100%;justify-content:center;margin-top:2px}
 /* ===== KI-Assistent ===== */
 .orb{position:absolute;right:22px;bottom:90px;width:62px;height:62px;border-radius:50%;border:0;padding:0;z-index:42;display:grid;place-items:center;color:#fff;
   box-shadow:0 12px 26px -8px rgba(30,20,80,.42),0 0 22px -2px rgba(120,110,255,.38);overflow:hidden;animation:orbIn .5s cubic-bezier(.2,.8,.2,1)}
@@ -694,9 +741,11 @@ const P = {
   home:'<path d="M3.5 10.5 12 3.5l8.5 7V20a1 1 0 0 1-1 1H15v-6H9v6H4.5a1 1 0 0 1-1-1z"/>',
   book:'<path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H20v14.5H6.5A1.5 1.5 0 0 0 5 19z"/><path d="M5 19a2 2 0 0 0 2 2h13v-3.5"/><path d="M9 7.5h7"/>',
   bag:'<path d="M5 8h14l-1.1 11.6a1.5 1.5 0 0 1-1.5 1.4H7.6a1.5 1.5 0 0 1-1.5-1.4z"/><path d="M9 10V7a3 3 0 0 1 6 0v3"/>',
-  heart:'<path d="M12 20.3s-7.5-4.5-7.5-10.3A4.2 4.2 0 0 1 12 7.4a4.2 4.2 0 0 1 7.5 2.6c0 5.8-7.5 10.3-7.5 10.3z"/>',
+  cap:'<path d="M2.5 9.5 12 5l9.5 4.5L12 14z"/><path d="M6.5 11.8v4c0 1.4 2.5 2.8 5.5 2.8s5.5-1.4 5.5-2.8v-4"/><path d="M21.5 9.5v5"/>',
+heart:'<path d="M12 20.3s-7.5-4.5-7.5-10.3A4.2 4.2 0 0 1 12 7.4a4.2 4.2 0 0 1 7.5 2.6c0 5.8-7.5 10.3-7.5 10.3z"/>',
   sliders:'<path d="M4 7h9M17 7h3M4 12h3M11 12h9M4 17h11M19 17h1"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="17" cy="17" r="2"/>',
-  left:'<path d="m15 18-6-6 6-6"/>', right:'<path d="m9 6 6 6-6 6"/>',
+  left:'<path d="m15 18-6-6 6-6"/>',
+down:'<path d="m6 9 6 6 6-6"/>', right:'<path d="m9 6 6 6-6 6"/>',
   check:'<path d="m5 12.5 4.5 4.5L19 7.5"/>', plus:'<path d="M12 5v14M5 12h14"/>', minus:'<path d="M5 12h14"/>',
   x:'<path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/>',
   twice:'<rect x="2.8" y="4.5" width="18.4" height="16.5" rx="3.5"/><path d="M8 2.8v3.4M16 2.8v3.4"/><rect x="5.6" y="15" width="4.6" height="3.8" rx="1.1"/><path d="M15.9 15h1.4a1.1 1.1 0 0 1 1.1 1.1v1.6a1.1 1.1 0 0 1-1.1 1.1h-2.4a1.1 1.1 0 0 1-1.1-1.1V16.1"/><path d="M7.9 13.4C8.4 8.6 15 8.2 16 13"/><path d="m14.1 11.9 1.9 1.4 1.3-2"/>',
@@ -1016,18 +1065,18 @@ function Phone(host,init,opts){
 }
 Phone.prototype.reset=function(init){
   const s={screen:'plan',ip:0,plan:{0:'n02',1:'n01'},sel:TODAY,wk:0,edit:false,cat:'all',en:null,pick:-1,
-    favs:new Set(['n01','r2','n07','n13','n22']),did:null,dday:null,from:'plan',persons:1,shopWk:0,twice:false,done:{},sheet:null,shopQ:'',recQ:'',recCat:'all'};
+    favs:new Set(['n01','r2','n07','n13','n22']),learn:{},deck:null,did:null,dday:null,from:'plan',persons:1,shopWk:0,twice:false,done:{},sheet:null,shopQ:'',recQ:'',recCat:'all'};
   Object.assign(s,JSON.parse(JSON.stringify(Object.assign({},init,{favs:undefined}))));
   if(init.favs)s.favs=new Set(init.favs);
   s.shop=init.shopFromPlan?buildShop(s.plan,s.persons,[]):[]; /* Standard: leere Liste */
   if(this.opts.persist){const d=data.load();if(d){ /* gespeicherten Stand übernehmen; Plan-Daten in Tages-Indizes umrechnen, Vergangenes fällt weg */
       s.plan={};Object.entries(d.plan||{}).forEach(([iso,id])=>{const i=idxOf(iso);if(i>=0&&i<NDAYS&&(RM[id]||id===OUT))s.plan[i]=id});
       if(Array.isArray(d.shop))s.shop=d.shop;if(Array.isArray(d.favs))s.favs=new Set(d.favs);
-      if(d.persons)s.persons=d.persons;if(d.done)s.done=d.done;}}
+      if(d.persons)s.persons=d.persons;if(d.done)s.done=d.done;if(d.learn)s.learn=d.learn;}}
   this.s=s;this.lastScreen=null;this.render();
 };
 Phone.prototype.save=function(){if(!this.opts.persist)return;const s=this.s;const plan={};Object.keys(s.plan).forEach(i=>plan[isoOf(+i)]=s.plan[i]);
-  data.save({plan,shop:s.shop,favs:[...s.favs],persons:s.persons,done:s.done})};
+  data.save({plan,shop:s.shop,favs:[...s.favs],persons:s.persons,done:s.done,learn:s.learn})};
 Phone.prototype.list=function(){const s=this.s;return R.filter(r=>(s.cat==='all'||r.c.includes(s.cat))&&(!s.en||enOf(r)===s.en))};
 Phone.prototype.toast=function(t,btn,act){const old=this.scr.querySelector('.toast');if(old)old.remove();const d=document.createElement('div');d.className='toast'+(btn?' act':'');d.innerHTML=`<span></span>${btn?`<button data-a="${act}">${btn}</button>`:''}`;d.firstChild.textContent=t;this.scr.appendChild(d);setTimeout(()=>d.remove(),btn?4600:2500)};
 Phone.prototype.backAfterPlan=function(d){if(wkOf(d)===0)return this.goPlanToday();const s=this.s;s.screen='plan';s.wk=1;s.sel=7;s.edit=false;s.pick=-1}; /* nächste Woche: dort bleiben (Montag) */
@@ -1042,17 +1091,19 @@ Phone.prototype.render=function(){
   else if(s.screen==='plan')body=this.vPlan();
   else if(s.screen==='recipes')body=this.vRecipes(false);
   else if(s.screen==='favs')body=this.vRecipes(true);
+  else if(s.screen==='learn')body=this.vLearn();
+  else if(s.screen==='deck')body=this.vDeck();
   else if(s.screen==='shop')body=this.vShop();
   else if(s.screen==='detail')body=this.vDetail();
   else if(s.screen==='settings')body=this.vSettings();
-  const tabs=['plan','recipes','shop','favs'].includes(s.screen)?this.vTabs():'';
+  const tabs=['plan','recipes','shop','favs','learn'].includes(s.screen)?this.vTabs():'';
   const orb=tabs?`<button class="orb" data-a="ai" aria-label="KI-Assistent öffnen"><span class="orb-c"><i></i><i></i><i></i><i></i></span><span class="orb-g"></span><svg class="orb-w" viewBox="0 0 60 24" aria-hidden="true"><path d="M10 12 C17 1 23 1 30 12 S43 23 50 12"/></svg></button>`:'';
   this.scr.innerHTML=`<div class="island"></div>${this.vStatus()}${body}${tabs}${orb}${this.vSheet()}<div class="homebar"></div>`;
   const nv=this.scr.querySelector('.view');if(nv)nv.scrollTop=keep;
   clearTimeout(this.saveT);this.saveT=setTimeout(()=>this.save(),300);
   this.lastScreen=s.screen;
   this.anim=null;this.pop=false;
-  this.initPicker();this.initIntro();this.dockOrb();
+  this.initPicker();this.initIntro();this.dockOrb();this.initDeck();
   if(focus){const el=this.scr.querySelector(`[data-k="${focus}"]`);if(el){el.focus({preventScroll:true});const L=el.value.length;try{el.setSelectionRange(L,L)}catch(e){}}}
 };
 /* KI-Orb steht auf allen Tabs an derselben Stelle (rechts unten, überlappt die Kachel leicht). Verdeckt er die Buttons der Tages-Kachel, rücken diese nach links */
@@ -1074,8 +1125,76 @@ Phone.prototype.vStatus=function(){return `<div class="status"><span>9:41</span>
  <svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 11.5 5.6 9a3.4 3.4 0 0 1 4.8 0zM3.4 6.8a6.5 6.5 0 0 1 9.2 0l-1.5 1.5a4.4 4.4 0 0 0-6.2 0zM1 4.4a9.9 9.9 0 0 1 14 0l-1.5 1.5a7.8 7.8 0 0 0-11 0z" fill="#111"/></svg>
  <svg width="27" height="13" viewBox="0 0 27 13"><rect x=".5" y=".5" width="23" height="12" rx="3.5" fill="none" stroke="#111" opacity=".4"/><rect x="2" y="2" width="20" height="9" rx="2" fill="#111"/><rect x="25" y="4.5" width="1.6" height="4" rx=".8" fill="#111" opacity=".4"/></svg></span></div>`};
 Phone.prototype.vTabs=function(){const s=this.s;const open=s.shop.filter(x=>!x.done&&!x.pantry).length;
-  const t=[['plan','Plan','home'],['recipes','Rezepte','book'],['shop','Einkauf','bag'],['favs','Favoriten','heart']];
+  const t=[['plan','Plan','home'],['recipes','Rezepte','book'],['shop','Einkauf','bag'],['learn','Lernen','cap']];
   return `<nav class="tabbar">${t.map(([k,l,i])=>`<button class="tab ${s.screen===k?'on':''}" data-a="tab" data-v="${k}">${ic(i)}${l}${k==='shop'&&open?`<span class="bd">${open}</span>`:''}</button>`).join('')}</nav>`};
+
+
+/* ===== Lerncenter: Karteien mit Lernkarten (Emoji, Titel, Text, Tipp) ===== */
+const DECKS=[
+ {id:'sauce',t:'Die perfekte Sauce',e:'🥄',c:['#F6D9C9','#E9A98F'],cards:[
+  ['⚖️','Das Geheimnis: Balance','Eine gute Sauce balanciert fünf Dinge: Fett, Säure, Salz, Süße und Umami. Schmeckt etwas „flach“, fehlt meist Säure oder Salz – nicht noch mehr Gewürz.','Ein Spritzer Zitrone oder Essig am Ende weckt jede Sauce auf.'],
+  ['🍳','Ansetzen & Ablöschen','Der braune Bodensatz nach dem Anbraten ist pures Aroma. Mit Wein, Brühe oder Wasser ablöschen und den Boden mit dem Kochlöffel loskratzen.','Was nach dem Braten in der Pfanne klebt, ist die Basis – nicht wegwaschen.'],
+  ['⏳','Reduzieren','Offen köcheln lassen, bis etwa die Hälfte der Flüssigkeit verdampft ist. Der Geschmack wird konzentriert und die Sauce bindet leicht.','Erst nach dem Reduzieren salzen, sonst wird es schnell zu salzig.'],
+  ['🧈','Binden ohne Klümpchen','Mehlschwitze: gleiche Teile Butter und Mehl anschwitzen, dann kalte Flüssigkeit unter Rühren zugießen. Schneller: 1 TL Speisestärke in kaltem Wasser anrühren und einrühren.','Heiß auf heiß gibt Klümpchen – eine der beiden Seiten sollte kalt sein.'],
+  ['✨','Montieren','Zum Schluss ein paar kalte Butterstückchen neben dem Herd einschwenken. Die Sauce glänzt, wird sämig und rund.','Danach nicht mehr kochen lassen, sonst trennt sich die Butter.'],
+  ['🥗','Dressing 3 : 1','Für jede Vinaigrette: 3 Teile Öl, 1 Teil Säure, dazu Salz, etwas Senf und eine Prise Zucker oder Honig. Im Glas kräftig schütteln.','Senf und Honig halten Öl und Essig zusammen – das Dressing trennt sich nicht so schnell.'],
+  ['🛟','Sauce retten','Zu salzig: mit Sahne, ungesalzener Brühe oder etwas Säure ausgleichen. Zu dünn: weiter einkochen oder binden. Zu dick: Brühe dazu. Geronnen: kräftig mixen.','']]},
+ {id:'knife',t:'Schnitttechniken',e:'🔪',c:['#DCE7F7','#9DB7E6'],cards:[
+  ['✋','Der Krallengriff','Die Hand, die das Gemüse hält, formt eine Kralle: Fingerkuppen nach innen, die Knöchel führen die Klinge. So bleiben die Finger sicher.','Der Daumen bleibt hinter den Fingern – nie vorne heraus.'],
+  ['🔪','Wiegen statt hacken','Die Messerspitze bleibt auf dem Brett, der Griff bewegt sich auf und ab und leicht nach vorne. Schneller, leiser und schonender für die Klinge.','Ein scharfes Messer ist sicherer als ein stumpfes – es rutscht nicht ab.'],
+  ['🧅','Zwiebel würfeln','Halbieren, Wurzel dranlassen. Waagrecht 2–3 Mal einschneiden, dann senkrecht in Streifen bis kurz vor die Wurzel, zuletzt quer schneiden. Die Wurzel hält alles zusammen.','Kalte Zwiebeln und ein scharfes Messer bedeuten weniger Tränen.'],
+  ['🥕','Julienne & Brunoise','Julienne sind feine Streifen (ca. 2 mm), etwa für Bowls und Pfannengerichte. Quer geschnitten werden daraus Brunoise – winzige Würfel für Saucen.','Zuerst eine flache Seite abschneiden, damit das Gemüse nicht wegrollt.'],
+  ['🌿','Kräuter schneiden','Weiche Kräuter wie Petersilie, Koriander oder Basilikum mit wenigen Schnitten grob schneiden statt zerhacken – sonst werden sie dunkel und bitter.','Basilikum aufrollen und in feine Streifen schneiden.'],
+  ['🪨','Messer pflegen','Von Hand spülen und abtrocknen, nicht in die Spülmaschine. Regelmäßig am Wetzstahl abziehen und ein- bis zweimal im Jahr schleifen.','Auf Holz oder Kunststoff schneiden, nie auf Glas oder Stein.']]},
+ {id:'prep',t:'Meal Prep',e:'🥡',c:['#DDEFD9','#9CCB92'],cards:[
+  ['🗓️','Erst planen','Wähle 2–3 Gerichte für die Woche, die ähnliche Zutaten nutzen. Dein Essensplan und die Einkaufsliste nehmen dir diesen Schritt ab.','Plane einen freien Tag für Reste ein.'],
+  ['🍚','Baukasten-Prinzip','Grundzutaten in größerer Menge kochen: Reis, Quinoa, Ofengemüse, Hähnchen, Hülsenfrüchte. Mit wechselnden Saucen wird daraus jeden Tag etwas anderes.','Saucen und Dressings getrennt aufbewahren – dann bleibt alles knackig.'],
+  ['🧊','Richtig lagern','Gekochtes zügig abkühlen lassen (höchstens 2 Stunden bei Raumtemperatur) und luftdicht in den Kühlschrank stellen. Dort hält es etwa 3–4 Tage.','Reis flach ausbreiten, dann kühlt er besonders schnell ab.'],
+  ['❄️','Einfrieren','Suppen, Eintöpfe, Currys und gekochte Körner lassen sich gut einfrieren, etwa 3 Monate. Portionsweise einfrieren und mit Datum beschriften.','Blattsalat, Gurke und gekochte Kartoffeln vertragen das Einfrieren nicht.'],
+  ['🔥','Aufwärmen','Einmal richtig durcherhitzen, bis es dampft – am besten nur die Portion, die du isst. Reis und Nudeln mit einem Schuss Wasser aufwärmen, dann bleiben sie saftig.','Knuspriges im Ofen oder in der Pfanne aufwärmen, nicht in der Mikrowelle.'],
+  ['🥑','Frisch toppen','Was erst am Tag des Essens dazukommt, macht den Unterschied: frische Kräuter, Zitrone, Avocado, Nüsse oder ein Klecks Joghurt.','Avocado erst kurz vorher aufschneiden.']]},
+ {id:'heat',t:'Braten & Garen',e:'🍳',c:['#F7E3C4','#E8B66E'],cards:[
+  ['🔥','Pfanne richtig heiß','Pfanne zuerst erhitzen, dann das Öl dazu. Erst wenn es leicht schimmert, das Gargut einlegen – so entsteht eine Kruste statt Kochen im eigenen Saft.',''],
+  ['🧱','Nicht zu voll','Zu viel in der Pfanne kühlt sie ab, das Gargut gibt Wasser ab und dünstet nur. Lieber in zwei Runden braten.','Nicht ständig wenden – eine Kruste braucht Zeit.'],
+  ['🥩','Fleisch ruhen lassen','Nach dem Braten 3–5 Minuten auf einem Brett ruhen lassen. Der Saft verteilt sich, das Fleisch bleibt saftig.','Quer zur Faser aufschneiden – so wird es zarter.'],
+  ['🌡️','Kerntemperaturen','Hähnchen: 74 °C. Lachs: 50–55 °C (glasig) bis 60 °C. Rindersteak: 52 °C medium-rare, 56 °C medium. Ein Thermometer erspart das Raten.',''],
+  ['🧂','Richtig salzen','Fleisch kurz vor dem Braten salzen, Ofengemüse vor dem Backen, Nudelwasser kräftig. Am Ende immer abschmecken.','Salz in Etappen – nachsalzen geht, entsalzen kaum.'],
+  ['🥦','Ofengemüse','In gleich große Stücke schneiden, mit wenig Öl und Salz mischen und mit Abstand aufs Blech legen. 200–220 °C, nach der Hälfte der Zeit wenden.','Viel Platz auf dem Blech gibt knusprige Ränder.']]},
+ {id:'spice',t:'Gewürze & Kräuter',e:'🌶️',c:['#F5D5D9','#E28E9A'],cards:[
+  ['🌱','Wann kommt was rein?','Getrocknete Gewürze früh in Fett anrösten – das weckt die Aromen. Frische Kräuter erst zum Schluss oder roh darüber.',''],
+  ['🔥','Gewürze anrösten','Kreuzkümmel, Koriandersamen oder Currypulver 30–60 Sekunden in Öl oder einer trockenen Pfanne rösten, bis es duftet.','Paprikapulver nicht zu heiß werden lassen – es wird schnell bitter.'],
+  ['🍋','Säure als Gewürz','Zitrone, Limette, Essig oder Joghurt machen Gerichte frischer und leichter. Oft fehlt nicht Salz, sondern Säure.',''],
+  ['🌶️','Schärfe dosieren','Chili nach und nach zugeben – die Schärfe nimmt beim Kochen zu. Zu scharf geraten? Joghurt, Kokosmilch oder eine Prise Zucker mildern.',''],
+  ['🧄','Knoblauch & Ingwer','Knoblauch nur kurz anbraten, bis er duftet – verbrannt wird er bitter. Ingwer mit dem Rand eines Löffels schälen und fein reiben.','']]}
+];
+const DECK=Object.fromEntries(DECKS.map(d=>[d.id,d]));
+Phone.prototype.vLearn=function(){const s=this.s;const L=s.learn||{};
+  const tot=DECKS.reduce((a,d)=>a+d.cards.length,0),seen=DECKS.reduce((a,d)=>a+Math.min(d.cards.length,L[d.id]||0),0);
+  return `<div class="view"><div class="blob" style="opacity:.6"><i></i><i></i><i></i><i></i></div><div class="z">
+   <div class="top-row"></div>
+   <div class="eb">Kochwissen · ${seen}/${tot} Karten</div>
+   <div class="h-title">Lerncenter</div>
+   <p class="h-sub" style="font-size:17px">Kurze Lernkarten – Kartei öffnen und Karte für Karte weiterwischen</p>
+   <div class="lc-list">${DECKS.map((d,k)=>{const n=d.cards.length,v=Math.min(n,L[d.id]||0);
+     return `<button class="lc" data-a="deck" data-v="${d.id}" style="--d1:${d.c[0]};--d2:${d.c[1]}"><span class="lc-st"></span><span class="lc-ic">${d.e}</span><span class="lc-tx"><small>Kartei ${k+1}</small><b>${d.t}</b><span class="lc-m">${n} Karten · ca. ${Math.max(2,Math.round(n*.6))} Min</span><span class="lc-bar"><i style="width:${v/n*100}%"></i></span></span><span class="lc-go">${v>=n?ic('check'):v?'Weiter':'Start'}</span></button>`}).join('')}</div>
+  </div></div>`};
+Phone.prototype.vDeck=function(){const s=this.s,d=DECK[s.deck],n=d.cards.length,k=DECKS.indexOf(d),nx=DECKS[k+1];
+  return `<div class="lk" style="--d1:${d.c[0]};--d2:${d.c[1]}"><div class="lk-bg"></div>
+   <div class="lk-top"><button class="iconbtn" data-a="lback" aria-label="Zurück zum Lerncenter">${ic('left')}</button><div class="lk-h"><small>Kartei ${k+1}</small><b>${d.t}</b></div><span class="lk-c">1/${n}</span></div>
+   <div class="lk-dots">${d.cards.map((_,i)=>`<i class="${i?'':'on'}"></i>`).join('')}<i class="end"></i></div>
+   <div class="lk-sc">${d.cards.map(([e,h,tx,tip],i)=>`<section class="lk-p"><div class="lk-card"><span class="lk-n">Karte ${i+1} von ${n}</span><span class="lk-e">${e}</span><h3>${h}</h3><p>${tx}</p>${tip?`<div class="lk-tip"><b>Tipp</b>${tip}</div>`:''}${i===0?`<span class="lk-hint">${ic('down')}wischen für die nächste Karte</span>`:''}</div></section>`).join('')}
+    <section class="lk-p"><div class="lk-card lk-done"><span class="lk-e">🎉</span><h3>Kartei geschafft!</h3><p>Du kennst jetzt alle ${n} Karten zu „${d.t}“.</p>
+     ${nx?`<button class="gbtn" data-a="deck" data-v="${nx.id}">Weiter mit: ${nx.t}</button>`:''}<button class="obtn lk-back" data-a="lback">Zum Lerncenter</button></div></section>
+   </div></div>`};
+/* Karten-Stapel: senkrechtes Einrasten (scroll-snap), Fortschritt merken, bei der zuletzt gesehenen Karte weitermachen */
+Phone.prototype.initDeck=function(){const sc=this.scr.querySelector('.lk-sc');if(!sc)return;const s=this.s,d=DECK[s.deck],n=d.cards.length;
+  const dots=[...this.scr.querySelectorAll('.lk-dots i')],cnt=this.scr.querySelector('.lk-c');let last=-1;
+  const upd=()=>{const i=Math.round(sc.scrollTop/Math.max(1,sc.clientHeight));if(i===last)return;last=i;dots.forEach((x,j)=>x.classList.toggle('on',j===i));
+    if(cnt)cnt.textContent=i>=n?'✓':`${i+1}/${n}`;const L=s.learn||(s.learn={});const v=Math.min(n,i+1);if(v>(L[d.id]||0)){L[d.id]=v;clearTimeout(this.saveT);this.saveT=setTimeout(()=>this.save(),400)}
+    if(i>0)haptic()};
+  const start=(s.learn&&s.learn[d.id]||0);const go=start>0&&start<n?start-1:0;
+  requestAnimationFrame(()=>{sc.scrollTop=go*sc.clientHeight;last=-1;upd()});
+  sc.addEventListener('scroll',()=>requestAnimationFrame(upd),{passive:true})};
 
 /* ----- Plan ----- */
 Phone.prototype.vPlan=function(){const s=this.s;const w=s.wk||0,ks=Object.keys(s.plan).map(Number).filter(i=>wkOf(i)===w);const n=ks.length;const cooked=ks.filter(i=>RM[s.plan[i]]).length;
@@ -1245,16 +1364,16 @@ Phone.prototype.back=function(){const s=this.s;s.screen=s.from||'plan';this.rend
 /* ----- Rezepte / Favoriten ----- */
 Phone.prototype.vRecipes=function(favOnly){const s=this.s;const q=s.recQ.toLowerCase();
   let L=R.filter(r=>(s.recCat==='all'||r.c.includes(s.recCat))&&(!q||(r.n+' '+r.s).toLowerCase().includes(q)));
-  if(favOnly)L=R.filter(r=>s.favs.has(r.id));
+  if(favOnly||s.recCat==='fav')L=R.filter(r=>s.favs.has(r.id)&&(!q||(r.n+' '+r.s).toLowerCase().includes(q)));
   return `<div class="view"><div class="blob" style="opacity:.6"><i></i><i></i><i></i><i></i></div><div class="z">
    <div class="top-row"></div>
    <div class="eb">${favOnly?'Deine Lieblinge':R.length+' Gerichte'}</div>
    <div class="h-title">${favOnly?'Favoriten':'Rezepte'}</div>
    ${favOnly?`<p class="h-sub" style="font-size:17px">Mit dem Herz gemerkte Gerichte</p>`:`
    <div class="search">${ic('search')}<input data-k="recq" placeholder="Rezept suchen" value="${s.recQ.replace(/"/g,'&quot;')}" aria-label="Rezept suchen"></div>
-   <div class="hs">${CATS.map(([k,l,i])=>`<button class="chip ${s.recCat===k?'on':''}" data-a="rcat" data-v="${k}">${ic(i)}${l}</button>`).join('')}</div>`}
+   <div class="hs">${CATS.map(([k,l,i])=>`<button class="chip ${s.recCat===k?'on':''}" data-a="rcat" data-v="${k}">${ic(i)}${l}</button>`).join('')}<button class="chip ${s.recCat==='fav'?'on':''}" data-a="rcat" data-v="fav">${ic('heart')}Favoriten</button></div>`}
    ${L.length?`<div class="rgrid">${L.map(r=>`<button class="rc" data-a="detail" data-id="${r.id}"><span class="hb ${s.favs.has(r.id)?'on':''}" data-a="fav" data-id="${r.id}" role="button" aria-label="Favorit">${ic('heart')}</span>${plate(r,92)}<div class="nm">${r.n}</div><div class="meta"><span>${r.m} Min</span><span>${r.k} kcal</span></div>${enBadge(r)}</button>`).join('')}</div>`
-   :`<div class="empty-st">${favOnly?'Noch keine Favoriten. Tippe bei einem Rezept auf das Herz.':'Kein Rezept gefunden.'}</div>`}
+   :`<div class="empty-st">${favOnly||s.recCat==='fav'?'Noch keine Favoriten. Tippe bei einem Rezept auf das Herz.':'Kein Rezept gefunden.'}</div>`}
   </div></div>`};
 
 /* ----- Detail ----- */
@@ -1533,6 +1652,8 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
    case 'cat':s.cat=v;s.pick=-1;this.render();break;
    case 'en':s.en=s.en===v?null:v;s.pick=-1;this.render();break;
    case 'rcat':s.recCat=v;this.render();break;
+   case 'deck':s.deck=v;s.screen='deck';s.sheet=null;haptic();this.render();break;
+   case 'lback':s.screen='learn';s.deck=null;this.render();break;
    case 'wi':{const k=+t.dataset.k2;if(k!==s.pick){if(this.wheelTo)this.wheelTo(k)}else{haptic();s.from='plan';s.did=t.dataset.id;s.dday=s.sel;s.screen='detail';this.render()}break}
    case 'take':{const r=this.list()[s.pick];if(!r)break;haptic();const d=s.sel;const dd=this.planDish(d,r.id);this.pop=d!==TODAY;this.backAfterPlan(d);this.anim='inF';this.render();this.toast(`${r.n} für ${dd} eingeplant`);break}
    case 'twice':{if(t.disabled)break;haptic();let id,d;
@@ -1600,7 +1721,8 @@ const SCREENS=[
  ['Plan · Woche komplett',{plan:FULL},['Alle Tage mit Häkchen oder Auswärts-Symbol','Lange drücken und auf einen anderen Tag ziehen tauscht die Gerichte','„Liste“ erstellt die Einkaufsliste der Woche']],
  ['Rezept-Detail',{screen:'detail',did:'n01',dday:2,plan:{0:'n02',1:'r2'}},['Nach rechts wischen oder Pfeil = zurück','Rundes Tellerbild, Kategorie, 4 Kennzahlen','Personen +/- rechnet die Mengen um','Schritt antippen = abgehakt (grüner Haken, Zeile hellgrün)','„2×“ neben Zutaten: auch für den Folgetag einplanen','„Einplanen“ springt zurück zum Plan (heute)']],
  ['Rezepte',{screen:'recipes',recCat:'bowl'},['Suche und Kategorie-Filter, hier: Bowls','Herz merkt Favoriten','Rezept antippen → Detail → „Einplanen“ mit Tagesauswahl']],
- ['Favoriten',{screen:'favs'},['Alle gemerkten Gerichte auf einen Blick','Direkt zur Detailseite und einplanen']],
+ ['Lerncenter',{screen:'learn'},['Vierter Tab statt Favoriten (Favoriten jetzt als Herz-Filter in Rezepte)','Karteien: Die perfekte Sauce, Schnitttechniken, Meal Prep, Braten & Garen, Gewürze & Kräuter','Fortschritt je Kartei wird gemerkt']],
+ ['Lernkarten',{screen:'deck',deck:'sauce'},['Karten rasten senkrecht ein: nach oben wischen = nächste Karte','Emoji, Überschrift, kurzer Text und Tipp','Am Ende: weiter zur nächsten Kartei']],
  ['Einkaufsliste',{screen:'shop',shopFromPlan:true},['Oben wählen: Diese Woche oder Nächste Woche (z. B. am Samstag für die Folgewoche einkaufen)','Kachel antippen = gekauft, wandert nach unten','„Alles eingekauft“ oben rechts hakt alles auf einmal ab','Artikel suchen mit Vorschlägen oder freiem Text','„Aus Wochenplan“ zählt Zutaten zusammen, eigene Artikel bleiben','„Als Text teilen“ z. B. für WhatsApp oder Notizen']],
  ['Energiedichte erklärt',{sheet:'energy'},['Öffnet sich bei jedem Antippen eines Energie-Symbols','3 Stufen: Leicht, Ausgewogen, Energiereich']],
  ['Einstellungen',{screen:'settings'},['Personenzahl für alle Mengen','Intro erneut ansehen, Plan leeren','Rezept-Quelle: jetzt lokal, später online','Platz für Training & Sport (spätere Erweiterung)']]
