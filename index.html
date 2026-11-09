@@ -161,10 +161,11 @@ body.appmode #app-host{display:block;position:fixed;inset:0;height:100%;height:1
 .orb-g{position:absolute;inset:30%;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.95),rgba(220,235,255,.45) 40%,rgba(255,255,255,0) 72%);mix-blend-mode:screen;animation:orbGlow 7s ease-in-out infinite}
 @keyframes orbGlow{50%{transform:scale(1.12);opacity:.8}}
 /* KI-Symbol in der Mitte; alle 9 s ein sanftes Aufleuchten als Hinweis */
-.orb .orb-w{position:absolute;left:14%;right:14%;top:calc(50% - 9px);width:72%;height:18px;z-index:2;overflow:hidden;fill:none;stroke:#fff;stroke-linecap:round;filter:drop-shadow(0 0 4px rgba(255,255,255,.8));-webkit-mask-image:linear-gradient(90deg,transparent,#000 25%,#000 75%,transparent);mask-image:linear-gradient(90deg,transparent,#000 25%,#000 75%,transparent)}
-.orb .orb-w path{stroke-width:1.8;animation:orbWave 6s linear infinite}
-.orb .orb-w path.w2{stroke-width:1.2;opacity:.55;animation-duration:9s}
-@keyframes orbWave{to{transform:translateX(30px)}}
+.orb .orb-w{position:absolute;left:18%;top:calc(50% - 9px);width:64%;height:18px;z-index:2;overflow:visible;fill:none;stroke:#fff;stroke-linecap:round;filter:drop-shadow(0 0 3px rgba(255,255,255,.75))}
+.orb .orb-w path{stroke-width:2.2;transform-origin:30px 12px;animation:orbWave 5s ease-in-out infinite}
+@keyframes orbWave{50%{transform:scaleY(.55)}}
+/* Plan: Orb sitzt in der Aktionszeile über dem rechten Kartenrand; Ring in Kartenfarbe lässt ihn aus der Karte „herauswachsen“ */
+.orb.dock{box-shadow:0 0 0 4px var(--a-card),0 0 20px 2px rgba(120,110,255,.45),0 14px 28px -10px rgba(20,10,60,.55);animation:orbIn .5s cubic-bezier(.2,.8,.2,1)}
 .orb{animation:orbIn .5s cubic-bezier(.2,.8,.2,1),orbHint 9s ease-in-out 3s infinite}
 @keyframes orbHint{0%,78%,100%{box-shadow:0 0 22px -2px rgba(120,110,255,.55),0 14px 30px -12px rgba(20,10,60,.6),0 0 0 2px rgba(255,255,255,.55)}
   88%{box-shadow:0 0 34px 6px rgba(150,130,255,.75),0 14px 30px -12px rgba(20,10,60,.6),0 0 0 2px rgba(255,255,255,.8)}}
@@ -1027,14 +1028,29 @@ Phone.prototype.render=function(){
   else if(s.screen==='detail')body=this.vDetail();
   else if(s.screen==='settings')body=this.vSettings();
   const tabs=['plan','recipes','shop','favs'].includes(s.screen)?this.vTabs():'';
-  const orb=tabs?`<button class="orb" data-a="ai" aria-label="KI-Assistent öffnen"><span class="orb-c"><i></i><i></i><i></i><i></i></span><span class="orb-g"></span><svg class="orb-w" viewBox="0 0 60 24" aria-hidden="true"><path d="M-30 12 Q-22.5 4 -15 12 T0 12 T15 12 T30 12 T45 12 T60 12 T75 12 T90 12"/><path class="w2" d="M-30 12 Q-22.5 17 -15 12 T0 12 T15 12 T30 12 T45 12 T60 12 T75 12 T90 12"/></svg></button>`:'';
+  const orb=tabs?`<button class="orb" data-a="ai" aria-label="KI-Assistent öffnen"><span class="orb-c"><i></i><i></i><i></i><i></i></span><span class="orb-g"></span><svg class="orb-w" viewBox="0 0 60 24" aria-hidden="true"><path d="M10 12 C17 1 23 1 30 12 S43 23 50 12"/></svg></button>`:'';
   this.scr.innerHTML=`<div class="island"></div>${this.vStatus()}${body}${tabs}${orb}${this.vSheet()}<div class="homebar"></div>`;
   const nv=this.scr.querySelector('.view');if(nv)nv.scrollTop=keep;
   clearTimeout(this.saveT);this.saveT=setTimeout(()=>this.save(),300);
   this.lastScreen=s.screen;
   this.anim=null;this.pop=false;
-  this.initPicker();this.initIntro();
+  this.initPicker();this.initIntro();this.dockOrb();
   if(focus){const el=this.scr.querySelector(`[data-k="${focus}"]`);if(el){el.focus({preventScroll:true});const L=el.value.length;try{el.setSelectionRange(L,L)}catch(e){}}}
+};
+/* KI-Orb im Plan an die Aktionszeile der Tages-Kachel andocken: überlappt den rechten Kartenrand, Buttons rücken nach links (kein Text verdeckt) */
+Phone.prototype.dockOrb=function(){
+  const o=this.scr.querySelector('.orb'),pn=this.scr.querySelector('.view.planv .panel'),a=pn&&pn.querySelector(':scope>.acts');
+  if(this.orbRO){this.orbRO.disconnect();this.orbRO=null}
+  if(!o||!a||(this.opts.full&&matchMedia('(min-width:1024px) and (orientation:landscape)').matches))return;
+  const v=this.scr.querySelector('.view'),S=56,GAP=8;
+  const off=el=>{let x=0,y=0;while(el&&el!==this.scr){x+=el.offsetLeft;y+=el.offsetTop;el=el.offsetParent}return{x,y}};
+  const place=()=>{if(!o.isConnected)return;a.style.paddingRight='';
+    const p=off(pn),q=off(a),sc=v?v.scrollTop:0,right=p.x+pn.offsetWidth+Math.min(8,this.scr.clientWidth-(p.x+pn.offsetWidth)-6);
+    const left=right-S,top=q.y-sc+a.offsetHeight/2-S/2;
+    o.classList.add('dock');o.style.left=left+'px';o.style.top=top+'px';o.style.right='auto';o.style.bottom='auto';
+    a.style.paddingRight=Math.max(0,q.x+a.offsetWidth-(left-GAP))+'px'};
+  place();if(v)v.addEventListener('scroll',place,{passive:true});
+  this.orbRO=new ResizeObserver(place);this.orbRO.observe(pn);this.orbRO.observe(this.scr);
 };
 Phone.prototype.vStatus=function(){return `<div class="status"><span>9:41</span><span style="display:flex;gap:6px;align-items:center">
  <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#111"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#111"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#111"/><rect x="15" y="0" width="3" height="12" rx="1" fill="#111"/></svg>
