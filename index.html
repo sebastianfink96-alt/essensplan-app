@@ -84,7 +84,7 @@ body.appmode #app-host{display:block;position:fixed;inset:0;height:100%;height:1
 .phone.full .toast{top:calc(env(safe-area-inset-top,0px) + 56px)}
 .phone.full .tabbar{bottom:calc(env(safe-area-inset-bottom,0px) + 12px);left:16px;right:16px;background:rgba(255,255,255,.96)}
 /* Unter der Tab-Leiste: Inhalt blendet weich aus statt sichtbar darunter weiterzulaufen */
-.phone.full .scr::after{content:'';position:absolute;left:0;right:0;bottom:0;height:calc(env(safe-area-inset-bottom,0px) + 120px);background:linear-gradient(rgba(246,247,252,0),var(--a-bg) 38%);z-index:35;pointer-events:none}
+.phone.full .scr:has(.tabbar)::after{content:'';position:absolute;left:0;right:0;bottom:0;height:calc(env(safe-area-inset-bottom,0px) + 120px);background:linear-gradient(rgba(246,247,252,0),var(--a-bg) 38%);z-index:35;pointer-events:none}
 .phone.full .view{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 132px)}
 .phone.full .bottom-cta{bottom:calc(env(safe-area-inset-bottom,0px) + 16px)}
 .phone.full .view.planv{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 100px)}
@@ -502,13 +502,17 @@ body.appmode #app-host{display:block;position:fixed;inset:0;height:100%;height:1
 .srow{display:flex;gap:8px;margin-top:14px}
 .pill{border:0;display:inline-flex;align-items:center;gap:6px;background:var(--a-card);box-shadow:0 0 0 1px var(--a-line);border-radius:999px;padding:9px 14px;font-size:14px}
 .pill .ic{width:17px;height:17px}
-.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;align-items:start}
 .hap{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none;margin:0}
 .tile{position:relative;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;border:0;aspect-ratio:1;border-radius:22px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:8px 6px;text-align:center;background:linear-gradient(150deg,var(--a-blue),var(--a-violet));color:#fff!important;box-shadow:0 10px 20px -12px rgba(var(--a-glow),.65);transition:transform .12s}
 .tile:active{transform:scale(.95)}
 .tile .em{font-size:30px;line-height:1.1}
 .tile .tn{font-size:13px;font-weight:500;line-height:1.2;overflow-wrap:anywhere}
-.tile .tq{font-size:11.5px;opacity:.85;font-variant-numeric:tabular-nums}
+.tile .tq{font-size:12px;font-weight:500;opacity:.95;font-variant-numeric:tabular-nums}
+.tile .tnd{font-size:10px;opacity:.7;margin-top:-2px;font-variant-numeric:tabular-nums}
+.tiles.pan .tile{aspect-ratio:auto;padding:10px 6px;background:var(--a-card);color:var(--a-ink)!important;box-shadow:0 0 0 1px var(--a-line)}
+.tiles.pan .tile .em{font-size:20px}
+.tiles.pan .tile .tn{font-size:12px}
 .tile.done{background:var(--a-card);color:var(--a-muted)!important;box-shadow:0 0 0 1px var(--a-line)}
 .tile.done .em{filter:grayscale(.7);opacity:.7}
 .tile.sug{background:var(--a-today);color:var(--a-blue)!important;box-shadow:none}
@@ -878,10 +882,65 @@ const hapLabel2=(()=>{try{const l=hapLabel.cloneNode(true);document.body.appendC
 function hapticSuccess(){try{if(navigator.vibrate)navigator.vibrate([14,70,22])}catch(e){}try{if(hapLabel)hapLabel.click();if(hapLabel2)hapLabel2.click()}catch(e){}}
 const enBadge=(r,txt=true)=>{const l=enOf(r),E=EN[l];return `<span class="en ${l}" data-a="sheet" data-v="energy" title="Energiedichte: ${E[0]}">${ic(E[1])}${txt?E[0]:''}</span>`};
 
+/* ===== Einkaufsliste: Zutaten zu Produkten zusammenfassen und in handelsübliche Mengen umrechnen =====
+   Je Produkt: Muster (Rezept-Zutat), Name, Grundeinheit, Umrechnung je Rezept-Einheit, Kaufform.
+   Kaufform: ['stk',Wort] = auf ganze Stück aufrunden · ['pack',Größe,Wort] = Packungen · ['ca'] = Frischware lose (auf 50 g) ·
+   ['bund'] = 1 Bund · ['vorrat'] = Vorrat prüfen (keine Menge kaufen) */
+const PROD=[
+ [/^wasser/,null],
+ [/^(salz)/,'Salz','',{},['vorrat']],[/pfeffer$/,'Pfeffer','',{},['vorrat']],
+ [/^olivenöl/,'Olivenöl','ml',{EL:15,TL:5},['vorrat']],[/^sesamöl/,'Sesamöl','ml',{EL:15,TL:5},['vorrat']],
+ [/^essig/,'Essig','ml',{EL:15,TL:5},['vorrat']],[/^senf/,'Senf','',{},['vorrat']],
+ [/^honig|^ahornsirup/,'Honig / Ahornsirup','',{},['vorrat']],[/^sojasauce/,'Sojasauce','',{},['vorrat']],[/^teriyaki/,'Teriyaki-Sauce','',{},['vorrat']],
+ [/^curry/,'Currypulver','',{},['vorrat']],[/^paprikapulver/,'Paprikapulver','',{},['vorrat']],[/^muskat/,'Muskat','',{},['vorrat']],
+ [/^kreuzkümmel/,'Kreuzkümmel','',{},['vorrat']],[/^oregano/,'Oregano','',{},['vorrat']],[/^rosmarin/,'Rosmarin','',{},['vorrat']],
+ [/^gemüsebrühe/,'Gemüsebrühe','ml',{},['vorrat']],[/^sesam$/,'Sesam','',{},['vorrat']],[/^erdnussbutter/,'Erdnussbutter','',{},['vorrat']],
+ [/^petersilie/,'Petersilie','',{},['bund']],[/^dill/,'Dill','',{},['bund']],[/^basilikum$/,'Basilikum','',{},['bund']],[/^kräuter/,'Frische Kräuter','',{},['bund']],
+ [/^zitrone/,'Zitronen','Stk',{Stk:1,EL:1/3,TL:1/9,'':.25},['stk']],[/^limette/,'Limetten','Stk',{Stk:1,EL:1/2,TL:1/6},['stk']],
+ [/^avocado/,'Avocados','Stk',{Stk:1},['stk']],[/^paprika$/,'Paprika','Stk',{Stk:1},['stk']],[/^zucchini/,'Zucchini','Stk',{Stk:1},['stk']],
+ [/^zwiebel/,'Zwiebeln','Stk',{Stk:1},['stk']],[/^fenchel/,'Fenchel','Stk',{Stk:1},['stk','Knolle']],[/^lauch/,'Lauch','Stk',{Stange:1},['stk','Stange']],
+ [/^apfel/,'Äpfel','Stk',{Stk:1},['stk']],[/^birne/,'Birnen','Stk',{Stk:1},['stk']],[/^karotte/,'Karotten','Stk',{Stk:1},['stk']],
+ [/^gurke/,'Gurken','Stk',{Stk:1,g:1/300},['stk']],[/^tomate/,'Tomaten','Stk',{Stk:1,g:1/100},['stk']],
+ [/^cherrytomaten/,'Cherrytomaten','g',{g:1,Handvoll:100,Stk:15},['pack',250,'Schale']],
+ [/^blattsalat/,'Blattsalat','Stk',{Handvoll:1/5,'große Handvoll':1/3},['stk','Kopf']],[/^eisberg/,'Eisbergsalat','Stk',{Handvoll:1/6},['stk','Kopf']],
+ [/spinat$/,'Babyspinat','g',{g:1,Handvoll:30},['pack',125,'Beutel']],[/^rucola/,'Rucola','g',{g:1},['pack',125,'Beutel']],
+ [/^radieschen/,'Radieschen','Stk',{Stk:1},['pack',12,'Bund']],[/^brokkoli/,'Brokkoli','g',{Handvoll:100,g:1},['pack',450,'Kopf']],
+ [/^mango/,'Mango','g',{g:1},['pack',350,'Stk']],[/^champignons/,'Champignons','g',{g:1},['pack',250,'Schale']],
+ [/^erbsen/,'Erbsen (TK)','g',{Handvoll:60,g:1},['pack',450,'Packung']],[/^edamame/,'Edamame (TK)','g',{g:1},['pack',400,'Packung']],
+ [/^kartoffel/,'Kartoffeln','g',{g:1,Stk:80},['ca']],[/^süßkartoffel/,'Süßkartoffeln','g',{g:1,Stk:220},['ca']],[/^hokkaido/,'Hokkaido-Kürbis','g',{g:1},['pack',1000,'Stk (ca. 1 kg)']],
+ [/^hähnchen/,'Hähnchenbrust','g',{g:1},['ca']],[/^rindersteak/,'Rindersteak','g',{g:1,Stk:200},['ca']],[/^lachs/,'Lachsfilet','g',{g:1},['ca']],
+ [/^(weißes )?fischfilet/,'Fischfilet (weiß)','g',{g:1},['ca']],[/^gegarter fisch/,'Fisch (gegart oder Dose)','g',{g:1},['ca']],
+ [/^sardinen/,'Sardinen','g',{g:1},['pack',90,'Dose']],
+ [/^feta/,'Feta','g',{g:1},['pack',200,'Packung']],[/^parmesan/,'Parmesan','g',{g:1},['pack',100,'Stück']],
+ [/^mozzarella/,'Mozzarella','g',{g:1},['pack',125,'Kugel']],[/^mini-mozz/,'Mini-Mozzarella','g',{g:1},['pack',125,'Packung']],
+ [/^naturjoghurt \(pflanz/,'Pflanzenjoghurt','g',{EL:15},['pack',400,'Becher']],[/^naturjoghurt/,'Naturjoghurt','g',{EL:15,g:1},['pack',500,'Becher']],
+ [/^eier?$/,'Eier','Stk',{Stk:1},['pack',6,'6er-Packung']],[/^naturtofu|^tofu/,'Tofu','g',{g:1},['pack',200,'Packung']],
+ [/^basmatireis/,'Basmatireis','g',{g:1},['pack',500,'Packung']],[/^quinoa/,'Quinoa','g',{g:1},['pack',500,'Packung']],
+ [/^couscous/,'Couscous','g',{g:1},['pack',500,'Packung']],[/^nudeln/,'Nudeln','g',{g:1},['pack',500,'Packung']],[/^dinkelpasta/,'Dinkelpasta','g',{g:1},['pack',500,'Packung']],
+ [/^rote linsen/,'Rote Linsen','g',{g:1},['pack',500,'Packung']],[/^linsen/,'Linsen','g',{g:1},['pack',500,'Packung']],
+ [/^walnüsse/,'Walnüsse','g',{g:1},['pack',200,'Beutel']],[/^oliven/,'Oliven','g',{g:1},['pack',160,'Glas']],
+ [/^kichererbsen/,'Kichererbsen','g',{g:1},['pack',240,'Dose']],[/^schwarze bohnen/,'Schwarze Bohnen','g',{g:1},['pack',240,'Dose']],
+ [/^mais/,'Mais','g',{g:1},['pack',140,'Dose']],[/^passierte/,'Passierte Tomaten','g',{EL:15},['pack',500,'Packung']],
+ [/^hummus/,'Hummus','g',{EL:20},['pack',200,'Becher']],[/pesto/,'Pesto (grün)','g',{EL:15},['pack',190,'Glas']],
+ [/^roggenknäcke/,'Roggenknäckebrot','',{},['pack',1,'Packung']]];
+function prodOf(n,u){const l=n.toLowerCase();for(const p of PROD){if(p[0].test(l)){if(p[1]===null)return null;
+    const [,name,bu,conv,how]=p;const f=bu===''?0:(conv[u]!==undefined?conv[u]:(u===bu?1:null));if(f===null)break;return {key:'p:'+name,name,bu,f,how}}}
+  return {key:'r:'+n+'|'+u,name:n.replace(/\s*\((trocken|klein|abgetropft|geschält|roh)\)/g,''),bu:u,f:1,how:['raw']}}
+/* Kaufmenge (groß) und Bedarf (klein) als Text */
+function buyText(x){const h=x.how||['raw'],b=x.qty,u=x.unit;
+  if(h[0]==='vorrat')return {buy:'',need:b?'insg. '+fq(b,u):''};
+  if(h[0]==='bund')return {buy:'1 Bund',need:''};
+  if(h[0]==='stk'){const n=Math.max(1,Math.ceil(b-.05));return {buy:n+' '+(h[1]||'Stk'),need:''}}
+  if(h[0]==='pack'){const n=Math.max(1,Math.ceil(b/h[1]-.03));return {buy:(n>1?n+'× ':'1 ')+h[2],need:h[2].startsWith('Stk')||u===''||h[2]==='Bund'?'':'für '+fq(b,u)}}
+  if(h[0]==='ca')return {buy:'ca. '+fq(Math.ceil(b/50)*50,u),need:''};
+  return {buy:b?fq(b,u):'',need:''}}
+/* Bedarf [[Zutat,Menge,Einheit],…] in die Liste einrechnen (gleiche Produkte werden zusammengelegt) */
+function addNeeds(list,needs,persons,manual){needs.forEach(([n,q,u])=>{const p=prodOf(n,u);if(!p)return;
+  let o=list.find(x=>x.key===p.key);if(!o){o={key:p.key,name:p.name,qty:0,unit:p.bu,how:p.how,emoji:emo(n),done:false,manual:!!manual,pantry:p.how[0]==='vorrat'};list.push(o)}
+  o.qty+=(q||(p.how[0]==='stk'&&u===''?1:0))*p.f*persons;if(manual)o.done=false})}
 function buildShop(plan,persons,keep){
-  const map=new Map();
-  Object.values(plan).forEach(id=>{const r=RM[id];if(!r)return;r.i.forEach(([n,q,u])=>{if(/^wasser/i.test(n))return;const k=n+'|'+u;const o=map.get(k)||{key:k,name:n,qty:0,unit:u,emoji:emo(n),done:false,manual:false};o.qty+=q*persons;map.set(k,o)})});
-  const list=[...map.values()];
+  const list=[];Object.values(plan).forEach(id=>{const r=RM[id];if(r)addNeeds(list,r.i,persons)});
+  const ord=x=>x.pantry?2:x.how&&x.how[0]==='bund'?1:0;list.sort((a,b)=>ord(a)-ord(b));
   (keep||[]).forEach(m=>list.push(m));
   return list;
 }
@@ -956,7 +1015,7 @@ Phone.prototype.vStatus=function(){return `<div class="status"><span>9:41</span>
  <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#111"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#111"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#111"/><rect x="15" y="0" width="3" height="12" rx="1" fill="#111"/></svg>
  <svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 11.5 5.6 9a3.4 3.4 0 0 1 4.8 0zM3.4 6.8a6.5 6.5 0 0 1 9.2 0l-1.5 1.5a4.4 4.4 0 0 0-6.2 0zM1 4.4a9.9 9.9 0 0 1 14 0l-1.5 1.5a7.8 7.8 0 0 0-11 0z" fill="#111"/></svg>
  <svg width="27" height="13" viewBox="0 0 27 13"><rect x=".5" y=".5" width="23" height="12" rx="3.5" fill="none" stroke="#111" opacity=".4"/><rect x="2" y="2" width="20" height="9" rx="2" fill="#111"/><rect x="25" y="4.5" width="1.6" height="4" rx=".8" fill="#111" opacity=".4"/></svg></span></div>`};
-Phone.prototype.vTabs=function(){const s=this.s;const open=s.shop.filter(x=>!x.done).length;
+Phone.prototype.vTabs=function(){const s=this.s;const open=s.shop.filter(x=>!x.done&&!x.pantry).length;
   const t=[['plan','Plan','home'],['recipes','Rezepte','book'],['shop','Einkauf','bag'],['favs','Favoriten','heart']];
   return `<nav class="tabbar">${t.map(([k,l,i])=>`<button class="tab ${s.screen===k?'on':''}" data-a="tab" data-v="${k}">${ic(i)}${l}${k==='shop'&&open?`<span class="bd">${open}</span>`:''}</button>`).join('')}</nav>`};
 
@@ -1156,8 +1215,8 @@ Phone.prototype.vDetail=function(){const s=this.s;const r=RM[s.did];const cat=CA
   <div class="fade-bottom"></div><div class="bottom-cta">${btn}</div>`};
 
 /* ----- Einkauf ----- */
-Phone.prototype.vShop=function(){const s=this.s;const open=s.shop.filter(x=>!x.done),done=s.shop.filter(x=>x.done);const q=s.shopQ.trim();
-  const tile=(x,cls='')=>`<label class="tile ${cls}"><input type="checkbox" switch class="hap" tabindex="-1" data-act="${cls==='sug'||cls==='new'?'add':'tog'}" data-v="${x.name.replace(/"/g,'&quot;')}"><span class="em">${x.emoji}</span><span class="tn">${x.name}</span>${x.qty?`<span class="tq">${fq(x.qty,x.unit)}</span>`:''}</label>`;
+Phone.prototype.vShop=function(){const s=this.s;const all=s.shop.filter(x=>!x.done),open=all.filter(x=>!x.pantry),pan=all.filter(x=>x.pantry),done=s.shop.filter(x=>x.done);const q=s.shopQ.trim();
+  const tile=(x,cls='')=>`<label class="tile ${cls}"><input type="checkbox" switch class="hap" tabindex="-1" data-act="${cls==='sug'||cls==='new'?'add':'tog'}" data-v="${x.name.replace(/"/g,'&quot;')}"><span class="em">${x.emoji}</span><span class="tn">${x.name}</span>${(()=>{if(cls==='sug'||cls==='new')return '';const t=buyText(x);return (t.buy?`<span class="tq">${t.buy}</span>`:'')+(t.need?`<span class="tnd">${t.need}</span>`:'')})()}</label>`;
   let sug='';
   if(q){const ql=q.toLowerCase();const m=CATALOG.filter(c=>c[0].toLowerCase().includes(ql)).slice(0,5).map(c=>({name:c[0],emoji:c[1]}));
     const exact=m.some(c=>c.name.toLowerCase()===ql);
@@ -1172,6 +1231,7 @@ Phone.prototype.vShop=function(){const s=this.s;const open=s.shop.filter(x=>!x.d
    ${sug}
    <div class="lbl">Einkaufen · ${open.length}</div>
    ${open.length?`<div class="tiles">${open.map(x=>tile(x)).join('')}</div>`:`<div class="empty-st" style="padding:20px">${s.shop.length?'Alles erledigt.':'Noch nichts auf der Liste.<br>Tippe auf „Aus Wochenplan“ oder füge Artikel hinzu.'}</div>`}
+   ${pan.length?`<div class="lbl">Vorrat prüfen · hast du das zuhause?</div><div class="tiles pan">${pan.map(x=>tile(x,'pan')).join('')}</div>`:''}
    ${done.length?`<div class="lbl">Zuletzt gekauft<button data-a="cleardone">Leeren</button></div><div class="tiles">${done.map(x=>tile(x,'done')).join('')}</div>`:''}
   </div></div>`};
 Phone.prototype.addItem=function(name){if(!name)return;const s=this.s;const ex=s.shop.find(x=>x.name.toLowerCase()===name.toLowerCase());
@@ -1359,7 +1419,7 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
    case 'allbought':{haptic();this.prevShop=s.shop.map(x=>Object.assign({},x));const n=s.shop.filter(x=>!x.done).length;s.shop.forEach(x=>x.done=true);this.render();this.toast(`${n} Artikel eingekauft`,'Rückgängig','undoshop');break}
    case 'undoshop':if(this.prevShop){s.shop=this.prevShop;this.prevShop=null;this.render()}break;
    case 'cleardone':s.shop=s.shop.filter(x=>!x.done);this.render();break;
-   case 'share':{const txt='Einkaufsliste KW '+KW(s.shopWk||0)+'\n'+s.shop.filter(x=>!x.done).map(x=>'• '+x.name+(x.qty?' – '+fq(x.qty,x.unit):'')).join('\n');
+   case 'share':{const txt='Einkaufsliste KW '+KW(s.shopWk||0)+'\n'+s.shop.filter(x=>!x.done&&!x.pantry).map(x=>{const t=buyText(x);return '• '+x.name+(t.buy?' – '+t.buy:'')}).join('\n');
       const ok=()=>this.toast('Liste als Text kopiert'),no=()=>this.toast('Kopieren hier nicht möglich');
       try{navigator.clipboard.writeText(txt).then(ok,no)}catch(err){no()}break}
    case 'sheet':s.sheet=v;this.render();break;
@@ -1373,7 +1433,7 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
    case 'aiplan':{const id=t.dataset.id,d=s.sel;const dd=this.planDish(d,id);s.sheet=null;this.backAfterPlan(d);this.anim='inF';this.pop=true;this.render();this.toast(`${RM[id].n} für ${dd} eingeplant`);break}
    case 'aiweek':{const W=s.ai.week;Object.keys(W).forEach(i=>s.plan[i]=W[i]);haptic();s.sheet=null;this.anim='inF';this.render();this.toast(`${Object.keys(W).length} Tage aus dem Vorschlag eingeplant`);break}
    case 'aibuy':{const id=t.dataset.id,d=s.sel,miss=aiMissing(RM[id],s.ai.have);
-      miss.forEach(([n,q,u])=>{const ex=s.shop.find(x=>x.name===n&&x.unit===u);if(ex){ex.qty+=q*s.persons;ex.done=false}else s.shop.push({key:n+'|'+u,name:n,qty:q*s.persons,unit:u,emoji:emo(n),done:false,manual:true})});
+      addNeeds(s.shop,miss,s.persons,true);
       const dd=this.planDish(d,id);s.sheet=null;this.backAfterPlan(d);this.anim='inF';this.pop=true;this.render();this.toast(`Eingeplant · ${miss.length} fehlende Zutat${miss.length===1?'':'en'} auf der Liste`);break}
    case 'closesheet':this.closeSheet();break;
    case 'clearweek':s.plan={};this.goPlanToday();this.render();this.toast('Plan geleert');break;
