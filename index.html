@@ -163,7 +163,7 @@ body.appmode #app-host{display:block;position:fixed;inset:0;height:100%;height:1
 .orb-g{position:absolute;inset:30%;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.95),rgba(220,235,255,.45) 40%,rgba(255,255,255,0) 72%);mix-blend-mode:screen;animation:orbGlow 7s ease-in-out infinite}
 @keyframes orbGlow{50%{transform:scale(1.12);opacity:.8}}
 /* KI-Symbol in der Mitte; alle 9 s ein sanftes Aufleuchten als Hinweis */
-.orb .orb-s{position:relative;z-index:2;width:30px;height:30px;stroke:#fff;stroke-width:1.5;fill:rgba(255,255,255,.18);filter:drop-shadow(0 0 6px rgba(255,255,255,.7))}
+.orb .orb-s{position:relative;z-index:2;width:30px;height:30px;color:#fff;stroke:#fff;stroke-width:1.9;fill:none;filter:drop-shadow(0 0 6px rgba(255,255,255,.7))}
 .orb{animation:orbIn .5s cubic-bezier(.2,.8,.2,1),orbHint 9s ease-in-out 3s infinite}
 @keyframes orbHint{0%,78%,100%{box-shadow:0 0 22px -2px rgba(120,110,255,.55),0 14px 30px -12px rgba(20,10,60,.6),0 0 0 2px rgba(255,255,255,.55)}
   88%{box-shadow:0 0 34px 6px rgba(150,130,255,.75),0 14px 30px -12px rgba(20,10,60,.6),0 0 0 2px rgba(255,255,255,.8)}}
@@ -204,6 +204,9 @@ body.appmode #app-host{display:block;position:fixed;inset:0;height:100%;height:1
 .ai-tag{display:inline-flex;align-items:center;gap:6px;border:0;border-radius:999px;padding:8px 13px;font-size:14px;background:#fff;box-shadow:0 0 0 1px var(--a-line);color:var(--a-muted)}
 .ai-tag.on{background:var(--a-today);box-shadow:0 0 0 1.5px var(--a-ring);color:var(--a-ink)}
 .ai-msg{font-size:15px!important;color:var(--a-ink)!important;line-height:1.4;margin:0 0 12px!important}
+.ai-thumb{height:150px;border-radius:18px;overflow:hidden;margin:0 0 12px}
+.ai-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.ai-tags.many{max-height:210px;overflow-y:auto}
 .ai-note{font-size:12.5px!important;margin:12px 0 0!important}
 .ai-list{display:flex;flex-direction:column;gap:12px}
 .ai-row{display:flex;gap:12px;align-items:center}
@@ -673,6 +676,7 @@ const P = {
   check:'<path d="m5 12.5 4.5 4.5L19 7.5"/>', plus:'<path d="M12 5v14M5 12h14"/>', minus:'<path d="M5 12h14"/>',
   x:'<path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/>',
   twice:'<rect x="2.8" y="4.5" width="18.4" height="16.5" rx="3.5"/><path d="M8 2.8v3.4M16 2.8v3.4"/><rect x="5.6" y="15" width="4.6" height="3.8" rx="1.1"/><path d="M15.9 15h1.4a1.1 1.1 0 0 1 1.1 1.1v1.6a1.1 1.1 0 0 1-1.1 1.1h-2.4a1.1 1.1 0 0 1-1.1-1.1V16.1"/><path d="M7.9 13.4C8.4 8.6 15 8.2 16 13"/><path d="m14.1 11.9 1.9 1.4 1.3-2"/>',
+  micf:'<rect x="8.6" y="2.6" width="6.8" height="11.6" rx="3.4" fill="currentColor" stroke="none"/><path d="M5.6 11.2a6.4 6.4 0 0 0 12.8 0M12 17.6v3.2M9.2 20.8h5.6"/>',
   mic:'<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21"/>',
   cam:'<path d="M4 8h3l1.6-2.4h6.8L17 8h3v11H4z"/><circle cx="12" cy="13.2" r="3.4"/>',
   spark:'<path d="M12 3.5l1.7 5.2 5.3 1.8-5.3 1.8L12 17.5l-1.7-5.2L5 10.5l5.3-1.8z"/><path d="M18.5 15.5l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z"/>',
@@ -1018,7 +1022,7 @@ Phone.prototype.render=function(){
   else if(s.screen==='detail')body=this.vDetail();
   else if(s.screen==='settings')body=this.vSettings();
   const tabs=['plan','recipes','shop','favs'].includes(s.screen)?this.vTabs():'';
-  const orb=tabs?`<button class="orb" data-a="ai" aria-label="KI-Assistent öffnen"><span class="orb-c"><i></i><i></i><i></i><i></i></span><span class="orb-g"></span>${ic('spark','orb-s')}</button>`:'';
+  const orb=tabs?`<button class="orb" data-a="ai" aria-label="KI-Assistent öffnen"><span class="orb-c"><i></i><i></i><i></i><i></i></span><span class="orb-g"></span>${ic('micf','orb-s')}</button>`:'';
   this.scr.innerHTML=`<div class="island"></div>${this.vStatus()}${body}${tabs}${orb}${this.vSheet()}<div class="homebar"></div>`;
   const nv=this.scr.querySelector('.view');if(nv)nv.scrollTop=keep;
   clearTimeout(this.saveT);this.saveT=setTimeout(()=>this.save(),300);
@@ -1406,10 +1410,15 @@ Phone.prototype.aiSolve=function(){const s=this.s,a=s.ai;
   else{const ws=(a.text||'').toLowerCase().split(/[^a-zäöüß]+/).filter(w=>w.length>3).map(w=>w.slice(0,5));
     a.list=R.map(r=>[r,ws.filter(w=>(r.n+' '+r.i.map(x=>x[0]).join(' ')).toLowerCase().includes(w)).length]).filter(x=>x[1]).sort((x,y)=>y[1]-x[1]).slice(0,3).map(x=>x[0]);
     if(!a.list.length)a.list=R.slice(0,3).sort(()=>Math.random()-.5)}};
-Phone.prototype.aiPhoto=function(){const s=this.s;if(AI){this.aiPhotoReal();return}s.ai={step:'snap',kind:'photo'};haptic();this.render();
-  setTimeout(()=>{if(s.sheet!=='ai')return;s.ai.step='detect';s.ai.have=['Basmatireis','Karotten','Zwiebel','Paprika','Feta','Eier'];s.ai.amt={Basmatireis:{q:500,u:'g'},Karotten:{q:3,u:'Stk'},Zwiebel:{q:2,u:'Stk'},Paprika:{q:1,u:'Stk'},Feta:{q:200,u:'g'},Eier:{q:4,u:'Stk'}};haptic();this.render()},1400)};
+/* Ohne KI (installierte App): Foto aus der Mediathek als Gedächtnisstütze, Zutaten selbst antippen */
+const COMMON=['Lachsfilet','Fischfilet','Hähnchenbrust','Rindersteak','Tofu','Eier','Kartoffeln','Süßkartoffel','Basmatireis','Nudeln','Quinoa','Couscous','Linsen','Kichererbsen','Karotten','Zucchini','Paprika','Zwiebel','Tomaten','Gurke','Brokkoli','Spinat','Avocado','Kürbis','Champignons','Edamame','Feta','Mozzarella','Parmesan','Naturjoghurt'];
+Phone.prototype.aiPhoto=function(){const s=this.s;if(AI){this.aiPhotoReal();return}
+  const inp=document.createElement('input');inp.type='file';inp.accept='image/*';
+  inp.onchange=()=>{const f=inp.files&&inp.files[0];if(!f)return;let url='';try{url=URL.createObjectURL(f)}catch(e){}
+    s.ai={step:'detect',kind:'photo',manual:true,photo:url,all:COMMON.slice(),have:[],amt:{}};haptic();this.render()};
+  inp.click()};
 Phone.prototype.vAI=function(){const s=this.s,a=s.ai||{step:'idle'};
-  const head=`<div class="ai-head"><span class="ai-orb ${a.step==='listen'||a.step==='think'||a.step==='snap'?'live':''}"><span class="orb-c"><i></i><i></i><i></i><i></i></span><span class="orb-g"></span></span><div><h3 style="margin:0">${a.step==='idle'?'Was möchtest du?':a.step==='listen'?'Ich höre zu …':a.step==='think'?'Einen Moment …':a.step==='snap'?'Foto wird analysiert …':a.step==='detect'?'Das habe ich erkannt':'Mein Vorschlag'}</h3><p class="ai-sub">${a.step==='idle'?'Sprich oder tippe deinen Wunsch':a.step==='detect'?'Tippe an, was nicht stimmt':(AI?'KI-Assistent · Claude':'KI-Assistent · Demo')}</p></div></div>`;
+  const head=`<div class="ai-head"><span class="ai-orb ${a.step==='listen'||a.step==='think'||a.step==='snap'?'live':''}"><span class="orb-c"><i></i><i></i><i></i><i></i></span><span class="orb-g"></span></span><div><h3 style="margin:0">${a.step==='idle'?'Was möchtest du?':a.step==='listen'?'Ich höre zu …':a.step==='think'?'Einen Moment …':a.step==='snap'?'Foto wird analysiert …':a.step==='detect'?(a.manual?'Was hast du zuhause?':'Das habe ich erkannt'):'Mein Vorschlag'}</h3><p class="ai-sub">${a.step==='idle'?'Sprich oder tippe deinen Wunsch':a.step==='detect'?(a.manual?'Tippe an, was auf dem Foto ist':'Tippe an, was nicht stimmt'):(AI?'KI-Assistent · Claude':'KI-Assistent · Demo')}</p></div></div>`;
   const plate2=r=>plate(r,56);
   let body='';
   if(a.step==='idle'){body=`<div class="ai-ex">${AI_EX.map(([k,t])=>`<button class="ai-chip" data-a="aiex" data-q="${k}">${ic('spark')}<span>„${t}“</span></button>`).join('')}
@@ -1419,8 +1428,8 @@ Phone.prototype.vAI=function(){const s=this.s,a=s.ai||{step:'idle'};
   else if(a.step==='think'){body=`<p class="ai-tr done">„${a.text||'Zutaten'}“</p><div class="ai-dots"><i></i><i></i><i></i></div>`}
   else if(a.step==='snap'&&a.photo){body=`<div class="ai-photo scan" style="display:block;padding:0;height:220px"><img src="${a.photo}" alt="" style="width:100%;height:100%;object-fit:cover;display:block"><i class="ai-scan"></i></div>`}
   else if(a.step==='snap'){body=`<div class="ai-photo scan">${['🍚','🥕','🧅','🫑','🧀','🥚','🧈','🍋'].map(e=>`<span>${e}</span>`).join('')}<i class="ai-scan"></i></div>`}
-  else if(a.step==='detect'){const all=a.all||['Basmatireis','Karotten','Zwiebel','Paprika','Feta','Eier','Zucchini','Tomate'];
-    body=`<div class="ai-tags">${all.map(n=>`<button class="ai-tag ${a.have.includes(n)?'on':''}" data-a="aitog" data-v="${n}"><span>${emo(n)}</span>${n}${a.amt&&a.amt[n]?`<small> · ca. ${fq(a.amt[n].q,a.amt[n].u)}</small>`:''}</button>`).join('')}</div>
+  else if(a.step==='detect'){if(a.manual&&a.photo)body+=`<div class="ai-thumb"><img src="${a.photo}" alt="Dein Foto"></div>`;const all=a.all||['Basmatireis','Karotten','Zwiebel','Paprika','Feta','Eier','Zucchini','Tomate'];
+    body+=`<div class="ai-tags${a.manual?' many':''}">${all.map(n=>`<button class="ai-tag ${a.have.includes(n)?'on':''}" data-a="aitog" data-v="${n}"><span>${emo(n)}</span>${n}${a.amt&&a.amt[n]?`<small> · ca. ${fq(a.amt[n].q,a.amt[n].u)}</small>`:''}</button>`).join('')}</div>
       <p class="ai-note">Salz, Pfeffer, Öl und Gewürze setze ich als vorhanden voraus.</p>
       <button class="gbtn" style="width:100%;margin-top:14px" data-a="aifind">${ic('spark')}Gerichte finden</button>`}
   else if(a.step==='result'){
@@ -1499,7 +1508,7 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
    case 'aisend':{const q=(s.aiQ||'').trim();if(q)this.aiAsk(q);break}
    case 'aiphoto':this.aiPhoto();break;
    case 'aitog':{const v2=t.dataset.v;const h=s.ai.have;const i=h.indexOf(v2);i<0?h.push(v2):h.splice(i,1);this.render();break}
-   case 'aifind':s.ai.step='think';this.render();setTimeout(()=>{if(s.sheet!=='ai')return;s.ai.step='result';s.ai.kind='photo';this.render()},900);break;
+   case 'aifind':if(!s.ai.have.length){this.toast('Tippe zuerst an, was du zuhause hast');break}s.ai.step='think';this.render();setTimeout(()=>{if(s.sheet!=='ai')return;s.ai.step='result';s.ai.kind='photo';this.render()},900);break;
    case 'aiback':s.ai={step:'idle'};s.aiQ='';this.render();break;
    case 'aiplan':{const id=t.dataset.id,d=s.sel;const dd=this.planDish(d,id);s.sheet=null;this.backAfterPlan(d);this.anim='inF';this.pop=true;this.render();this.toast(`${RM[id].n} für ${dd} eingeplant`);break}
    case 'aiweek':{const W=s.ai.week;Object.keys(W).forEach(i=>s.plan[i]=W[i]);haptic();s.sheet=null;this.anim='inF';this.render();this.toast(`${Object.keys(W).length} Tage aus dem Vorschlag eingeplant`);break}
