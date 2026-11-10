@@ -197,6 +197,34 @@ html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
 .lk-done{align-items:center;text-align:center}
 .lk-done .gbtn{margin-top:8px;flex:none;width:100%;height:54px}
 .lk-back{width:100%;justify-content:center;margin-top:2px}
+
+/* ===== Vorrat, Gänge, Koch-Assistent ===== */
+.srow{flex-wrap:wrap}
+.pill.icononly{padding:9px 11px}
+.pill .ic{width:16px;height:16px}
+.lbl>span{font-weight:500;letter-spacing:.02em;text-transform:none;font-size:12px;opacity:.8}
+.aisle{display:flex;align-items:center;gap:8px;margin:18px 0 8px;font-size:15px;font-weight:500;color:var(--a-ink)}
+.aisle:first-of-type{margin-top:4px}
+.aisle span{width:28px;height:28px;border-radius:9px;display:grid;place-items:center;font-size:16px;background:rgba(var(--a-glow),.09)}
+.aisle i{font-style:normal;margin-left:auto;font-size:12px;font-weight:600;color:var(--a-muted);background:rgba(120,120,140,.1);border-radius:999px;padding:2px 9px}
+.stk-have{display:flex;flex-wrap:wrap;gap:6px}
+.stk-have span{font-size:13px;color:var(--a-muted);background:var(--a-card);box-shadow:0 0 0 1px var(--a-line);border-radius:999px;padding:5px 11px;text-decoration:line-through;text-decoration-color:rgba(120,120,140,.45)}
+.stk-ic{width:46px;height:46px;flex:none;border-radius:50%;display:grid;place-items:center;background:var(--a-grad);color:#fff;box-shadow:0 8px 20px -8px rgba(var(--a-glow),.6)}
+.stk-ic .ic{width:22px;height:22px}
+.stk-list{max-height:230px;overflow-y:auto;border-radius:18px;background:#fff;box-shadow:0 0 0 1px var(--a-line)}
+.stk-row{display:flex;align-items:center;gap:10px;padding:9px 8px 9px 12px;font-size:15px}
+.stk-row+.stk-row{border-top:1px solid var(--a-line)}
+.stk-row .em{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:rgba(var(--a-glow),.08);font-size:16px;flex:none}
+.stk-row .nm{flex:1;min-width:0}
+.stk-row .am{font-size:13px;color:var(--a-eyebrow);font-weight:500;white-space:nowrap}
+.stk-row button{border:0;background:none;width:30px;height:30px;display:grid;place-items:center;color:var(--a-muted);border-radius:50%}
+.stk-row button .ic{width:14px;height:14px}
+.csec{display:flex;gap:6px}
+.csec .pill.sm{margin:0;padding:7px 12px;font-size:13px}
+.csec .pill.ask{background:rgba(var(--a-glow),.1);box-shadow:none;color:var(--a-eyebrow);font-weight:500}
+.csec .pill.on{background:var(--a-grad);color:#fff;box-shadow:none}
+.step.say{background:rgba(var(--a-glow),.07);border-radius:14px;box-shadow:-10px 0 0 rgba(var(--a-glow),.07),10px 0 0 rgba(var(--a-glow),.07)}
+.ck-ans{font-size:16.5px;line-height:1.5;font-weight:300;color:var(--a-ink);background:rgba(var(--a-glow),.07);border-radius:18px;padding:14px 16px}
 /* ===== KI-Assistent ===== */
 .orb{position:absolute;right:22px;bottom:90px;width:62px;height:62px;border-radius:50%;border:0;padding:0;z-index:42;display:grid;place-items:center;color:#fff;
   box-shadow:0 12px 26px -8px rgba(30,20,80,.42),0 0 22px -2px rgba(120,110,255,.38);overflow:hidden;animation:orbIn .5s cubic-bezier(.2,.8,.2,1)}
@@ -751,6 +779,10 @@ const P = {
   book:'<path d="M5 4.5A1.5 1.5 0 0 1 6.5 3H20v14.5H6.5A1.5 1.5 0 0 0 5 19z"/><path d="M5 19a2 2 0 0 0 2 2h13v-3.5"/><path d="M9 7.5h7"/>',
   bag:'<path d="M5 8h14l-1.1 11.6a1.5 1.5 0 0 1-1.5 1.4H7.6a1.5 1.5 0 0 1-1.5-1.4z"/><path d="M9 10V7a3 3 0 0 1 6 0v3"/>',
   cap:'<path d="M2.5 9.5 12 5l9.5 4.5L12 14z"/><path d="M6.5 11.8v4c0 1.4 2.5 2.8 5.5 2.8s5.5-1.4 5.5-2.8v-4"/><path d="M21.5 9.5v5"/>',
+vol:'<path d="M4 9.5v5h3.5L12 18V6L7.5 9.5z"/><path d="M15.5 9a4 4 0 0 1 0 6"/><path d="M18 6.5a7.5 7.5 0 0 1 0 11"/>',
+stop:'<rect x="7" y="7" width="10" height="10" rx="2"/>',
+box:'<path d="M4 8.5 12 4l8 4.5v7L12 20l-8-4.5z"/><path d="M4 8.5 12 13l8-4.5M12 13v7"/>',
+receipt:'<path d="M6 3.5h12v17l-2-1.4-2 1.4-2-1.4-2 1.4-2-1.4-2 1.4z"/><path d="M9 8h6M9 11.5h6M9 15h3.5"/>',
 heart:'<path d="M12 20.3s-7.5-4.5-7.5-10.3A4.2 4.2 0 0 1 12 7.4a4.2 4.2 0 0 1 7.5 2.6c0 5.8-7.5 10.3-7.5 10.3z"/>',
   sliders:'<path d="M4 7h9M17 7h3M4 12h3M11 12h9M4 17h11M19 17h1"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="17" cy="17" r="2"/>',
   left:'<path d="m15 18-6-6 6-6"/>',
@@ -1047,6 +1079,32 @@ function buildShop(plan,persons,keep){
   return list;
 }
 
+
+/* ===== Vorrat (was zuhause ist): [{name,q,u}] – wird von der Einkaufsliste abgezogen ===== */
+const stockKey=t=>{const p=prodOf(String(t.name).replace(/erd(ä|a)pfel/i,'Kartoffeln').replace(/paradeiser/i,'Tomate'),t.u||'');return p||null};
+const stem5=w=>String(w).toLowerCase().replace(/\(.*?\)/g,'').replace(/[^a-zäöüß]/g,'').slice(0,5);
+/* Einträge in den Vorrat legen. mode 'set' = Foto (aktueller Stand ersetzt), 'add' = Kassenbon/Einkauf (kommt dazu) */
+function stockPut(stock,items,mode){let n=0;items.forEach(it=>{if(!it||!it.name)return;const k=stockKey(it);
+    let o=stock.find(x=>{const kx=stockKey(x);return (k&&kx&&k.key===kx.key&&k.key.startsWith('p:'))||x.name.toLowerCase()===it.name.toLowerCase()});
+    if(!o){stock.push({name:it.name,q:+it.q||0,u:it.u||''});n++;return}
+    if(mode==='add'&&o.u===(it.u||'')&&o.q&&it.q)o.q+=+it.q;else if(it.q||mode==='set'){o.q=+it.q||o.q||0;o.u=it.q?(it.u||''):o.u}});return n}
+/* Liste gegen den Vorrat rechnen: reicht der Vorrat, wandert der Artikel nach „Schon im Vorrat“, sonst wird nur der Rest gekauft */
+function applyStock(list,stock){if(!stock||!stock.length)return list;list.forEach(x=>{if(x.pantry||x.manual)return;
+    let hit=null;for(const s of stock){const k=stockKey(s);if(k&&k.key===x.key){hit={s,got:(s.q&&k.f)?s.q*k.f:null};break}}
+    if(!hit){const s=stock.find(s=>stem5(s.name)===stem5(x.name));if(s)hit={s,got:null}}
+    if(!hit)return;if(hit.got===null||!x.qty||hit.got>=x.qty*.95){x.instock=true}else{x.qty-=hit.got;x.rest=true}});return list}
+/* Supermarkt-Gänge in Laufrichtung */
+const AISLES=[['veg','Obst & Gemüse','🥬'],['bread','Brot & Backwaren','🥖'],['cool','Kühlregal','🧀'],['meat','Fleisch & Fisch','🥩'],['tk','Tiefkühl','❄️'],['dry','Trockenware & Konserven','🥫'],['misc','Sonstiges','🧺']];
+function aisleOf(name){const l=name.toLowerCase();
+  if(/\(tk\)|tiefkühl|tk-/.test(l))return 'tk';
+  if(/passierte|sardinen|kichererbsen|bohnen|mais$|dose|linsen|oliven|pesto|tomatenmark|kokosmilch/.test(l))return 'dry';
+  if(/lachs|fisch|hähnchen|huhn|pute|steak|rind|hack|schinken|speck|wurst|garnele|fleisch/.test(l))return 'meat';
+  if(/feta|parmesan|mozzarella|joghurt|eier|^ei$|tofu|milch|butter|käse|sahne|obers|rahm|quark|topfen|skyr|hummus|frischkäse/.test(l))return 'cool';
+  if(/brot|knäcke|semmel|toast|wrap|tortilla|brötchen/.test(l))return 'bread';
+  if(/zitrone|limette|avocado|paprika$|zucchini|zwiebel|fenchel|lauch|äpfel|apfel|birne|karotte|gurke|tomate|salat|spinat|rucola|radieschen|brokkoli|mango|champignon|pilz|kartoffel|erdäpfel|kürbis|petersilie|dill|basilikum|kräuter|kresse|knoblauch|ingwer|banane|beere|sellerie|kohl|rote bete|aubergine|orange|traube|minze|koriander|schnittlauch/.test(l))return 'veg';
+  if(/reis|quinoa|couscous|bulgur|nudel|pasta|nüsse|mandel|mehl|zucker|hafer|müsli|samen|kerne|öl$|essig|senf|honig|sirup|sauce|brühe|pulver|sesam|erdnussbutter|salz|pfeffer|muskat|kümmel|oregano|rosmarin|curry/.test(l))return 'dry';
+  return 'misc'}
+
 /* Daten auf dem Gerät: Plan (nach Datum), Einkaufsliste, Favoriten, Personen, abgehakte Schritte. Speicher kann fehlen (privates Fenster) */
 const DATA_KEY='essensplan-daten-v1';
 const data={load(){try{return JSON.parse(localStorage.getItem(DATA_KEY)||'null')}catch(e){return null}},
@@ -1065,7 +1123,9 @@ function Phone(host,init,opts){
   this.scr.addEventListener('input',e=>this.input(e));
   this.scr.addEventListener('change',e=>{const t=e.target;if(!t.classList||!t.classList.contains('hap'))return;const v=t.dataset.v;
     if(t.dataset.act==='tog'){try{if(navigator.vibrate)navigator.vibrate(10)}catch(err){}const x=this.s.shop.find(y=>y.name===v);if(x){x.done=!x.done;this.render()}}else this.addItem(v)});
-  this.scr.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.dataset.k==='shopq'){this.addItem(e.target.value.trim());}if(e.key==='Enter'&&e.target.dataset.k==='aiq'){e.preventDefault();this.aiAsk(e.target.value.trim())}});
+  this.scr.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.dataset.k==='shopq'){this.addItem(e.target.value.trim());}if(e.key==='Enter'&&e.target.dataset.k==='aiq'){e.preventDefault();this.aiAsk(e.target.value.trim())}
+    if(e.key==='Enter'&&e.target.dataset.k==='cookq'){e.preventDefault();const q=e.target.value.trim();if(q)this.cookAsk(q,{})}
+    if(e.key==='Enter'&&e.target.dataset.k==='stockq'){e.preventDefault();this.stockAdd(e.target.value.trim())}});
   this.scr.addEventListener('pointerdown',e=>this.pdown(e));
   this.scr.addEventListener('contextmenu',e=>{if(e.target.closest('.wd'))e.preventDefault()});
   if(this.opts.full){this.ph.classList.add('full');this.k=1;return} /* Vollbild-App: kein Rahmen, keine Skalierung */
@@ -1074,18 +1134,18 @@ function Phone(host,init,opts){
 }
 Phone.prototype.reset=function(init){
   const s={screen:'plan',ip:0,plan:{0:'n02',1:'n01'},sel:TODAY,wk:0,edit:false,cat:'all',en:null,pick:-1,
-    favs:new Set(['n01','r2','n07','n13','n22']),learn:{},deck:null,did:null,dday:null,from:'plan',persons:1,shopWk:0,twice:false,done:{},sheet:null,shopQ:'',recQ:'',recCat:'all'};
+    favs:new Set(['n01','r2','n07','n13','n22']),learn:{},deck:null,did:null,dday:null,from:'plan',persons:1,shopWk:0,twice:false,done:{},sheet:null,shopQ:'',recQ:'',recCat:'all',stock:[],stockQ:'',cook:null,cookQ:''};
   Object.assign(s,JSON.parse(JSON.stringify(Object.assign({},init,{favs:undefined}))));
   if(init.favs)s.favs=new Set(init.favs);
-  s.shop=init.shopFromPlan?buildShop(s.plan,s.persons,[]):[]; /* Standard: leere Liste */
+  s.shop=init.shopFromPlan?applyStock(buildShop(s.plan,s.persons,[]),s.stock):[]; /* Standard: leere Liste */
   if(this.opts.persist){const d=data.load();if(d){ /* gespeicherten Stand übernehmen; Plan-Daten in Tages-Indizes umrechnen, Vergangenes fällt weg */
       s.plan={};Object.entries(d.plan||{}).forEach(([iso,id])=>{const i=idxOf(iso);if(i>=0&&i<NDAYS&&(RM[id]||id===OUT))s.plan[i]=id});
       if(Array.isArray(d.shop))s.shop=d.shop;if(Array.isArray(d.favs))s.favs=new Set(d.favs);
-      if(d.persons)s.persons=d.persons;if(d.done)s.done=d.done;if(d.learn)s.learn=d.learn;}}
+      if(d.persons)s.persons=d.persons;if(d.done)s.done=d.done;if(d.learn)s.learn=d.learn;if(Array.isArray(d.stock))s.stock=d.stock;}}
   this.s=s;this.lastScreen=null;this.render();
 };
 Phone.prototype.save=function(){if(!this.opts.persist)return;const s=this.s;const plan={};Object.keys(s.plan).forEach(i=>plan[isoOf(+i)]=s.plan[i]);
-  data.save({plan,shop:s.shop,favs:[...s.favs],persons:s.persons,done:s.done,learn:s.learn})};
+  data.save({plan,shop:s.shop,favs:[...s.favs],persons:s.persons,done:s.done,learn:s.learn,stock:s.stock})};
 Phone.prototype.list=function(){const s=this.s;return R.filter(r=>(s.cat==='all'||r.c.includes(s.cat))&&(!s.en||enOf(r)===s.en))};
 Phone.prototype.toast=function(t,btn,act){const old=this.scr.querySelector('.toast');if(old)old.remove();const d=document.createElement('div');d.className='toast'+(btn?' act':'');d.innerHTML=`<span></span>${btn?`<button data-a="${act}">${btn}</button>`:''}`;d.firstChild.textContent=t;this.scr.appendChild(d);setTimeout(()=>d.remove(),btn?4600:2500)};
 Phone.prototype.backAfterPlan=function(d){if(wkOf(d)===0)return this.goPlanToday();const s=this.s;s.screen='plan';s.wk=1;s.sel=7;s.edit=false;s.pick=-1}; /* nächste Woche: dort bleiben (Montag) */
@@ -1133,7 +1193,7 @@ Phone.prototype.vStatus=function(){return `<div class="status"><span>9:41</span>
  <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#111"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#111"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#111"/><rect x="15" y="0" width="3" height="12" rx="1" fill="#111"/></svg>
  <svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 11.5 5.6 9a3.4 3.4 0 0 1 4.8 0zM3.4 6.8a6.5 6.5 0 0 1 9.2 0l-1.5 1.5a4.4 4.4 0 0 0-6.2 0zM1 4.4a9.9 9.9 0 0 1 14 0l-1.5 1.5a7.8 7.8 0 0 0-11 0z" fill="#111"/></svg>
  <svg width="27" height="13" viewBox="0 0 27 13"><rect x=".5" y=".5" width="23" height="12" rx="3.5" fill="none" stroke="#111" opacity=".4"/><rect x="2" y="2" width="20" height="9" rx="2" fill="#111"/><rect x="25" y="4.5" width="1.6" height="4" rx=".8" fill="#111" opacity=".4"/></svg></span></div>`};
-Phone.prototype.vTabs=function(){const s=this.s;const open=s.shop.filter(x=>!x.done&&!x.pantry).length;
+Phone.prototype.vTabs=function(){const s=this.s;const open=s.shop.filter(x=>!x.done&&!x.pantry&&!x.instock).length;
   const t=[['plan','Plan','home'],['recipes','Rezepte','book'],['shop','Einkauf','bag'],['learn','Lernen','cap']];
   return `<nav class="tabbar">${t.map(([k,l,i])=>`<button class="tab ${s.screen===k?'on':''}" data-a="tab" data-v="${k}">${ic(i)}${l}${k==='shop'&&open?`<span class="bd">${open}</span>`:''}</button>`).join('')}</nav>`};
 
@@ -1379,7 +1439,7 @@ Phone.prototype.planDish=function(d,id){const s=this.s;s.plan[d]=id;let txt=dn(d
 /* Kleiner Knopf „2×“ (Kalender-Symbol): Gericht sofort für diesen Tag UND den Folgetag eintragen. Am Sonntag deaktiviert. */
 function twiceBtn(d){const last=d===NDAYS-1;
   return `<button class="twice" data-a="twice" ${last?'disabled':''} title="${last?'Kein Folgetag mehr planbar':'2× kochen: auch für den Folgetag'}" aria-label="2× kochen – auch für den Folgetag">${ic('twice')}</button>`}
-Phone.prototype.back=function(){const s=this.s;s.screen=s.from||'plan';this.render()};
+Phone.prototype.back=function(){this.stopSpeak();const s=this.s;s.screen=s.from||'plan';this.render()};
 
 /* ----- Rezepte / Favoriten ----- */
 Phone.prototype.vRecipes=function(favOnly){const s=this.s;const q=s.recQ.toLowerCase();
@@ -1412,7 +1472,7 @@ Phone.prototype.vDetail=function(){const s=this.s;const r=RM[s.did];const cat=CA
      const main=r.i.filter(x=>x[1]),sp=r.i.filter(x=>!x[1]);
      return main.map(([n,q,u])=>`<div class="ir"><span class="ie">${emo(n)}</span><span class="in">${nm(n)}${sub(n)}</span><span class="iq">${fq(q*s.persons,u)}</span></div>`).join('')
       +(sp.length?`<div class="ir"><span class="ie">🧂</span><span class="in">${sp.map(x=>nm(x[0])).join(', ')}<small>Gewürze nach Geschmack</small></span><span></span></div>`:'')})()}</div>
-   <div class="sec"><h4>Zubereitung</h4></div>
+   <div class="sec"><h4>Zubereitung</h4><span class="csec"><button class="pill sm${this.speaking?' on':''}" data-a="speak">${ic(this.speaking?'stop':'vol')}${this.speaking?'Stopp':'Vorlesen'}</button><button class="pill sm ask" data-a="cook">${ic('spark')}Fragen</button></span></div>
    <div class="steps">${(()=>{const M=stepIngs(r);return r.st.map((t,k)=>`<div class="step${(s.done[r.id]||[]).includes(k)?' ok':''}" data-a="stepok" data-k="${k}" role="button" aria-label="Schritt ${k+1} abhaken"><div class="stx"><b><span class="n">${k+1}</span>${ic('check','ck')}</b><p>${t}</p></div>${M[k].length?`<div class="sing">`:''}${M[k].map(j=>{const [n,q,u]=r.i[j];const nm=n.replace(/\s*\(.*?\)/g,'');return `<span class="sic"><span class="em">${emo(n)}</span><span class="st"><span>${nm}</span><i>${q?fq(q*s.persons,u):'n. G.'}</i></span></span>`}).join('')}${M[k].length?'</div>':''}</div>`).join('')})()}</div>
   </div></div>
   <div class="swipehint"></div>
@@ -1420,8 +1480,8 @@ Phone.prototype.vDetail=function(){const s=this.s;const r=RM[s.did];const cat=CA
   <div class="fade-bottom"></div><div class="bottom-cta">${btn}</div>`};
 
 /* ----- Einkauf ----- */
-Phone.prototype.vShop=function(){const s=this.s;const all=s.shop.filter(x=>!x.done),open=all.filter(x=>!x.pantry),pan=all.filter(x=>x.pantry),done=s.shop.filter(x=>x.done);const q=s.shopQ.trim();
-  const tile=(x,cls='')=>`<label class="tile ${cls}"><input type="checkbox" switch class="hap" tabindex="-1" data-act="${cls==='sug'||cls==='new'?'add':'tog'}" data-v="${x.name.replace(/"/g,'&quot;')}"><span class="em">${x.emoji}</span><span class="tn">${x.name}</span>${(()=>{if(cls==='sug'||cls==='new')return '';const t=buyText(x);return (t.buy?`<span class="tq">${t.buy}</span>`:'')+(t.need?`<span class="tnd">${t.need}</span>`:'')})()}</label>`;
+Phone.prototype.vShop=function(){const s=this.s;const all=s.shop.filter(x=>!x.done&&!x.instock),open=all.filter(x=>!x.pantry),pan=all.filter(x=>x.pantry),done=s.shop.filter(x=>x.done&&!x.instock),inst=s.shop.filter(x=>x.instock);const q=s.shopQ.trim();
+  const tile=(x,cls='')=>`<label class="tile ${cls}"><input type="checkbox" switch class="hap" tabindex="-1" data-act="${cls==='sug'||cls==='new'?'add':'tog'}" data-v="${x.name.replace(/"/g,'&quot;')}"><span class="em">${x.emoji}</span><span class="tn">${x.name}</span>${(()=>{if(cls==='sug'||cls==='new')return '';const t=buyText(x);return (t.buy?`<span class="tq">${t.buy}</span>`:'')+(x.rest?`<span class="tnd">Rest – einiges ist im Vorrat</span>`:t.need?`<span class="tnd">${t.need}</span>`:'')})()}</label>`;
   let sug='';
   if(q){const ql=q.toLowerCase();const m=CATALOG.filter(c=>c[0].toLowerCase().includes(ql)).slice(0,5).map(c=>({name:c[0],emoji:c[1]}));
     const exact=m.some(c=>c.name.toLowerCase()===ql);
@@ -1431,17 +1491,123 @@ Phone.prototype.vShop=function(){const s=this.s;const all=s.shop.filter(x=>!x.do
    <div class="eb">KW ${KW(s.shopWk||0)} · für ${s.persons} ${s.persons===1?"Person":"Personen"}</div>
    <div class="phead" style="padding-top:0;align-items:flex-end"><div class="h-title" style="margin:6px 0 0">Einkaufsliste</div>${open.length?`<button class="pill" data-a="allbought" style="margin-bottom:4px">${ic('check')}Alles eingekauft</button>`:''}</div>
    <div class="seg" role="group" aria-label="Woche für die Einkaufsliste">${[0,1].map(w=>`<button class="${(s.shopWk||0)===w?'on':''}" data-a="shopwk" data-v="${w}">${w?'Nächste Woche':'Diese Woche'}<small>KW ${KW(w)}</small></button>`).join('')}</div>
-   <div class="srow"><button class="pill" data-a="regen">${ic('refresh')}Aus Wochenplan</button><button class="pill" data-a="share">${ic('share')}Als Text teilen</button></div>
+   <div class="srow"><button class="pill" data-a="regen">${ic('refresh')}Aus Wochenplan</button><button class="pill" data-a="sheet" data-v="stock">${ic('box')}Vorrat${s.stock.length?` · ${s.stock.length}`:''}</button><button class="pill icononly" data-a="share" aria-label="Als Text teilen">${ic('share')}</button></div>
    <div class="search">${ic('plus')}<input data-k="shopq" placeholder="Artikel hinzufügen" value="${s.shopQ.replace(/"/g,'&quot;')}" aria-label="Artikel hinzufügen"></div>
    ${sug}
-   <div class="lbl">Einkaufen · ${open.length}</div>
-   ${open.length?`<div class="tiles">${open.map(x=>tile(x)).join('')}</div>`:`<div class="empty-st" style="padding:20px">${s.shop.length?'Alles erledigt.':'Noch nichts auf der Liste.<br>Tippe auf „Aus Wochenplan“ oder füge Artikel hinzu.'}</div>`}
-   ${pan.length?`<div class="lbl">Vorrat prüfen · hast du das zuhause?</div><div class="tiles pan">${pan.map(x=>tile(x,'pan')).join('')}</div>`:''}
+   <div class="lbl">Einkaufen · ${open.length}${open.length?'<span>nach Gängen sortiert</span>':''}</div>
+   ${open.length?AISLES.map(([k,l,e])=>{const g=open.filter(x=>aisleOf(x.name)===k);return g.length?`<div class="aisle"><span>${e}</span>${l}<i>${g.length}</i></div><div class="tiles">${g.map(x=>tile(x)).join('')}</div>`:''}).join(''):`<div class="empty-st" style="padding:20px">${s.shop.length?'Alles erledigt.':'Noch nichts auf der Liste.<br>Tippe auf „Aus Wochenplan“ oder füge Artikel hinzu.'}</div>`}
+   ${inst.length?`<div class="lbl">Schon im Vorrat · ${inst.length}<button data-a="sheet" data-v="stock">Vorrat ansehen</button></div><div class="stk-have">${inst.map(x=>`<span>${x.emoji} ${x.name}</span>`).join('')}</div>`:''}
+   ${pan.length?`<div class="lbl">Gewürze & Basics · hast du das zuhause?</div><div class="tiles pan">${pan.map(x=>tile(x,'pan')).join('')}</div>`:''}
    ${done.length?`<div class="lbl">Zuletzt gekauft<button data-a="cleardone">Leeren</button></div><div class="tiles">${done.map(x=>tile(x,'done')).join('')}</div>`:''}
   </div></div>`};
 Phone.prototype.addItem=function(name){if(!name)return;const s=this.s;const ex=s.shop.find(x=>x.name.toLowerCase()===name.toLowerCase());
   if(ex){ex.done=false}else s.shop.push({key:name+'|',name,qty:0,unit:'',emoji:emo(name),done:false,manual:true});
   s.shopQ='';this.render();this.toast(`${name} hinzugefügt`)};
+
+
+/* ----- Vorrat ----- */
+Phone.prototype.rebuildShop=function(){const s=this.s,w=s.shopWk||0;const keep=s.shop.filter(x=>x.manual);const was=new Set(s.shop.filter(x=>x.done&&!x.manual).map(x=>x.key));
+  const pw={};Object.keys(s.plan).forEach(i=>{if(wkOf(+i)===w)pw[i]=s.plan[i]});s.shop=applyStock(buildShop(pw,s.persons,keep),s.stock);s.shop.forEach(x=>{if(!x.manual&&was.has(x.key))x.done=true})};
+/* Vorrat geändert: eine aus dem Plan erzeugte Liste gleich neu rechnen */
+Phone.prototype.stockChanged=function(){const s=this.s;if(s.shop.some(x=>!x.manual))this.rebuildShop();clearTimeout(this.saveT);this.saveT=setTimeout(()=>this.save(),300)};
+Phone.prototype.stockAdd=function(name){if(!name)return;const s=this.s;stockPut(s.stock,[{name:name[0].toUpperCase()+name.slice(1),q:0,u:''}],'add');s.stockQ='';this.stockChanged();this.render();this.toast(`${name} im Vorrat`)};
+Phone.prototype.vStock=function(){const s=this.s,st=s.stock;
+  return `<div class="ai-head"><span class="stk-ic">${ic('box')}</span><div><h3 style="margin:0">Mein Vorrat</h3><p class="ai-sub">${st.length?`${st.length} Artikel · wird von der Einkaufsliste abgezogen`:'Was du zuhause hast'}</p></div></div>
+   ${st.length?`<div class="stk-list">${st.map(x=>`<div class="stk-row"><span class="em">${emo(x.name)}</span><span class="nm">${x.name}</span><span class="am">${x.q?natAmt(x.q,x.u):''}</span><button data-a="stockdel" data-v="${x.name.replace(/"/g,'&quot;')}" aria-label="${x.name} entfernen">${ic('x')}</button></div>`).join('')}</div>
+     <button class="gbtn" style="width:100%;margin:14px 0 12px" data-a="stockcook">${ic('spark')}Was kann ich damit kochen?</button>`
+    :`<p class="ai-note" style="margin:0 0 12px!important">Noch leer. Fotografiere deine Zutaten oder einen Kassenbon – ich merke mir, was du hast.</p>`}
+   <div class="ai-ex"><button class="ai-chip" data-a="stockphoto">${ic('cam')}<span>Foto von Kühlschrank oder Zutaten</span></button>
+    <button class="ai-chip" data-a="aireceipt">${ic('receipt')}<span>Kassenbon scannen – Einkauf in den Vorrat</span></button></div>
+   <div class="ai-in"><input data-k="stockq" enterkeyhint="done" placeholder="Artikel von Hand hinzufügen" value="${(s.stockQ||'').replace(/"/g,'&quot;')}" aria-label="Artikel zum Vorrat hinzufügen"><button class="ai-mic" data-a="stockadd" aria-label="Hinzufügen">${ic('plus')}</button></div>
+   ${st.length?`<button class="ai-again" data-a="stockclear">Vorrat leeren</button>`:''}`};
+/* Kassenbon: mit KI auslesen, sonst von Hand antippen. Ergebnis landet im Vorrat (Mengen kommen dazu) */
+Phone.prototype.aiReceipt=function(){const s=this.s;const inp=document.createElement('input');inp.type='file';inp.accept='image/*';
+  inp.onchange=async()=>{const f=inp.files&&inp.files[0];if(!f)return;let url='';try{url=URL.createObjectURL(f)}catch(e){}
+    if(!AI){s.ai={step:'detect',kind:'photo',receipt:true,manual:true,photo:url,all:COMMON.slice(),have:[],amt:{}};s.sheet='ai';haptic();this.render();return}
+    s.ai={step:'snap',kind:'photo',receipt:true,real:true,photo:url};s.sheet='ai';haptic();this.render();const a=s.ai;
+    try{const blob=await shrink(f);const r=await AI('Das ist das Foto eines Kassenbons aus dem Supermarkt (Österreich/Deutschland). Lies alle gekauften LEBENSMITTEL aus. Wandle abgekürzte Bon-Bezeichnungen in normale Namen um, wie man sie auf eine Einkaufsliste schreibt (z. B. "BIO ERDAEPFEL FESTK 2KG" → Erdäpfel, "SG VOGERLSALAT 150G" → Vogerlsalat, "JA FETA 200G" → Feta). Menge: Nimm Gewicht oder Stückzahl vom Bon (z. B. 2 kg → 2000 g, "3 x" → 3 Stk bzw. dreifache Füllmenge). Steht keine Menge dabei, nimm die übliche Packungsgröße. Gleiche Artikel zusammenzählen. Weglassen: Pfand, Sackerl/Tragetasche, Rabatte, Summen, Non-Food, Getränke, Süßigkeiten und Snacks. Antworte ausschließlich mit JSON: {"items": [{"name": "Erdäpfel", "menge": 2000, "einheit": "g"}, {"name": "Eier", "menge": 10, "einheit": "Stk"}]} – einheit nur g, ml oder Stk.',{images:[blob],modelTier:'complex'});
+      if(s.sheet!=='ai'||s.ai!==a)return;const j=aiParse(r&&r.text!==undefined?r.text:r);const raw=(j&&j.items||[]).slice(0,30);const it=[],amt={};raw.forEach(x=>{const n=typeof x==='string'?x:x&&x.name;if(!n||it.includes(n))return;it.push(n);if(x&&x.menge)amt[n]={q:+x.menge,u:x.einheit||'g'}});
+      if(!it.length){s.ai={step:'idle'};this.render();this.toast('Auf dem Bon habe ich nichts erkannt – versuch ein schärferes Foto');return}
+      a.all=it;a.have=it.slice();a.amt=amt;a.step='detect';haptic();this.render()}catch(e){this.aiFail(e)}};
+  inp.click()};
+
+/* ----- Koch-Assistent im Rezept ----- */
+/* Ersatz-Zutaten ohne KI (installierte App): [Muster, Vorschlag] */
+const SUBST=[
+ [/feta|schafskäse/i,'Hirtenkäse oder gewürfelter Mozzarella mit einer Prise Salz. Vegan: Räuchertofu.'],
+ [/parmesan/i,'Pecorino oder ein würziger Bergkäse. Vegan: Hefeflocken.'],
+ [/mozzarella/i,'Burrata oder Feta (dann weniger salzen).'],
+ [/joghurt/i,'Skyr, Topfen mit einem Schuss Milch oder Sauerrahm.'],
+ [/basmati|reis/i,'Quinoa, Couscous oder Bulgur – Garzeit laut Packung anpassen.'],
+ [/quinoa|couscous|bulgur/i,'Reis, Bulgur oder Hirse – Garzeit laut Packung anpassen.'],
+ [/nudel|pasta/i,'Jede andere Nudelsorte, oder Reis.'],
+ [/lachs/i,'Forelle oder Saibling; auch weißes Fischfilet geht (kürzer garen).'],
+ [/fisch|sardin/i,'Kabeljau, Seelachs oder Zander. Ohne Fisch: Tofu oder Kichererbsen.'],
+ [/hähnchen|huhn/i,'Pute. Vegetarisch: Tofu oder Kichererbsen.'],
+ [/steak|rind/i,'Hähnchenbrust oder Schweinefilet. Vegetarisch: große Champignons oder Tofu.'],
+ [/tofu/i,'Kichererbsen, Tempeh oder Hähnchen.'],
+ [/zitrone|limette/i,'Die jeweils andere Zitrusfrucht, oder 1 TL heller Essig pro Esslöffel Saft.'],
+ [/salat|spinat|rucola|vogerl|eisberg/i,'Jeder andere Blattsalat: Rucola, Babyspinat, Vogerlsalat oder Eisberg.'],
+ [/frühlingszwiebel|zwiebel|schalotte/i,'Schalotte, Frühlingszwiebel oder etwas Lauch.'],
+ [/süßkartoffel/i,'Kartoffeln, Kürbis oder Karotten.'],
+ [/kartoffel|erdäpfel/i,'Süßkartoffel oder Kürbis – oder Reis als Beilage.'],
+ [/kürbis|hokkaido/i,'Süßkartoffel oder Karotten.'],
+ [/avocado/i,'Ein Klecks Hummus oder Gurke mit etwas Olivenöl.'],
+ [/brokkoli/i,'Blumenkohl, Zucchini oder grüne Bohnen.'],
+ [/zucchini|paprika|karotte|fenchel|lauch/i,'Ähnliches Gemüse, das du da hast: Zucchini, Paprika, Karotten oder Brokkoli.'],
+ [/champignon|pilz/i,'Andere Pilze oder Zucchini.'],
+ [/petersilie|dill|basilikum|kräuter|kresse|koriander|schnittlauch/i,'Andere frische Kräuter, TK-Kräuter oder ein Drittel der Menge getrocknet.'],
+ [/honig|ahorn/i,'Ahornsirup, Agavendicksaft oder eine Prise Zucker.'],
+ [/sojasauce|teriyaki/i,'Tamari, oder etwas Brühe mit einer Prise Salz.'],
+ [/sesamöl/i,'Neutrales Öl und etwas gerösteter Sesam.'],
+ [/linsen|kichererbsen|bohnen|edamame|erbsen/i,'Andere Hülsenfrüchte: Kichererbsen, Bohnen, Linsen oder Erbsen.'],
+ [/walnüsse|nüsse|sesam/i,'Andere Nüsse oder Kerne, z. B. Mandeln oder Sonnenblumenkerne.'],
+ [/tomate/i,'Cherrytomaten oder Paprika; in Saucen passierte Tomaten.'],
+ [/gurke|radieschen/i,'Anderes knackiges Gemüse: Gurke, Radieschen oder Paprika.'],
+ [/ei\b|eier/i,'Eier lassen sich hier schwer ersetzen. Für mehr Eiweiß stattdessen Tofu oder Feta dazu.']];
+function cookOffline(r,q,o,stock){const cl=x=>x.replace(/\s*\(.*?\)/g,'');const c=r.c;const ql=q.toLowerCase();
+  if(o.sub||/ersetz|statt|kein(e|en)?\b|ohne|alternativ/.test(ql)){const ing=o.sub||((r.i.map(x=>cl(x[0])).find(n=>ql.includes(n.toLowerCase().slice(0,5)))));const hit=SUBST.find(x=>x[0].test(ing||ql));
+    if(hit){const have=ing?subOf(ing,(stock||[]).map(x=>x.name).filter(n=>stem5(n)!==stem5(ing)),[]):null;return (ing?`Statt ${ing}: `:'')+hit[1]+(have?` Du hast ${have} im Vorrat – das passt.`:'')}
+    if(ing)return `Für ${ing} habe ich keinen festen Ersatz gespeichert. Meist klappt es, die Zutat wegzulassen oder etwas Ähnliches zu nehmen.`}
+  if(o.pre==='keep'||/halt|aufbewahr|kühlschrank|einfrier|lager/.test(ql))return c.includes('fisch')?'Fisch schmeckt frisch am besten. Reste luftdicht im Kühlschrank und am nächsten Tag essen. Beilagen halten 2–3 Tage.':c.includes('suppe')?'Im Kühlschrank luftdicht 3–4 Tage. Suppen lassen sich portionsweise gut einfrieren (etwa 3 Monate).':c.includes('bowl')?'Die Bestandteile getrennt und ohne Dressing im Kühlschrank 2–3 Tage. Avocado und frische Kräuter erst vor dem Essen dazugeben.':'Luftdicht im Kühlschrank 2–3 Tage. Beim Aufwärmen einmal richtig durcherhitzen.';
+  if(o.pre==='prep'||/vorbereit|meal ?prep|vorkoch|am vortag/.test(ql))return c.includes('bowl')?'Ja. Körner und Gemüse vorkochen, das Dressing extra abfüllen und erst vor dem Essen zusammensetzen.':c.includes('suppe')?'Ja, sehr gut. Suppe komplett vorkochen; Toppings wie Feta oder Kräuter erst beim Servieren dazu.':c.includes('fisch')||c.includes('fleisch')?'Beilagen und Gemüse kannst du vorbereiten. Fisch und Fleisch am besten frisch braten, das dauert nur wenige Minuten.':'Ja. Gemüse schneiden und Beilagen vorkochen; frische Zutaten erst kurz vorher dazugeben.';
+  if(o.pre==='side'||/dazu|beilage|passt/.test(ql))return c.includes('suppe')?'Dazu passt ein Stück Brot oder Knäckebrot und ein kleiner grüner Salat.':c.includes('bowl')?'Eine Bowl ist schon eine ganze Mahlzeit. Für mehr Biss: geröstete Nüsse oder Kerne darüber.':'Ein grüner Salat mit Zitronen-Dressing oder etwas Ofengemüse passt gut dazu.';
+  return 'Diese Frage kann ich ohne Internet-KI nicht beantworten. Im Claude-Link der App antwortet die echte KI. Hier helfe ich bei Ersatz-Zutaten, Haltbarkeit, Vorbereiten und Beilagen.'}
+Phone.prototype.cookAsk=async function(q,o){const s=this.s,r=RM[s.did];if(!r)return;const c=s.cook={step:'think',q};haptic();this.render();
+  const done=txt=>{if(s.sheet!=='cook'||s.cook!==c)return;c.step='ans';c.ans=txt;haptic();this.render()};
+  if(!AI){setTimeout(()=>done(cookOffline(r,q,o||{},s.stock)),650);return}
+  try{const cl=x=>x.replace(/\s*\(.*?\)/g,'');
+    const prompt=`Du bist der Koch-Assistent einer deutschen Essensplan-App und hilfst jemandem, der gerade dieses Gericht kocht. Antworte auf Deutsch in Du-Form, konkret und kurz (höchstens 4 Sätze), ohne Markdown und ohne Aufzählungszeichen. Wenn eine Zutat ersetzt werden soll: nenne 1–2 passende Alternativen mit Menge und sag, ob sich Garzeit oder Würzung ändert. Bevorzuge Dinge aus dem Vorrat.
+
+Rezept: ${r.n} (${r.m} Min., für ${s.persons} ${s.persons===1?'Person':'Personen'})
+Zutaten: ${r.i.map(([n,qq,u])=>cl(n)+(qq?' '+fq(qq*s.persons,u):'')).join(', ')}
+Schritte: ${r.st.map((x,k)=>(k+1)+'. '+x).join(' ')}
+Vorrat zuhause: ${s.stock.length?s.stock.map(x=>x.name+(x.q?' '+natAmt(x.q,x.u):'')).join(', '):'unbekannt'}
+
+Frage: ${q}`;
+    const res=await AI(prompt,{modelTier:'default'});const txt=String(res&&res.text!==undefined?res.text:res||'').trim();done(txt||cookOffline(r,q,o||{},s.stock))}
+  catch(e){AI=e&&e.code==='not_granted'?null:AI;done(cookOffline(r,q,o||{},s.stock))}};
+Phone.prototype.vCook=function(){const s=this.s,r=RM[s.did],c=s.cook||{step:'idle'};const cl=x=>x.replace(/\s*\(.*?\)/g,'');
+  const head=`<div class="ai-head"><span class="ai-orb ${c.step==='think'?'live':''}"><span class="orb-c"><i></i><i></i><i></i><i></i></span><span class="orb-g"></span></span><div><h3 style="margin:0">Koch-Assistent</h3><p class="ai-sub">${r.n}</p></div></div>`;
+  if(c.step==='think')return head+`<p class="ai-tr done">„${c.q.replace(/</g,'&lt;')}“</p><div class="ai-dots"><i></i><i></i><i></i></div>`;
+  if(c.step==='ans')return head+`<p class="ai-tr done">„${c.q.replace(/</g,'&lt;')}“</p><div class="ck-ans">${String(c.ans).replace(/</g,'&lt;').replace(/\n+/g,'<br>')}</div><button class="ai-again" data-a="cookback">Neue Frage</button>`;
+  const main=r.i.filter(x=>x[1]).map(x=>cl(x[0]));
+  return head+`<div class="lbl" style="margin:0 0 8px">Etwas fehlt? Zutat antippen</div>
+   <div class="ai-tags many">${main.map(n=>`<button class="ai-tag" data-a="cooksub" data-v="${n}"><span>${emo(n)}</span>${n}</button>`).join('')}</div>
+   <div class="lbl" style="margin:16px 0 8px">Häufige Fragen</div>
+   <div class="ai-ex"><div class="ai-chip two">${ic('spark')}<span><button data-a="cookpre" data-v="keep" data-q="Wie lange hält sich das Gericht?">Wie lange hält sich das?</button><button data-a="cookpre" data-v="prep" data-q="Kann ich das vorbereiten?">Kann ich das vorbereiten?</button><button data-a="cookpre" data-v="side" data-q="Was passt dazu?">Was passt dazu?</button></span></div></div>
+   <div class="ai-in"><input data-k="cookq" enterkeyhint="send" placeholder="Eigene Frage tippen oder diktieren" value="${(s.cookQ||'').replace(/"/g,'&quot;')}" aria-label="Frage an den Koch-Assistenten"><button class="ai-mic" data-a="cooksend" aria-label="Senden">${ic('send')}</button></div>
+   <p class="ai-note">${AI?'Antworten von Claude.':'Hier ohne Internet-KI: Ersatz-Zutaten, Haltbarkeit, Vorbereiten und Beilagen.'}</p>`};
+/* Schritte vorlesen (ab dem ersten nicht abgehakten Schritt); nochmal tippen stoppt */
+Phone.prototype.stopSpeak=function(){if(this.speaking){this.speaking=false;try{speechSynthesis.cancel()}catch(e){}}};
+Phone.prototype.speak=function(){const s=this.s,r=RM[s.did],sy=window.speechSynthesis;
+  if(!sy||!window.SpeechSynthesisUtterance){this.toast('Vorlesen wird hier nicht unterstützt');return}
+  if(this.speaking){this.stopSpeak();this.render();return}
+  try{sy.cancel()}catch(e){}const dn2=s.done[r.id]||[];let k=r.st.findIndex((_,i)=>!dn2.includes(i));if(k<0)k=0;this.speaking=true;const self=this;
+  const mark=()=>{self.scr.querySelectorAll('.step.say').forEach(x=>x.classList.remove('say'));const el=self.scr.querySelector(`.step[data-k="${k}"]`);if(el&&self.speaking){el.classList.add('say');el.scrollIntoView({block:'center',behavior:'smooth'})}};
+  const next=()=>{if(!self.speaking||self.s.screen!=='detail')return;if(k>=r.st.length){self.speaking=false;self.render();return}
+    const u=new SpeechSynthesisUtterance(`Schritt ${k+1}. ${r.st[k]}`);u.lang='de-DE';u.rate=.95;u.onend=()=>{k++;next()};u.onerror=()=>{self.speaking=false;self.render()};mark();sy.speak(u)};
+  this.render();next()};
 
 /* ----- Einstellungen ----- */
 Phone.prototype.vSettings=function(){const s=this.s;
@@ -1616,11 +1782,13 @@ Phone.prototype.aiPhoto=function(){const s=this.s;if(AI){this.aiPhotoReal();retu
     s.ai={step:'detect',kind:'photo',manual:true,photo:url,all:COMMON.slice(),have:[],amt:{}};haptic();this.render()};
   inp.click()};
 Phone.prototype.vAI=function(){const s=this.s,a=s.ai||{step:'idle'};
-  const head=`<div class="ai-head"><span class="ai-orb ${a.step==='listen'||a.step==='think'||a.step==='snap'?'live':''}"><span class="orb-c"><i></i><i></i><i></i><i></i></span><span class="orb-g"></span></span><div><h3 style="margin:0">${a.step==='idle'?'Was möchtest du?':a.step==='listen'?'Ich höre zu …':a.step==='think'?'Einen Moment …':a.step==='snap'?'Foto wird analysiert …':a.step==='detect'?(a.manual?'Was hast du zuhause?':'Das habe ich erkannt'):'Mein Vorschlag'}</h3><p class="ai-sub">${a.step==='idle'?'Sprich oder tippe deinen Wunsch':a.step==='detect'?(a.manual?'Tippe an, was auf dem Foto ist':'Tippe an, was nicht stimmt'):(AI?'KI-Assistent · Claude':'KI-Assistent · Demo')}</p></div></div>`;
+  const head=`<div class="ai-head"><span class="ai-orb ${a.step==='listen'||a.step==='think'||a.step==='snap'?'live':''}"><span class="orb-c"><i></i><i></i><i></i><i></i></span><span class="orb-g"></span></span><div><h3 style="margin:0">${a.step==='idle'?'Was möchtest du?':a.step==='listen'?'Ich höre zu …':a.step==='think'?'Einen Moment …':a.step==='snap'?(a.receipt?'Bon wird gelesen …':'Foto wird analysiert …'):a.step==='detect'?(a.receipt?(a.manual?'Was hast du gekauft?':'Das stand auf dem Bon'):a.manual?'Was hast du zuhause?':'Das habe ich erkannt'):'Mein Vorschlag'}</h3><p class="ai-sub">${a.step==='idle'?'Sprich oder tippe deinen Wunsch':a.step==='detect'?(a.manual?'Tippe an, was auf dem Foto ist':'Tippe an, was nicht stimmt'):(AI?'KI-Assistent · Claude':'KI-Assistent · Demo')}</p></div></div>`;
   const plate2=r=>plate(r,56);
   let body='';
   if(a.step==='idle'){body=`<div class="ai-ex"><div class="ai-chip two">${ic('spark')}<span>${AI_EX.map(([k,t])=>`<button data-a="aiex" data-q="${k}">„${t}“</button>`).join('')}</span></div>
-      <button class="ai-chip" data-a="aiphoto">${ic('cam')}<span>Foto meiner Zutaten – was kann ich kochen?</span></button></div>
+      <button class="ai-chip" data-a="aiphoto">${ic('cam')}<span>Foto meiner Zutaten – was kann ich kochen?</span></button>
+      ${s.stock.length?`<button class="ai-chip" data-a="stockcook">${ic('box')}<span>Mit meinem Vorrat kochen · ${s.stock.length} Artikel</span></button>`:''}
+      <button class="ai-chip" data-a="aireceipt">${ic('receipt')}<span>Kassenbon scannen – Einkauf in den Vorrat</span></button></div>
     <div class="ai-in"><input data-k="aiq" enterkeyhint="send" placeholder="Wunsch tippen oder diktieren" value="${(s.aiQ||'').replace(/"/g,'&quot;')}" aria-label="Wunsch eingeben"><button class="ai-mic" data-a="aisend" aria-label="Senden">${ic('send')}</button></div>`}
   else if(a.step==='listen'){body=`<p class="ai-tr">${a.shown||''}</p><div class="ai-wave">${'<i></i>'.repeat(18)}</div>`}
   else if(a.step==='think'){body=`<p class="ai-tr done">„${a.text||'Zutaten'}“</p><div class="ai-dots"><i></i><i></i><i></i></div>`}
@@ -1628,8 +1796,10 @@ Phone.prototype.vAI=function(){const s=this.s,a=s.ai||{step:'idle'};
   else if(a.step==='snap'){body=`<div class="ai-photo scan">${['🍚','🥕','🧅','🫑','🧀','🥚','🧈','🍋'].map(e=>`<span>${e}</span>`).join('')}<i class="ai-scan"></i></div>`}
   else if(a.step==='detect'){if(a.manual&&a.photo)body+=`<div class="ai-thumb"><img src="${a.photo}" alt="Dein Foto"></div>`;const all=a.all||['Basmatireis','Karotten','Zwiebel','Paprika','Feta','Eier','Zucchini','Tomate'];
     body+=`<div class="ai-tags${a.manual?' many':''}">${all.map(n=>`<button class="ai-tag ${a.have.includes(n)?'on':''}" data-a="aitog" data-v="${n}"><span>${emo(n)}</span>${n}${a.amt&&a.amt[n]?`<small> · ${natAmt(a.amt[n].q,a.amt[n].u)}</small>`:''}</button>`).join('')}</div>
-      <p class="ai-note">Salz, Pfeffer, Öl und Gewürze setze ich als vorhanden voraus.</p>
-      <button class="gbtn" style="width:100%;margin-top:14px" data-a="aifind">${ic('spark')}Gerichte finden</button>`}
+      ${a.receipt?`<p class="ai-note">Die Artikel kommen in deinen Vorrat. Die Einkaufsliste zieht sie automatisch ab.</p>
+      <button class="gbtn" style="width:100%;margin-top:14px" data-a="aistock">${ic('box')}In den Vorrat legen${a.have.length?` (${a.have.length})`:''}</button>`
+      :`<p class="ai-note">Salz, Pfeffer, Öl und Gewürze setze ich als vorhanden voraus. Was du auswählst, merke ich mir im Vorrat.</p>
+      <button class="gbtn" style="width:100%;margin-top:14px" data-a="aifind">${ic('spark')}Gerichte finden</button>`}`}
   else if(a.step==='result'){
     if(a.msg)body+=`<p class="ai-msg">${a.msg.replace(/</g,'&lt;')}</p>`;
     if(a.kind==='week'){const ks=Object.keys(a.week).map(Number).sort((x,y)=>x-y);
@@ -1650,12 +1820,14 @@ Phone.prototype.vSheet=function(){const s=this.s;if(!s.sheet)return '';
     ${this.picking()?`<div class="lbl" style="margin:18px 0 8px">Nur anzeigen</div><div class="efilter" style="justify-content:flex-start">${['low','mid','high'].map(l=>`<span class="en ${l} ${s.en===l?'on':''}" data-a="en" data-v="${l}">${ic(EN[l][1])}${EN[l][0]}</span>`).join('')}</div>`:''}
     <button class="gbtn" style="width:100%;margin-top:18px" data-a="closesheet">${this.picking()&&s.en?'Filter anwenden':'Verstanden'}</button>`;
   if(s.sheet==='ai')c=this.vAI();
+  if(s.sheet==='stock')c=this.vStock();
+  if(s.sheet==='cook')c=this.vCook();
   if(s.sheet==='pickday'){const r=RM[s.did];c=`<h3>Für welchen Tag?</h3><p>${r.n} einplanen${s.twice?' · 2×: auch am Folgetag':''}</p>
     ${Array.from({length:NDAYS},(_,i)=>i).map(i=>{const id=s.plan[i],x=RM[id];return `${i%7===0?`<div class="lbl" style="margin:${i?14:4}px 0 4px">KW ${KW(wkOf(i))}${i?' · nächste Woche':' · diese Woche'}</div>`:''}<button class="pd" data-a="planfor" data-i="${i}">${x?plate(x,40):id===OUT?`<span class="ph out">${ic('out')}</span>`:`<span class="ph">${ic('plus')}</span>`}<span>${dayLbl(i)}${i===TODAY?' · heute':''}<small>${x?x.n+' wird ersetzt':id===OUT?'Auswärts, wird ersetzt':'frei'}</small></span></button>`}).join('')}`}
   return `<div class="sheet-bg" data-a="closesheet"><div class="sheet" data-a="stop"><button class="sheet-x" data-a="closesheet" aria-label="Schließen">${ic('x')}</button>${c}</div></div>`};
 
 /* ----- Aktionen ----- */
-Phone.prototype.input=function(e){const k=e.target.dataset.k;if(k==='aiq'){this.s.aiQ=e.target.value;return}if(k==='shopq'){this.s.shopQ=e.target.value;this.render()}if(k==='recq'){this.s.recQ=e.target.value;this.render()}};
+Phone.prototype.input=function(e){const k=e.target.dataset.k;if(k==='aiq'){this.s.aiQ=e.target.value;return}if(k==='cookq'){this.s.cookQ=e.target.value;return}if(k==='stockq'){this.s.stockQ=e.target.value;return}if(k==='shopq'){this.s.shopQ=e.target.value;this.render()}if(k==='recq'){this.s.recQ=e.target.value;this.render()}};
 Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();return}
   const t=e.target.closest('[data-a]');if(!t||!this.scr.contains(t))return;const s=this.s,a=t.dataset.a,v=t.dataset.v;
   if(a==='stop')return;
@@ -1696,7 +1868,7 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
    case 'planfor':{const i=+t.dataset.i;const dd=this.planDish(i,s.did);s.sheet=null;this.backAfterPlan(i);this.render();this.toast(`${RM[s.did].n} für ${dd} eingeplant`);break}
    case 'pers':s.persons=Math.max(1,Math.min(8,s.persons+(+v)));this.render();break;
    case 'mkshop':case 'regen':case 'shopwk':{if(a==='mkshop')s.shopWk=s.wk||0;if(a==='shopwk')s.shopWk=+v;const w=s.shopWk||0;
-      const keep=s.shop.filter(x=>x.manual);const pw={};Object.keys(s.plan).forEach(i=>{if(wkOf(+i)===w)pw[i]=s.plan[i]});s.shop=buildShop(pw,s.persons,keep);s.screen='shop';this.render();
+      this.rebuildShop();s.screen='shop';this.render();
       this.toast(a==='mkshop'?`Einkaufsliste für KW ${KW(w)} erstellt`:`Aus Plan KW ${KW(w)} aktualisiert`);break}
    case 'wk':this.toWeek(+v);break;
    case 'tog':{haptic();const x=s.shop.find(y=>y.name===v);if(x){x.done=!x.done;this.render()}break}
@@ -1704,7 +1876,7 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
    case 'allbought':{haptic();this.prevShop=s.shop.map(x=>Object.assign({},x));const n=s.shop.filter(x=>!x.done).length;s.shop.forEach(x=>x.done=true);this.render();this.toast(`${n} Artikel eingekauft`,'Rückgängig','undoshop');break}
    case 'undoshop':if(this.prevShop){s.shop=this.prevShop;this.prevShop=null;this.render()}break;
    case 'cleardone':s.shop=s.shop.filter(x=>!x.done);this.render();break;
-   case 'share':{const txt='Einkaufsliste KW '+KW(s.shopWk||0)+'\n'+s.shop.filter(x=>!x.done&&!x.pantry).map(x=>{const t=buyText(x);return '• '+x.name+(t.buy?' – '+t.buy:'')}).join('\n');
+   case 'share':{const op=s.shop.filter(x=>!x.done&&!x.pantry&&!x.instock);const txt='Einkaufsliste KW '+KW(s.shopWk||0)+'\n'+AISLES.map(([k,l])=>{const g=op.filter(x=>aisleOf(x.name)===k);return g.length?'\n'+l+'\n'+g.map(x=>{const t=buyText(x);return '• '+x.name+(t.buy?' – '+t.buy:'')}).join('\n'):''}).filter(Boolean).join('\n');
       const ok=()=>this.toast('Liste als Text kopiert'),no=()=>this.toast('Kopieren hier nicht möglich');
       try{navigator.clipboard.writeText(txt).then(ok,no)}catch(err){no()}break}
    case 'sheet':s.sheet=v;this.render();break;
@@ -1713,13 +1885,33 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
    case 'aisend':{const q=(s.aiQ||'').trim();if(q)this.aiAsk(q);break}
    case 'aiphoto':this.aiPhoto();break;
    case 'aitog':{const v2=t.dataset.v;const h=s.ai.have;const i=h.indexOf(v2);i<0?h.push(v2):h.splice(i,1);this.render();break}
-   case 'aifind':if(!s.ai.have.length){this.toast('Tippe zuerst an, was du zuhause hast');break}s.ai.step='think';this.render();setTimeout(()=>{if(s.sheet!=='ai')return;s.ai.step='result';s.ai.kind='photo';this.render()},900);break;
+   case 'aifind':if(!s.ai.have.length){this.toast('Tippe zuerst an, was du zuhause hast');break}
+      if(this.opts.persist||this.opts.full){stockPut(s.stock,s.ai.have.map(x=>({name:x,q:s.ai.amt&&s.ai.amt[x]?s.ai.amt[x].q:0,u:s.ai.amt&&s.ai.amt[x]?s.ai.amt[x].u:''})),'set');this.stockChanged()}
+      s.ai.step='think';this.render();setTimeout(()=>{if(s.sheet!=='ai')return;s.ai.step='result';s.ai.kind='photo';this.render()},900);break;
    case 'aiback':s.ai={step:'idle'};s.aiQ='';this.render();break;
    case 'aiplan':{const id=t.dataset.id,d=s.sel;const dd=this.planDish(d,id);s.sheet=null;this.backAfterPlan(d);this.anim='inF';this.pop=true;this.render();this.toast(`${RM[id].n} für ${dd} eingeplant`);break}
    case 'aiweek':{const W=s.ai.week;Object.keys(W).forEach(i=>s.plan[i]=W[i]);haptic();s.sheet=null;this.anim='inF';this.render();this.toast(`${Object.keys(W).length} Tage aus dem Vorschlag eingeplant`);break}
    case 'aibuy':{const id=t.dataset.id,d=s.sel,rk=aiRank(s.ai.have,s.ai.amt||{},s.persons).find(x=>x.r.id===id),miss=rk?rk.miss:aiMissing(RM[id],s.ai.have);
       addNeeds(s.shop,miss,s.persons,true);
       const dd=this.planDish(d,id);s.sheet=null;this.backAfterPlan(d);this.anim='inF';this.pop=true;this.render();this.toast(`Eingeplant · ${miss.length} fehlende Zutat${miss.length===1?'':'en'} auf der Liste`);break}
+   /* --- Vorrat --- */
+   case 'stockdel':{s.stock=s.stock.filter(x=>x.name!==v);this.stockChanged();this.render();break}
+   case 'stockclear':{this.prevStock=s.stock.slice();s.stock=[];this.stockChanged();this.render();this.toast('Vorrat geleert','Rückgängig','undostock');break}
+   case 'undostock':if(this.prevStock){s.stock=this.prevStock;this.prevStock=null;this.stockChanged();this.render()}break;
+   case 'stockadd':this.stockAdd((s.stockQ||'').trim());break;
+   case 'stockcook':{if(!s.stock.length)break;const amt={};s.stock.forEach(x=>{if(x.q)amt[x.name]={q:x.q,u:x.u}});s.ai={step:'result',kind:'photo',have:s.stock.map(x=>x.name),amt,fromStock:true,text:'Mit meinem Vorrat kochen'};s.sheet='ai';haptic();this.render();break}
+   case 'stockphoto':s.ai={step:'idle'};s.sheet='ai';this.render();this.aiPhoto();break;
+   case 'aireceipt':s.ai={step:'idle'};s.sheet='ai';this.render();this.aiReceipt();break;
+   case 'aistock':{const a=s.ai;if(!a.have.length){this.toast('Tippe zuerst an, was du gekauft hast');break}
+      const n=a.have.length;stockPut(s.stock,a.have.map(x=>({name:x,q:a.amt&&a.amt[x]?a.amt[x].q:0,u:a.amt&&a.amt[x]?a.amt[x].u:''})),a.receipt?'add':'set');
+      this.stockChanged();hapticSuccess();s.sheet='stock';this.render();this.toast(`${n} Artikel im Vorrat gespeichert`);break}
+   /* --- Koch-Assistent --- */
+   case 'cook':haptic();s.cook={step:'idle'};s.cookQ='';s.sheet='cook';this.render();break;
+   case 'cooksub':this.cookAsk(`Mir fehlt: ${v}. Was kann ich stattdessen nehmen?`,{sub:v});break;
+   case 'cookpre':this.cookAsk(t.dataset.q,{pre:v});break;
+   case 'cooksend':{const q=(s.cookQ||'').trim();if(q)this.cookAsk(q,{});break}
+   case 'cookback':s.cook={step:'idle'};s.cookQ='';this.render();break;
+   case 'speak':this.speak();break;
    case 'closesheet':this.closeSheet();break;
    case 'clearweek':s.plan={};this.goPlanToday();this.render();this.toast('Plan geleert');break;
    case 'nexttheme':{const o=['rose','beige','bunt'];window.__setTheme(o[(o.indexOf(curTheme())+1)%3]);this.render();break}
@@ -1744,6 +1936,8 @@ const SCREENS=[
  ['Lerncenter',{screen:'learn'},['Vierter Tab statt Favoriten (Favoriten jetzt als Herz-Filter in Rezepte)','Karteien: Die perfekte Sauce, Schnitttechniken, Meal Prep, Braten & Garen, Gewürze & Kräuter','Fortschritt je Kartei wird gemerkt']],
  ['Lernkarten',{screen:'deck',deck:'sauce'},['Karten rasten senkrecht ein: nach oben wischen = nächste Karte','Emoji, Überschrift, kurzer Text und Tipp','Am Ende: weiter zur nächsten Kartei']],
  ['Einkaufsliste',{screen:'shop',shopFromPlan:true},['Oben wählen: Diese Woche oder Nächste Woche (z. B. am Samstag für die Folgewoche einkaufen)','Kachel antippen = gekauft, wandert nach unten','„Alles eingekauft“ oben rechts hakt alles auf einmal ab','Artikel suchen mit Vorschlägen oder freiem Text','„Aus Wochenplan“ zählt Zutaten zusammen, eigene Artikel bleiben','„Als Text teilen“ z. B. für WhatsApp oder Notizen']],
+ ['Vorrat',{screen:'shop',shopFromPlan:true,plan:FULL,sheet:'stock',stock:[{name:'Erdäpfel',q:3,u:'Stk'},{name:'Feta',q:150,u:'g'},{name:'Eier',q:6,u:'Stk'},{name:'Basmatireis',q:500,u:'g'},{name:'Tomate',q:.75,u:'Stk'}]},['Zutaten vom Foto und vom Kassenbon bleiben gespeichert','Die Einkaufsliste zieht den Vorrat automatisch ab','„Was kann ich damit kochen?“ ohne neues Foto']],
+ ['Koch-Assistent',{screen:'detail',did:'n01',dday:2,sheet:'cook',plan:{0:'n02',1:'r2'}},['„Fragen“ bei der Zubereitung öffnet den Assistenten','Zutat antippen = Ersatz vorschlagen','„Vorlesen“ liest die Schritte laut vor']],
  ['Energiedichte erklärt',{sheet:'energy'},['Öffnet sich bei jedem Antippen eines Energie-Symbols','3 Stufen: Leicht, Ausgewogen, Energiereich']],
  ['Einstellungen',{screen:'settings'},['Personenzahl für alle Mengen','Intro erneut ansehen, Plan leeren','Rezept-Quelle: jetzt lokal, später online','Platz für Training & Sport (spätere Erweiterung)']]
 ];
