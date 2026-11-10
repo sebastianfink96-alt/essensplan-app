@@ -224,6 +224,7 @@ html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
 .csec .pill.ask{background:rgba(var(--a-glow),.1);box-shadow:none;color:var(--a-eyebrow);font-weight:500}
 .csec .pill.on{background:var(--a-grad);color:#fff;box-shadow:none}
 .step.say{background:rgba(var(--a-glow),.07);border-radius:14px;box-shadow:-10px 0 0 rgba(var(--a-glow),.07),10px 0 0 rgba(var(--a-glow),.07)}
+.ai-warn{font-size:12.5px!important;margin:12px 0 0!important;padding:9px 12px;border-radius:12px;background:rgba(240,163,58,.14);color:#8A5A12!important;line-height:1.4}
 .ck-ans{font-size:16.5px;line-height:1.5;font-weight:300;color:var(--a-ink);background:rgba(var(--a-glow),.07);border-radius:18px;padding:14px 16px}
 /* ===== KI-Assistent ===== */
 .orb{position:absolute;right:22px;bottom:90px;width:62px;height:62px;border-radius:50%;border:0;padding:0;z-index:42;display:grid;place-items:center;color:#fff;
@@ -983,7 +984,7 @@ const NDAYS=14,dn=i=>DAYS[i%7],ab=i=>AB[i%7],dt=i=>dayDate(i).getDate(),wkOf=i=>
 const dm=i=>`${dt(i)}. ${MON[dayDate(i).getMonth()]}`;
 const dayLbl=i=>`${dn(i)}, ${dm(i)}`;
 const CATALOG=[['Milch','🥛'],['Brot','🍞'],['Eier','🥚'],['Butter','🧈'],['Käse','🧀'],['Joghurt','🥣'],['Kaffee','☕'],['Tee','🍵'],['Äpfel','🍎'],['Bananen','🍌'],['Zitronen','🍋'],['Limetten','🍋'],['Tomaten','🍅'],['Gurke','🥒'],['Paprika','🫑'],['Karotten','🥕'],['Kartoffeln','🥔'],['Zwiebeln','🧅'],['Knoblauch','🧄'],['Brokkoli','🥦'],['Salat','🥬'],['Reis','🍚'],['Nudeln','🍝'],['Mehl','🌾'],['Zucker','🍬'],['Olivenöl','🫒'],['Mineralwasser','💧'],['Wein','🍷'],['Bier','🍺'],['Schokolade','🍫'],['Hähnchen','🍗'],['Hackfleisch','🥩'],['Lachs','🐟'],['Toilettenpapier','🧻'],['Spülmittel','🧴'],['Müsli','🥣'],['Honig','🍯'],['Erdbeeren','🍓'],['Trauben','🍇'],['Pilze','🍄'],['Mais','🌽'],['Avocado','🥑'],['Haferflocken','🌾']];
-const EMO=[['eisberg','🥬'],['sesamöl','🫗'],['naturtofu','🫘'],['honig','🍯'],['ahorn','🍁'],['couscous','🌾'],['nudeln','🍝'],['rucola','🥬'],['mini-mozz','🧀'],['grünes pesto','🌿'],['schwarze bohnen','🫘'],['wasser','💧'],['rindersteak','🥩'],['blattsalat','🥬'],['naturjoghurt','🥛'],['senf','🫙'],['apfel','🍎'],['fischfilet','🐟'],['weißes fisch','🐟'],['gegarter fisch','🐟'],['lauch','🥬'],['gemüsebrühe','🍲'],['sardinen','🐟'],['fenchel','🌿'],['mozzarella','🧀'],['hokkaido','🎃'],['rote linsen','🫘'],['linsen','🫘'],['dinkelpasta','🍝'],['basilikumpesto','🌿'],['champignons','🍄'],['frischer spinat','🥬'],['walnüsse','🌰'],['birne','🍐'],['roggenknäcke','🍞'],['ei','🥚'],['essig','🫙'],['tomate','🍅'],['rosmarin','🌿'],['dill','🌿'],['petersilie','🌿'],['oregano','🌿'],['kräuter','🌿'],['muskat','🧂'],['currypulver','🧂'],['curry','🧂'],['paprikapulver','🧂'],['kreuzkümmel','🧂'],['pfeffer','🧂'],['zitrone','🍋'],['babyspinat','🥬'],['kresse','🌱'],['salz','🧂'],['schwarzer pfeffer','🧂'],['lachs','🐟'],['thunfisch','🐟'],['quinoa','🌾'],['bulgur','🌾'],['mehl','🌾'],['avocado','🥑'],['edamame','🫛'],['erbsen','🫛'],['zuckerschoten','🫛'],['rotkohl','🥬'],['kimchi','🥬'],['spinat','🥬'],['soja','🍶'],['teriyaki','🍶'],['sesam','🌰'],['kürbis','🎃'],['radieschen','🌱'],['brokkoli','🥦'],['joghurt','🥛'],['basilikum','🌿'],['schnittlauch','🌿'],['koriander','🌿'],['minze','🌿'],['nori','🌿'],['kichererbsen','🫘'],['kidney','🫘'],['hummus','🫘'],['tofu','🫘'],['falafel','🧆'],['mango','🥭'],['karotte','🥕'],['basmati','🍚'],['sushireis','🍚'],['reisnudel','🍜'],['reis','🍚'],['erdnuss','🥜'],['tahini','🥜'],['zucchini','🥒'],['gurke','🥒'],['paprika','🫑'],['süßkartoffel','🍠'],['kartoffel','🥔'],['zitrone','🍋'],['limette','🍋'],['oliven','🫒'],['kapern','🫒'],['granatapfel','🍎'],['hähnchen','🍗'],['kokos','🥥'],['curry','🍛'],['grüne curry','🍛'],['gochujang','🌶️'],['chili','🌶️'],['zwiebel','🧅'],['frühlings','🧅'],['spaghetti','🍝'],['penne','🍝'],['spätzle','🍝'],['hack','🥩'],['rinder','🥩'],['kalb','🥩'],['passiert','🍅'],['cherry','🍅'],['tomate','🍅'],['parmesan','🧀'],['feta','🧀'],['halloumi','🧀'],['berg','🧀'],['eier','🥚'],['brot','🍞'],['semmel','🍞'],['garnele','🍤'],['knoblauch','🧄'],['mais','🌽'],['butter','🧈']];
+const EMO=[['erdäpfel','🥔'],['erdapfel','🥔'],['vogerl','🥬'],['kresse','🌱'],['eisberg','🥬'],['sesamöl','🫗'],['naturtofu','🫘'],['honig','🍯'],['ahorn','🍁'],['couscous','🌾'],['nudeln','🍝'],['rucola','🥬'],['mini-mozz','🧀'],['grünes pesto','🌿'],['schwarze bohnen','🫘'],['wasser','💧'],['rindersteak','🥩'],['blattsalat','🥬'],['naturjoghurt','🥛'],['senf','🫙'],['apfel','🍎'],['fischfilet','🐟'],['weißes fisch','🐟'],['gegarter fisch','🐟'],['lauch','🥬'],['gemüsebrühe','🍲'],['sardinen','🐟'],['fenchel','🌿'],['mozzarella','🧀'],['hokkaido','🎃'],['rote linsen','🫘'],['linsen','🫘'],['dinkelpasta','🍝'],['basilikumpesto','🌿'],['champignons','🍄'],['frischer spinat','🥬'],['walnüsse','🌰'],['birne','🍐'],['roggenknäcke','🍞'],['ei','🥚'],['essig','🫙'],['tomate','🍅'],['rosmarin','🌿'],['dill','🌿'],['petersilie','🌿'],['oregano','🌿'],['kräuter','🌿'],['muskat','🧂'],['currypulver','🧂'],['curry','🧂'],['paprikapulver','🧂'],['kreuzkümmel','🧂'],['pfeffer','🧂'],['zitrone','🍋'],['babyspinat','🥬'],['kresse','🌱'],['salz','🧂'],['schwarzer pfeffer','🧂'],['lachs','🐟'],['thunfisch','🐟'],['quinoa','🌾'],['bulgur','🌾'],['mehl','🌾'],['avocado','🥑'],['edamame','🫛'],['erbsen','🫛'],['zuckerschoten','🫛'],['rotkohl','🥬'],['kimchi','🥬'],['spinat','🥬'],['soja','🍶'],['teriyaki','🍶'],['sesam','🌰'],['kürbis','🎃'],['radieschen','🌱'],['brokkoli','🥦'],['joghurt','🥛'],['basilikum','🌿'],['schnittlauch','🌿'],['koriander','🌿'],['minze','🌿'],['nori','🌿'],['kichererbsen','🫘'],['kidney','🫘'],['hummus','🫘'],['tofu','🫘'],['falafel','🧆'],['mango','🥭'],['karotte','🥕'],['basmati','🍚'],['sushireis','🍚'],['reisnudel','🍜'],['reis','🍚'],['erdnuss','🥜'],['tahini','🥜'],['zucchini','🥒'],['gurke','🥒'],['paprika','🫑'],['süßkartoffel','🍠'],['kartoffel','🥔'],['zitrone','🍋'],['limette','🍋'],['oliven','🫒'],['kapern','🫒'],['granatapfel','🍎'],['hähnchen','🍗'],['kokos','🥥'],['curry','🍛'],['grüne curry','🍛'],['gochujang','🌶️'],['chili','🌶️'],['zwiebel','🧅'],['frühlings','🧅'],['spaghetti','🍝'],['penne','🍝'],['spätzle','🍝'],['hack','🥩'],['rinder','🥩'],['kalb','🥩'],['passiert','🍅'],['cherry','🍅'],['tomate','🍅'],['parmesan','🧀'],['feta','🧀'],['halloumi','🧀'],['berg','🧀'],['eier','🥚'],['brot','🍞'],['semmel','🍞'],['garnele','🍤'],['knoblauch','🧄'],['mais','🌽'],['butter','🧈']];
 /* Zutaten den Schritten zuordnen (für die Mengen-Chips unter jedem Schritt).
    1. Schritt, der die Zutat nennt (Wortanfang, 5-Buchstaben-Stamm), auch über Wortteile: Olivenöl → „Öl“, Rindersteak → „Steak“, Basmatireis → „Reis“.
    2. Sonst Gewürze/Kräuter/Öl → Schritt mit „würzen/abschmecken/garnieren“, übrige Zutaten → Schritt mit „Gemüse“.
@@ -1523,8 +1524,9 @@ Phone.prototype.vStock=function(){const s=this.s,st=s.stock;
 /* Kassenbon: mit KI auslesen, sonst von Hand antippen. Ergebnis landet im Vorrat (Mengen kommen dazu) */
 Phone.prototype.aiReceipt=function(){const s=this.s;const inp=document.createElement('input');inp.type='file';inp.accept='image/*';
   inp.onchange=async()=>{const f=inp.files&&inp.files[0];if(!f)return;let url='';try{url=URL.createObjectURL(f)}catch(e){}
-    if(!AI){s.ai={step:'detect',kind:'photo',receipt:true,manual:true,photo:url,all:COMMON.slice(),have:[],amt:{}};s.sheet='ai';haptic();this.render();return}
     s.ai={step:'snap',kind:'photo',receipt:true,real:true,photo:url};s.sheet='ai';haptic();this.render();const a=s.ai;
+    await aiWait();if(s.sheet!=='ai'||s.ai!==a)return;
+    if(!AI){s.ai={step:'detect',kind:'photo',receipt:true,manual:true,photo:url,all:COMMON.slice(),have:[],amt:{}};this.render();return}
     try{const blob=await shrink(f);const r=await AI('Das ist das Foto eines Kassenbons aus dem Supermarkt (Österreich/Deutschland). Lies alle gekauften LEBENSMITTEL aus. Wandle abgekürzte Bon-Bezeichnungen in normale Namen um, wie man sie auf eine Einkaufsliste schreibt (z. B. "BIO ERDAEPFEL FESTK 2KG" → Erdäpfel, "SG VOGERLSALAT 150G" → Vogerlsalat, "JA FETA 200G" → Feta). Menge: Nimm Gewicht oder Stückzahl vom Bon (z. B. 2 kg → 2000 g, "3 x" → 3 Stk bzw. dreifache Füllmenge). Steht keine Menge dabei, nimm die übliche Packungsgröße. Gleiche Artikel zusammenzählen. Weglassen: Pfand, Sackerl/Tragetasche, Rabatte, Summen, Non-Food, Getränke, Süßigkeiten und Snacks. Antworte ausschließlich mit JSON: {"items": [{"name": "Erdäpfel", "menge": 2000, "einheit": "g"}, {"name": "Eier", "menge": 10, "einheit": "Stk"}]} – einheit nur g, ml oder Stk.',{images:[blob],modelTier:'complex'});
       if(s.sheet!=='ai'||s.ai!==a)return;const j=aiParse(r&&r.text!==undefined?r.text:r);const raw=(j&&j.items||[]).slice(0,30);const it=[],amt={};raw.forEach(x=>{const n=typeof x==='string'?x:x&&x.name;if(!n||it.includes(n))return;it.push(n);if(x&&x.menge)amt[n]={q:+x.menge,u:x.einheit||'g'}});
       if(!it.length){s.ai={step:'idle'};this.render();this.toast('Auf dem Bon habe ich nichts erkannt – versuch ein schärferes Foto');return}
@@ -1706,8 +1708,10 @@ function aiMissing(r,have){return r.i.filter(([n,q])=>q&&!PANTRY.test(n)&&!have.
 const AI_EX=[['rice','Ich habe Reis zuhause – schlag mir ein Gericht vor'],['week','Wochenvorschlag: 1× Fisch, 1× Fleisch, Rest Bowls']];
 /* Echte KI: im Claude-Artifact über die Fähigkeit „sample“ (läuft über das Claude-Konto des Nutzers). Sonst Demo. */
 let AI=null;
-(async()=>{for(let i=0;i<40&&!(window.claude&&window.claude.use);i++)await new Promise(r=>setTimeout(r,250));
+const aiReady=(async()=>{for(let i=0;i<40&&!(window.claude&&window.claude.use);i++)await new Promise(r=>setTimeout(r,250));
   try{if(window.claude&&window.claude.use)AI=await window.claude.use('sample')}catch(e){AI=null}})();
+/* Nach der Foto-Auswahl kurz auf die KI warten (lädt im Claude-Link bis zu 10 s nach dem Start), statt sofort auf „von Hand“ zu fallen */
+const aiWait=()=>AI?Promise.resolve():Promise.race([aiReady,new Promise(r=>setTimeout(r,window.EP_APP?0:9000))]);
 const aiCatalog=()=>R.map(r=>`${r.id}: ${r.n} [${r.c.join(',')}] ${r.m} Min, ${r.k} kcal; Zutaten: ${r.i.filter(x=>x[1]).map(x=>x[0].replace(/\s*\(.*?\)/g,'')).join(', ')}`).join('\n');
 function aiParse(t){if(t&&typeof t==='object')return t;const m=String(t||'').match(/\{[\s\S]*\}/);return m?JSON.parse(m[0]):null}
 Phone.prototype.aiFail=function(e){const s=this.s;AI=e&&e.code==='not_granted'?null:AI;
@@ -1744,13 +1748,13 @@ function natAmt(q,u){q=+q||0;
 function shrink(file){return new Promise((ok,no)=>{const img=new Image(),u=URL.createObjectURL(file);img.onload=()=>{const k=Math.min(1,1024/Math.max(img.width,img.height));
   const c=document.createElement('canvas');c.width=Math.round(img.width*k);c.height=Math.round(img.height*k);c.getContext('2d').drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(u);
   c.toBlob(b=>b?ok(b):no(),'image/jpeg',.85)};img.onerror=no;img.src=u})}
-Phone.prototype.aiPhotoReal=function(){const s=this.s;const inp=document.createElement('input');inp.type='file';inp.accept='image/*';
-  inp.onchange=async()=>{const f=inp.files&&inp.files[0];if(!f)return;s.ai={step:'snap',kind:'photo',real:true};try{s.ai.photo=URL.createObjectURL(f)}catch(e){}haptic();this.render();const a=s.ai;
+Phone.prototype.aiPhotoReal=async function(f,toStock){const s=this.s;{s.ai={step:'snap',kind:'photo',real:true,toStock:!!toStock};try{s.ai.photo=URL.createObjectURL(f)}catch(e){}s.sheet='ai';haptic();this.render();const a=s.ai;
+    await aiWait();if(s.sheet!=='ai'||s.ai!==a)return;
+    if(!AI){s.ai={step:'detect',kind:'photo',manual:true,toStock:!!toStock,photo:a.photo,all:COMMON.slice(),have:[],amt:{}};this.render();return}
     try{const blob=await shrink(f);const r=await AI('Welche Lebensmittel und Zutaten siehst du auf diesem Foto? Nenne sie auf Deutsch so, wie man sie auf eine Einkaufsliste schreibt (z. B. Basmatireis, Karotten, Feta, Eier). WICHTIG – Mengen: Gib an, was TATSÄCHLICH noch da ist, nicht was auf der Packung steht. Packungsangaben wie "2 kg", "150 g" oder "10 Stück" sind nur die ursprüngliche Füllmenge und dürfen NIE einfach übernommen werden, wenn die Packung offen, angerissen oder sichtbar nicht voll ist. Vorgehen: 1. Schau jedes Produkt genau an. 2. Zähle sichtbare Stücke einzeln (Kartoffeln/Erdäpfel, Zwiebeln, Äpfel, Eier, Tomaten usw. immer als Stk, auch in Netzen, Säcken und durch Sichtfenster – nur die erkennbar vorhandenen). 3. Ein offener Sack mit wenigen sichtbaren Knollen enthält nur diese wenigen. 4. Angeschnittenes Obst/Gemüse als Bruchteil in Vierteln (0.25, 0.5 oder 0.75 – z. B. 0.75 Stk für eine dreiviertel Tomate, 0.5 für eine halbe). Eine angebrochene Kresse-Schale ebenso in Vierteln. 5. Blattsalat, Kresse, Kräuter: Füllstand schätzen (Füllmenge × sichtbarer Anteil). 6. Fleisch/Fisch in g. Im Zweifel lieber weniger angeben. Verwende österreichische oder deutsche Namen so, wie sie auf der Packung stehen (z. B. Vogerlsalat, Erdäpfel). Gewürze, Öl und Salz weglassen. Fertige Getränke/Smoothies weglassen. Antworte ausschließlich mit JSON. Beschreibe im Feld sichtbar zuerst kurz, was du zählst, dann die Menge: {"items": [{"name": "Erdäpfel", "sichtbar": "Sack offen, 3 Knollen im Netz erkennbar", "menge": 3, "einheit": "Stk"}, {"name": "Tomate", "sichtbar": "eine halbe Tomate plus 2 Scheiben", "menge": 0.75, "einheit": "Stk"}]} – einheit nur g, ml oder Stk.',{images:[blob],modelTier:'complex'});
       if(s.sheet!=='ai'||s.ai!==a)return;const j=aiParse(r&&r.text!==undefined?r.text:r);const raw=(j&&j.items||[]).slice(0,16);const it=[],amt={};raw.forEach(x=>{const n=typeof x==='string'?x:x&&x.name;if(!n||it.includes(n))return;it.push(n);if(x&&x.menge)amt[n]={q:+x.menge,u:x.einheit||'g'}});
       if(!it.length){s.ai={step:'idle'};this.render();this.toast('Keine Zutaten erkannt – versuch ein anderes Foto');return}
-      a.all=it;a.have=it.slice();a.amt=amt;a.step='detect';haptic();this.render()}catch(e){this.aiFail(e)}};
-  inp.click()};
+      a.all=it;a.have=it.slice();a.amt=amt;a.step='detect';haptic();this.render()}catch(e){this.aiFail(e)}}};
 Phone.prototype.aiAsk=function(q,example){const s=this.s;const ql=q.toLowerCase();
   const kind=example?q:/woche|wochen/.test(ql)?'week':/foto|kamera|bild/.test(ql)?'photoask':/reis/.test(ql)?'rice':'search';
   const text=example?AI_EX.find(x=>x[0]===q)[1]:q;
@@ -1776,10 +1780,8 @@ Phone.prototype.aiSolve=function(){const s=this.s,a=s.ai;
     if(!a.list.length)a.list=R.slice(0,3).sort(()=>Math.random()-.5)}};
 /* Ohne KI (installierte App): Foto aus der Mediathek als Gedächtnisstütze, Zutaten selbst antippen */
 const COMMON=['Lachsfilet','Fischfilet','Hähnchenbrust','Rindersteak','Tofu','Eier','Kartoffeln','Süßkartoffel','Basmatireis','Nudeln','Quinoa','Couscous','Linsen','Kichererbsen','Karotten','Zucchini','Paprika','Zwiebel','Tomaten','Gurke','Brokkoli','Spinat','Avocado','Kürbis','Champignons','Edamame','Feta','Mozzarella','Parmesan','Naturjoghurt'];
-Phone.prototype.aiPhoto=function(){const s=this.s;if(AI){this.aiPhotoReal();return}
-  const inp=document.createElement('input');inp.type='file';inp.accept='image/*';
-  inp.onchange=()=>{const f=inp.files&&inp.files[0];if(!f)return;let url='';try{url=URL.createObjectURL(f)}catch(e){}
-    s.ai={step:'detect',kind:'photo',manual:true,photo:url,all:COMMON.slice(),have:[],amt:{}};haptic();this.render()};
+Phone.prototype.aiPhoto=function(toStock){const inp=document.createElement('input');inp.type='file';inp.accept='image/*';
+  inp.onchange=()=>{const f=inp.files&&inp.files[0];if(f)this.aiPhotoReal(f,toStock)};
   inp.click()};
 Phone.prototype.vAI=function(){const s=this.s,a=s.ai||{step:'idle'};
   const head=`<div class="ai-head"><span class="ai-orb ${a.step==='listen'||a.step==='think'||a.step==='snap'?'live':''}"><span class="orb-c"><i></i><i></i><i></i><i></i></span><span class="orb-g"></span></span><div><h3 style="margin:0">${a.step==='idle'?'Was möchtest du?':a.step==='listen'?'Ich höre zu …':a.step==='think'?'Einen Moment …':a.step==='snap'?(a.receipt?'Bon wird gelesen …':'Foto wird analysiert …'):a.step==='detect'?(a.receipt?(a.manual?'Was hast du gekauft?':'Das stand auf dem Bon'):a.manual?'Was hast du zuhause?':'Das habe ich erkannt'):'Mein Vorschlag'}</h3><p class="ai-sub">${a.step==='idle'?'Sprich oder tippe deinen Wunsch':a.step==='detect'?(a.manual?'Tippe an, was auf dem Foto ist':'Tippe an, was nicht stimmt'):(AI?'KI-Assistent · Claude':'KI-Assistent · Demo')}</p></div></div>`;
@@ -1796,8 +1798,10 @@ Phone.prototype.vAI=function(){const s=this.s,a=s.ai||{step:'idle'};
   else if(a.step==='snap'){body=`<div class="ai-photo scan">${['🍚','🥕','🧅','🫑','🧀','🥚','🧈','🍋'].map(e=>`<span>${e}</span>`).join('')}<i class="ai-scan"></i></div>`}
   else if(a.step==='detect'){if(a.manual&&a.photo)body+=`<div class="ai-thumb"><img src="${a.photo}" alt="Dein Foto"></div>`;const all=a.all||['Basmatireis','Karotten','Zwiebel','Paprika','Feta','Eier','Zucchini','Tomate'];
     body+=`<div class="ai-tags${a.manual?' many':''}">${all.map(n=>`<button class="ai-tag ${a.have.includes(n)?'on':''}" data-a="aitog" data-v="${n}"><span>${emo(n)}</span>${n}${a.amt&&a.amt[n]?`<small> · ${natAmt(a.amt[n].q,a.amt[n].u)}</small>`:''}</button>`).join('')}</div>
-      ${a.receipt?`<p class="ai-note">Die Artikel kommen in deinen Vorrat. Die Einkaufsliste zieht sie automatisch ab.</p>
-      <button class="gbtn" style="width:100%;margin-top:14px" data-a="aistock">${ic('box')}In den Vorrat legen${a.have.length?` (${a.have.length})`:''}</button>`
+      ${a.manual?`<p class="ai-warn">Automatisches Erkennen braucht die echte KI und läuft nur im Claude-Link. Hier bitte selbst antippen.</p>`:''}
+      ${a.receipt||a.toStock?`<p class="ai-note">${a.manual?'':'Alles Erkannte ist schon markiert – tippe ab, was nicht stimmt. '}Die Artikel kommen in deinen Vorrat. Die Einkaufsliste zieht sie automatisch ab.</p>
+      <button class="gbtn" style="width:100%;margin-top:14px" data-a="aistock">${ic('box')}In den Vorrat legen${a.have.length?` (${a.have.length})`:''}</button>
+      ${a.receipt?'':`<button class="ai-again" data-a="aifind">Stattdessen Gerichte finden</button>`}`
       :`<p class="ai-note">Salz, Pfeffer, Öl und Gewürze setze ich als vorhanden voraus. Was du auswählst, merke ich mir im Vorrat.</p>
       <button class="gbtn" style="width:100%;margin-top:14px" data-a="aifind">${ic('spark')}Gerichte finden</button>`}`}
   else if(a.step==='result'){
@@ -1883,7 +1887,7 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
    case 'ai':haptic();s.ai={step:'idle'};s.aiQ='';s.sheet='ai';this.render();break;
    case 'aiex':this.aiAsk(t.dataset.q,true);break;
    case 'aisend':{const q=(s.aiQ||'').trim();if(q)this.aiAsk(q);break}
-   case 'aiphoto':this.aiPhoto();break;
+   case 'aiphoto':this.aiPhoto(false);break;
    case 'aitog':{const v2=t.dataset.v;const h=s.ai.have;const i=h.indexOf(v2);i<0?h.push(v2):h.splice(i,1);this.render();break}
    case 'aifind':if(!s.ai.have.length){this.toast('Tippe zuerst an, was du zuhause hast');break}
       if(this.opts.persist||this.opts.full){stockPut(s.stock,s.ai.have.map(x=>({name:x,q:s.ai.amt&&s.ai.amt[x]?s.ai.amt[x].q:0,u:s.ai.amt&&s.ai.amt[x]?s.ai.amt[x].u:''})),'set');this.stockChanged()}
@@ -1900,10 +1904,10 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
    case 'undostock':if(this.prevStock){s.stock=this.prevStock;this.prevStock=null;this.stockChanged();this.render()}break;
    case 'stockadd':this.stockAdd((s.stockQ||'').trim());break;
    case 'stockcook':{if(!s.stock.length)break;const amt={};s.stock.forEach(x=>{if(x.q)amt[x.name]={q:x.q,u:x.u}});s.ai={step:'result',kind:'photo',have:s.stock.map(x=>x.name),amt,fromStock:true,text:'Mit meinem Vorrat kochen'};s.sheet='ai';haptic();this.render();break}
-   case 'stockphoto':s.ai={step:'idle'};s.sheet='ai';this.render();this.aiPhoto();break;
+   case 'stockphoto':s.ai={step:'idle'};s.sheet='ai';this.render();this.aiPhoto(true);break;
    case 'aireceipt':s.ai={step:'idle'};s.sheet='ai';this.render();this.aiReceipt();break;
    case 'aistock':{const a=s.ai;if(!a.have.length){this.toast('Tippe zuerst an, was du gekauft hast');break}
-      const n=a.have.length;stockPut(s.stock,a.have.map(x=>({name:x,q:a.amt&&a.amt[x]?a.amt[x].q:0,u:a.amt&&a.amt[x]?a.amt[x].u:''})),a.receipt?'add':'set');
+      if(a.manual===undefined&&!a.all)break;const n=a.have.length;stockPut(s.stock,a.have.map(x=>({name:x,q:a.amt&&a.amt[x]?a.amt[x].q:0,u:a.amt&&a.amt[x]?a.amt[x].u:''})),a.receipt?'add':'set');
       this.stockChanged();hapticSuccess();s.sheet='stock';this.render();this.toast(`${n} Artikel im Vorrat gespeichert`);break}
    /* --- Koch-Assistent --- */
    case 'cook':haptic();s.cook={step:'idle'};s.cookQ='';s.sheet='cook';this.render();break;
