@@ -87,7 +87,7 @@ html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
 .phone.full .det-top{top:calc(env(safe-area-inset-top,0px) + 12px)}
 .phone.full .toast{top:calc(env(safe-area-inset-top,0px) + 56px)}
 .phone.full .tabbar{bottom:var(--sb);left:16px;right:16px;background:rgba(255,255,255,.96)}
-@media (display-mode:standalone){.phone.full .scr::before{content:'';position:absolute;left:0;right:0;top:0;height:calc(env(safe-area-inset-top,0px) * 1.25);background:linear-gradient(rgba(var(--a-glow),.5),rgba(var(--a-glow),0));z-index:45;pointer-events:none}}
+@media (display-mode:standalone){.phone.full .scr::before{content:'';position:absolute;left:0;right:0;top:0;height:calc(env(safe-area-inset-top,0px) * 1.25);background:linear-gradient(rgba(var(--a-glow),.35),rgba(var(--a-glow),0));z-index:45;pointer-events:none}}
 /* Plan: Kachel endet über der Tab-Leiste, Ausblendung nur hinter der Leiste (sonst wirkt der Button blass) */
 /* Unter der Tab-Leiste: Inhalt blendet weich aus statt sichtbar darunter weiterzulaufen */
 .phone.full .scr:has(.tabbar)::after{content:'';position:absolute;left:0;right:0;bottom:0;height:calc(env(safe-area-inset-bottom,0px) + 112px);background:linear-gradient(rgba(246,247,252,0),var(--a-bg) 40%);z-index:35;pointer-events:none}
@@ -626,6 +626,27 @@ html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
 .shopv .tile.done .em{filter:grayscale(1)!important;opacity:.5!important}
 .shopv .tiles.pan .tile .em{height:32px;font-size:26px;filter:none!important}
 .shopv .tile.sug .em{filter:none!important}
+/* V82: Frühstück = warmes Apricot, Abendessen = Abendblau; Punkte in der Wochenleiste */
+.phone{--xb:#E09A4B;--xd:#5F6CA8}
+.planv .dish>.xm.b{color:var(--xb)}.planv .dish>.xm.d{color:var(--xd)}
+.planv .dish>.xm .ic{stroke-width:2}
+.planv .dish>.xm.b i{background:var(--xb)}.planv .dish>.xm.d i{background:var(--xd)}
+.planv .dish>.xm.set{color:#fff}
+.planv .dish>.xm.b.set{background:var(--xb)}.planv .dish>.xm.d.set{background:var(--xd)}
+.planv .dish>.xm.set i{background:#fff!important;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.planv .dish>.xm.b.set i .ic{stroke:var(--xb)}.planv .dish>.xm.d.set i .ic{stroke:var(--xd)}
+.planv .dish .xline button:first-child .ic{color:inherit}
+.xline button[data-v="b"] .ic{color:var(--xb)!important}.xline button[data-v="d"] .ic{color:var(--xd)!important}
+.wd .xds{position:absolute;left:4px;bottom:5px;display:flex;flex-direction:column;gap:2.5px;z-index:2}
+.wd .xds i{width:7px;height:7px;border-radius:50%;box-shadow:0 0 0 1.5px #fff}
+.wd .xds i.b{background:var(--xb)}.wd .xds i.d{background:var(--xd)}
+.wd.on .xds i{box-shadow:0 0 0 1.5px rgba(255,255,255,.9)}
+/* kräftigerer Kopf: Farbe bleibt oben länger satt und läuft erst spät aus */
+.view.planv{background:linear-gradient(180deg,rgba(var(--a-glow),.62) 0,rgba(var(--a-glow),.5) 90px,rgba(var(--a-glow),.26) 190px,rgba(var(--a-glow),0) 330px)!important}
+.view.planv>.blob{opacity:.45}
+.fhead-bg{height:340px!important;background:linear-gradient(180deg,rgba(0,96,57,.78) 0,rgba(0,96,57,.62) 90px,rgba(0,96,57,.3) 200px,rgba(0,96,57,0))!important}
+.fitv>.blob{opacity:.4}
+.recv,.shopv,.lrnv{background:linear-gradient(180deg,rgba(var(--a-glow),.4) 0,rgba(var(--a-glow),.2) 70px,rgba(var(--a-glow),0) 190px)}
 /* Abstände im Plan-Kopf */
 .phone.full .prog{margin:12px 0 12px}
 .phone.full .wnav{margin:5px 2px 13px}
@@ -2021,7 +2042,7 @@ Phone.prototype.vPill=function(i){const s=this.s;const id=s.plan[i];const r=RM[i
   else if(id===OUT)ind=`<span class="ind out">${ic('out')}</span>`;
   else ind=`<span class="ind empty">${ic('plus')}</span>`;
   const label=`${dayLbl(i)}: ${r?r.n:id===OUT?'auswärts':'noch frei'}${i===TODAY?' (heute)':''}`;
-  return `<button class="wd ${i===TODAY?'today':''} ${s.sel===i?'on':''} ${s.sel===i&&this.pop?'pop':''}" data-a="day" data-i="${i}" aria-label="${label}"><span class="a">${i===TODAY?'HEUTE':ab(i)}</span><span class="n">${String(dt(i)).padStart(2,'0')}</span>${ind}</button>`};
+  return `<button class="wd ${i===TODAY?'today':''} ${s.sel===i?'on':''} ${s.sel===i&&this.pop?'pop':''}" data-a="day" data-i="${i}" aria-label="${label}"><span class="a">${i===TODAY?'HEUTE':ab(i)}</span><span class="n">${String(dt(i)).padStart(2,'0')}</span>${ind}${(X=>X.b||X.d?`<span class="xds">${X.b?'<i class="b"></i>':''}${X.d?'<i class="d"></i>':''}</span>`:'')(s.extra[i]||{})}</button>`};
 Phone.prototype.vPanel=function(i){const s=this.s;const id=s.plan[i];const r=RM[id];
   const eb=`${i===TODAY?'Heute · ':''}${dn(i)} · ${dm(i)}`;
   const an=this.anim?' anim-'+this.anim:'';
@@ -2056,12 +2077,12 @@ Phone.prototype.vXline=function(i){const X=this.s.extra[i]||{};const a=['b','d']
   return `<div class="xline">${a.map(k=>`<button data-a="extra" data-v="${k}">${ic(XM[k][1])}<span>${xName(X[k]).replace(/</g,'&lt;')}</span></button>`).join('<i></i>')}</div>`};
 /* Auswahl wie das große Rad, nur kleiner: Teller seitlich wischen, der mittlere ist gewählt */
 Phone.prototype.vExtra=function(){const s=this.s,k=s.exK,i=s.sel,cur=(s.extra[i]||{})[k],L=xList(s,k);
-  const head=`<div class="ai-head"><span class="stk-ic">${ic(XM[k][1])}</span><div><h3 style="margin:0">${XM[k][0]}</h3><p class="ai-sub">${i===TODAY?'Heute · ':''}${dayLbl(i)}</p></div></div>`;
+  const head=`<div class="ai-head"><span class="stk-ic" style="background:var(--x${k})">${ic(XM[k][1])}</span><div><h3 style="margin:0">${XM[k][0]}</h3><p class="ai-sub">${i===TODAY?'Heute · ':''}${dayLbl(i)}</p></div></div>`;
   if(cur&&!s.exEdit){const r=RM[cur];
     return head+`<div class="xsel">${r?plate(r,132):`<span class="xsel-t">${ic(XM[k][1])}</span>`}<b>${xName(cur).replace(/</g,'&lt;')}</b>${r?`<span>${ic('clock')}${r.m} Min · ${r.k} kcal · ${r.p} g Protein</span>`:''}</div>
      <div class="acts" style="margin-top:16px">${r?`<button class="obtn" data-a="xwdet" data-id="${r.id}">${ic('book')}Rezept</button>`:''}<button class="gbtn" data-a="exedit">${ic('pencil')}Ändern</button></div>
      <button class="ai-again" data-a="exset" data-v="">${XM[k][0]} entfernen</button>`}
-  return `<div class="ai-head"><span class="stk-ic">${ic(XM[k][1])}</span><div><h3 style="margin:0">${XM[k][0]}</h3><p class="ai-sub">${i===TODAY?'Heute · ':''}${dayLbl(i)}</p></div></div>
+  return `<div class="ai-head"><span class="stk-ic" style="background:var(--x${k})">${ic(XM[k][1])}</span><div><h3 style="margin:0">${XM[k][0]}</h3><p class="ai-sub">${i===TODAY?'Heute · ':''}${dayLbl(i)}</p></div></div>
    <div class="xw" data-n="${L.length}"><span class="xw-pad"></span>${L.map((r,n)=>`<button class="xw-i" data-a="xwi" data-v="${n}" aria-label="${r.n}">${plate(r,96)}</button>`).join('')}<span class="xw-pad"></span></div>
    <div class="xw-cap"></div>
    <div class="acts" style="margin-top:14px"><button class="obtn" data-a="xwdet">${ic('book')}Rezept</button><button class="gbtn" data-a="xwtake">${ic('check')}Wählen</button></div>
