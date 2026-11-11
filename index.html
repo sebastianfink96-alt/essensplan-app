@@ -621,12 +621,11 @@ html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
 .shopv .tile.done .em.sv{filter:brightness(0);opacity:.3}
 .shopv .tiles.pan .tile .em.sv,.shopv .tile.sug .em.sv{filter:brightness(0);opacity:.55}
 .shopv .tiles.pan .tile .em.sv svg{width:30px;height:30px}
-/* V80: Symbole wieder farbig und deutlich – auf weißer Scheibe */
-.shopv .tile .em{filter:none!important;opacity:1!important;width:52px;height:52px;border-radius:50%;background:#fff;font-size:29px;margin-bottom:5px;box-shadow:0 6px 12px -8px rgba(60,10,30,.6)}
-.shopv .tile.done .em{background:#fff;filter:grayscale(1)!important;opacity:.55!important;box-shadow:none}
-.shopv .tiles.pan .tile .em{width:40px;height:40px;font-size:22px;box-shadow:none}
-.shopv .tile.sug .em{box-shadow:none}
-.shopv .tile.new .em{background:none;box-shadow:none}
+/* V81: Symbole farbig und groß direkt auf der Kachel (ohne Scheibe), mit weichem Schatten */
+.shopv .tile .em{filter:drop-shadow(0 5px 6px rgba(50,8,26,.38))!important;opacity:1!important;width:auto;height:44px;border-radius:0;background:none;font-size:36px;margin-bottom:5px;box-shadow:none}
+.shopv .tile.done .em{filter:grayscale(1)!important;opacity:.5!important}
+.shopv .tiles.pan .tile .em{height:32px;font-size:26px;filter:none!important}
+.shopv .tile.sug .em{filter:none!important}
 /* Abstände im Plan-Kopf */
 .phone.full .prog{margin:12px 0 12px}
 .phone.full .wnav{margin:5px 2px 13px}
