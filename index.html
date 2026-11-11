@@ -595,24 +595,32 @@ html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
 .shopv .srow{margin-top:12px}
 .shopv .pill.allb{flex:1 0 100%;justify-content:center;background:var(--a-ink);color:#fff;box-shadow:none;padding:11px 14px}
 .phone .view.shopv .ap-h2.sh{margin:30px 2px 10px;font-size:22px!important}
-.shopv .tiles{display:block;background:var(--a-card);border-radius:22px;box-shadow:0 0 0 1px var(--a-line),0 18px 32px -28px rgba(60,45,30,.5);overflow:hidden}
-.shopv .tile{aspect-ratio:auto!important;display:grid;grid-template-columns:26px 40px minmax(0,1fr) auto;grid-template-rows:auto auto;column-gap:12px;align-items:center;text-align:left;justify-content:stretch;padding:11px 14px;border-radius:0;background:none!important;color:var(--a-ink)!important;box-shadow:none!important;border:0!important;gap:0 12px}
-.shopv .tile+.tile{box-shadow:inset 0 1px 0 var(--a-line)!important}
-.shopv .tile:active{transform:none;background:rgba(0,0,0,.03)!important}
-.shopv .tile::before{content:'';grid-row:1/3;width:24px;height:24px;border-radius:50%;box-sizing:border-box;border:1.8px solid #CFC8BD;transition:background .2s,border-color .2s}
-.shopv .tile .em{grid-row:1/3;grid-column:2;width:40px;height:40px;border-radius:12px;background:#F4F1EC;display:grid;place-items:center;font-size:21px!important;line-height:1}
-.shopv .tile .tn{grid-column:3;grid-row:1/3;font-size:16px!important;font-weight:500;line-height:1.25;align-self:center}
-.shopv .tile:has(.tnd) .tn{grid-row:1;align-self:end}
-.shopv .tile .tnd{grid-column:3;grid-row:2;font-size:12px!important;color:var(--a-muted);opacity:1;margin:1px 0 0;align-self:start}
-.shopv .tile .tq{grid-column:4;grid-row:1/3;font-size:13.5px!important;font-weight:500;color:var(--a-eyebrow);background:rgba(var(--a-glow),.08);border-radius:999px;padding:5px 11px;opacity:1;white-space:nowrap}
-.shopv .tile.done::before{background:#6F9A5E url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 12.5 4 4 8-9'/%3E%3C/svg%3E") center/15px no-repeat;border-color:#6F9A5E}
-.shopv .tile.done .tn{color:var(--a-muted);text-decoration:line-through;text-decoration-color:rgba(120,120,140,.4)}
-.shopv .tile.done .tq{background:none;color:var(--a-muted)}
-.shopv .tile.sug::before,.shopv .tile.new::before{border:0;background:var(--a-grad) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round'%3E%3Cpath d='M12 6v12M6 12h12'/%3E%3C/svg%3E") center/14px no-repeat}
-.shopv .tiles.pan .tile .em{font-size:19px!important}
-.shopv .tiles.pan .tile .tn{font-size:15px!important}
-.shopv .stk-have span{background:#fff}
-@media (min-width:700px){.phone.full .shopv .tiles{display:grid;grid-template-columns:1fr 1fr}.phone.full .shopv .tile+.tile{box-shadow:none!important}}
+.shopv .tiles{gap:10px}
+.shopv .tile{aspect-ratio:1;border-radius:24px;padding:10px 6px 9px;gap:3px;color:#fff!important;border:0;
+  background:radial-gradient(90% 70% at 100% 0%,rgba(255,255,255,.26),rgba(255,255,255,0) 62%),var(--a-deep);box-shadow:0 16px 26px -18px rgba(110,36,68,.8)}
+.shopv .tile:active{transform:scale(.95)}
+.shopv .tile .em{width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.2);display:grid;place-items:center;font-size:25px;line-height:1;margin-bottom:3px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
+.shopv .tile .tn{font-size:13.5px;font-weight:600;letter-spacing:-.01em;line-height:1.15}
+.shopv .tile .tq{font-size:11.5px;font-weight:500;background:rgba(255,255,255,.2);border-radius:999px;padding:2px 8px;margin-top:2px;opacity:1}
+.shopv .tile .tnd{font-size:10px;opacity:.8;margin-top:1px}
+.shopv .tile.done{background:#fff;color:var(--a-muted)!important;box-shadow:0 0 0 1px var(--a-line)}
+.shopv .tile.done .em{background:#F4F1EC;box-shadow:none;filter:grayscale(.6);opacity:.75}
+.shopv .tile.done .tn{text-decoration:line-through;text-decoration-color:rgba(120,120,140,.4);font-weight:500}
+.shopv .tile.done .tq{background:none;padding:0}
+.shopv .tile.done::after{content:'';position:absolute;right:9px;top:9px;width:20px;height:20px;border-radius:50%;background:#6F9A5E url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 12.5 4 4 8-9'/%3E%3C/svg%3E") center/12px no-repeat}
+.shopv .tiles.pan .tile{aspect-ratio:auto;padding:12px 6px 10px;background:#fff;color:var(--a-ink)!important;box-shadow:0 0 0 1px var(--a-line)}
+.shopv .tiles.pan .tile .em{width:38px;height:38px;font-size:20px;background:#F4F1EC;box-shadow:none}
+.shopv .tiles.pan .tile .tn{font-size:12.5px;font-weight:500}
+.shopv .tiles.pan .tile .tnd{color:var(--a-muted)}
+.shopv .tile.sug{background:var(--a-today);color:var(--a-blue)!important;box-shadow:none}
+.shopv .tile.sug .em,.shopv .tile.new .em{background:rgba(255,255,255,.7);box-shadow:none}
+.shopv .tile.new{background:transparent;color:var(--a-violet)!important;box-shadow:none;border:1.5px dashed var(--a-ring)}
+/* dunkle Flächen durch den Akzent-Verlauf der Tagesempfehlung ersetzen */
+.phone{--a-deep:linear-gradient(135deg,#C2607A 0%,#93375A 55%,#6E2444 100%)}
+.phone .mseg button.on{background:var(--a-deep);color:rgba(255,255,255,.8);box-shadow:0 14px 26px -16px rgba(110,36,68,.85)}
+.phone .chip.on{background:var(--a-deep)}
+.shopv .pill.allb{background:var(--a-deep)!important}
+.phone .rhero{background:radial-gradient(70% 110% at 100% 40%,rgba(255,255,255,.3),rgba(255,255,255,0) 62%),radial-gradient(60% 80% at 0% 100%,rgba(255,170,150,.35),rgba(255,255,255,0) 70%),var(--a-deep)!important}
 /* ===== KI-Assistent ===== */
 .orb{position:absolute;right:22px;bottom:90px;width:62px;height:62px;border-radius:50%;border:0;padding:0;z-index:42;display:grid;place-items:center;color:#fff;
   box-shadow:0 12px 26px -8px rgba(30,20,80,.42),0 0 22px -2px rgba(120,110,255,.38);overflow:hidden;animation:orbIn .5s cubic-bezier(.2,.8,.2,1)}
