@@ -595,26 +595,30 @@ html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
 .shopv .srow{margin-top:12px}
 .shopv .pill.allb{flex:1 0 100%;justify-content:center;background:var(--a-ink);color:#fff;box-shadow:none;padding:11px 14px}
 .phone .view.shopv .ap-h2.sh{margin:30px 2px 10px;font-size:22px!important}
-.shopv .tiles{gap:10px}
-.shopv .tile{aspect-ratio:1;border-radius:24px;padding:10px 6px 9px;gap:3px;color:#fff!important;border:0;
-  background:radial-gradient(90% 70% at 100% 0%,rgba(255,255,255,.26),rgba(255,255,255,0) 62%),var(--a-deep);box-shadow:0 16px 26px -18px rgba(110,36,68,.8)}
-.shopv .tile:active{transform:scale(.95)}
-.shopv .tile .em{width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.2);display:grid;place-items:center;font-size:25px;line-height:1;margin-bottom:3px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.18)}
+/* Bring-Stil: dichte, flache Kacheln, weißes Symbol groß in der Mitte, Name und Menge schlicht darunter */
+.shopv .tiles{gap:7px}
+.shopv .tile{aspect-ratio:1/1.04;border-radius:16px;padding:8px 5px 9px;gap:2px;justify-content:center;color:#fff!important;border:0;background:#A4425F;box-shadow:none;transition:transform .15s,background .25s}
+.shopv .tile:nth-child(3n+2){background:#9C3C59}
+.shopv .tile:nth-child(3n){background:#AB4A66}
+.shopv .tile:active{transform:scale(.94)}
+.shopv .tile .em{font-size:38px;line-height:1.05;height:46px;display:grid;place-items:center;filter:brightness(0) invert(1);opacity:.96;margin-bottom:4px;background:none;box-shadow:none;width:auto;border-radius:0}
 .shopv .tile .tn{font-size:13.5px;font-weight:600;letter-spacing:-.01em;line-height:1.15}
-.shopv .tile .tq{font-size:11.5px;font-weight:500;background:rgba(255,255,255,.2);border-radius:999px;padding:2px 8px;margin-top:2px;opacity:1}
-.shopv .tile .tnd{font-size:10px;opacity:.8;margin-top:1px}
-.shopv .tile.done{background:#fff;color:var(--a-muted)!important;box-shadow:0 0 0 1px var(--a-line)}
-.shopv .tile.done .em{background:#F4F1EC;box-shadow:none;filter:grayscale(.6);opacity:.75}
-.shopv .tile.done .tn{text-decoration:line-through;text-decoration-color:rgba(120,120,140,.4);font-weight:500}
-.shopv .tile.done .tq{background:none;padding:0}
-.shopv .tile.done::after{content:'';position:absolute;right:9px;top:9px;width:20px;height:20px;border-radius:50%;background:#6F9A5E url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 12.5 4 4 8-9'/%3E%3C/svg%3E") center/12px no-repeat}
-.shopv .tiles.pan .tile{aspect-ratio:auto;padding:12px 6px 10px;background:#fff;color:var(--a-ink)!important;box-shadow:0 0 0 1px var(--a-line)}
-.shopv .tiles.pan .tile .em{width:38px;height:38px;font-size:20px;background:#F4F1EC;box-shadow:none}
+.shopv .tile .tq{font-size:12px;font-weight:400;opacity:.85;background:none;padding:0;margin:0}
+.shopv .tile .tnd{font-size:10px;opacity:.65;margin-top:0}
+.shopv .tile.done{background:#EDE9E3!important;color:#8E8A84!important}
+.shopv .tile.done .em{filter:brightness(0);opacity:.3}
+.shopv .tile.done .tn{font-weight:500}
+.shopv .tiles.pan .tile{aspect-ratio:auto;padding:10px 5px;background:#F3E3E6!important;color:#7A2848!important}
+.shopv .tiles.pan .tile .em{font-size:26px;height:32px;filter:brightness(0);opacity:.55}
 .shopv .tiles.pan .tile .tn{font-size:12.5px;font-weight:500}
-.shopv .tiles.pan .tile .tnd{color:var(--a-muted)}
-.shopv .tile.sug{background:var(--a-today);color:var(--a-blue)!important;box-shadow:none}
-.shopv .tile.sug .em,.shopv .tile.new .em{background:rgba(255,255,255,.7);box-shadow:none}
-.shopv .tile.new{background:transparent;color:var(--a-violet)!important;box-shadow:none;border:1.5px dashed var(--a-ring)}
+.shopv .tile.sug{background:var(--a-today)!important;color:var(--a-blue)!important}
+.shopv .tile.sug .em{filter:brightness(0);opacity:.55}
+.shopv .tile.new{background:transparent!important;color:var(--a-violet)!important;border:1.5px dashed var(--a-ring)}
+.shopv .tile.new .em{filter:none;opacity:1}
+.phone .view.shopv .ap-h2.sh{margin:26px 2px 9px;font-size:19px!important}
+/* Abstände im Plan-Kopf */
+.phone.full .prog{margin:12px 0 12px}
+.phone.full .wnav{margin:5px 2px 13px}
 /* dunkle Flächen durch den Akzent-Verlauf der Tagesempfehlung ersetzen */
 .phone{--a-deep:linear-gradient(135deg,#C2607A 0%,#93375A 55%,#6E2444 100%)}
 .phone .mseg button.on{background:var(--a-deep);color:rgba(255,255,255,.8);box-shadow:0 14px 26px -16px rgba(110,36,68,.85)}
