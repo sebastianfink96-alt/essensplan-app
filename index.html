@@ -355,10 +355,11 @@ html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
 
 /* Siri-artige Kugel: dunkler Kern, leuchtende Farbschleier (Blau, Cyan, Pink, Violett) drehen sich gegeneinander, heller Glanz in der Mitte */
 .orb,.ai-orb{background:radial-gradient(circle at 50% 50%,#24205a 0%,#0d0c26 62%,#07061a 100%)!important}
-.orb-c{position:absolute;inset:0;border-radius:50%;overflow:hidden;filter:saturate(1.3)}
+/* Safari schneidet unscharfe, animierte Kinder nicht am runden Rand ab (eckiger Farbschein) – darum zusätzlich als Kreis ausschneiden */
+.orb-c{position:absolute;inset:0;border-radius:50%;overflow:hidden;-webkit-clip-path:circle(50% at 50% 50%);clip-path:circle(50% at 50% 50%);-webkit-mask-image:radial-gradient(circle,#000 69%,transparent 70%);mask-image:radial-gradient(circle,#000 69%,transparent 70%);transform:translateZ(0);isolation:isolate}
 .orb-c i{position:absolute;border-radius:50%}
 /* Zwei gegenläufige Farbkränze mit ALLEN Farben – der Knopf sieht dadurch in jeder Phase gleich aus */
-.orb-c i:nth-child(1){inset:-8%;background:conic-gradient(from 0deg,#3E8BFF,#8C5BFF,#FF5FB0,#FFB48A,#38D9E0,#3E8BFF);filter:blur(7px);animation:orbSpin 28s linear infinite}
+.orb-c i:nth-child(1){inset:0;background:conic-gradient(from 0deg,#3E8BFF,#8C5BFF,#FF5FB0,#FFB48A,#38D9E0,#3E8BFF);filter:blur(5px);animation:orbSpin 28s linear infinite}
 .orb-c i:nth-child(2){inset:16%;background:conic-gradient(from 180deg,#38D9E0,#6C7BFF,#C56BFF,#FF6FAE,#38D9E0);filter:blur(6px);opacity:.75;mix-blend-mode:screen;animation:orbSpin 40s linear infinite reverse}
 /* dunkle Tiefe zum Rand, Glanzlicht oben links */
 .orb-c i:nth-child(3){inset:0;background:radial-gradient(circle at 50% 55%,rgba(10,8,34,0) 30%,rgba(10,8,34,.5) 78%,rgba(8,6,26,.82) 100%)}
