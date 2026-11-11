@@ -288,6 +288,23 @@ html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
 .fleg ol{margin:10px 0 0;padding:0;list-style:none;counter-reset:f;display:flex;flex-direction:column;gap:6px}
 .fleg li{counter-increment:f;display:flex;align-items:center;gap:10px;font-size:14px}
 .fleg li::before{content:counter(f);width:22px;height:22px;border-radius:50%;background:var(--a-today);color:var(--a-eyebrow);font-size:12px;font-weight:600;display:grid;place-items:center;flex:none}
+.fstep{display:flex;align-items:center;gap:9px;margin:16px 0 10px;font-size:15px;font-weight:500}
+.fstep i{font-style:normal;width:22px;height:22px;border-radius:50%;background:#E1F0E7;color:#2F6B4F;font-size:12px;font-weight:600;display:grid;place-items:center;flex:none}
+.fstep small{margin-left:auto;font-size:12px;font-weight:400;color:var(--a-muted)}
+.ftiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.ftile{border:0;border-radius:18px;padding:12px 4px 10px;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:13px;background:#F4F5F9;color:var(--a-ink);touch-action:manipulation;transition:background .18s,color .18s,transform .15s}
+.ftile:active{transform:scale(.96)}
+.ftile span{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:#fff;color:var(--c);transition:background .18s,color .18s}
+.ftile .ic{width:22px;height:22px;stroke-width:1.7}
+.ftile.on{background:var(--c);color:#fff}
+.ftile.on span{background:rgba(255,255,255,.22);color:#fff}
+.fint{display:flex;align-items:center;gap:9px;padding:6px 0}
+.fint b{font-weight:400;font-size:15px}
+.inum{margin-left:auto;display:flex;gap:8px}
+.inum button{width:52px;height:38px;border-radius:999px;border:0;background:#F4F5F9;font-size:15px;font-weight:500;color:var(--a-ink);transition:background .18s,color .18s}
+.inum button.on{background:var(--c);color:#fff}
+.inum .n1.on{opacity:.6}.inum .n2.on{opacity:.82}
+.fl-p{margin:8px 0 2px;font-size:13px;color:var(--a-muted);line-height:1.4}
 .fai{background:var(--a-card);border-radius:28px;padding:16px;box-shadow:0 0 0 1.5px rgba(var(--a-glow),.16),0 22px 40px -24px rgba(var(--a-glow),.4);scroll-margin-top:70px}
 .fai-h{display:flex;align-items:center;gap:12px}
 .fai-h b{display:block;font-weight:500;font-size:17px;line-height:1.2}
@@ -857,6 +874,12 @@ stop:'<rect x="7" y="7" width="10" height="10" rx="2"/>',
 box:'<path d="M4 8.5 12 4l8 4.5v7L12 20l-8-4.5z"/><path d="M4 8.5 12 13l8-4.5M12 13v7"/>',
 receipt:'<path d="M6 3.5h12v17l-2-1.4-2 1.4-2-1.4-2 1.4-2-1.4-2 1.4z"/><path d="M9 8h6M9 11.5h6M9 15h3.5"/>',
 up:'<path d="m6 15 6-6 6 6"/>',
+f_bike:'<circle cx="6" cy="16" r="3.6"/><circle cx="18" cy="16" r="3.6"/><path d="M6 16l4-7h5.5l2.5 7M10 9l3.2 7M14.5 6H17"/>',
+f_run:'<path d="M3 17.5v-1.2c0-1 .6-1.9 1.5-2.3L8 12.5l2-4.5 2.6 1.6L15 13l4.2 1.4c1.1.4 1.8 1.4 1.8 2.5v.6z"/><path d="M11 12.5l1.8-.9M12.4 14.2l1.8-.9"/>',
+f_tennis:'<circle cx="12" cy="12" r="8.2"/><path d="M5.8 6.8c3.2 2.6 3.2 7.8 0 10.4M18.2 6.8c-3.2 2.6-3.2 7.8 0 10.4"/>',
+f_swim:'<circle cx="16.8" cy="7.6" r="1.9"/><path d="M4.5 13.2l5.2-3.6 3.2 2.6 3.6 1"/><path d="M3 17.6c1.5 0 1.5-1.2 3-1.2s1.5 1.2 3 1.2 1.5-1.2 3-1.2 1.5 1.2 3 1.2 1.5-1.2 3-1.2 1.5 1.2 3 1.2"/>',
+f_kraft:'<path d="M3.5 9.5v5M6.5 7v10M17.5 7v10M20.5 9.5v5M6.5 12h11"/>',
+f_mob:'<circle cx="12" cy="4.8" r="1.9"/><path d="M12 8v5.2M5.5 9.8l6.5 1.4 6.5-1.4M7 19.5l5-6.3 5 6.3"/>',
 heart:'<path d="M12 20.3s-7.5-4.5-7.5-10.3A4.2 4.2 0 0 1 12 7.4a4.2 4.2 0 0 1 7.5 2.6c0 5.8-7.5 10.3-7.5 10.3z"/>',
   sliders:'<path d="M4 7h9M17 7h3M4 12h3M11 12h9M4 17h11M19 17h1"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="17" cy="17" r="2"/>',
   left:'<path d="m15 18-6-6 6-6"/>',
@@ -1400,34 +1423,17 @@ function fitScore(T){if(!T||!(T.s||T.k||T.m))return null;
   if(T.k)return r=>r.p*2+(T.s?r.kh*.5:0)+r.k/60;
   if(T.s&&(T.s.lv||2)>=2)return r=>r.kh*1.2+r.p*.5+r.k/50;
   return r=>r.p*.6-r.k/12}
-const fText=T=>!T?'frei':[T.s?`Sport (${T.s.k.map(k=>FKN[k]).join(', ')}, ${LVN[T.s.lv||2].toLowerCase()})`:'',T.k?`Krafttraining (${LVN[T.k.lv||2].toLowerCase()})`:'',T.m?`Mobilität (${T.m.k.map(k=>FKN[k]).join(', ')})`:''].filter(Boolean).join(' + ');
-Phone.prototype.vFit=function(){const s=this.s,i=s.fsel,T=s.train[i]||{};
+const fText=T=>!T?'frei':[T.s?`Sport (${T.s.k.map(k=>FKN[k]).join(', ')}, ${LVN[T.s.lv||2].toLowerCase()})`:'',T.k?`Krafttraining (${LVN[T.k.lv||2].toLowerCase()})`:'',T.m?'Mobilität':''].filter(Boolean).join(' + ');
+const FACTS=[['s','bike','Radfahren'],['s','run','Laufen'],['s','tennis','Tennis'],['s','swim','Schwimmen'],['k','kraft','Kraft'],['m','mob','Mobilität']];
+Phone.prototype.vFit=function(){const s=this.s;
   const tot=Object.values(s.train).reduce((a,x)=>a+fCount(x),0);
-  const pill=d=>{const X=s.train[d],has=X&&(X.s||X.k||X.m);return `<button class="wd fd ${d===TODAY?'today':''} ${s.fsel===d?'on':''} ${d<TODAY?'past':''}" data-a="fday" data-i="${d}" aria-label="${dayLbl(d)}: ${fText(X)}"><span class="a">${d===TODAY?'HEUTE':ab(d)}</span><span class="n">${String(dt(d)).padStart(2,'0')}</span>${has?`<span class="ind fr">${fring(X,36)}</span>`:`<span class="ind empty">${ic('plus')}</span>`}</button>`};
-  const lvSel=(c)=>{const o=T[c];if(!o)return '';const lv=o.lv||2;return `<span class="ilv" role="group" aria-label="Intensität"><small>${LVN[lv]}</small>${[1,2,3].map(l=>`<button class="l${l} ${lv===l?'on':''}" data-a="flv" data-c="${c}" data-v="${l}" style="--c:${FC[c]}" aria-label="${LVN[l]}"><i></i></button>`).join('')}</span>`};
-  const pop=(c)=>s.ipop&&s.ipop.c===c?`<div class="ipop" style="--c:${FC[c]}"><b>Intensität${s.ipop.k&&FKN[s.ipop.k]?' · '+FKN[s.ipop.k]:''}</b><div>${[1,2,3].map(l=>`<button data-a="flv" data-c="${c}" data-v="${l}" ${s.ipop.k?`data-k="${s.ipop.k}"`:''}><i class="p${l}"></i>${LVN[l]}</button>`).join('')}</div></div>`:'';
-  const chip=(c,k,l,e,on)=>`<button class="fchip ${on?'on':''}" data-a="ftog" data-c="${c}" data-v="${k}" ${c!=='m'?`data-lp="${c}" data-k="${k}"`:''} style="--c:${FC[c]}"><span>${e}</span>${l}</button>`;
-  const row=(c,title,sub,chips)=>`<div class="frow ${T[c]?'on':''}">${pop(c)}<div class="frh"><span class="fdot" style="--c:${FC[c]}"></span><b>${title}</b><small>${sub}</small>${c!=='m'?lvSel(c):''}</div><div class="fchips">${chips}</div></div>`;
+  const pill=d=>{const X=s.train[d],has=X&&(X.s||X.k||X.m);return `<button class="wd fd ${d===TODAY?'today':''} ${s.sheet==='fday'&&s.fsel===d?'on':''} ${d<TODAY?'past':''}" data-a="fday" data-i="${d}" aria-label="${dayLbl(d)}: ${fText(X)}"><span class="a">${d===TODAY?'HEUTE':ab(d)}</span><span class="n">${String(dt(d)).padStart(2,'0')}</span>${has?`<span class="ind fr">${fring(X,36)}</span>`:`<span class="ind empty">${ic('plus')}</span>`}</button>`};
   const w=s.fwk||0,A=s.fitAI,sig=fitSig(s,w),fresh=A&&A.res&&A.wk===w;
   return `<div class="view fitv"><div class="fhead-bg"></div><div class="blob"><i></i><i></i><i></i><i></i></div><div class="z">
   <div class="phead"><div><div class="eb">KW ${KW(0)}–${KW(1)} · ${tot} ${tot===1?'Einheit':'Einheiten'} geplant</div><div class="h-title">Mein Fitnessbereich</div></div>
    <div class="hbtns"><button class="iconbtn" data-a="flip" data-v="plan" aria-label="Zurück zum Essensplan" title="Zum Essensplan">${ic('up')}</button></div></div>
   ${[0,1].map(k=>{const n=Array.from({length:7},(_,j)=>fCount(s.train[k*7+j])).reduce((a,b)=>a+b,0);return `<div class="lbl fl">${k?'Nächste Woche':'Diese Woche'} · KW ${KW(k)}<span>${n} ${n===1?'Einheit':'Einheiten'}</span></div><div class="fweek">${Array.from({length:7},(_,j)=>pill(k*7+j)).join('')}</div>`}).join('')}
-  <div class="fpanel">
-   <div class="open-head"><div><div class="eb">${i===TODAY?'Heute · ':''}${dn(i)} · ${dm(i)}</div><div class="open-title">Training eintragen</div></div>${s.train[i]?`<button class="pill sm" data-a="fclr">Leeren</button>`:''}</div>
-   ${row('s','Sport','äußerer Ring',SPORTS.map(([k,l,e])=>chip('s',k,l,e,T.s&&T.s.k.includes(k))).join(''))}
-   ${row('k','Krafttraining','mittlerer Ring',chip('k','kraft','Krafttraining','🏋️',!!T.k))}
-   ${row('m','Mobilität','innerer Ring',MOBS.map(([k,l,e])=>chip('m',k,l,e,T.m&&T.m.k.includes(k))).join(''))}
-   <p class="fnote">Gedrückt halten oder die drei Kreise rechts: Intensität wählen.</p>
-  </div>
-  <div class="lbl">So funktioniert's</div>
-  <div class="fleg">
-   <div class="fl-r"><span>${fring({s:{k:['run'],lv:3}},34)}</span><div><b>Sport</b><small>Radfahren · Laufen · Tennis · Schwimmen</small></div></div>
-   <div class="fl-r"><span>${fring({k:{lv:3}},34)}</span><div><b>Krafttraining</b><small>eine Einheit pro Tag</small></div></div>
-   <div class="fl-r"><span>${fring({m:{k:['yoga']}},34)}</span><div><b>Mobilität</b><small>Mobilisierung · Dehnen · Yoga</small></div></div>
-   <div class="fl-i"><span>${fring({s:{k:['run'],lv:1}},30)}<small>Locker</small></span><span>${fring({s:{k:['run'],lv:2}},30)}<small>Mittel</small></span><span>${fring({s:{k:['run'],lv:3}},30)}<small>Hart</small></span><p>Je härter, desto länger und kräftiger der Ring.</p></div>
-   <ol><li>Tag oben antippen</li><li>Aktivität antippen – mehrere pro Tag möglich</li><li>Gedrückt halten für die Intensität</li></ol>
-  </div>
+  <p class="fnote" style="margin-top:12px">Tag antippen, um Training einzutragen</p>
   <div class="lbl">KI-Analyse</div>
   <div class="fai" id="fai">
    <div class="fai-h"><span class="ai-orb ${A&&A.step==='think'?'live':''}"><span class="orb-c"><i></i><i></i><i></i><i></i></span><span class="orb-g"></span></span><div><b>Training & Ernährung</b><small>${AI?'Analyse von Claude':'Auswertung auf dem Gerät'}</small></div></div>
@@ -1438,7 +1444,24 @@ Phone.prototype.vFit=function(){const s=this.s,i=s.fsel,T=s.train[i]||{};
    <button class="gbtn" style="width:100%;margin-top:12px" data-a="fitai" ${A&&A.step==='think'?'disabled':''}>${ic('spark')}${fresh?'Neu analysieren':'Woche analysieren'}</button>
    <button class="ai-again" data-a="fitfill">Freie Tage passend zum Training planen</button>
   </div>
+  <div class="lbl">So funktioniert's</div>
+  <div class="fleg">
+   <div class="fl-r"><span>${fring({s:{k:['run'],lv:3}},30)}</span><div><b>Sport</b><small>Radfahren · Laufen · Tennis · Schwimmen</small></div></div>
+   <div class="fl-r"><span>${fring({k:{lv:3}},30)}</span><div><b>Kraft</b><small>Krafttraining</small></div></div>
+   <div class="fl-r"><span>${fring({m:{k:['mob']}},30)}</span><div><b>Mobilität</b><small>Mobilisierung · Dehnen · Yoga</small></div></div>
+   <p class="fl-p">Tag antippen, Aktivität wählen, Intensität 1–3 setzen. Je höher die Intensität, desto länger und kräftiger der Ring.</p>
+  </div>
   </div></div>`};
+/* Fenster „Training eintragen“: 1 Aktivität, 2 Intensität */
+Phone.prototype.vFday=function(){const s=this.s,i=s.fsel,T=s.train[i]||{};
+  const on=(c,k)=>c==='s'?!!(T.s&&T.s.k.includes(k)):!!T[c];
+  const num=(c,l)=>{const lv=(T[c]&&T[c].lv)||2;return `<div class="fint"><span class="fdot" style="--c:${FC[c]}"></span><b>${l}</b><span class="inum" role="group" aria-label="Intensität ${l}">${[1,2,3].map(n=>`<button class="n${n} ${lv===n?'on':''}" data-a="flv" data-c="${c}" data-v="${n}" style="--c:${FC[c]}" aria-label="${LVN[n]}">${n}</button>`).join('')}</span></div>`};
+  return `<h3>Training</h3><p>${i===TODAY?'Heute · ':''}${dayLbl(i)}</p>
+   <div class="fstep"><i>1</i>Aktivität wählen</div>
+   <div class="ftiles">${FACTS.map(([c,k,l])=>`<button class="ftile ${on(c,k)?'on':''}" data-a="ftog" data-c="${c}" data-v="${k}" style="--c:${FC[c]}" aria-pressed="${on(c,k)}"><span>${ic('f_'+k)}</span>${l}</button>`).join('')}</div>
+   ${T.s||T.k?`<div class="fstep"><i>2</i>Intensität<small>1 locker · 2 mittel · 3 hart</small></div>${T.s?num('s','Sport'):''}${T.k?num('k','Kraft'):''}`:''}
+   <button class="gbtn" style="width:100%;margin-top:18px;background:linear-gradient(100deg,#5FA283,#2F6B4F 58%,#3F8468);box-shadow:0 14px 26px -12px rgba(47,107,79,.7)" data-a="closesheet">${ic('check')}Fertig</button>
+   ${s.train[i]?`<button class="ai-again" data-a="fclr">Tag leeren</button>`:''}`};
 /* Intensität per langem Druck auf Sportart oder Krafttraining */
 Phone.prototype.lpress=function(e,el){const self=this,x0=e.clientX,y0=e.clientY;let fired=false;
   const tm=setTimeout(()=>{fired=true;self.suppressClick=true;haptic();self.s.ipop={c:el.dataset.lp,k:el.dataset.lp==='s'?el.dataset.k:''};self.render()},420);
@@ -1626,7 +1649,6 @@ Phone.prototype.dragSheet=function(e,sh){if(sh.scrollTop>0)return;const self=thi
   addEventListener('pointermove',move,{passive:false});addEventListener('pointerup',up);addEventListener('pointercancel',up)};
 Phone.prototype.pdown=function(e){
   const sh=e.target.closest('.sheet');if(sh)return this.dragSheet(e,sh);
-  const lp=e.target.closest('[data-lp]');if(lp&&this.s.screen==='fit')return this.lpress(e,lp);
   const wd=e.target.closest('.wd');
   if(wd&&this.s.screen==='plan')return this.dragDay(e,wd);
   const pn=e.target.closest('.panel');
@@ -2083,6 +2105,7 @@ Phone.prototype.vSheet=function(){const s=this.s;if(!s.sheet)return '';
     <button class="gbtn" style="width:100%;margin-top:18px" data-a="closesheet">${this.picking()&&s.en?'Filter anwenden':'Verstanden'}</button>`;
   if(s.sheet==='ai')c=this.vAI();
   if(s.sheet==='stock')c=this.vStock();
+  if(s.sheet==='fday')c=this.vFday();
   if(s.sheet==='cook')c=this.vCook();
   if(s.sheet==='pickday'){const r=RM[s.did];c=`<h3>Für welchen Tag?</h3><p>${r.n} einplanen${s.twice?' · 2×: auch am Folgetag':''}</p>
     ${Array.from({length:NDAYS},(_,i)=>i).map(i=>{const id=s.plan[i],x=RM[id];return `${i%7===0?`<div class="lbl" style="margin:${i?14:4}px 0 4px">KW ${KW(wkOf(i))}${i?' · nächste Woche':' · diese Woche'}</div>`:''}<button class="pd" data-a="planfor" data-i="${i}">${x?plate(x,40):id===OUT?`<span class="ph out">${ic('out')}</span>`:`<span class="ph">${ic('plus')}</span>`}<span>${dayLbl(i)}${i===TODAY?' · heute':''}<small>${x?x.n+' wird ersetzt':id===OUT?'Auswärts, wird ersetzt':'frei'}</small></span></button>`}).join('')}`}
@@ -2162,10 +2185,11 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
       const dd=this.planDish(d,id);s.sheet=null;this.backAfterPlan(d);this.anim='inF';this.pop=true;this.render();this.toast(`Eingeplant · ${miss.length} fehlende Zutat${miss.length===1?'':'en'} auf der Liste`);break}
    /* --- Fitnessbereich --- */
    case 'flip':this.flip(v);break;
-   case 'fday':s.fsel=+t.dataset.i;haptic();this.render();break;
+   case 'fday':s.fsel=+t.dataset.i;s.sheet='fday';haptic();this.render();break;
    case 'ftog':{const c=t.dataset.c,T=s.train[s.fsel]||(s.train[s.fsel]={});haptic();
       if(c==='k'){if(T.k)delete T.k;else T.k={lv:2}}
-      else{const o=T[c]||(T[c]=c==='s'?{k:[],lv:2}:{k:[]});const ix=o.k.indexOf(v);ix<0?o.k.push(v):o.k.splice(ix,1);if(!o.k.length)delete T[c]}
+      else if(c==='m'){if(T.m)delete T.m;else T.m={k:['mob']}}
+      else{const o=T.s||(T.s={k:[],lv:2});const ix=o.k.indexOf(v);ix<0?o.k.push(v):o.k.splice(ix,1);if(!o.k.length)delete T.s}
       if(!T.s&&!T.k&&!T.m)delete s.train[s.fsel];this.render();break}
    case 'flv':{const c=t.dataset.c,T=s.train[s.fsel]||(s.train[s.fsel]={}),lv=+v;haptic();
       if(c==='k')T.k={lv};else{const o=T.s||(T.s={k:[],lv});o.lv=lv;const kk=t.dataset.k;if(kk&&!o.k.includes(kk))o.k.push(kk);if(!o.k.length)delete T.s}
