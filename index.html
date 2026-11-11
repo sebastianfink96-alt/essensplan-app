@@ -350,7 +350,13 @@ html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
 .xm .ic{width:19px;height:19px;flex:none}
 .xm i{position:absolute;right:-3px;top:-3px;width:16px;height:16px;border-radius:50%;background:var(--a-grad);display:grid;place-items:center}
 .xm i .ic{width:9px;height:9px;stroke:#fff;stroke-width:3.2}
-.xm.set{background:#fff;color:var(--a-eyebrow);padding:0 12px 0 10px}
+.xm.set{color:var(--a-eyebrow)}
+.xm.set i{background:#6F9A5E}
+.planv .dish .xline{display:flex;align-items:center;justify-content:center;gap:10px;max-width:100%;margin-top:6px;font-size:12.5px;color:var(--a-muted)}
+.xline button{border:0;background:none;padding:2px 0;display:inline-flex;align-items:center;gap:5px;min-width:0;color:inherit;font-size:inherit}
+.xline .ic{width:14px;height:14px;flex:none;color:var(--a-eyebrow)}
+.xline span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:130px}
+.xline>i{width:3px;height:3px;border-radius:50%;background:currentColor;opacity:.5;flex:none}
 .xm span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--a-ink)}
 .fl-c{display:flex;flex-wrap:wrap;gap:6px 14px;margin:8px 0 2px;font-size:13px}
 .fl-c span{display:inline-flex;align-items:center;gap:6px}
@@ -377,6 +383,18 @@ html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
 .recv .meta,.rhero .meta{display:flex;gap:10px;font-size:12.5px;color:var(--a-muted);align-items:center}
 .recv .meta span{display:inline-flex;align-items:center;gap:4px}
 .recv .meta .ic{width:13px;height:13px}
+.rlist{margin-top:10px;background:var(--a-card);border-radius:26px;box-shadow:0 0 0 1px var(--a-line),0 18px 34px -28px rgba(40,30,60,.45);overflow:hidden}
+.rrow{width:100%;border:0;background:none;text-align:left;display:flex;align-items:center;gap:14px;padding:12px 12px 12px 14px;color:var(--a-ink)}
+.rrow+.rrow{box-shadow:inset 0 1px 0 var(--a-line)}
+.rr-pl{flex:none;width:74px;height:74px;display:grid;place-items:center}
+.rr-tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.rr-tx b{font-weight:500;font-size:15.5px;line-height:1.25;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+.rr-tx small{font-size:12.5px;color:var(--a-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rr-tx .meta{margin-top:3px;justify-content:flex-start}
+.rrow .hb.on .ic{fill:currentColor}
+.rrow .hb{flex:none;width:34px;height:34px;border-radius:50%;background:var(--a-soft);display:grid;place-items:center;color:#B0B4C6}
+.rrow .hb.on{color:#D6406F;background:#FDE8EF}
+@media (min-width:700px){.phone.full .rlist{display:grid;grid-template-columns:1fr 1fr}.phone.full .rrow+.rrow{box-shadow:none}}
 .recv .rgrid{gap:14px 12px;margin-top:12px}
 .recv .rc{background:none;box-shadow:none;padding:0;border-radius:0;align-items:stretch;text-align:left;gap:3px}
 .rc-pl{position:relative;display:grid;place-items:center;height:150px;border-radius:26px;background:radial-gradient(80% 80% at 50% 108%,var(--t2),rgba(255,255,255,0) 72%),linear-gradient(160deg,#fff,var(--t1));box-shadow:0 0 0 1px rgba(255,255,255,.9),0 18px 30px -24px rgba(40,30,60,.5)}
@@ -1786,7 +1804,7 @@ Phone.prototype.vPanel=function(i){const s=this.s;const id=s.plan[i];const r=RM[
   if(r&&!s.edit)return `<div class="panel${an}"><div class="open-head"><div><div class="eb">${eb}</div><div class="open-title">${i===TODAY?"Heute gibt's":'Geplant'}</div></div></div>
     <div class="dish">${this.vXm(i)}<button data-a="detail" data-id="${r.id}" data-day="${i}" style="border:0;background:transparent;padding:0" aria-label="Rezept öffnen"><div class="halo">${plate(r,200)}</div></button>
     <div class="nm">${r.n}</div>
-    <div class="meta"><span>${ic('clock')}${r.m} Min</span><span>${ic('flame')}${r.k} kcal</span><span>${r.p} g Protein</span>${enBadge(r,false)}<button class="info sm" data-a="sheet" data-v="energy" aria-label="Energiedichte erklärt">${ic('info')}</button></div></div>
+    <div class="meta"><span>${ic('clock')}${r.m} Min</span><span>${ic('flame')}${r.k} kcal</span><span>${r.p} g Protein</span>${enBadge(r,false)}<button class="info sm" data-a="sheet" data-v="energy" aria-label="Energiedichte erklärt">${ic('info')}</button></div>${this.vXline(i)}</div>
     <div class="acts"><button class="obtn" data-a="edit">${ic('pencil')}Ändern</button><button class="gbtn" data-a="detail" data-id="${r.id}" data-day="${i}">${ic('chef')}${i===TODAY?'Jetzt kochen':'Rezept ansehen'}</button></div></div>`;
   if(id===OUT&&!s.edit)return `<div class="panel${an}"><div class="open-head"><div><div class="eb">${eb}</div><div class="open-title">${i===TODAY?'Heute auswärts':'Auswärts essen'}</div></div></div>
     <div class="dish"><div class="outc">${ic('out')}</div><div class="sb" style="max-width:260px">Kein Kochen eingeplant. Für diesen Tag kommt nichts auf die Einkaufsliste.</div></div>
@@ -1806,7 +1824,10 @@ const XM={b:['Frühstück','sunrise',[['🥣','Joghurt mit Beeren'],['🥣','Por
   d:['Abendessen','moon',[['🥗','Kleiner Salat'],['🍲','Suppe'],['🥪','Brot mit Aufstrich'],['🍱','Reste vom Mittag'],['🍳','Omelett'],['🥛','Topfen mit Obst']]]};
 const xName=v=>RM[v]?RM[v].n:v;
 Phone.prototype.vXm=function(i){const X=this.s.extra[i]||{};
-  return ['b','d'].map(k=>{const v=X[k];return `<button class="xm ${k} ${v?'set':''}" data-a="extra" data-v="${k}" aria-label="${XM[k][0]}${v?': '+xName(v).replace(/"/g,'&quot;'):' hinzufügen'}">${ic(XM[k][1])}${v?`<span>${xName(v).replace(/</g,'&lt;')}</span>`:`<i>${ic('plus')}</i>`}</button>`}).join('')};
+  return ['b','d'].map(k=>{const v=X[k];return `<button class="xm ${k} ${v?'set':''}" data-a="extra" data-v="${k}" aria-label="${XM[k][0]}${v?': '+xName(v).replace(/"/g,'&quot;'):' hinzufügen'}">${ic(XM[k][1])}<i>${ic(v?'check':'plus')}</i></button>`}).join('')};
+/* Gewähltes Frühstück/Abendessen als ruhige Textzeile unter dem Hauptgericht */
+Phone.prototype.vXline=function(i){const X=this.s.extra[i]||{};const a=['b','d'].filter(k=>X[k]);if(!a.length)return '';
+  return `<div class="xline">${a.map(k=>`<button data-a="extra" data-v="${k}">${ic(XM[k][1])}<span>${xName(X[k]).replace(/</g,'&lt;')}</span></button>`).join('<i></i>')}</div>`};
 /* Auswahl wie das große Rad, nur kleiner: Teller seitlich wischen, der mittlere ist gewählt */
 Phone.prototype.vExtra=function(){const s=this.s,k=s.exK,i=s.sel,cur=(s.extra[i]||{})[k],L=RX.filter(r=>r.meal===k);
   return `<div class="ai-head"><span class="stk-ic">${ic(XM[k][1])}</span><div><h3 style="margin:0">${XM[k][0]}</h3><p class="ai-sub">${i===TODAY?'Heute · ':''}${dayLbl(i)}</p></div></div>
@@ -1982,7 +2003,7 @@ Phone.prototype.vRecipes=function(favOnly){const s=this.s;const q=s.recQ.toLower
    <div class="search">${ic('search')}<input data-k="recq" placeholder="${MEALS.find(x=>x[0]===M)[1]} suchen" value="${s.recQ.replace(/"/g,'&quot;')}" aria-label="Rezept suchen"></div>
    ${M==='l'?`<div class="hs">${CATS.map(([k,l,i])=>`<button class="chip ${s.recCat===k?'on':''}" data-a="rcat" data-v="${k}">${ic(i)}${l}</button>`).join('')}<button class="chip ${s.recCat==='fav'?'on':''}" data-a="rcat" data-v="fav">${ic('heart')}Favoriten</button></div>`:''}`}
    ${hero?`<button class="rhero" data-a="detail" data-id="${hero.id}" style="--t1:${hero.t[0]};--t2:${hero.t[1]}">${heart(hero)}<span class="rh-tx"><small>Empfehlung des Tages</small><b>${hero.n}</b>${meta(hero)}<i>Zum Rezept${ic('right')}</i></span><span class="rh-pl">${plate(hero,168)}</span></button>`:''}
-   ${rest.length?`${hero?`<div class="lbl" style="margin:22px 0 0">Alle ${MEALS.find(x=>x[0]===M)[1]}-Rezepte</div>`:''}<div class="rgrid">${rest.map(r=>`<button class="rc" data-a="detail" data-id="${r.id}" style="--t1:${r.t[0]};--t2:${r.t[1]}">${heart(r)}<span class="rc-pl">${plate(r,116)}</span><div class="nm">${r.n}</div>${meta(r)}</button>`).join('')}</div>`
+   ${rest.length?`${hero?`<div class="lbl" style="margin:22px 0 0">Alle ${MEALS.find(x=>x[0]===M)[1]}-Rezepte</div>`:''}<div class="rlist">${rest.map(r=>`<button class="rrow" data-a="detail" data-id="${r.id}"><span class="rr-pl">${plate(r,74)}</span><span class="rr-tx"><b>${r.n}</b><small>${r.s}</small>${meta(r)}</span>${heart(r)}</button>`).join('')}</div>`
    :hero?'':`<div class="empty-st">${favOnly||s.recCat==='fav'?'Noch keine Favoriten. Tippe bei einem Rezept auf das Herz.':'Kein Rezept gefunden.'}</div>`}
   </div></div>`};
 
