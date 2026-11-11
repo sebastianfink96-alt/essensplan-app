@@ -237,7 +237,14 @@ html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
 .cube{position:absolute;inset:0;z-index:30;perspective:1500px;pointer-events:none;overflow:hidden;background:#101116}
 .cube-in{position:absolute;inset:0;transform-style:preserve-3d;will-change:transform}
 .cface{position:absolute;inset:0;overflow:hidden;background:var(--a-bg);backface-visibility:hidden;-webkit-backface-visibility:hidden}
-.cface::after{content:'';position:absolute;inset:0;background:#101116;opacity:0;transition:opacity .72s ease;pointer-events:none;z-index:50}
+.cface::after{content:'';position:absolute;inset:0;background:#101116;opacity:0;transition:opacity .62s ease;pointer-events:none;z-index:50}
+/* Im Würfel nichts Teures zeichnen: keine Unschärfe, keine Glas-Effekte, keine laufenden Animationen */
+.cface{will-change:transform;contain:strict}
+.cface .blob{display:none}
+.cface *{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;animation:none!important;transition:none!important}
+.cface .stage img{filter:none!important}
+.view.flipin>.blob{animation:blobIn .5s ease}
+@keyframes blobIn{from{opacity:0}}
 .cface.dim::after{opacity:.45}
 .fitv{--a-blue:#2F6B4F;--a-violet:#4E8F72;--a-pink:#3F8468;--a-eyebrow:#2F6B4F;--a-grad:linear-gradient(100deg,#5FA283 0%,#2F6B4F 58%,#3F8468 100%);--a-glow:47,107,79;--a-today:#E1F0E7;--a-ring:#A3CCB6;--b1:#9FD6B8;--b2:#C5E8CF;--b3:#85C5A6;--b4:#B4E0C0}
 .fhead-bg{position:absolute;left:0;right:0;top:0;height:270px;background:linear-gradient(180deg,rgba(39,102,74,.42),rgba(39,102,74,.16) 55%,rgba(39,102,74,0));pointer-events:none}
@@ -330,6 +337,16 @@ html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
 .fai-t{margin:4px 0 8px;font-size:15.5px;line-height:1.5;font-weight:300;color:var(--a-ink)}
 .fai-t.m{color:var(--a-muted);font-size:14.5px;margin:4px 0 0}
 .fai .gbtn:disabled{opacity:.55}
+.planv .dish>.xm{position:absolute;right:10px;z-index:3;flex:none;width:auto;height:38px;min-height:0;min-width:38px;max-width:150px;justify-content:center;border:0;border-radius:999px;padding:0 9px;display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.82);color:var(--a-muted);box-shadow:0 0 0 1px rgba(255,255,255,.9),0 8px 16px -10px rgba(var(--ts),.6);font-size:12.5px}
+.planv .dish>.xm.b{top:10px}.planv .dish>.xm.d{bottom:96px}
+.xm .ic{width:19px;height:19px;flex:none}
+.xm i{position:absolute;right:-3px;top:-3px;width:16px;height:16px;border-radius:50%;background:var(--a-grad);display:grid;place-items:center}
+.xm i .ic{width:9px;height:9px;stroke:#fff;stroke-width:3.2}
+.xm.set{background:#fff;color:var(--a-eyebrow);padding:0 12px 0 10px}
+.xm span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--a-ink)}
+.fl-c{display:flex;flex-wrap:wrap;gap:6px 14px;margin:8px 0 2px;font-size:13px}
+.fl-c span{display:inline-flex;align-items:center;gap:6px}
+.fl-c i{width:9px;height:9px;border-radius:50%}
 /* ===== KI-Assistent ===== */
 .orb{position:absolute;right:22px;bottom:90px;width:62px;height:62px;border-radius:50%;border:0;padding:0;z-index:42;display:grid;place-items:center;color:#fff;
   box-shadow:0 12px 26px -8px rgba(30,20,80,.42),0 0 22px -2px rgba(120,110,255,.38);overflow:hidden;animation:orbIn .5s cubic-bezier(.2,.8,.2,1)}
@@ -339,12 +356,15 @@ html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
 /* Siri-artige Kugel: dunkler Kern, leuchtende Farbschleier (Blau, Cyan, Pink, Violett) drehen sich gegeneinander, heller Glanz in der Mitte */
 .orb,.ai-orb{background:radial-gradient(circle at 50% 50%,#24205a 0%,#0d0c26 62%,#07061a 100%)!important}
 .orb-c{position:absolute;inset:0;border-radius:50%;overflow:hidden;filter:saturate(1.3)}
-.orb-c i{position:absolute;inset:6%;border-radius:50%;mix-blend-mode:screen;filter:blur(6px);animation:orbSpin 24s linear infinite}
-.orb-c i:nth-child(1){background:conic-gradient(from 0deg,transparent 0 55%,#3E8BFF 70%,#9FE6FF 80%,transparent 92%);animation-duration:22s}
-.orb-c i:nth-child(2){background:conic-gradient(from 120deg,transparent 0 50%,#FF4FA8 66%,#FFB3D9 76%,transparent 90%);animation-duration:30s;animation-direction:reverse}
-.orb-c i:nth-child(3){background:conic-gradient(from 240deg,transparent 0 58%,#8C5BFF 72%,#D7C2FF 82%,transparent 94%);animation-duration:38s}
-.orb-c i:nth-child(4){inset:22%;background:conic-gradient(from 60deg,transparent 0 45%,#36E0D0 62%,#FFFFFF 70%,transparent 85%);animation-duration:18s;animation-direction:reverse;filter:blur(5px)}
-.orb-g{position:absolute;inset:30%;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.95),rgba(220,235,255,.45) 40%,rgba(255,255,255,0) 72%);mix-blend-mode:screen;animation:orbGlow 7s ease-in-out infinite}
+.orb-c i{position:absolute;border-radius:50%}
+/* Zwei gegenläufige Farbkränze mit ALLEN Farben – der Knopf sieht dadurch in jeder Phase gleich aus */
+.orb-c i:nth-child(1){inset:-8%;background:conic-gradient(from 0deg,#3E8BFF,#8C5BFF,#FF5FB0,#FFB48A,#38D9E0,#3E8BFF);filter:blur(7px);animation:orbSpin 28s linear infinite}
+.orb-c i:nth-child(2){inset:16%;background:conic-gradient(from 180deg,#38D9E0,#6C7BFF,#C56BFF,#FF6FAE,#38D9E0);filter:blur(6px);opacity:.75;mix-blend-mode:screen;animation:orbSpin 40s linear infinite reverse}
+/* dunkle Tiefe zum Rand, Glanzlicht oben links */
+.orb-c i:nth-child(3){inset:0;background:radial-gradient(circle at 50% 55%,rgba(10,8,34,0) 30%,rgba(10,8,34,.5) 78%,rgba(8,6,26,.82) 100%)}
+.orb-c i:nth-child(4){inset:0;background:radial-gradient(circle at 30% 22%,rgba(255,255,255,.6),rgba(255,255,255,.12) 26%,rgba(255,255,255,0) 44%)}
+.orb-g{position:absolute;inset:32%;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.7),rgba(220,235,255,.3) 45%,rgba(255,255,255,0) 72%);mix-blend-mode:screen;animation:orbGlow 7s ease-in-out infinite}
+.orb::after,.ai-orb::after{content:'';position:absolute;inset:0;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(255,255,255,.22),inset 0 -6px 12px -6px rgba(0,0,0,.45);pointer-events:none}
 @keyframes orbGlow{50%{transform:scale(1.12);opacity:.8}}
 /* KI-Symbol in der Mitte; alle 9 s ein sanftes Aufleuchten als Hinweis */
 .orb .orb-w{position:absolute;left:34%;top:calc(50% - 5px);width:32%;height:10px;z-index:2;overflow:visible;fill:none;stroke:rgba(225,228,242,.4);stroke-linecap:round;mix-blend-mode:screen}
@@ -889,6 +909,8 @@ stop:'<rect x="7" y="7" width="10" height="10" rx="2"/>',
 box:'<path d="M4 8.5 12 4l8 4.5v7L12 20l-8-4.5z"/><path d="M4 8.5 12 13l8-4.5M12 13v7"/>',
 receipt:'<path d="M6 3.5h12v17l-2-1.4-2 1.4-2-1.4-2 1.4-2-1.4-2 1.4z"/><path d="M9 8h6M9 11.5h6M9 15h3.5"/>',
 up:'<path d="m6 15 6-6 6 6"/>',
+sunrise:'<path d="M3.5 17.5h17M7 17.5a5 5 0 0 1 10 0M12 6v2.6M5.4 9.4l1.9 1.9M18.6 9.4l-1.9 1.9"/>',
+moon:'<path d="M19.6 14.3A7.8 7.8 0 0 1 9.7 4.4a7.8 7.8 0 1 0 9.9 9.9z"/>',
 f_bike:'<circle cx="5.6" cy="16.4" r="3.9"/><circle cx="18.4" cy="16.4" r="3.9"/><path d="M5.6 16.4H12L9.4 9.6zM9.4 9.6h6L12 16.4M15.4 9.6l3 6.8M15.4 9.6l-.7-2.6M13.2 7h3.2M7.8 8.3h3.4M9.4 9.6l-.3-1.3"/>',
 f_run:'<path d="M3 17.5v-1.2c0-1 .6-1.9 1.5-2.3L8 12.5l2-4.5 2.6 1.6L15 13l4.2 1.4c1.1.4 1.8 1.4 1.8 2.5v.6z"/><path d="M11 12.5l1.8-.9M12.4 14.2l1.8-.9"/>',
 f_tennis:'<circle cx="12" cy="12" r="8.2"/><path d="M5.8 6.8c3.2 2.6 3.2 7.8 0 10.4M18.2 6.8c-3.2 2.6-3.2 7.8 0 10.4"/>',
@@ -1260,6 +1282,7 @@ function Phone(host,init,opts){
     if(t.dataset.act==='tog'){try{if(navigator.vibrate)navigator.vibrate(10)}catch(err){}const x=this.s.shop.find(y=>y.name===v);if(x){x.done=!x.done;this.render()}}else this.addItem(v)});
   this.scr.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.dataset.k==='shopq'){this.addItem(e.target.value.trim());}if(e.key==='Enter'&&e.target.dataset.k==='aiq'){e.preventDefault();this.aiAsk(e.target.value.trim())}
     if(e.key==='Enter'&&e.target.dataset.k==='cookq'){e.preventDefault();const q=e.target.value.trim();if(q)this.cookAsk(q,{})}
+    if(e.key==='Enter'&&e.target.dataset.k==='exq'){e.preventDefault();if(e.target.value.trim())this.setExtra(e.target.value)}
     if(e.key==='Enter'&&e.target.dataset.k==='stockq'){e.preventDefault();this.stockAdd(e.target.value.trim())}});
   this.scr.addEventListener('pointerdown',e=>this.pdown(e));
   this.scr.addEventListener('contextmenu',e=>{if(e.target.closest('.wd'))e.preventDefault()});
@@ -1282,7 +1305,7 @@ function Phone(host,init,opts){
 }
 Phone.prototype.reset=function(init){
   const s={screen:'plan',ip:0,plan:{0:'n02',1:'n01'},sel:TODAY,wk:0,edit:false,cat:'all',en:null,pick:-1,
-    favs:new Set(['n01','r2','n07','n13','n22']),learn:{},deck:null,did:null,dday:null,from:'plan',persons:1,shopWk:0,twice:false,done:{},sheet:null,shopQ:'',recQ:'',recCat:'all',stock:[],stockQ:'',cook:null,cookQ:'',train:{},fsel:TODAY,fwk:0,fitAI:null,ipop:null,fitSeen:false,voice:''};
+    favs:new Set(['n01','r2','n07','n13','n22']),learn:{},deck:null,did:null,dday:null,from:'plan',persons:1,shopWk:0,twice:false,done:{},sheet:null,shopQ:'',recQ:'',recCat:'all',stock:[],stockQ:'',cook:null,cookQ:'',extra:{},exK:'b',exQ:'',train:{},fsel:TODAY,fwk:0,fitAI:null,ipop:null,fitSeen:false,voice:''};
   Object.assign(s,JSON.parse(JSON.stringify(Object.assign({},init,{favs:undefined}))));
   if(init.favs)s.favs=new Set(init.favs);
   s.shop=init.shopFromPlan?applyStock(buildShop(s.plan,s.persons,[]),s.stock):[]; /* Standard: leere Liste */
@@ -1290,12 +1313,14 @@ Phone.prototype.reset=function(init){
       s.plan={};Object.entries(d.plan||{}).forEach(([iso,id])=>{const i=idxOf(iso);if(i>=0&&i<NDAYS&&(RM[id]||id===OUT))s.plan[i]=id});
       if(Array.isArray(d.shop))s.shop=d.shop;if(Array.isArray(d.favs))s.favs=new Set(d.favs);
       if(d.persons)s.persons=d.persons;if(d.done)s.done=d.done;if(d.learn)s.learn=d.learn;if(Array.isArray(d.stock))s.stock=d.stock;
+      if(d.extra){s.extra={};Object.entries(d.extra).forEach(([iso,v])=>{const i=idxOf(iso);if(i>=0&&i<NDAYS&&v)s.extra[i]=v})}
       if(d.train){s.train={};Object.entries(d.train).forEach(([iso,v])=>{const i=idxOf(iso);if(i>=0&&i<NDAYS&&v)s.train[i]=v})}
       if(d.fitSeen)s.fitSeen=true;if(d.voice)s.voice=d.voice;if(d.fitAI&&d.fitAI.res)s.fitAI=d.fitAI;}}
   this.s=s;this.lastScreen=null;this.render();
 };
 Phone.prototype.save=function(){if(!this.opts.persist)return;const s=this.s;const plan={};Object.keys(s.plan).forEach(i=>plan[isoOf(+i)]=s.plan[i]);
   data.save({plan,shop:s.shop,favs:[...s.favs],persons:s.persons,done:s.done,learn:s.learn,stock:s.stock,
+    extra:Object.fromEntries(Object.entries(s.extra).map(([i,v])=>[isoOf(+i),v])),
     train:Object.fromEntries(Object.entries(s.train).map(([i,v])=>[isoOf(+i),v])),fitSeen:s.fitSeen,voice:s.voice,fitAI:s.fitAI&&s.fitAI.res?s.fitAI:null})};
 Phone.prototype.list=function(){const s=this.s;return R.filter(r=>(s.cat==='all'||r.c.includes(s.cat))&&(!s.en||enOf(r)===s.en))};
 Phone.prototype.toast=function(t,btn,act){const old=this.scr.querySelector('.toast');if(old)old.remove();const d=document.createElement('div');d.className='toast'+(btn?' act':'');d.innerHTML=`<span></span>${btn?`<button data-a="${act}">${btn}</button>`:''}`;d.firstChild.textContent=t;this.scr.appendChild(d);setTimeout(()=>d.remove(),btn?4600:2500)};
@@ -1425,16 +1450,18 @@ const FA={bike:'#FF6A55',run:'#F5A623',tennis:'#8BC34A',swim:'#2F9BE6',kraft:'#7
 const FC={s:'#FF6A55',k:FA.kraft,m:FA.mob},FR={s:15.2,k:10.6,m:6},FNAME={s:'Sport',k:'Krafttraining',m:'Mobilität'};
 const SPORTS=[['bike','Radfahren','🚴'],['run','Laufen','🏃'],['tennis','Tennis','🎾'],['swim','Schwimmen','🏊']];
 const MOBS=[['mob','Mobilisierung','🤸'],['stretch','Dehnen','🙆'],['yoga','Yoga','🧘']];
-const FKN=Object.fromEntries(SPORTS.concat(MOBS).map(x=>[x[0],x[1]])),LVN=['','Locker','Mittel','Hart'];
+const FKN=Object.fromEntries(SPORTS.concat(MOBS).map(x=>[x[0],x[1]])),LVN=['','Leicht','Mittel','Hoch'];
 /* Ringe eines Tages: außen Sport, Mitte Kraft, innen Mobilität. Intensität = Länge des Bogens + Farbstärke */
 const slv=(T,k)=>(T.s&&T.s.l&&T.s.l[k])||(T.s&&T.s.lv)||2;
-function fring(T,size){let h=`<svg class="fring" width="${size}" height="${size}" viewBox="0 0 36 36" aria-hidden="true">`;
-  const arc=(r,col,lv,start,span,gap)=>{const C=2*Math.PI*r,len=Math.max(1,span*C*lv/3-(lv<3||gap?1.8:0));return `<circle cx="18" cy="18" r="${r}" fill="none" stroke="${col}" stroke-opacity="${[0,.5,.78,1][lv]}" stroke-width="3.4" stroke-linecap="round" stroke-dasharray="${len.toFixed(1)} ${C.toFixed(1)}" stroke-dashoffset="${(-start*C).toFixed(1)}" transform="rotate(-90 18 18)"/>`};
-  ['s','k','m'].forEach(c=>{const r=FR[c],on=T&&T[c];
-    h+=`<circle cx="18" cy="18" r="${r}" fill="none" stroke="${on?(c==='s'?FA[T.s.k[0]]||FC.s:FC[c]):'#9AA0B4'}" stroke-opacity="${on?.2:.14}" stroke-width="3.4"/>`;
-    if(!on)return;
-    if(c==='s'){const n=T.s.k.length||1;T.s.k.forEach((k,x)=>{h+=arc(r,FA[k]||FC.s,slv(T,k),x/n,1/n,n>1)})}
-    else h+=arc(r,FC[c],c==='m'?3:on.lv||2,0,1,false)});
+/* Alle Aktivitäten eines Tages [{k,lv}] und die „wichtigste“: intensivste Sportart, sonst Dehnen, sonst Kraft */
+const fActs=T=>!T?[]:[...(T.s?T.s.k.map(k=>({k,lv:slv(T,k)})):[]),...(T.k?[{k:'kraft',lv:T.k.lv||2}]:[]),...(T.m?[{k:'mob',lv:3}]:[])];
+const fTop=T=>{if(!T)return null;if(T.s&&T.s.k.length)return T.s.k.slice().sort((a,b)=>slv(T,b)-slv(T,a))[0];return T.m?'mob':T.k?'kraft':null};
+/* Ring eines Tages: ein farbiger Abschnitt je Aktivität (Länge + Farbstärke = Intensität), in der Mitte das Symbol */
+function fring(T,size,noIcon){const A=fActs(T),r=15.2,C=2*Math.PI*r,n=A.length||1,top=fTop(T);
+  let h=`<svg class="fring" width="${size}" height="${size}" viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="${r}" fill="none" stroke="#9AA0B4" stroke-opacity=".16" stroke-width="3.2"/>`;
+  A.forEach((a,x)=>{const len=Math.max(1,C/n*a.lv/3-(a.lv<3||n>1?2:0));
+    h+=`<circle cx="18" cy="18" r="${r}" fill="none" stroke="${FA[a.k]}" stroke-opacity="${[0,.5,.78,1][a.lv]}" stroke-width="3.2" stroke-linecap="round" stroke-dasharray="${len.toFixed(1)} ${C.toFixed(1)}" stroke-dashoffset="${(-x/n*C).toFixed(1)}" transform="rotate(-90 18 18)"/>`});
+  if(top&&!noIcon)h+=`<svg x="10.2" y="10.2" width="15.6" height="15.6" viewBox="0 0 24 24"><g fill="none" stroke="${FA[top]}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${P['f_'+top]}</g></svg>`;
   return h+'</svg>'}
 /* Aktivität setzen/entfernen; Sport merkt die Intensität je Sportart (l), lv = höchste */
 function setAct(s,c,k,lv){const T=s.train[s.fsel]||(s.train[s.fsel]={});
@@ -1473,10 +1500,9 @@ Phone.prototype.vFit=function(){const s=this.s;
   </div>
   <div class="lbl">So funktioniert's</div>
   <div class="fleg">
-   <div class="fl-r"><span>${fring({s:{k:['bike','run','tennis','swim'],lv:3}},30)}</span><div><b>Sport</b><small>${SPORTS.map(([k,l])=>`<i style="background:${FA[k]}"></i>${l}`).join(' ')}</small></div></div>
-   <div class="fl-r"><span>${fring({k:{lv:3}},30)}</span><div><b>Kraft</b><small>Krafttraining</small></div></div>
-   <div class="fl-r"><span>${fring({m:{k:['mob']}},30)}</span><div><b>Dehnen & Yoga</b><small>Dehnen · Yoga · Mobilisierung</small></div></div>
-   <p class="fl-p">Tag antippen, Aktivität antippen. Kachel halten und nach links oder rechts ziehen: Intensität 1–3. Je höher die Intensität, desto länger und kräftiger der Ring.</p>
+   <div class="fl-r"><span>${fring({s:{k:['bike','run'],lv:3,l:{bike:3,run:1}},k:{lv:2}},40)}</span><div><b>Ein Ring pro Tag</b><small>Je Aktivität ein farbiger Abschnitt. Das Symbol zeigt die intensivste Sportart.</small></div></div>
+   <div class="fl-c">${FACTS.map(([c,k,l])=>`<span><i style="background:${FA[k]}"></i>${l}</span>`).join('')}</div>
+   <p class="fl-p">Tag antippen, Aktivität antippen. Kachel halten und nach links oder rechts ziehen: Intensität leicht, mittel oder hoch – je höher, desto länger und kräftiger der Abschnitt.</p>
   </div>
   </div></div>`};
 /* Fenster „Training eintragen“: 1 Aktivität, 2 Intensität */
@@ -1513,51 +1539,51 @@ Phone.prototype.flip=function(to){const s=this.s;if(this.busy||s.sheet||s.screen
   if(!old||(window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches)){set();this.render();return}
   this.busy=true;haptic();const oldTop=old.scrollTop;
   const cube=document.createElement('div');cube.className='cube';const inn=document.createElement('div');inn.className='cube-in';cube.appendChild(inn);
-  const face=(node,deg)=>{const f=document.createElement('div');f.className='cface';f.style.transform=`rotateX(${deg}deg) translateZ(${H/2}px)`;const c=node.cloneNode(true);f.appendChild(c);inn.appendChild(f);return [f,c]};
+  const face=(node,deg)=>{const f=document.createElement('div');f.className='cface';f.style.transform=`rotateX(${deg}deg) translateZ(${H/2}px)`;const c=node.cloneNode(true);c.querySelectorAll('.wi').forEach(x=>{if(x.style.visibility==='hidden')x.remove()});f.appendChild(c);inn.appendChild(f);return [f,c]};
   const [f1,c1]=face(old,0);
   set();this.render();const nv=this.scr.querySelector('.view');
   const [f2]=face(nv,up?-90:90);f2.classList.add('dim');
   inn.style.transform=`translateZ(${-H/2}px) rotateX(0deg)`;
   const tb=this.scr.querySelector('.vdots')||this.scr.querySelector('.tabbar');this.scr.insertBefore(cube,tb);c1.scrollTop=oldTop;nv.style.visibility='hidden';
-  requestAnimationFrame(()=>requestAnimationFrame(()=>{inn.style.transition='transform .72s cubic-bezier(.32,.08,.18,1)';inn.style.transform=`translateZ(${-H/2}px) rotateX(${up?90:-90}deg)`;f1.classList.add('dim');f2.classList.remove('dim')}));
-  setTimeout(()=>{cube.remove();const v=this.scr.querySelector('.view');if(v)v.style.visibility='';this.busy=false},760)};
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{inn.style.transition='transform .62s cubic-bezier(.4,0,.2,1)';inn.style.transform=`translateZ(${-H/2}px) rotateX(${up?90:-90}deg)`;f1.classList.add('dim');f2.classList.remove('dim')}));
+  setTimeout(()=>{const v=this.scr.querySelector('.view');if(v){v.style.visibility='';v.classList.add('flipin')}cube.remove();this.busy=false},650)};
 /* Auswertung: Training der Woche gegen den Essensplan */
 function fitSig(s,w){let x='';for(let i=w*7;i<w*7+7;i++)x+=JSON.stringify(s.train[i]||0)+(s.plan[i]||'-')+'|';return x}
 function fitLocal(s,w){const D=Array.from({length:7},(_,j)=>w*7+j),T=i=>s.train[i],sh=i=>dn(i).slice(0,2);
-  const act=D.filter(i=>fCount(T(i))),n=D.reduce((a,i)=>a+fCount(T(i)),0),res=[];
-  if(!n)return [{t:'Training',x:`Für KW ${KW(w)} ist noch kein Training eingetragen. Tippe oben auf einen Tag und wähle eine Aktivität – dann kann ich Training und Essen vergleichen.`}];
-  const cs=D.filter(i=>T(i)&&T(i).s).length,ck=D.filter(i=>T(i)&&T(i).k).length,cm=D.filter(i=>T(i)&&T(i).m).length;
-  const hard=D.filter(i=>T(i)&&((T(i).s&&T(i).s.lv===3)||(T(i).k&&T(i).k.lv===3))),rest=7-act.length;
-  const kinds=[...new Set(D.flatMap(i=>T(i)&&T(i).s?T(i).s.k:[]))].map(k=>FKN[k]);
-  let a=`In KW ${KW(w)} hast du ${n} ${n===1?'Einheit':'Einheiten'} an ${act.length} ${act.length===1?'Tag':'Tagen'} geplant: ${[cs?`${cs}× Sport${kinds.length?' ('+kinds.join(', ')+')':''}`:'',ck?`${ck}× Kraft`:'',cm?`${cm}× Dehnen/Yoga`:''].filter(Boolean).join(', ')}. ${hard.length?`${hard.length} ${hard.length===1?'Tag ist':'Tage sind'} hart (${hard.map(sh).join(', ')}).`:'Keine Einheit ist als hart markiert.'} ${rest} ${rest===1?'Ruhetag':'Ruhetage'}.`;
-  const hints=[];const adj=hard.filter(i=>hard.includes(i+1));
-  if(adj.length)hints.push(`${sh(adj[0])} und ${sh(adj[0]+1)} sind beide hart – lege dazwischen lieber etwas Lockeres oder eine Dehneinheit.`);
-  if(!rest)hints.push('Du hast keinen Ruhetag – ein freier Tag hilft dem Körper, das Training umzusetzen.');
-  if(!ck)hints.push('Krafttraining fehlt in dieser Woche; schon eine Einheit hilft, Muskulatur zu erhalten.');
-  if(!cm&&n>=3)hints.push('Eine kurze Dehn- oder Yoga-Einheit würde die Woche abrunden.');
-  res.push({t:'Training',x:a+(hints.length?'\n'+hints.join(' '):'')});
+  const n=D.reduce((a,i)=>a+fCount(T(i)),0),res=[];
+  if(!n)return [{t:'Training',x:`Für KW ${KW(w)} ist noch kein Training eingetragen. Tippe oben auf einen Tag – dann vergleiche ich Training und Essen.`}];
+  const sc={};D.forEach(i=>{const X=T(i);if(!X)return;if(X.s)X.s.k.forEach(k=>sc[k]=(sc[k]||0)+slv(X,k));if(X.k)sc.kraft=(sc.kraft||0)+(X.k.lv||2)});
+  const ord=Object.entries(sc).sort((a,b)=>b[1]-a[1]),nm=k=>k==='kraft'?'Krafttraining':FKN[k];
+  const hasK=D.some(i=>T(i)&&T(i).k),hasM=D.some(i=>T(i)&&T(i).m),sports=ord.filter(x=>x[0]!=='kraft');
+  const hard=D.filter(i=>T(i)&&((T(i).s&&T(i).s.lv===3)||(T(i).k&&T(i).k.lv===3))),rest=D.filter(i=>!fCount(T(i))).length;
+  let a;
+  if(!ord.length)a='Diese Woche steht nur Dehnen auf dem Plan. Eine leichte Sport- oder Krafteinheit täte zusätzlich gut.';
+  else{const top=ord[0],sec=ord[1],two=sec&&sec[1]>=top[1]*.8;a=`Dein Fokus liegt auf ${two?nm(top[0])+' und '+nm(sec[0]):nm(top[0])}.`;
+    const fk=top[0]==='kraft'||(two&&sec[0]==='kraft');
+    if(top[0]==='kraft'&&!two)a+=sports.length?` ${nm(sports[0][0])} sorgt für den Ausgleich.`:' Etwas Ausdauer, zum Beispiel Laufen oder Radfahren, täte als Ausgleich gut.';
+    if(!fk)a+=hasK&&hasM?' Kraft und Dehnen ergänzen das Training ideal.':hasK?' Krafttraining ergänzt das gut; eine kurze Dehn-Einheit täte noch gut.':hasM?' Dehnen ergänzt das gut; eine Krafteinheit täte noch gut.':' Eine Kraft- und eine Dehn-Einheit würden die Woche abrunden.';
+    else if(!hasM)a+=' Eine kurze Dehn-Einheit täte noch gut.'}
+  const adj=hard.filter(i=>hard.includes(i+1));
+  if(adj.length)a+=` ${sh(adj[0])} und ${sh(adj[0]+1)} sind beide intensiv – dazwischen besser etwas Leichtes.`;else if(!rest)a+=' Ein Ruhetag fehlt noch.';
+  res.push({t:'Training',x:a});
   const f=[],noMeal=[];
   D.forEach(i=>{const X=T(i);if(!X||!(X.s||X.k))return;const id=s.plan[i],r=RM[id];
-    if(!r){noMeal.push(sh(i)+(id===OUT?' (auswärts)':''));return}
-    if(X.k&&r.p<25)f.push(`${sh(i)} (Kraft): „${r.n}“ hat nur ${r.p} g Eiweiß. Ergänze Joghurt, Eier oder Tofu – oder tausche auf ein eiweißreicheres Gericht.`);
-    else if(X.s&&(X.s.lv||2)>=2&&r.kh<40)f.push(`${sh(i)} (${X.s.k.map(k=>FKN[k]).join(', ')}, ${LVN[X.s.lv||2].toLowerCase()}): „${r.n}“ liefert wenig Kohlenhydrate (${r.kh} g). Reis, Kartoffeln oder Pasta dazu füllen die Speicher wieder auf.`);
-    else if(fLoad(X)>=5&&r.k<450)f.push(`${sh(i)} ist ein voller Trainingstag, „${r.n}“ hat aber nur ${r.k} kcal – plane eine größere Portion oder einen Snack ein.`)});
-  const restHeavy=D.filter(i=>!fCount(T(i))&&RM[s.plan[i]]&&RM[s.plan[i]].k>=650);
-  let b=f.length?f.join('\n'):(D.some(i=>T(i)&&(T(i).s||T(i).k)&&RM[s.plan[i]])?'Deine geplanten Gerichte passen gut zu den Trainingstagen: genug Eiweiß an Krafttagen und Kohlenhydrate an den Ausdauertagen.':'');
-  if(noMeal.length)b+=(b?'\n':'')+`An ${noMeal.join(', ')} trainierst du, hast aber noch kein Gericht geplant.`;
-  if(restHeavy.length)b+=(b?'\n':'')+`Am Ruhetag ${sh(restHeavy[0])} steht mit „${RM[s.plan[restHeavy[0]]].n}“ ein eher üppiges Gericht – das würde besser zu einem Trainingstag passen.`;
-  res.push({t:'Ernährung',x:b||'Für die Trainingstage ist noch kein Essen geplant.'});
-  const tips=[];if(hard.length)tips.push(`An harten Tagen (${hard.map(sh).join(', ')}) innerhalb von ein bis zwei Stunden nach dem Training essen und mehr trinken.`);
-  if(ck)tips.push('An Krafttagen sind rund 25–40 g Eiweiß in der Hauptmahlzeit ein guter Richtwert.');
-  tips.push('„Freie Tage passend zum Training planen“ füllt leere Tage automatisch: Krafttage eiweißreich, harte Ausdauertage kohlenhydratreich, Ruhetage leicht. Der Würfel im Essensplan macht dasselbe.');
-  res.push({t:'Empfehlungen',x:tips.join('\n')});return res}
+    if(!r){if(id!==OUT)noMeal.push(sh(i));return}
+    if(X.k&&r.p<25)f.push(`${sh(i)}: „${r.n}“ hat wenig Eiweiß für einen Krafttag – Joghurt, Eier oder Tofu ergänzen.`);
+    else if(X.s&&(X.s.lv||2)>=2&&r.kh<40)f.push(`${sh(i)}: Zu ${nm(fTop(X))} passen mehr Kohlenhydrate – Reis, Kartoffeln oder Pasta zu „${r.n}“.`)});
+  let b=f.slice(0,2).join('\n');
+  if(noMeal.length)b+=(b?'\n':'')+`Für ${noMeal.join(', ')} fehlt noch ein Gericht.`;
+  res.push({t:'Ernährung',x:b||'Deine Gerichte passen gut zum Training.'});
+  const tips=[];if(hard.length)tips.push('Nach intensiven Einheiten zeitnah essen und mehr trinken.');
+  tips.push(f.length||noMeal.length?'„Freie Tage passend zum Training planen“ wählt für leere Tage passende Gerichte.':'Weiter so – Training und Essen passen zusammen.');
+  res.push({t:'Empfehlung',x:tips.join(' ')});return res}
 Phone.prototype.fitAnalyze=async function(){const s=this.s,w=s.fwk||0,sig=fitSig(s,w);if(s.fitAI&&s.fitAI.step==='think')return;
   const A=s.fitAI={step:'think',wk:w};haptic();this.render();const el=this.scr.querySelector('#fai');if(el)el.scrollIntoView({block:'start',behavior:'smooth'});
   const done=res=>{if(s.fitAI!==A)return;s.fitAI={wk:w,sig,res};hapticSuccess();this.render();clearTimeout(this.saveT);this.saveT=setTimeout(()=>this.save(),300)};
   await aiWait();
   if(!AI){setTimeout(()=>done(fitLocal(s,w)),700);return}
   try{const lines=Array.from({length:7},(_,j)=>w*7+j).map(i=>{const r=RM[s.plan[i]];return `${dayLbl(i)}${i===TODAY?' (heute)':''}: Training: ${fText(s.train[i])}. Essen: ${r?`${r.n} (${r.k} kcal, ${r.p} g Eiweiß, ${r.kh} g Kohlenhydrate, ${r.f} g Fett)`:s.plan[i]===OUT?'auswärts':'noch nichts geplant'}`}).join('\n');
-    const r=await AI(`Du bist Trainings- und Ernährungscoach in einer deutschen Essensplan-App und schreibst eine kurze, persönliche Wochenanalyse wie die KI-Auswertung bei Strava. Pro Tag gibt es EIN geplantes Hauptgericht (für ${s.persons} ${s.persons===1?'Person':'Personen'}; Nährwerte je Portion). Intensität: locker, mittel, hart.
+    const r=await AI(`Du bist Trainings- und Ernährungscoach in einer deutschen Essensplan-App und schreibst eine kurze, persönliche Wochenanalyse wie die KI-Auswertung bei Strava. Pro Tag gibt es EIN geplantes Hauptgericht (für ${s.persons} ${s.persons===1?'Person':'Personen'}; Nährwerte je Portion). Intensität: leicht, mittel, hoch.
 
 Woche (KW ${KW(w)}):
 ${lines}
@@ -1565,7 +1591,7 @@ ${lines}
 Verfügbare Gerichte zum Tauschen (ID: Name …):
 ${aiCatalog()}
 
-Schreibe auf Deutsch in Du-Form, konkret und freundlich, ohne Markdown. Nenne Tage und Gerichte beim Namen. 1. Training: Umfang, Verteilung von Belastung und Erholung, was auffällt. 2. Ernährung: Passen die geplanten Gerichte zum jeweiligen Trainingstag (Eiweiß an Krafttagen, Kohlenhydrate rund um harte Ausdauereinheiten, leichter an Ruhetagen)? 3. Empfehlungen: 2–3 konkrete Verbesserungen, gern mit Tauschvorschlag aus den verfügbaren Gerichten. Keine medizinischen Aussagen. Je Abschnitt höchstens 4 Sätze.
+Schreibe auf Deutsch in Du-Form, freundlich, ohne Markdown, SEHR KURZ: je Abschnitt höchstens 2 Sätze. Zähle NICHT auf, was an welchem Tag gemacht wird. 1. Training: Worauf liegt der Fokus (z. B. „Dein Fokus liegt auf Radfahren. Kraft und Dehnen ergänzen das Training ideal.“), und falls etwas fehlt, was noch gut täte. 2. Ernährung: nur das Wichtigste, wo Essen und Training nicht zusammenpassen, sonst ein kurzes Lob. 3. Empfehlung: ein konkreter Tipp, gern ein Tauschvorschlag aus den verfügbaren Gerichten. Keine medizinischen Aussagen.
 Antworte ausschließlich mit JSON: {"abschnitte":[{"titel":"Training","text":"…"},{"titel":"Ernährung","text":"…"},{"titel":"Empfehlungen","text":"…"}]}`,{modelTier:'default'});
     const j=aiParse(r&&r.text!==undefined?r.text:r);const res=(j&&j.abschnitte||[]).filter(x=>x&&x.text).map(x=>({t:x.titel||'',x:String(x.text)}));
     done(res.length?res:fitLocal(s,w))}catch(e){AI=e&&e.code==='not_granted'?null:AI;done(fitLocal(s,w))}};
@@ -1592,7 +1618,7 @@ Phone.prototype.vPanel=function(i){const s=this.s;const id=s.plan[i];const r=RM[
   const eb=`${i===TODAY?'Heute · ':''}${dn(i)} · ${dm(i)}`;
   const an=this.anim?' anim-'+this.anim:'';
   if(r&&!s.edit)return `<div class="panel${an}"><div class="open-head"><div><div class="eb">${eb}</div><div class="open-title">${i===TODAY?"Heute gibt's":'Geplant'}</div></div></div>
-    <div class="dish"><button data-a="detail" data-id="${r.id}" data-day="${i}" style="border:0;background:transparent;padding:0" aria-label="Rezept öffnen"><div class="halo">${plate(r,200)}</div></button>
+    <div class="dish">${this.vXm(i)}<button data-a="detail" data-id="${r.id}" data-day="${i}" style="border:0;background:transparent;padding:0" aria-label="Rezept öffnen"><div class="halo">${plate(r,200)}</div></button>
     <div class="nm">${r.n}</div>
     <div class="meta"><span>${ic('clock')}${r.m} Min</span><span>${ic('flame')}${r.k} kcal</span><span>${r.p} g Protein</span>${enBadge(r,false)}<button class="info sm" data-a="sheet" data-v="energy" aria-label="Energiedichte erklärt">${ic('info')}</button></div></div>
     <div class="acts"><button class="obtn" data-a="edit">${ic('pencil')}Ändern</button><button class="gbtn" data-a="detail" data-id="${r.id}" data-day="${i}">${ic('chef')}${i===TODAY?'Jetzt kochen':'Rezept ansehen'}</button></div></div>`;
@@ -1609,6 +1635,19 @@ Phone.prototype.vPanel=function(i){const s=this.s;const id=s.plan[i];const r=RM[
    <div class="acts"><button class="obtn" data-a="skip" title="${i===TODAY?'Heute':'Diesen Tag'} auslassen">${ic('out')}Auswärts</button>${L.length?`${twiceBtn(s.sel)}<button class="gbtn" data-a="take">${ic('check')}Wählen</button>`:''}</div>
   </div>`};
 /* Kategorie wechseln ohne die ganze Seite neu aufzubauen: nur Chips, Rad und Knopfzeile tauschen, Chip-Leiste bleibt wo sie ist, Rad blendet weich über */
+/* Frühstück (oben) und Abendessen (unten) als kleine Ergänzung zum Hauptgericht – Grundgerüst, wird später ausgebaut */
+const XM={b:['Frühstück','sunrise',[['🥣','Joghurt mit Beeren'],['🥣','Porridge'],['🍳','Eier und Brot'],['🥤','Smoothie'],['🍎','Obst und Nüsse'],['🧀','Käsebrot']]],
+  d:['Abendessen','moon',[['🥗','Kleiner Salat'],['🍲','Suppe'],['🥪','Brot mit Aufstrich'],['🍱','Reste vom Mittag'],['🍳','Omelett'],['🥛','Topfen mit Obst']]]};
+Phone.prototype.vXm=function(i){const X=this.s.extra[i]||{};
+  return ['b','d'].map(k=>{const v=X[k];return `<button class="xm ${k} ${v?'set':''}" data-a="extra" data-v="${k}" aria-label="${XM[k][0]}${v?': '+v.replace(/"/g,'&quot;'):' hinzufügen'}">${ic(XM[k][1])}${v?`<span>${v.replace(/</g,'&lt;')}</span>`:`<i>${ic('plus')}</i>`}</button>`}).join('')};
+Phone.prototype.vExtra=function(){const s=this.s,k=s.exK,i=s.sel,cur=(s.extra[i]||{})[k];
+  return `<div class="ai-head"><span class="stk-ic">${ic(XM[k][1])}</span><div><h3 style="margin:0">${XM[k][0]}</h3><p class="ai-sub">${i===TODAY?'Heute · ':''}${dayLbl(i)}</p></div></div>
+   <div class="ai-tags">${XM[k][2].map(([e,n])=>`<button class="ai-tag ${cur===n?'on':''}" data-a="exset" data-v="${n}"><span>${e}</span>${n}</button>`).join('')}</div>
+   <div class="ai-in"><input data-k="exq" enterkeyhint="done" placeholder="Eigenes eintragen" value="${(s.exQ||'').replace(/"/g,'&quot;')}" aria-label="Eigenes ${XM[k][0]} eintragen"><button class="ai-mic" data-a="exadd" aria-label="Übernehmen">${ic('check')}</button></div>
+   <p class="ai-note">Kleine Mahlzeit zusätzlich zum Hauptgericht. Vorschau: kommt noch nicht auf die Einkaufsliste und hat noch keine Rezepte.</p>
+   ${cur?`<button class="ai-again" data-a="exset" data-v="">${XM[k][0]} entfernen</button>`:''}`};
+Phone.prototype.setExtra=function(v){const s=this.s,i=s.sel,X=s.extra[i]||(s.extra[i]={});v=String(v||'').trim().slice(0,40);
+  if(v)X[s.exK]=v;else delete X[s.exK];if(!X.b&&!X.d)delete s.extra[i];s.exQ='';haptic();s.sheet=null;this.render();if(v)this.toast(`${XM[s.exK][0]}: ${v}`)};
 Phone.prototype.setCat=function(v){const s=this.s;if(s.cat===v)return;s.cat=v;s.pick=-1;haptic();
   const pn=this.scr.querySelector('.view.planv .panel.picking');if(!pn){this.render();return}
   const tmp=document.createElement('div');tmp.innerHTML=this.vPanel(s.sel);const np=tmp.firstElementChild;
@@ -2144,13 +2183,14 @@ Phone.prototype.vSheet=function(){const s=this.s;if(!s.sheet)return '';
   if(s.sheet==='ai')c=this.vAI();
   if(s.sheet==='stock')c=this.vStock();
   if(s.sheet==='fday')c=this.vFday();
+  if(s.sheet==='extra')c=this.vExtra();
   if(s.sheet==='cook')c=this.vCook();
   if(s.sheet==='pickday'){const r=RM[s.did];c=`<h3>Für welchen Tag?</h3><p>${r.n} einplanen${s.twice?' · 2×: auch am Folgetag':''}</p>
     ${Array.from({length:NDAYS},(_,i)=>i).map(i=>{const id=s.plan[i],x=RM[id];return `${i%7===0?`<div class="lbl" style="margin:${i?14:4}px 0 4px">KW ${KW(wkOf(i))}${i?' · nächste Woche':' · diese Woche'}</div>`:''}<button class="pd" data-a="planfor" data-i="${i}">${x?plate(x,40):id===OUT?`<span class="ph out">${ic('out')}</span>`:`<span class="ph">${ic('plus')}</span>`}<span>${dayLbl(i)}${i===TODAY?' · heute':''}<small>${x?x.n+' wird ersetzt':id===OUT?'Auswärts, wird ersetzt':'frei'}</small></span></button>`}).join('')}`}
   return `<div class="sheet-bg" data-a="closesheet"><div class="sheet" data-a="stop"><button class="sheet-x" data-a="closesheet" aria-label="Schließen">${ic('x')}</button>${c}</div></div>`};
 
 /* ----- Aktionen ----- */
-Phone.prototype.input=function(e){const k=e.target.dataset.k;if(k==='aiq'){this.s.aiQ=e.target.value;return}if(k==='cookq'){this.s.cookQ=e.target.value;return}if(k==='stockq'){this.s.stockQ=e.target.value;return}if(k==='shopq'){this.s.shopQ=e.target.value;this.render()}if(k==='recq'){this.s.recQ=e.target.value;this.render()}};
+Phone.prototype.input=function(e){const k=e.target.dataset.k;if(k==='aiq'){this.s.aiQ=e.target.value;return}if(k==='cookq'){this.s.cookQ=e.target.value;return}if(k==='exq'){this.s.exQ=e.target.value;return}if(k==='stockq'){this.s.stockQ=e.target.value;return}if(k==='shopq'){this.s.shopQ=e.target.value;this.render()}if(k==='recq'){this.s.recQ=e.target.value;this.render()}};
 Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();return}
   if(this.s.ipop&&!e.target.closest('.ipop')){this.s.ipop=null;this.render();return}
   const t=e.target.closest('[data-a]');if(!t||!this.scr.contains(t))return;const s=this.s,a=t.dataset.a,v=t.dataset.v;
@@ -2221,6 +2261,9 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
    case 'aibuy':{const id=t.dataset.id,d=s.sel,rk=aiRank(s.ai.have,s.ai.amt||{},s.persons).find(x=>x.r.id===id),miss=rk?rk.miss:aiMissing(RM[id],s.ai.have);
       addNeeds(s.shop,miss,s.persons,true);
       const dd=this.planDish(d,id);s.sheet=null;this.backAfterPlan(d);this.anim='inF';this.pop=true;this.render();this.toast(`Eingeplant · ${miss.length} fehlende Zutat${miss.length===1?'':'en'} auf der Liste`);break}
+   case 'extra':s.exK=v;s.exQ='';s.sheet='extra';haptic();this.render();break;
+   case 'exset':this.setExtra(v);break;
+   case 'exadd':if((s.exQ||'').trim())this.setExtra(s.exQ);break;
    /* --- Fitnessbereich --- */
    case 'flip':this.flip(v);break;
    case 'fday':s.fsel=+t.dataset.i;s.fpick=null;s.sheet='fday';haptic();this.render();break;
