@@ -2915,4 +2915,7 @@ const standalone=window.EP_APP||(window.matchMedia&&matchMedia('(display-mode: s
 const h=location.hash;mode(standalone?'app':h==='#dummy'?'dummy':h==='#app'?'app':h==='#screens'?'screens':small?'app':'screens');
 })();
 </script>
-<script>if('serviceWorker' in navigator){addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}))}</script>
+<script>/* Neue Version sofort holen: Service Worker ohne HTTP-Cache prüfen, beim Zurückkehren in die App erneut prüfen, nach Wechsel einmal neu laden */
+if('serviceWorker' in navigator){const had=!!navigator.serviceWorker.controller;let done=false;
+  navigator.serviceWorker.addEventListener('controllerchange',()=>{if(had&&!done){done=true;location.reload()}});
+  addEventListener('load',()=>navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(r=>{r.update();document.addEventListener('visibilitychange',()=>{if(!document.hidden)r.update()})}).catch(()=>{}))}</script>
