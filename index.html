@@ -225,14 +225,22 @@ html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
 .csec .pill.on{background:var(--a-grad);color:#fff;box-shadow:none}
 .step.say{background:rgba(var(--a-glow),.07);border-radius:14px;box-shadow:-10px 0 0 rgba(var(--a-glow),.07),10px 0 0 rgba(var(--a-glow),.07)}
 .ai-warn{font-size:12.5px!important;margin:12px 0 0!important;padding:9px 12px;border-radius:12px;background:rgba(240,163,58,.14);color:#8A5A12!important;line-height:1.4}
+.cooked{position:absolute;left:50%;bottom:104px;transform:translateX(-50%);z-index:60;display:flex;align-items:center;gap:12px;padding:12px 20px 12px 12px;border-radius:999px;background:rgba(255,255,255,.96);box-shadow:0 0 0 1px var(--a-line),0 20px 40px -18px rgba(30,40,30,.45);white-space:nowrap;animation:cookIn .35s cubic-bezier(.2,.8,.2,1);transition:opacity .35s,transform .35s;pointer-events:none}
+.cooked.out{opacity:0;transform:translateX(-50%) translateY(8px)}
+@keyframes cookIn{from{opacity:0;transform:translateX(-50%) translateY(12px)}}
+.cooked span{width:36px;height:36px;border-radius:50%;background:#6F9A5E;display:grid;place-items:center}
+.cooked span .ic{width:18px;height:18px;stroke:#fff;stroke-width:2.6}
+.cooked b{display:block;font-weight:500;font-size:15.5px;line-height:1.2}
+.cooked small{font-size:12.5px;color:var(--a-muted)}
+.themes{display:none!important}
 .ck-ans{font-size:16.5px;line-height:1.5;font-weight:300;color:var(--a-ink);background:rgba(var(--a-glow),.07);border-radius:18px;padding:14px 16px}
 
 /* ===== Mein Fitnessbereich ===== */
 .vdots{position:absolute;right:0;top:46%;z-index:38;border:0;background:none;padding:10px 5px 10px 12px;display:flex;flex-direction:column;gap:5px}
 .vdots i{width:5px;height:5px;border-radius:3px;background:rgba(120,120,140,.3);transition:height .3s,background .3s}
-.vdots i:first-child{height:15px;background:#B0646F}
+.vdots i:first-child{height:15px;background:#94425A}
 .vdots.f i:first-child{height:5px;background:rgba(120,120,140,.3)}
-.vdots.f i:last-child{height:15px;background:#2F6B4F}
+.vdots.f i:last-child{height:15px;background:#1D5A3F}
 .th-beige .vdots:not(.f) i:first-child{background:#9C7650}.th-bunt .vdots:not(.f) i:first-child{background:#4F7DF5}
 .cube{position:absolute;inset:0;z-index:30;perspective:1500px;pointer-events:none;overflow:hidden;background:#101116}
 .cube-in{position:absolute;inset:0;transform-style:preserve-3d;will-change:transform}
@@ -246,8 +254,8 @@ html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
 .view.flipin>.blob{animation:blobIn .5s ease}
 @keyframes blobIn{from{opacity:0}}
 .cface.dim::after{opacity:.45}
-.fitv{--a-blue:#2F6B4F;--a-violet:#4E8F72;--a-pink:#3F8468;--a-eyebrow:#2F6B4F;--a-grad:linear-gradient(100deg,#5FA283 0%,#2F6B4F 58%,#3F8468 100%);--a-glow:47,107,79;--a-today:#E1F0E7;--a-ring:#A3CCB6;--b1:#9FD6B8;--b2:#C5E8CF;--b3:#85C5A6;--b4:#B4E0C0}
-.fhead-bg{position:absolute;left:0;right:0;top:0;height:270px;background:linear-gradient(180deg,rgba(39,102,74,.42),rgba(39,102,74,.16) 55%,rgba(39,102,74,0));pointer-events:none}
+.fitv{--a-blue:#1D5A3F;--a-violet:#3C8061;--a-pink:#2C7052;--a-eyebrow:#1D5A3F;--a-grad:linear-gradient(100deg,#3F8B69 0%,#184F37 58%,#28694A 100%);--a-glow:28,88,62;--a-today:#D8ECE0;--a-ring:#8FC1A7;--b1:#9FD6B8;--b2:#C5E8CF;--b3:#85C5A6;--b4:#B4E0C0}
+.fhead-bg{position:absolute;left:0;right:0;top:0;height:270px;background:linear-gradient(180deg,rgba(24,84,58,.5),rgba(24,84,58,.2) 55%,rgba(24,84,58,0));pointer-events:none}
 .view.planv{background:linear-gradient(180deg,rgba(var(--a-glow),.3),rgba(var(--a-glow),.1) 150px,rgba(var(--a-glow),0) 270px)}
 .lbl.fl{margin:14px 0 8px}.lbl.fl:first-of-type{margin-top:16px}
 .fweek{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
@@ -445,10 +453,10 @@ html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
 .phone{
   --a-bg:#F6F7FC; --a-card:#FFFFFF; --a-ink:#12131A; --a-muted:#8A8FA3; --a-soft:#F0F1F8; --a-line:#ECEEF5;
   /* Akzent-Farben je Variante; Standard = A Altrosa */
-  --a-blue:#B0646F; --a-violet:#C27F8A; --a-pink:#C9706A; --a-eyebrow:#A8606C;
-  --a-grad:linear-gradient(100deg,#C88691 0%,#B0646F 58%,#BF7468 100%);
-  --a-glow:170,90,105; --a-today:#F8E7E9; --a-ring:#E3B1B8;
-  --b1:#F7CFD3; --b2:#F2DDD6; --b3:#EBBCC4; --b4:#F6D9D2;
+  --a-blue:#9C4A5C; --a-violet:#B26778; --a-pink:#B4575A; --a-eyebrow:#92435A;
+  --a-grad:linear-gradient(100deg,#B96C7C 0%,#94425A 58%,#A85557 100%);
+  --a-glow:150,66,90; --a-today:#F5DCE1; --a-ring:#D6909D;
+  --b1:#F1BBC3; --b2:#EFCFC8; --b3:#E2A4B0; --b4:#F1C9C2;
   --en-low:#1FAE7A; --en-mid:#F0A33A; --en-high:#F0645A;
   width:410px;height:864px;border-radius:58px;background:#16171D;padding:10px;position:absolute;top:0;left:0;transform-origin:top left;
   box-shadow:0 40px 80px -30px rgba(40,30,90,.45),0 0 0 1.5px #2C2D36 inset;
@@ -715,15 +723,17 @@ html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
 .step:first-child{border-top:0;padding-top:4px}
 /* Schritt abhaken: Punkt wird salbeigrün mit weißem Haken, Zeile warm-hellgrün hinterlegt */
 .step{position:relative;cursor:pointer;-webkit-tap-highlight-color:transparent}
-.step::before{content:'';position:absolute;inset:6px -10px;border-radius:16px;background:linear-gradient(100deg,rgba(150,176,120,.20),rgba(186,196,140,.14));opacity:0;transform:scale(.96);transition:opacity .3s,transform .35s cubic-bezier(.2,.8,.2,1);pointer-events:none}
-.step.ok::before{opacity:1;transform:none}
+.step::before{content:'';position:absolute;inset:6px -10px;border-radius:14px;background:rgba(126,158,104,.1);opacity:0;transition:opacity .25s ease;pointer-events:none}
+.step.ok::before{opacity:1}
+.step.ok p{text-decoration:line-through;text-decoration-color:rgba(120,120,140,.35)}
 .step:first-child::before{top:-4px}
 .step>*{position:relative}
 .step b{transition:background .3s}
 .step b .ck{display:none;width:16px;height:16px;stroke:#fff;stroke-width:2.6}
 .step.ok b{background:#7E9E68}
 .step.ok b .n{display:none}
-.step.ok b .ck{display:block;animation:ckpop .4s cubic-bezier(.2,.8,.2,1)}
+.step.ok b .ck{display:block;animation:ckfade .22s ease}
+@keyframes ckfade{from{opacity:0}}
 .step.ok p{color:var(--a-muted);transition:color .3s}
 /* Erfolgs-Animation (Party-Popper + Konfetti) */
 .fw{position:absolute;inset:0;z-index:96;pointer-events:none;background:radial-gradient(120% 80% at 50% 40%,rgba(255,255,255,.9),rgba(246,244,250,.82));-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);animation:fwbg 2.8s ease forwards}
@@ -1512,7 +1522,7 @@ Phone.prototype.vFday=function(){const s=this.s,i=s.fsel,T=s.train[i]||{};
   return `<h3>Training</h3><p>${i===TODAY?'Heute · ':''}${dayLbl(i)}</p>
    <div class="ftiles">${FACTS.map(([c,k,l])=>{const lv=lvOf(c,k);return `<button class="ftile ${lv?'on':''}" data-a="ftog" data-c="${c}" data-v="${k}" style="--c:${FA[k]}" aria-pressed="${!!lv}"><span>${ic('f_'+k)}</span>${l}${lv>0?`<em>${lv}</em>`:''}</button>`}).join('')}</div>
    <p class="fnote" style="margin-top:12px">Tippen: an oder aus · Halten und ziehen: Intensität</p>
-   <button class="gbtn" style="width:100%;margin-top:14px;background:linear-gradient(100deg,#4E9A78,#27664A 58%,#357C5C);box-shadow:0 14px 26px -12px rgba(39,102,74,.75)" data-a="closesheet">${ic('check')}Fertig</button>`};
+   <button class="gbtn" style="width:100%;margin-top:14px;background:linear-gradient(100deg,#3F8B69,#184F37 58%,#28694A);box-shadow:0 14px 26px -12px rgba(24,79,55,.75)" data-a="closesheet">${ic('check')}Fertig</button>`};
 /* Kachel gedrückt halten: drei Stufen erscheinen, nach links/rechts ziehen wählt, loslassen übernimmt */
 Phone.prototype.holdTile=function(e,el){const self=this,s=this.s,c=el.dataset.c,k=el.dataset.v;if(c==='m')return;
   const x0=e.clientX,y0=e.clientY;let bub=null,lv=0,base=0;
@@ -1965,7 +1975,7 @@ Phone.prototype.speak=function(){const s=this.s,r=RM[s.did],sy=window.speechSynt
   const mark=()=>{self.scr.querySelectorAll('.step.say').forEach(x=>x.classList.remove('say'));const el=self.scr.querySelector(`.step[data-k="${k}"]`);if(el&&self.speaking){el.classList.add('say');el.scrollIntoView({block:'center',behavior:'smooth'})}};
   const lead=i=>i===k0?(i===0?`${r.n}. Zuerst: `:'Weiter geht\'s: '):i===n-1?'Und zum Schluss: ':['Dann: ','Danach: ','Als Nächstes: '][(i-k0-1)%3];
   const next=()=>{if(!self.speaking||self.s.screen!=='detail')return;if(k>=n){self.speaking=false;self.render();return}
-    const u=new SpeechSynthesisUtterance(lead(k)+sayText(r.st[k]));if(voice){u.voice=voice;u.lang=voice.lang}else u.lang='de-DE';u.rate=1;u.pitch=1;u.onend=()=>{k++;setTimeout(next,220)};u.onerror=()=>{self.speaking=false;self.render()};mark();sy.speak(u)};
+    const u=new SpeechSynthesisUtterance(lead(k)+sayText(r.st[k]));if(voice){u.voice=voice;u.lang=voice.lang}else u.lang='de-DE';u.rate=1;u.pitch=1;u.onend=()=>{k++;setTimeout(next,1800)};u.onerror=()=>{self.speaking=false;self.render()};mark();sy.speak(u)};
   this.render();next()};
 
 /* ----- Einstellungen ----- */
@@ -1979,8 +1989,8 @@ Phone.prototype.vSettings=function(){const s=this.s;
    ${li('play','var(--a-violet)','Intro erneut ansehen',ic('right'),'reintro')}</div>
    <div class="grp">${li('trash','#F0645A','Plan leeren (beide Wochen)','','clearweek')}
    ${li('cloud','#6B7B99','Rezept-Quelle','Lokal')}</div>
-   ${this.opts.full?`<div class="grp">${li('sliders','var(--a-violet)','Farbvariante',({rose:'Altrosa',beige:'Beige',bunt:'Bunt'})[curTheme()],'nexttheme')}${window.EP_APP?'':li('book','#6B7B99','Prototyp-Übersicht',ic('right'),'overview')}</div>`:''}
-   <div class="grp">${li('run','#2F6B4F','Mein Fitnessbereich',ic('right'),'flip','fit')}
+   ${this.opts.full?`<div class="grp">${window.EP_APP?'':li('book','#6B7B99','Prototyp-Übersicht',ic('right'),'overview')}</div>`:''}
+   <div class="grp">${li('run','#1D5A3F','Mein Fitnessbereich',ic('right'),'flip','fit')}
    ${li('vol','var(--a-violet)','Vorlese-Stimme',(()=>{const v=pickVoice(s.voice);return v?v.name.replace(/\s*\(.*?\)/,m=>/premium/i.test(m)?' · Premium':/enhanced|erweitert/i.test(m)?' · Erweitert':''):'Standard'})(),'nextvoice')}</div>
    <p style="color:var(--a-muted);font-size:13px;text-align:center;margin-top:22px">Essensplan · Version 1.0</p>
   </div></div>`};
@@ -2011,6 +2021,10 @@ const POPPER_SVG=`<svg viewBox="0 0 120 120" aria-hidden="true"><ellipse cx="54"
 <circle cx="44" cy="62" r="7" fill="#F6D877"/><circle cx="62" cy="76" r="5" fill="#F6D877"/><circle cx="34" cy="86" r="5.5" fill="#F6D877"/><circle cx="52" cy="92" r="3.2" fill="#F6D877"/><circle cx="72" cy="66" r="3" fill="#F6D877"/>
 <path d="M14 106 L50 30 Q72 34 92 70 Z" fill="none" stroke="#2B2440" stroke-width="3.6" stroke-linejoin="round"/>
 <path d="M50 30 Q72 34 92 70" fill="none" stroke="#E98AA2" stroke-width="11" stroke-linecap="round"/><path d="M50 30 Q72 34 92 70" fill="none" stroke="#2B2440" stroke-width="3.2" stroke-linecap="round" opacity=".9" transform="translate(-4 4)"/></svg>`;
+/* Alle Schritte erledigt: ruhige Bestätigung unten, verschwindet von selbst (ersetzt Konfetti/Popper) */
+Phone.prototype.cooked=function(){const scr=this.scr;const old=scr.querySelector('.cooked');if(old)old.remove();
+  const d=document.createElement('div');d.className='cooked';d.innerHTML=`<span>${ic('check')}</span><div><b>Fertig gekocht</b><small>Guten Appetit!</small></div>`;scr.appendChild(d);
+  setTimeout(()=>d.classList.add('out'),2600);setTimeout(()=>d.remove(),3000)};
 Phone.prototype.fireworks=function(){const scr=this.scr;const old=scr.querySelector('.fw');if(old)old.remove();
   const word='Geschafft!';
   const box=document.createElement('div');box.className='fw';
@@ -2230,7 +2244,7 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
    case 'undo':if(this.prevPlan){s.plan=this.prevPlan;this.prevPlan=null;this.render();this.toast('Rückgängig gemacht')}break;
    case 'fav':{const id=t.dataset.id;s.favs.has(id)?s.favs.delete(id):s.favs.add(id);this.render();break}
    case 'stepok':{const id=s.did,k=+t.dataset.k,d=s.done[id]=s.done[id]||[];const i=d.indexOf(k);const all=i<0&&d.length+1===RM[id].st.length;if(i<0){d.push(k);all?hapticSuccess():haptic()}else d.splice(i,1);t.classList.toggle('ok',i<0);this.save();
-      if(all)setTimeout(()=>this.fireworks(),120);break}
+      if(all)setTimeout(()=>this.cooked(),150);break}
    case 'detail':s.from=s.screen;s.did=t.dataset.id;s.dday=t.dataset.day!==undefined?+t.dataset.day:null;s.screen='detail';this.render();break;
    case 'back':this.back();break;
    case 'planfor':{const i=+t.dataset.i;const dd=this.planDish(i,s.did);s.sheet=null;this.backAfterPlan(i);this.render();this.toast(`${RM[s.did].n} für ${dd} eingeplant`);break}
@@ -2369,7 +2383,8 @@ window.__mode=mode;
 document.querySelectorAll('.modes button').forEach(b=>b.addEventListener('click',()=>mode(b.dataset.mode)));
 document.getElementById('t-reset').addEventListener('click',()=>{store.set(false);data.clear();if(dummy)dummy.reset(dummyInit())});
 window.__setTheme=t=>setTheme(t);
-function setTheme(t){if(!['rose','beige','bunt'].includes(t))t='rose';document.body.classList.remove('th-beige','th-bunt');if(t!=='rose')document.body.classList.add('th-'+t);
+function setTheme(t){t='rose'; /* seit V69 nur noch Altrosa (Essen) + Grün (Fitness) */
+  if(!['rose','beige','bunt'].includes(t))t='rose';document.body.classList.remove('th-beige','th-bunt');if(t!=='rose')document.body.classList.add('th-'+t);
   document.querySelectorAll('.themes button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.th===t));try{localStorage.setItem('essensplan-stil',t)}catch(e){}}
 document.querySelectorAll('.themes button').forEach(b=>b.addEventListener('click',()=>setTheme(b.dataset.th)));
 let th0='rose';try{th0=localStorage.getItem('essensplan-stil')||'rose'}catch(e){}setTheme(th0);
