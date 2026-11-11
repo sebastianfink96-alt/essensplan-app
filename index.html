@@ -471,6 +471,39 @@ html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
 .cr-st.run{background:var(--a-grad)}
 .cr-st.done{min-width:32px;width:32px;padding:0;background:#E3EEDD;color:#5E8A4C}
 .cr-st .ic{width:15px;height:15px;stroke-width:2.6}
+
+/* ===== Apple-Stil: große Überschriften, ruhige Flächen, weiches Einblenden beim Scrollen (V73) ===== */
+.rv{opacity:0;transform:translateY(26px) scale(.985);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
+.rv.in{opacity:1;transform:none}
+.rv.now{transition:none!important}
+.ap-h1{margin:6px 0 0;font-weight:600;font-size:38px;line-height:1.06;letter-spacing:-.035em;color:#1D1D1F}
+.phone .view .ap-h2{margin:44px 2px 16px;font-weight:600;font-size:27px!important;line-height:1.12;letter-spacing:-.03em;color:#1D1D1F}
+.ap-h1 span,.ap-h2 span{color:#86868B}
+.lrnv .lhero{margin-top:22px;min-height:210px;border-radius:28px}
+.bento{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.bt{position:relative;border:0;text-align:left;border-radius:26px;background:#F0F0F3;color:#1D1D1F;padding:18px 16px 16px;min-height:196px;display:flex;flex-direction:column;justify-content:space-between;gap:10px;overflow:hidden}
+.bt-e{font-size:54px;line-height:1;filter:drop-shadow(0 10px 12px rgba(0,0,0,.14))}
+.bt-tx{display:flex;flex-direction:column;gap:3px}
+.bt-tx b{font-weight:600;font-size:18.5px;line-height:1.15;letter-spacing:-.02em}
+.bt-tx small{font-size:12.5px;color:#86868B;line-height:1.3}
+.bt-tx em{font-style:normal;display:inline-flex;align-items:center;gap:2px;margin-top:6px;font-size:14px;font-weight:500;color:var(--a-blue)}
+.bt-tx em .ic{width:14px;height:14px}
+.bt.wide{grid-column:1/-1;min-height:176px;flex-direction:row;align-items:flex-end;background:#1D1D1F;color:#F5F5F7}
+.bt.wide .bt-e{position:absolute;right:18px;top:14px;font-size:92px}
+.bt.wide .bt-tx{max-width:66%}
+.bt.wide .bt-tx b{font-size:24px}
+.bt.wide .bt-tx small{color:#A1A1A6;font-size:13.5px}
+.bt.wide .bt-tx em{color:#F2A9B6}
+.bt-bar{position:absolute;left:0;right:0;bottom:0;height:3px;background:rgba(134,134,139,.25)}
+.bt-bar i{display:block;height:100%;background:var(--a-grad)}
+@media (min-width:700px){.phone.full .bento{grid-template-columns:repeat(4,1fr)}.phone.full .bt.wide{grid-column:span 2}}
+/* Speisekarte mit Fotos */
+.phone .view .mn-s .ap-h2{margin-top:38px}
+.mn-s .menu{margin-top:0;padding:6px 16px 8px}
+.mi{display:flex!important;align-items:center;gap:14px;padding:14px 34px 14px 0!important}
+.mi-p{flex:none;width:72px;height:72px;display:grid;place-items:center;filter:drop-shadow(0 8px 10px rgba(60,40,30,.16))}
+.mi-b{flex:1;min-width:0;display:block}
+.mi-h b{font-size:17px!important}
 /* ===== KI-Assistent ===== */
 .orb{position:absolute;right:22px;bottom:90px;width:62px;height:62px;border-radius:50%;border:0;padding:0;z-index:42;display:grid;place-items:center;color:#fff;
   box-shadow:0 12px 26px -8px rgba(30,20,80,.42),0 0 22px -2px rgba(120,110,255,.38);overflow:hidden;animation:orbIn .5s cubic-bezier(.2,.8,.2,1)}
@@ -1509,7 +1542,7 @@ Phone.prototype.goPlanToday=function(){const s=this.s;s.screen='plan';s.sel=TODA
 
 Phone.prototype.render=function(){
   const s=this.s, v=this.scr.querySelector('.view');
-  const keep=(v&&this.lastScreen===s.screen)?v.scrollTop:0;
+  const keep=(v&&this.lastScreen===s.screen)?v.scrollTop:0;const fresh=this.lastScreen!==s.screen;
   const focus=document.activeElement&&this.scr.contains(document.activeElement)?document.activeElement.dataset.k:null;
   let body='';
   if(s.screen==='intro')body=this.vIntro();
@@ -1530,7 +1563,7 @@ Phone.prototype.render=function(){
   clearTimeout(this.saveT);this.saveT=setTimeout(()=>this.save(),300);
   this.lastScreen=s.screen;
   this.anim=null;this.pop=false;
-  this.initPicker();this.initIntro();this.dockOrb();this.initDeck();this.initXw();
+  this.initPicker();this.initIntro();this.dockOrb();this.initDeck();this.initXw();this.initReveal(fresh);
   if(focus){const el=this.scr.querySelector(`[data-k="${focus}"]`);if(el){el.focus({preventScroll:true});const L=el.value.length;try{el.setSelectionRange(L,L)}catch(e){}}}
 };
 /* KI-Orb steht auf allen Tabs an derselben Stelle (rechts unten, überlappt die Kachel leicht). Verdeckt er die Buttons der Tages-Kachel, rücken diese nach links */
@@ -1547,6 +1580,11 @@ Phone.prototype.dockOrb=function(){
   place();if(v)v.addEventListener('scroll',place,{passive:true});
   this.orbRO=new ResizeObserver(place);this.orbRO.observe(a);this.orbRO.observe(this.scr);
 };
+/* Elemente mit .rv blenden beim Hineinscrollen weich ein (wie auf apple.com). Nur beim Öffnen einer Seite, nicht bei jedem Neuzeichnen */
+Phone.prototype.initReveal=function(fresh){const els=[...this.scr.querySelectorAll('.rv')];if(this.rvIO){this.rvIO.disconnect();this.rvIO=null}if(!els.length)return;
+  if(!fresh||!window.IntersectionObserver||(window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches)){els.forEach(e=>e.classList.add('in','now'));return}
+  const io=this.rvIO=new IntersectionObserver(en=>{let k=0;en.forEach(e=>{if(e.isIntersecting){e.target.style.transitionDelay=(k++*70)+'ms';e.target.classList.add('in');io.unobserve(e.target)}})},{root:this.scr.querySelector('.view'),rootMargin:'0px 0px -8% 0px',threshold:.08});
+  els.forEach(e=>io.observe(e))};
 Phone.prototype.vStatus=function(){return `<div class="status"><span>9:41</span><span style="display:flex;gap:6px;align-items:center">
  <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#111"/><rect x="5" y="5.5" width="3" height="6.5" rx="1" fill="#111"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#111"/><rect x="15" y="0" width="3" height="12" rx="1" fill="#111"/></svg>
  <svg width="16" height="12" viewBox="0 0 16 12"><path d="M8 11.5 5.6 9a3.4 3.4 0 0 1 4.8 0zM3.4 6.8a6.5 6.5 0 0 1 9.2 0l-1.5 1.5a4.4 4.4 0 0 0-6.2 0zM1 4.4a9.9 9.9 0 0 1 14 0l-1.5 1.5a7.8 7.8 0 0 0-11 0z" fill="#111"/></svg>
@@ -1636,17 +1674,16 @@ Phone.prototype.vLearn=function(){const s=this.s;const L=s.learn||{};
   const pr=d=>Math.min(d.cards.length,L[d.id]||0);
   const nxt=DECKS.find(d=>pr(d)>0&&pr(d)<d.cards.length)||DECKS.find(d=>pr(d)===0)||DECKS[0],rest=DECKS.filter(d=>d!==nxt);
   const ring=(v,n)=>{const C=2*Math.PI*15;return `<svg viewBox="0 0 36 36" width="46" height="46" aria-hidden="true"><circle cx="18" cy="18" r="15" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="3"/><circle cx="18" cy="18" r="15" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-dasharray="${(C*v/n).toFixed(1)} ${C.toFixed(1)}" transform="rotate(-90 18 18)"/></svg>`};
-  return `<div class="view lrnv"><div class="blob" style="opacity:.6"><i></i><i></i><i></i><i></i></div><div class="z">
+  const tile=(d,wide)=>{const n=d.cards.length,v=pr(d);return `<button class="bt rv ${wide?'wide':''}" data-a="deck" data-v="${d.id}"><span class="bt-e">${d.e}</span><span class="bt-tx"><b>${d.t}</b><small>${d.sub||n+' Lektionen · ca. '+Math.max(2,Math.round(n*.6))+' Min'}</small><em>${v>=n?'Wiederholen':v?`Weiter · ${v}/${n}`:'Starten'}${ic('right')}</em></span>${v?`<span class="bt-bar"><i style="width:${v/n*100}%"></i></span>`:''}</button>`};
+  return `<div class="view lrnv"><div class="z">
    <div class="top-row"></div>
-   <div class="eb">Kochwissen · ${seen}/${tot} Karten</div>
-   <div class="h-title">Lerncenter</div>
-   <button class="lhero" data-a="deck" data-v="${nxt.id}" style="--d1:${nxt.c[0]};--d2:${nxt.c[1]}"><span class="lh-e">${nxt.e}</span>
+   <div class="eb">Kochwissen · ${seen}/${tot} Lektionen</div>
+   <h1 class="ap-h1">Kochen lernen. <span>In kleinen Schritten.</span></h1>
+   <button class="lhero rv" data-a="deck" data-v="${nxt.id}" style="--d1:${nxt.c[0]};--d2:${nxt.c[1]}"><span class="lh-e">${nxt.e}</span>
     <span class="lh-tx"><small>${pr(nxt)?'Weiterlernen':'Jetzt starten'}</small><b>${nxt.t}</b><span>${nxt.sub||nxt.cards.length+' kurze Lernkarten'}</span></span>
     <span class="lh-r">${ring(pr(nxt),nxt.cards.length)}<i>${pr(nxt)}/${nxt.cards.length}</i></span></button>
-   ${[['Grundlagen',['sauce','knife','heat','spice','prep']],['Saucen & Dressings',['french','dress','peppy']]].map(([ti,ids])=>{const ds=ids.map(x=>DECK[x]).filter(d=>d&&d!==nxt);if(!ds.length)return '';
-     return `<div class="lbl" style="margin:24px 0 10px">${ti}<span>${ds.length} ${ds.length===1?'Kurs':'Kurse'}</span></div><div class="clist">${ds.map(d=>{const n=d.cards.length,v=pr(d),C=2*Math.PI*15;
-       return `<button class="crow" data-a="deck" data-v="${d.id}"><span class="cr-e">${d.e}</span><span class="cr-tx"><b>${d.t}</b><small>${n} Lektionen · ca. ${Math.max(2,Math.round(n*.6))} Min</small><span class="cr-bar"><i style="width:${v/n*100}%"></i></span></span>
-        <span class="cr-st ${v>=n?'done':v?'run':''}">${v>=n?ic('check'):v?'Weiter':'Start'}</span></button>`}).join('')}</div>`}).join('')}
+   ${[['Grundlagen','Das Fundament jeder Küche.',['sauce','knife','heat','spice','prep']],['Saucen','Der Unterschied auf dem Teller.',['french','dress','peppy']]].map(([ti,sub,ids])=>{const ds=ids.map(x=>DECK[x]).filter(d=>d&&d!==nxt);if(!ds.length)return '';
+     return `<h2 class="ap-h2 rv">${ti}. <span>${sub}</span></h2><div class="bento">${ds.map((d,k)=>tile(d,k===0||(ds.length%2===0&&k===ds.length-1))).join('')}</div>`}).join('')}
   </div></div>`};
 Phone.prototype.vDeck=function(){const s=this.s,d=DECK[s.deck],n=d.cards.length,k=DECKS.indexOf(d),nx=DECKS[k+1];
   return `<div class="lk" style="--d1:${d.c[0]};--d2:${d.c[1]}"><div class="lk-bg"></div>
@@ -2044,9 +2081,10 @@ Phone.prototype.vRecipes=function(favOnly){const s=this.s;const q=s.recQ.toLower
   const hero=!q&&!favOnly&&L.length>2&&!(M==='l'&&s.recCat==='fav')?L[(new Date().getDate()+M.charCodeAt(0))%L.length]:null;
   const rest=hero?L.filter(r=>r!==hero):L;
   /* Speisekarte: Abschnitte, Name – Punktlinie – Zeit, Zutaten klein darunter */
-  const item=r=>`<button class="mi" data-a="detail" data-id="${r.id}"><span class="mi-h"><b>${r.n}</b><i></i><em>${r.m} Min</em></span><span class="mi-s">${r.s}</span><span class="mi-k">${r.k} kcal · ${r.p} g Protein</span>${heart(r)}</button>`;
-  const sec=(ti,a)=>a.length?`<div class="mn-t"><span>${ti}</span></div>${a.map(item).join('')}`:'';
-  const menu=a=>M==='l'&&s.recCat==='all'&&!q&&!favOnly?[['fleisch','Fleisch'],['fisch','Fisch'],['veggie','Vegetarisch']].map(([c,l])=>sec(l,a.filter(r=>r.c[0]===c))).join(''):sec(favOnly||s.recCat==='fav'?'Favoriten':M==='l'?(CATNAME[s.recCat]||['Auswahl'])[0]:MEALS.find(x=>x[0]===M)[1],a);
+  const item=r=>`<button class="mi rv" data-a="detail" data-id="${r.id}"><span class="mi-p">${plate(r,72)}</span><span class="mi-b"><span class="mi-h"><b>${r.n}</b><i></i><em>${r.m} Min</em></span><span class="mi-s">${r.s}</span><span class="mi-k">${r.k} kcal · ${r.p} g Protein</span></span>${heart(r)}</button>`;
+  const SUBT={fleisch:'Kräftig und eiweißreich.',fisch:'Leicht und frisch.',veggie:'Bunt und pflanzlich.',b:'Der gute Start.',d:'Leicht in den Abend.'};
+  const sec=(ti,a,sub)=>a.length?`<div class="mn-s"><h2 class="ap-h2 rv">${ti}. <span>${sub||a.length+' Gerichte.'}</span></h2><div class="menu">${a.map(item).join('')}</div></div>`:'';
+  const menu=a=>M==='l'&&s.recCat==='all'&&!q&&!favOnly?[['fleisch','Fleisch'],['fisch','Fisch'],['veggie','Vegetarisch']].map(([c,l])=>sec(l,a.filter(r=>r.c[0]===c),SUBT[c])).join(''):sec(favOnly||s.recCat==='fav'?'Favoriten':M==='l'?(CATNAME[s.recCat]||['Auswahl'])[0]:MEALS.find(x=>x[0]===M)[1],a,q?'':SUBT[M==='l'?s.recCat:M]);
   return `<div class="view recv"><div class="blob" style="opacity:.6"><i></i><i></i><i></i><i></i></div><div class="z">
    <div class="top-row"></div>
    <div class="eb">${favOnly?'Deine Lieblinge':`${R.length+RX.length} Rezepte`}</div>
@@ -2056,7 +2094,7 @@ Phone.prototype.vRecipes=function(favOnly){const s=this.s;const q=s.recQ.toLower
    <div class="search">${ic('search')}<input data-k="recq" placeholder="${MEALS.find(x=>x[0]===M)[1]} suchen" value="${s.recQ.replace(/"/g,'&quot;')}" aria-label="Rezept suchen"></div>
    ${M==='l'?`<div class="hs">${CATS.map(([k,l,i])=>`<button class="chip ${s.recCat===k?'on':''}" data-a="rcat" data-v="${k}">${ic(i)}${l}</button>`).join('')}<button class="chip ${s.recCat==='fav'?'on':''}" data-a="rcat" data-v="fav">${ic('heart')}Favoriten</button></div>`:''}`}
    ${hero?`<button class="rhero" data-a="detail" data-id="${hero.id}" style="--t1:${hero.t[0]};--t2:${hero.t[1]}">${heart(hero)}<span class="rh-tx"><small>Empfehlung des Tages</small><b>${hero.n}</b>${meta(hero)}<i>Zum Rezept${ic('right')}</i></span><span class="rh-pl">${plate(hero,168)}</span></button>`:''}
-   ${rest.length?`<div class="menu">${menu(rest)}</div>`
+   ${rest.length?`${menu(rest)}`
    :hero?'':`<div class="empty-st">${favOnly||s.recCat==='fav'?'Noch keine Favoriten. Tippe bei einem Rezept auf das Herz.':'Kein Rezept gefunden.'}</div>`}
   </div></div>`};
 
