@@ -240,7 +240,7 @@ html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
 .vdots i{width:5px;height:5px;border-radius:3px;background:rgba(120,120,140,.3);transition:height .3s,background .3s}
 .vdots i:first-child{height:15px;background:#94425A}
 .vdots.f i:first-child{height:5px;background:rgba(120,120,140,.3)}
-.vdots.f i:last-child{height:15px;background:#1D5A3F}
+.vdots.f i:last-child{height:15px;background:#006039}
 .th-beige .vdots:not(.f) i:first-child{background:#9C7650}.th-bunt .vdots:not(.f) i:first-child{background:#4F7DF5}
 .cube{position:absolute;inset:0;z-index:30;perspective:1500px;pointer-events:none;overflow:hidden;background:#101116}
 .cube-in{position:absolute;inset:0;transform-style:preserve-3d;will-change:transform}
@@ -254,8 +254,8 @@ html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
 .view.flipin>.blob{animation:blobIn .5s ease}
 @keyframes blobIn{from{opacity:0}}
 .cface.dim::after{opacity:.45}
-.fitv{--a-blue:#1D5A3F;--a-violet:#3C8061;--a-pink:#2C7052;--a-eyebrow:#1D5A3F;--a-grad:linear-gradient(100deg,#3F8B69 0%,#184F37 58%,#28694A 100%);--a-glow:28,88,62;--a-today:#D8ECE0;--a-ring:#8FC1A7;--b1:#9FD6B8;--b2:#C5E8CF;--b3:#85C5A6;--b4:#B4E0C0}
-.fhead-bg{position:absolute;left:0;right:0;top:0;height:270px;background:linear-gradient(180deg,rgba(24,84,58,.5),rgba(24,84,58,.2) 55%,rgba(24,84,58,0));pointer-events:none}
+.fitv{--a-blue:#006039;--a-violet:#1E7C55;--a-pink:#0B6B43;--a-eyebrow:#006039;--a-grad:linear-gradient(100deg,#0F7C4E 0%,#004D2E 58%,#006039 100%);--a-glow:0,96,57;--a-today:#D2EBDD;--a-ring:#74BC98;--b1:#7FCBA4;--b2:#B5E3C8;--b3:#5DB98C;--b4:#A0DAB9}
+.fhead-bg{position:absolute;left:0;right:0;top:0;height:270px;background:linear-gradient(180deg,rgba(0,96,57,.6),rgba(0,96,57,.24) 55%,rgba(0,96,57,0));pointer-events:none}
 .view.planv{background:linear-gradient(180deg,rgba(var(--a-glow),.3),rgba(var(--a-glow),.1) 150px,rgba(var(--a-glow),0) 270px)}
 .lbl.fl{margin:14px 0 8px}.lbl.fl:first-of-type{margin-top:16px}
 .fweek{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
@@ -305,7 +305,7 @@ html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
 .fleg li{counter-increment:f;display:flex;align-items:center;gap:10px;font-size:14px}
 .fleg li::before{content:counter(f);width:22px;height:22px;border-radius:50%;background:var(--a-today);color:var(--a-eyebrow);font-size:12px;font-weight:600;display:grid;place-items:center;flex:none}
 .fstep{display:flex;align-items:center;gap:9px;margin:16px 0 10px;font-size:15px;font-weight:500}
-.fstep i{font-style:normal;width:22px;height:22px;border-radius:50%;background:#E1F0E7;color:#2F6B4F;font-size:12px;font-weight:600;display:grid;place-items:center;flex:none}
+.fstep i{font-style:normal;width:22px;height:22px;border-radius:50%;background:#D2EBDD;color:#006039;font-size:12px;font-weight:600;display:grid;place-items:center;flex:none}
 .fstep small{margin-left:auto;font-size:12px;font-weight:400;color:var(--a-muted)}
 .ftiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .ftile{border:0;border-radius:18px;padding:12px 4px 10px;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:13px;background:#F4F5F9;color:var(--a-ink);touch-action:manipulation;transition:background .18s,color .18s,transform .15s}
@@ -355,6 +355,67 @@ html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
 .fl-c{display:flex;flex-wrap:wrap;gap:6px 14px;margin:8px 0 2px;font-size:13px}
 .fl-c span{display:inline-flex;align-items:center;gap:6px}
 .fl-c i{width:9px;height:9px;border-radius:50%}
+
+/* ===== Rezepte-Tab (V70) ===== */
+.mseg{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:16px 0 0}
+.mseg button{border:0;border-radius:20px;padding:12px 6px 10px;background:var(--a-card);box-shadow:0 0 0 1px var(--a-line);display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--a-muted);transition:background .2s,color .2s,box-shadow .2s}
+.mseg .ic{width:20px;height:20px}
+.mseg b{font-weight:500;font-size:13.5px;color:var(--a-ink)}
+.mseg small{font-size:11px}
+.mseg button.on{background:var(--a-ink);color:rgba(255,255,255,.7);box-shadow:0 14px 26px -16px rgba(18,19,26,.8)}
+.mseg button.on b{color:#fff}
+.recv .search{margin:12px 0 12px}
+.rhero{position:relative;width:100%;border:0;text-align:left;margin-top:16px;border-radius:30px;padding:22px 20px;min-height:204px;display:flex;align-items:center;overflow:hidden;color:var(--a-ink);
+  background:radial-gradient(90% 120% at 100% 50%,var(--t2),rgba(255,255,255,0) 70%),linear-gradient(135deg,#fff 0%,var(--t1) 100%);box-shadow:0 0 0 1px rgba(255,255,255,.9),0 26px 44px -30px rgba(40,30,60,.55)}
+.rh-tx{position:relative;z-index:1;display:flex;flex-direction:column;gap:6px;max-width:56%}
+.rh-tx small{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--a-eyebrow)}
+.rh-tx b{font-weight:300;font-size:23px;line-height:1.14;letter-spacing:-.02em}
+.rh-tx i{font-style:normal;display:inline-flex;align-items:center;gap:4px;margin-top:8px;font-size:13.5px;font-weight:500;color:var(--a-ink)}
+.rh-tx i .ic{width:14px;height:14px}
+.rh-pl{position:absolute;right:-26px;top:50%;transform:translateY(-50%);filter:drop-shadow(0 18px 20px rgba(40,30,60,.25))}
+.rhero .hb{position:absolute;top:14px;right:14px;z-index:2}
+.recv .meta,.rhero .meta{display:flex;gap:10px;font-size:12.5px;color:var(--a-muted);align-items:center}
+.recv .meta span{display:inline-flex;align-items:center;gap:4px}
+.recv .meta .ic{width:13px;height:13px}
+.recv .rgrid{gap:14px 12px;margin-top:12px}
+.recv .rc{background:none;box-shadow:none;padding:0;border-radius:0;align-items:stretch;text-align:left;gap:3px}
+.rc-pl{position:relative;display:grid;place-items:center;height:150px;border-radius:26px;background:radial-gradient(80% 80% at 50% 108%,var(--t2),rgba(255,255,255,0) 72%),linear-gradient(160deg,#fff,var(--t1));box-shadow:0 0 0 1px rgba(255,255,255,.9),0 18px 30px -24px rgba(40,30,60,.5)}
+.rc-pl .stage img{filter:drop-shadow(0 10px 12px rgba(40,30,60,.22))}
+.recv .rc .nm{margin:9px 2px 0;font-size:15px;font-weight:500;line-height:1.25;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+.recv .rc .meta{margin:0 2px}
+.recv .rc .hb,.rhero .hb{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.85);display:grid;place-items:center;color:#B0B4C6;z-index:2}
+.recv .rc .hb{position:absolute;top:8px;right:8px}
+.recv .hb.on{color:#D6406F;background:#fff}
+.recv .hb.on .ic{fill:currentColor}
+.recv .hb .ic{width:16px;height:16px}
+/* kleines Rad für Frühstück/Abendessen */
+.xw{display:flex;align-items:center;gap:2px;overflow-x:auto;scroll-snap-type:x mandatory;margin:4px -22px 0;padding:14px 0 10px;scrollbar-width:none;-webkit-overflow-scrolling:touch;-webkit-mask-image:linear-gradient(90deg,transparent,#000 22%,#000 78%,transparent);mask-image:linear-gradient(90deg,transparent,#000 22%,#000 78%,transparent)}
+.xw::-webkit-scrollbar{display:none}
+.xw-pad{flex:none;width:calc(50% - 56px)}
+.xw-i{flex:none;width:112px;height:112px;border:0;background:none;padding:0;display:grid;place-items:center;scroll-snap-align:center;will-change:transform}
+.xw-cap{text-align:center;min-height:50px}
+.xw-cap b{display:block;font-weight:300;font-size:20px;letter-spacing:-.015em;line-height:1.2}
+.xw-cap span{display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--a-muted);margin-top:4px}
+.xw-cap .ic{width:13px;height:13px}
+/* ===== Lerncenter (V70) ===== */
+.lhero{position:relative;width:100%;border:0;text-align:left;margin-top:18px;border-radius:30px;padding:22px 20px;min-height:168px;display:flex;align-items:flex-end;gap:14px;overflow:hidden;color:#fff;
+  background:radial-gradient(120% 90% at 100% 0%,var(--d2),rgba(0,0,0,0) 60%),linear-gradient(150deg,#2A2530,#15131A);box-shadow:0 26px 44px -26px rgba(20,16,30,.8)}
+.lh-e{position:absolute;right:16px;top:8px;font-size:84px;line-height:1;opacity:.95;filter:drop-shadow(0 12px 16px rgba(0,0,0,.35))}
+.lh-tx{position:relative;display:flex;flex-direction:column;gap:3px;flex:1;min-width:0}
+.lh-tx small{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:rgba(255,255,255,.7)}
+.lhero .lh-tx b{font-weight:300;font-size:26px;line-height:1.1;letter-spacing:-.02em;color:#fff}
+.lh-tx span{font-size:13.5px;color:rgba(255,255,255,.75)}
+.lh-r{position:relative;display:grid;place-items:center;flex:none}
+.lh-r i{position:absolute;font-style:normal;font-size:11px;font-weight:600}
+.lgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.lt{position:relative;border:0;text-align:left;border-radius:26px;padding:16px 16px 14px;min-height:158px;display:flex;flex-direction:column;justify-content:flex-end;gap:3px;overflow:hidden;color:var(--a-ink);
+  background:radial-gradient(110% 90% at 100% 0%,var(--d2),rgba(255,255,255,0) 62%),linear-gradient(160deg,#fff,var(--d1));box-shadow:0 0 0 1px rgba(255,255,255,.9),0 18px 30px -24px rgba(40,30,60,.5)}
+.lt-e{position:absolute;right:12px;top:10px;font-size:46px;line-height:1;filter:drop-shadow(0 8px 10px rgba(40,30,60,.2))}
+.lt b{font-weight:500;font-size:16px;line-height:1.2}
+.lt small{font-size:12px;color:rgba(40,40,60,.6)}
+.lt-bar{height:3px;border-radius:2px;background:rgba(40,40,60,.12);margin-top:8px;overflow:hidden}
+.lt-bar i{display:block;height:100%;background:var(--a-ink);border-radius:2px}
+@media (min-width:700px){.phone.full .lgrid{grid-template-columns:repeat(3,1fr)}}
 /* ===== KI-Assistent ===== */
 .orb{position:absolute;right:22px;bottom:90px;width:62px;height:62px;border-radius:50%;border:0;padding:0;z-index:42;display:grid;place-items:center;color:#fff;
   box-shadow:0 12px 26px -8px rgba(30,20,80,.42),0 0 22px -2px rgba(120,110,255,.38);overflow:hidden;animation:orbIn .5s cubic-bezier(.2,.8,.2,1)}
@@ -921,6 +982,7 @@ box:'<path d="M4 8.5 12 4l8 4.5v7L12 20l-8-4.5z"/><path d="M4 8.5 12 13l8-4.5M12
 receipt:'<path d="M6 3.5h12v17l-2-1.4-2 1.4-2-1.4-2 1.4-2-1.4-2 1.4z"/><path d="M9 8h6M9 11.5h6M9 15h3.5"/>',
 up:'<path d="m6 15 6-6 6 6"/>',
 sunrise:'<path d="M3.5 17.5h17M7 17.5a5 5 0 0 1 10 0M12 6v2.6M5.4 9.4l1.9 1.9M18.6 9.4l-1.9 1.9"/>',
+sun:'<circle cx="12" cy="12" r="4"/><path d="M12 3.5v2M12 18.5v2M3.5 12h2M18.5 12h2M6 6l1.4 1.4M16.6 16.6 18 18M6 18l1.4-1.4M16.6 7.4 18 6"/>',
 moon:'<path d="M19.6 14.3A7.8 7.8 0 0 1 9.7 4.4a7.8 7.8 0 1 0 9.9 9.9z"/>',
 f_bike:'<circle cx="5.6" cy="16.4" r="3.9"/><circle cx="18.4" cy="16.4" r="3.9"/><path d="M5.6 16.4H12L9.4 9.6zM9.4 9.6h6L12 16.4M15.4 9.6l3 6.8M15.4 9.6l-.7-2.6M13.2 7h3.2M7.8 8.3h3.4M9.4 9.6l-.3-1.3"/>',
 f_run:'<path d="M3 17.5v-1.2c0-1 .6-1.9 1.5-2.3L8 12.5l2-4.5 2.6 1.6L15 13l4.2 1.4c1.1.4 1.8 1.4 1.8 2.5v.6z"/><path d="M11 12.5l1.8-.9M12.4 14.2l1.8-.9"/>',
@@ -1142,7 +1204,59 @@ const R=[
   i:[["Linsen (trocken)", 60, "g"], ["Basmatireis (trocken)", 40, "g"], ["Karotte", 1, "Stk"], ["Zwiebel", 0.5, "Stk"], ["Gemüsebrühe", 400, "ml"], ["Olivenöl", 1, "TL"], ["Salz", 0, ""], ["Pfeffer", 0, ""], ["Kreuzkümmel", 0, ""]],
   st:["Reis separat gar kochen.", "Karotte würfeln und Zwiebel klein schneiden.", "Zwiebel in Öl anschwitzen.", "Linsen, Karotte und Brühe dazugeben und etwa 20–25 Minuten köcheln lassen.", "Reis unterheben und mit Salz, Pfeffer und Kreuzkümmel abschmecken."]}
 ];
-const RM=Object.fromEntries(R.map(r=>[r.id,r]));
+
+/* ===== Frühstück (meal:'b') und Abendessen (meal:'d'): eigene Rezepte, getrennt von den Hauptgerichten R ===== */
+const RX=[
+ {id:"f01",meal:"b",n:"Overnight Oats mit Beeren",s:"Haferflocken, Joghurt, Chia, Beeren",c:["veggie"],m:5,k:380,p:17,kh:52,f:11,g:350,e:"🫐",t:["#EEE6F7","#C9B4E6"],
+  i:[["Haferflocken",50,"g"],["Milch oder Haferdrink",120,"ml"],["Naturjoghurt",3,"EL"],["Chiasamen",1,"TL"],["Beeren",80,"g"],["Honig",1,"TL"],["Zimt",0,""]],
+  st:["Haferflocken, Milch, Joghurt, Chiasamen und Zimt in einem Glas verrühren.","Über Nacht im Kühlschrank quellen lassen.","Am Morgen mit Beeren und Honig toppen."]},
+ {id:"f02",meal:"b",n:"Cremiges Porridge mit Apfel und Zimt",s:"Haferflocken, Apfel, Walnüsse",c:["veggie"],m:10,k:390,p:13,kh:56,f:12,g:380,e:"🥣",t:["#F7EBDD","#E6C39A"],
+  i:[["Haferflocken",50,"g"],["Milch oder Haferdrink",200,"ml"],["Apfel (klein)",1,"Stk"],["Walnüsse",15,"g"],["Honig",1,"TL"],["Zimt",0,""],["Salz",0,""]],
+  st:["Haferflocken mit Milch und einer Prise Salz aufkochen.","Bei kleiner Hitze 3–4 Minuten cremig rühren.","Apfel würfeln und die Hälfte unterrühren.","Mit restlichem Apfel, Walnüssen, Zimt und Honig servieren."]},
+ {id:"f03",meal:"b",n:"Schinkenbrot mit Kresse",s:"Roggenbrot, Schinken, Kresse, Radieschen",c:["fleisch"],m:5,k:290,p:19,kh:30,f:10,g:190,e:"🥪",t:["#F3EFE2","#D9CFA6"],
+  i:[["Roggenbrot",2,"Scheiben"],["Butter",10,"g"],["Schinken",60,"g"],["Kresse",1,"Handvoll"],["Radieschen",3,"Stk"],["Pfeffer",0,""]],
+  st:["Brot dünn mit Butter bestreichen.","Mit Schinken belegen.","Radieschen in Scheiben schneiden und mit reichlich Kresse darauf verteilen.","Mit frischem Pfeffer würzen."]},
+ {id:"f04",meal:"b",n:"Avocado-Toast mit Ei",s:"Sauerteigbrot, Avocado, Ei, Chili",c:["veggie"],m:10,k:410,p:17,kh:30,f:24,g:260,e:"🥑",t:["#E9F4DC","#BFDD9A"],
+  i:[["Sauerteigbrot",2,"Scheiben"],["Avocado",0.5,"Stk"],["Eier",1,"Stk"],["Zitronensaft",1,"TL"],["Chiliflocken",0,""],["Salz",0,""],["Pfeffer",0,""]],
+  st:["Brot toasten.","Avocado mit Zitronensaft, Salz und Pfeffer zerdrücken und aufs Brot streichen.","Ei 6 Minuten wachsweich kochen oder als Spiegelei braten.","Ei daraufsetzen und mit Chiliflocken bestreuen."]},
+ {id:"f05",meal:"b",n:"Cottage-Cheese-Toast mit Tomate",s:"Hüttenkäse, Tomate, Schnittlauch",c:["veggie"],m:5,k:300,p:22,kh:30,f:9,g:270,e:"🍅",t:["#FBE5E0","#F0B3A5"],
+  i:[["Vollkornbrot",2,"Scheiben"],["Hüttenkäse",120,"g"],["Tomate",1,"Stk"],["Schnittlauch",0,""],["Olivenöl",1,"TL"],["Salz",0,""],["Pfeffer",0,""]],
+  st:["Brot toasten und mit Hüttenkäse bestreichen.","Tomate in Scheiben schneiden und darauflegen.","Mit Olivenöl beträufeln, salzen, pfeffern und mit Schnittlauch bestreuen."]},
+ {id:"f06",meal:"b",n:"Skyr-Bowl mit Granola",s:"Skyr, Banane, Beeren, Granola",c:["veggie"],m:5,k:360,p:26,kh:48,f:7,g:360,e:"🍓",t:["#FCE4EC","#F3A9C0"],
+  i:[["Skyr",200,"g"],["Banane",0.5,"Stk"],["Beeren",80,"g"],["Granola",30,"g"],["Honig",1,"TL"]],
+  st:["Skyr in eine Schale geben.","Banane in Scheiben schneiden.","Mit Banane, Beeren und Granola toppen und mit Honig beträufeln."]},
+ {id:"f07",meal:"b",n:"Baked Oats mit Banane",s:"Haferflocken, Banane, Ei, Zimt",c:["veggie"],m:25,k:400,p:17,kh:55,f:12,g:300,e:"🍌",t:["#FBF1CF","#F0D675"],
+  i:[["Haferflocken",50,"g"],["Banane",1,"Stk"],["Eier",1,"Stk"],["Milch oder Haferdrink",60,"ml"],["Backpulver",0.5,"TL"],["Zimt",0,""],["Beeren",40,"g"]],
+  st:["Ofen auf 180 °C vorheizen.","Haferflocken, Banane, Ei, Milch, Backpulver und Zimt fein mixen.","In eine kleine ofenfeste Form füllen und Beeren daraufgeben.","Etwa 20 Minuten backen, bis die Oberfläche goldbraun ist."]},
+ {id:"f08",meal:"b",n:"Türkische Eier mit Joghurt",s:"Pochierte Eier, Knoblauch-Joghurt, Chilibutter",c:["veggie"],m:15,k:360,p:20,kh:22,f:22,g:330,e:"🍳",t:["#FDE9D6","#F5B98A"],
+  i:[["Eier",2,"Stk"],["Naturjoghurt",150,"g"],["Knoblauch",0.5,"Zehe"],["Butter",10,"g"],["Paprikapulver",0.5,"TL"],["Fladenbrot",1,"Stück"],["Dill",0,""],["Salz",0,""]],
+  st:["Joghurt mit fein geriebenem Knoblauch und Salz verrühren und auf einem Teller verstreichen.","Eier in leicht siedendem Wasser 3 Minuten pochieren.","Butter schmelzen und Paprikapulver einrühren.","Eier auf den Joghurt setzen, Chilibutter darübergeben und mit Dill und Brot servieren."]},
+ {id:"a01",meal:"d",n:"Caprese-Brot mit Basilikum",s:"Sauerteigbrot, Mozzarella, Tomate",c:["veggie"],m:5,k:360,p:19,kh:30,f:18,g:280,e:"🍅",t:["#FBE5E0","#F0B3A5"],
+  i:[["Sauerteigbrot",2,"Scheiben"],["Mozzarella",0.5,"Kugel"],["Tomate",1,"Stk"],["Basilikum",0,""],["Olivenöl",1,"TL"],["Salz",0,""],["Pfeffer",0,""]],
+  st:["Brot toasten.","Tomate und Mozzarella in Scheiben schneiden und abwechselnd auflegen.","Mit Olivenöl, Salz, Pfeffer und Basilikum abschließen."]},
+ {id:"a02",meal:"d",n:"Knuspriger Gurkensalat mit Sesam",s:"Gurke, Sojasauce, Sesam, Chili",c:["veggie"],m:10,k:150,p:5,kh:9,f:10,g:320,e:"🥒",t:["#E3F3DD","#A9D99B"],
+  i:[["Gurke",1,"Stk"],["Sojasauce",1,"EL"],["Essig",1,"TL"],["Sesamöl",1,"TL"],["Sesam",1,"TL"],["Knoblauch",0.5,"Zehe"],["Chiliflocken",0,""],["Honig",0.5,"TL"]],
+  st:["Gurke mit dem Messerrücken leicht andrücken und in grobe Stücke schneiden.","Sojasauce, Essig, Sesamöl, Honig und geriebenen Knoblauch verrühren.","Gurke mit dem Dressing mischen und 5 Minuten ziehen lassen.","Mit Sesam und Chiliflocken bestreuen."]},
+ {id:"a03",meal:"d",n:"Räucherlachs-Brot mit Frischkäse",s:"Roggenbrot, Lachs, Dill, Zitrone",c:["fisch"],m:5,k:340,p:22,kh:28,f:15,g:210,e:"🐟",t:["#FCE6DC","#F3B49A"],
+  i:[["Roggenbrot",2,"Scheiben"],["Frischkäse",40,"g"],["Räucherlachs",70,"g"],["Gurke",0.25,"Stk"],["Zitrone",0.25,"Stk"],["Dill",0,""],["Pfeffer",0,""]],
+  st:["Brot mit Frischkäse bestreichen.","Gurke in dünne Scheiben schneiden und auflegen.","Lachs darauf verteilen, mit Zitrone beträufeln und mit Dill und Pfeffer würzen."]},
+ {id:"a04",meal:"d",n:"Schnelle Miso-Suppe mit Tofu",s:"Miso, Tofu, Frühlingszwiebel, Spinat",c:["veggie","suppe"],m:10,k:180,p:14,kh:10,f:8,g:420,e:"🍜",t:["#F4ECD8","#DCC58C"],
+  i:[["Misopaste",1,"EL"],["Wasser",350,"ml"],["Tofu",80,"g"],["Babyspinat",1,"Handvoll"],["Frühlingszwiebel",1,"Stk"],["Sojasauce",1,"TL"]],
+  st:["Wasser erhitzen, aber nicht kochen lassen.","Misopaste mit etwas heißem Wasser glatt rühren und zurück in den Topf geben.","Tofu würfeln und mit Spinat 2 Minuten in der Suppe ziehen lassen.","Mit Frühlingszwiebel und Sojasauce abschmecken."]},
+ {id:"a05",meal:"d",n:"Hüttenkäse-Bowl mit Gurke und Ei",s:"Hüttenkäse, Ei, Gurke, Tomaten",c:["veggie"],m:10,k:310,p:30,kh:10,f:16,g:380,e:"🥗",t:["#E8F3E6","#B4DCAE"],
+  i:[["Hüttenkäse",200,"g"],["Eier",1,"Stk"],["Gurke",0.5,"Stk"],["Cherrytomaten",6,"Stk"],["Olivenöl",1,"TL"],["Schnittlauch",0,""],["Salz",0,""],["Pfeffer",0,""]],
+  st:["Ei 8 Minuten hart kochen, abschrecken und vierteln.","Gurke würfeln, Tomaten halbieren.","Hüttenkäse in eine Schale geben und Gemüse und Ei darauf anrichten.","Mit Olivenöl, Salz, Pfeffer und Schnittlauch würzen."]},
+ {id:"a06",meal:"d",n:"Omelett-Wrap mit Spinat und Feta",s:"Eier, Wrap, Spinat, Feta",c:["veggie"],m:10,k:420,p:24,kh:28,f:23,g:260,e:"🌯",t:["#FBF1CF","#F0D675"],
+  i:[["Eier",2,"Stk"],["Weizen-Wrap",1,"Stk"],["Babyspinat",1,"Handvoll"],["Feta",40,"g"],["Olivenöl",1,"TL"],["Salz",0,""],["Pfeffer",0,""]],
+  st:["Eier verquirlen, salzen und pfeffern.","In einer Pfanne mit Öl als dünnes Omelett stocken lassen.","Den Wrap auf das noch feuchte Omelett legen, kurz andrücken und wenden.","Mit Spinat und Feta belegen, aufrollen und halbieren."]},
+ {id:"a07",meal:"d",n:"Tomatensuppe mit Basilikum",s:"Passierte Tomaten, Zwiebel, Joghurt",c:["veggie","suppe"],m:15,k:210,p:7,kh:22,f:9,g:430,e:"🥫",t:["#FBE1DA","#EE9E8C"],
+  i:[["Passierte Tomaten",300,"g"],["Zwiebel",0.5,"Stk"],["Knoblauch",0.5,"Zehe"],["Gemüsebrühe",100,"ml"],["Olivenöl",1,"TL"],["Naturjoghurt",1,"EL"],["Basilikum",0,""],["Salz",0,""],["Pfeffer",0,""]],
+  st:["Zwiebel und Knoblauch fein würfeln und in Öl glasig anschwitzen.","Passierte Tomaten und Brühe dazugeben und 10 Minuten köcheln lassen.","Nach Wunsch pürieren und mit Salz und Pfeffer abschmecken.","Mit einem Klecks Joghurt und Basilikum servieren."]},
+ {id:"a08",meal:"d",n:"Brotzeit-Teller",s:"Vollkornbrot, Käse, Ei, Rohkost",c:["veggie"],m:10,k:430,p:24,kh:32,f:22,g:330,e:"🧀",t:["#F3EFE2","#D9CFA6"],
+  i:[["Vollkornbrot",2,"Scheiben"],["Bergkäse",40,"g"],["Eier",1,"Stk"],["Radieschen",4,"Stk"],["Gurke",0.25,"Stk"],["Butter",10,"g"],["Kresse",0,""],["Salz",0,""]],
+  st:["Ei 8 Minuten hart kochen und halbieren.","Radieschen und Gurke in Scheiben schneiden.","Brot mit Butter bestreichen.","Alles mit dem Käse auf einem Teller anrichten und mit Kresse und Salz bestreuen."]}
+];
+const RM=Object.fromEntries(R.concat(RX).map(r=>[r.id,r]));
 const enOf=r=>{const d=r.k/r.g;return d<1.5?'low':d<=2.5?'mid':'high'};
 const DAYS=['Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag','Sonntag'];
 const AB=['MO','DI','MI','DO','FR','SA','SO'];
@@ -1151,7 +1265,7 @@ const NDAYS=14,dn=i=>DAYS[i%7],ab=i=>AB[i%7],dt=i=>dayDate(i).getDate(),wkOf=i=>
 const dm=i=>`${dt(i)}. ${MON[dayDate(i).getMonth()]}`;
 const dayLbl=i=>`${dn(i)}, ${dm(i)}`;
 const CATALOG=[['Milch','🥛'],['Brot','🍞'],['Eier','🥚'],['Butter','🧈'],['Käse','🧀'],['Joghurt','🥣'],['Kaffee','☕'],['Tee','🍵'],['Äpfel','🍎'],['Bananen','🍌'],['Zitronen','🍋'],['Limetten','🍋'],['Tomaten','🍅'],['Gurke','🥒'],['Paprika','🫑'],['Karotten','🥕'],['Kartoffeln','🥔'],['Zwiebeln','🧅'],['Knoblauch','🧄'],['Brokkoli','🥦'],['Salat','🥬'],['Reis','🍚'],['Nudeln','🍝'],['Mehl','🌾'],['Zucker','🍬'],['Olivenöl','🫒'],['Mineralwasser','💧'],['Wein','🍷'],['Bier','🍺'],['Schokolade','🍫'],['Hähnchen','🍗'],['Hackfleisch','🥩'],['Lachs','🐟'],['Toilettenpapier','🧻'],['Spülmittel','🧴'],['Müsli','🥣'],['Honig','🍯'],['Erdbeeren','🍓'],['Trauben','🍇'],['Pilze','🍄'],['Mais','🌽'],['Avocado','🥑'],['Haferflocken','🌾']];
-const EMO=[['erdäpfel','🥔'],['erdapfel','🥔'],['vogerl','🥬'],['kresse','🌱'],['eisberg','🥬'],['sesamöl','🫗'],['naturtofu','🫘'],['honig','🍯'],['ahorn','🍁'],['couscous','🌾'],['nudeln','🍝'],['rucola','🥬'],['mini-mozz','🧀'],['grünes pesto','🌿'],['schwarze bohnen','🫘'],['wasser','💧'],['rindersteak','🥩'],['blattsalat','🥬'],['naturjoghurt','🥛'],['senf','🫙'],['apfel','🍎'],['fischfilet','🐟'],['weißes fisch','🐟'],['gegarter fisch','🐟'],['lauch','🥬'],['gemüsebrühe','🍲'],['sardinen','🐟'],['fenchel','🌿'],['mozzarella','🧀'],['hokkaido','🎃'],['rote linsen','🫘'],['linsen','🫘'],['dinkelpasta','🍝'],['basilikumpesto','🌿'],['champignons','🍄'],['frischer spinat','🥬'],['walnüsse','🌰'],['birne','🍐'],['roggenknäcke','🍞'],['ei','🥚'],['essig','🫙'],['tomate','🍅'],['rosmarin','🌿'],['dill','🌿'],['petersilie','🌿'],['oregano','🌿'],['kräuter','🌿'],['muskat','🧂'],['currypulver','🧂'],['curry','🧂'],['paprikapulver','🧂'],['kreuzkümmel','🧂'],['pfeffer','🧂'],['zitrone','🍋'],['babyspinat','🥬'],['kresse','🌱'],['salz','🧂'],['schwarzer pfeffer','🧂'],['lachs','🐟'],['thunfisch','🐟'],['quinoa','🌾'],['bulgur','🌾'],['mehl','🌾'],['avocado','🥑'],['edamame','🫛'],['erbsen','🫛'],['zuckerschoten','🫛'],['rotkohl','🥬'],['kimchi','🥬'],['spinat','🥬'],['soja','🍶'],['teriyaki','🍶'],['sesam','🌰'],['kürbis','🎃'],['radieschen','🌱'],['brokkoli','🥦'],['joghurt','🥛'],['basilikum','🌿'],['schnittlauch','🌿'],['koriander','🌿'],['minze','🌿'],['nori','🌿'],['kichererbsen','🫘'],['kidney','🫘'],['hummus','🫘'],['tofu','🫘'],['falafel','🧆'],['mango','🥭'],['karotte','🥕'],['basmati','🍚'],['sushireis','🍚'],['reisnudel','🍜'],['reis','🍚'],['erdnuss','🥜'],['tahini','🥜'],['zucchini','🥒'],['gurke','🥒'],['paprika','🫑'],['süßkartoffel','🍠'],['kartoffel','🥔'],['zitrone','🍋'],['limette','🍋'],['oliven','🫒'],['kapern','🫒'],['granatapfel','🍎'],['hähnchen','🍗'],['kokos','🥥'],['curry','🍛'],['grüne curry','🍛'],['gochujang','🌶️'],['chili','🌶️'],['zwiebel','🧅'],['frühlings','🧅'],['spaghetti','🍝'],['penne','🍝'],['spätzle','🍝'],['hack','🥩'],['rinder','🥩'],['kalb','🥩'],['passiert','🍅'],['cherry','🍅'],['tomate','🍅'],['parmesan','🧀'],['feta','🧀'],['halloumi','🧀'],['berg','🧀'],['eier','🥚'],['brot','🍞'],['semmel','🍞'],['garnele','🍤'],['knoblauch','🧄'],['mais','🌽'],['butter','🧈']];
+const EMO=[['haferflocken','🌾'],['chia','🌱'],['beeren','🫐'],['granola','🥣'],['skyr','🥛'],['hüttenkäse','🧀'],['frischkäse','🧀'],['bergkäse','🧀'],['schinken','🥓'],['räucherlachs','🐟'],['miso','🍲'],['wrap','🌯'],['banane','🍌'],['backpulver','🧁'],['knoblauch','🧄'],['fladenbrot','🫓'],['sauerteig','🍞'],['vollkornbrot','🍞'],['roggenbrot','🍞'],['milch','🥛'],['butter','🧈'],['erdäpfel','🥔'],['erdapfel','🥔'],['vogerl','🥬'],['kresse','🌱'],['eisberg','🥬'],['sesamöl','🫗'],['naturtofu','🫘'],['honig','🍯'],['ahorn','🍁'],['couscous','🌾'],['nudeln','🍝'],['rucola','🥬'],['mini-mozz','🧀'],['grünes pesto','🌿'],['schwarze bohnen','🫘'],['wasser','💧'],['rindersteak','🥩'],['blattsalat','🥬'],['naturjoghurt','🥛'],['senf','🫙'],['apfel','🍎'],['fischfilet','🐟'],['weißes fisch','🐟'],['gegarter fisch','🐟'],['lauch','🥬'],['gemüsebrühe','🍲'],['sardinen','🐟'],['fenchel','🌿'],['mozzarella','🧀'],['hokkaido','🎃'],['rote linsen','🫘'],['linsen','🫘'],['dinkelpasta','🍝'],['basilikumpesto','🌿'],['champignons','🍄'],['frischer spinat','🥬'],['walnüsse','🌰'],['birne','🍐'],['roggenknäcke','🍞'],['ei','🥚'],['essig','🫙'],['tomate','🍅'],['rosmarin','🌿'],['dill','🌿'],['petersilie','🌿'],['oregano','🌿'],['kräuter','🌿'],['muskat','🧂'],['currypulver','🧂'],['curry','🧂'],['paprikapulver','🧂'],['kreuzkümmel','🧂'],['pfeffer','🧂'],['zitrone','🍋'],['babyspinat','🥬'],['kresse','🌱'],['salz','🧂'],['schwarzer pfeffer','🧂'],['lachs','🐟'],['thunfisch','🐟'],['quinoa','🌾'],['bulgur','🌾'],['mehl','🌾'],['avocado','🥑'],['edamame','🫛'],['erbsen','🫛'],['zuckerschoten','🫛'],['rotkohl','🥬'],['kimchi','🥬'],['spinat','🥬'],['soja','🍶'],['teriyaki','🍶'],['sesam','🌰'],['kürbis','🎃'],['radieschen','🌱'],['brokkoli','🥦'],['joghurt','🥛'],['basilikum','🌿'],['schnittlauch','🌿'],['koriander','🌿'],['minze','🌿'],['nori','🌿'],['kichererbsen','🫘'],['kidney','🫘'],['hummus','🫘'],['tofu','🫘'],['falafel','🧆'],['mango','🥭'],['karotte','🥕'],['basmati','🍚'],['sushireis','🍚'],['reisnudel','🍜'],['reis','🍚'],['erdnuss','🥜'],['tahini','🥜'],['zucchini','🥒'],['gurke','🥒'],['paprika','🫑'],['süßkartoffel','🍠'],['kartoffel','🥔'],['zitrone','🍋'],['limette','🍋'],['oliven','🫒'],['kapern','🫒'],['granatapfel','🍎'],['hähnchen','🍗'],['kokos','🥥'],['curry','🍛'],['grüne curry','🍛'],['gochujang','🌶️'],['chili','🌶️'],['zwiebel','🧅'],['frühlings','🧅'],['spaghetti','🍝'],['penne','🍝'],['spätzle','🍝'],['hack','🥩'],['rinder','🥩'],['kalb','🥩'],['passiert','🍅'],['cherry','🍅'],['tomate','🍅'],['parmesan','🧀'],['feta','🧀'],['halloumi','🧀'],['berg','🧀'],['eier','🥚'],['brot','🍞'],['semmel','🍞'],['garnele','🍤'],['knoblauch','🧄'],['mais','🌽'],['butter','🧈']];
 /* Zutaten den Schritten zuordnen (für die Mengen-Chips unter jedem Schritt).
    1. Schritt, der die Zutat nennt (Wortanfang, 5-Buchstaben-Stamm), auch über Wortteile: Olivenöl → „Öl“, Rindersteak → „Steak“, Basmatireis → „Reis“.
    2. Sonst Gewürze/Kräuter/Öl → Schritt mit „würzen/abschmecken/garnieren“, übrige Zutaten → Schritt mit „Gemüse“.
@@ -1316,7 +1430,7 @@ function Phone(host,init,opts){
 }
 Phone.prototype.reset=function(init){
   const s={screen:'plan',ip:0,plan:{0:'n02',1:'n01'},sel:TODAY,wk:0,edit:false,cat:'all',en:null,pick:-1,
-    favs:new Set(['n01','r2','n07','n13','n22']),learn:{},deck:null,did:null,dday:null,from:'plan',persons:1,shopWk:0,twice:false,done:{},sheet:null,shopQ:'',recQ:'',recCat:'all',stock:[],stockQ:'',cook:null,cookQ:'',extra:{},exK:'b',exQ:'',train:{},fsel:TODAY,fwk:0,fitAI:null,ipop:null,fitSeen:false,voice:''};
+    favs:new Set(['n01','r2','n07','n13','n22']),learn:{},deck:null,did:null,dday:null,from:'plan',persons:1,shopWk:0,twice:false,done:{},sheet:null,shopQ:'',recQ:'',recCat:'all',recMeal:'l',exPick:0,stock:[],stockQ:'',cook:null,cookQ:'',extra:{},exK:'b',exQ:'',train:{},fsel:TODAY,fwk:0,fitAI:null,ipop:null,fitSeen:false,voice:''};
   Object.assign(s,JSON.parse(JSON.stringify(Object.assign({},init,{favs:undefined}))));
   if(init.favs)s.favs=new Set(init.favs);
   s.shop=init.shopFromPlan?applyStock(buildShop(s.plan,s.persons,[]),s.stock):[]; /* Standard: leere Liste */
@@ -1361,7 +1475,7 @@ Phone.prototype.render=function(){
   clearTimeout(this.saveT);this.saveT=setTimeout(()=>this.save(),300);
   this.lastScreen=s.screen;
   this.anim=null;this.pop=false;
-  this.initPicker();this.initIntro();this.dockOrb();this.initDeck();
+  this.initPicker();this.initIntro();this.dockOrb();this.initDeck();this.initXw();
   if(focus){const el=this.scr.querySelector(`[data-k="${focus}"]`);if(el){el.focus({preventScroll:true});const L=el.value.length;try{el.setSelectionRange(L,L)}catch(e){}}}
 };
 /* KI-Orb steht auf allen Tabs an derselben Stelle (rechts unten, überlappt die Kachel leicht). Verdeckt er die Buttons der Tages-Kachel, rücken diese nach links */
@@ -1425,16 +1539,57 @@ const DECKS=[
   ['🌶️','Schärfe dosieren','Chili nach und nach zugeben – die Schärfe nimmt beim Kochen zu. Zu scharf geraten? Joghurt, Kokosmilch oder eine Prise Zucker mildern.',''],
   ['🧄','Knoblauch & Ingwer','Knoblauch nur kurz anbraten, bis er duftet – verbrannt wird er bitter. Ingwer mit dem Rand eines Löffels schälen und fein reiben.','']]}
 ];
+
+DECKS.find(d=>d.id==='prep').cards.push(
+  ['🧮','Die 3-2-1-Formel','Für eine Woche reichen 3 Sattmacher (z. B. Reis, Quinoa, Kartoffeln), 2 Eiweißquellen (z. B. Hähnchen, Linsen) und 1 Blech Ofengemüse. Daraus entstehen fünf verschiedene Teller.','Jeden Tag eine andere Sauce – so schmeckt nichts doppelt.'],
+  ['⏱️','90 Minuten am Sonntag','Reihenfolge: Ofen an und Gemüse aufs Blech, Körner aufsetzen, Eiweiß braten, währenddessen Rohkost schneiden und Dressings rühren. Zum Schluss alles abkühlen lassen und verpacken.','Alles, was lange braucht, zuerst starten.'],
+  ['🫙','Die richtigen Behälter','Glasbehälter mit dichtem Deckel nehmen keine Gerüche an und dürfen in Ofen und Mikrowelle. Dressings in kleine Schraubgläser füllen. Salat hält länger mit einem Blatt Küchenpapier im Behälter.','Feuchtes nach unten, Knuspriges nach oben schichten.'],
+  ['📅','Was hält wie lange?','Gekochte Körner und Hülsenfrüchte: 4 Tage. Ofengemüse: 3–4 Tage. Gegartes Hähnchen: 3 Tage. Fisch: 1–2 Tage. Geschnittene Rohkost: 3 Tage. Dressings ohne Milchprodukte: 1 Woche.','Fischgerichte an den Anfang der Woche legen.'],
+  ['🔁','Aus eins mach drei','Ofengemüse wird am ersten Tag zur Bowl, am zweiten zur Füllung für einen Wrap und am dritten püriert zur Suppe. So nutzt du Vorgekochtes, ohne dass es langweilig wird.','']);
+DECKS.push(
+ {id:'french',t:'Klassische Saucen',sub:'Französische Küche zu Steak, Wild und Fisch',e:'🍷',c:['#EBD3D8','#A8556A'],cards:[
+  ['🍖','Jus – die Basis','Bratensatz mit 100 ml Rotwein ablöschen, 200 ml kräftigen Fond dazugeben und auf ein Drittel einkochen, bis die Sauce den Löffel überzieht. Mit Salz abschmecken und mit kalter Butter binden.','Passt zu Steak, Braten und Geflügel. Ein guter Fond ist die halbe Sauce.'],
+  ['🍷','Rotwein-Schalotten-Reduktion','2 Schalotten fein würfeln und in Butter glasig dünsten. Mit 150 ml Rotwein und 1 TL Zucker fast vollständig einkochen, 150 ml Fond dazu und nochmals um die Hälfte reduzieren. Mit 20 g kalter Butter montieren.','Die klassische Sauce zum Steak (Art „Bordelaise“). Ein Zweig Thymian darf mitkochen.'],
+  ['🌶️','Pfeffersauce','1 EL grob zerstoßenen Pfeffer in der Steakpfanne kurz rösten, mit 2 EL Cognac ablöschen, 100 ml Fond und 100 ml Sahne dazugeben und sämig einkochen. Mit Salz und einem Spritzer Zitrone abrunden.','Grüner Pfeffer aus dem Glas macht sie milder und fruchtiger.'],
+  ['🦌','Wildsauce mit Wacholder','Bratensatz mit 150 ml Rotwein ablöschen, 5 angedrückte Wacholderbeeren, 1 Lorbeerblatt und 200 ml Wildfond dazugeben und auf ein Drittel reduzieren. 1 EL Preiselbeeren einrühren, passieren und mit kalter Butter binden.','Zu Reh, Hirsch und Wildschwein. Ein Stück dunkle Schokolade gibt Tiefe.'],
+  ['🥚','Sauce béarnaise','Eine Reduktion aus 3 EL Weißweinessig, 1 Schalotte und Estragon einkochen und abseihen. Mit 2 Eigelb über dem Wasserbad cremig aufschlagen, dann 120 g flüssige Butter langsam einlaufen lassen. Mit frischem Estragon, Salz und Zitrone abschmecken.','Die Butter darf nur lauwarm sein, sonst gerinnt die Sauce.'],
+  ['🧈','Beurre blanc','1 Schalotte in 100 ml Weißwein und 2 EL Weißweinessig fast vollständig einkochen. Bei kleiner Hitze 100 g eiskalte Butter stückweise einschwenken, bis eine cremige Sauce entsteht. Salzen und sofort servieren.','Die Sauce zu gebratenem Fisch und Spargel.'],
+  ['🍄','Pilzrahmsauce','200 g Champignons kräftig anbraten, 1 Schalotte dazugeben, mit 50 ml Weißwein ablöschen und mit 150 ml Sahne und 50 ml Fond sämig einkochen. Mit Petersilie, Salz und Pfeffer abschmecken.','Pilze erst salzen, wenn sie Farbe haben – sonst kochen sie im eigenen Saft.'],
+  ['🌿','Café-de-Paris-Butter','100 g weiche Butter mit 1 TL Senf, 1 TL Tomatenmark, fein gehackter Petersilie, Estragon, Schnittlauch, 1 Sardelle, Kapern, Zitronenabrieb und einer Prise Curry verrühren. Zur Rolle formen und kalt stellen.','Eine Scheibe auf das heiße Steak legen – sie schmilzt zur Sauce.'],
+  ['⚗️','Die drei Regeln','Erstens: reduzieren, bevor du salzt. Zweitens: am Ende mit kalter Butter montieren und nicht mehr kochen. Drittens: immer mit etwas Säure abschmecken – Zitrone oder ein Tropfen Essig.','']]},
+ {id:'dress',t:'Dressings für Bowls',sub:'Vinaigrettes und cremige Dressings',e:'🥗',c:['#DDEFD0','#6FA85A'],cards:[
+  ['⚖️','Die Grundformel','3 Teile Öl, 1 Teil Säure, dazu Salz, etwas Süße und ein Bindemittel wie Senf, Tahini oder Miso. Alles in ein Schraubglas geben und kräftig schütteln.','Im Glas hält es sich eine Woche im Kühlschrank.'],
+  ['🥜','Erdnuss-Limette','1 EL Erdnussbutter, 1 EL Sojasauce, 1 EL Limettensaft, 1 TL Honig, 1 TL Sesamöl und 2–3 EL warmes Wasser glatt rühren. Nach Wunsch etwas Chili dazu.','Für Bowls mit Reis, Tofu, Edamame und Mango.'],
+  ['🫚','Sesam-Ingwer','2 EL Sojasauce, 1 EL Reisessig, 1 EL Sesamöl, 1 TL Honig, 1 TL frisch geriebenen Ingwer und 1 TL gerösteten Sesam verrühren.','Der Klassiker zu Lachs, Gurke und Avocado.'],
+  ['🍋','Tahini-Zitrone','1 EL Tahini, Saft von ½ Zitrone, ½ geriebene Knoblauchzehe, 1 Prise Kreuzkümmel, Salz und 3–4 EL kaltes Wasser cremig rühren.','Erst wird es fest, dann cremig – einfach weiterrühren.'],
+  ['🍯','Honig-Senf','1 TL Senf, 1 TL Honig, 1 EL Apfelessig und 3 EL Olivenöl verrühren und mit Salz und Pfeffer abschmecken.','Passt zu Hähnchen-Bowls und Blattsalat.'],
+  ['🌱','Green Goddess','3 EL Joghurt, ½ Avocado, eine Handvoll Kräuter (Petersilie, Basilikum, Schnittlauch), Saft von ½ Zitrone und Salz fein mixen.','Mit etwas Wasser wird daraus ein Dressing, dicker ein Dip.'],
+  ['🥭','Mango-Chili','80 g reife Mango, Saft von ½ Limette, 1 EL Olivenöl, ½ TL Chiliflocken und Salz pürieren.','Fruchtig-scharf zu Bowls mit schwarzen Bohnen oder Garnelen.'],
+  ['🍜','Miso-Honig','1 TL helle Misopaste, 1 TL Honig, 1 EL Reisessig, 1 EL neutrales Öl und 1 EL Wasser glatt rühren.','Gibt Ofengemüse und Süßkartoffel viel Tiefe.'],
+  ['🥛','Joghurt-Kräuter','3 EL Joghurt, 1 TL Olivenöl, 1 TL Zitronensaft, gehackten Dill und Schnittlauch, Salz und Pfeffer verrühren.','Leicht und frisch – gut an Trainingstagen.']]},
+ {id:'peppy',t:'Peppige Saucen',sub:'Schnelle Extras, die jedes Gericht wecken',e:'🔥',c:['#FBDCCD','#E0603C'],cards:[
+  ['🌿','Chimichurri','1 Bund Petersilie, 1 Knoblauchzehe und ½ TL Chiliflocken fein hacken und mit 1 EL Rotweinessig, 4 EL Olivenöl, Oregano und Salz verrühren. 15 Minuten ziehen lassen.','Zu Steak, Ofengemüse und Kartoffeln.'],
+  ['🌶️','Chili-Crisp-Öl','100 ml neutrales Öl mit 2 gehackten Knoblauchzehen und 1 gehackten Schalotte langsam goldbraun und knusprig ziehen lassen. Über 2 EL Chiliflocken, 1 TL Sesam, 1 TL Zucker und Salz gießen.','Ein Löffel über Eier, Reis oder Gurkensalat genügt.'],
+  ['🥫','Sriracha-Mayo','2 EL Mayonnaise oder Joghurt mit 1 TL Sriracha, 1 TL Limettensaft und einem Tropfen Sesamöl verrühren.','In feinen Linien über Bowls ziehen.'],
+  ['🫒','Salsa verde','Petersilie, Basilikum, 1 TL Kapern, 1 Sardelle, 1 TL Senf, Saft von ½ Zitrone und 4 EL Olivenöl grob mixen.','Zu Fisch, gekochten Kartoffeln und Eiern.'],
+  ['🍯','Gochujang-Glasur','1 EL Gochujang, 1 EL Sojasauce, 1 TL Honig, 1 TL Reisessig und 1 TL Sesamöl verrühren. In den letzten Minuten über Hähnchen, Tofu oder Lachs geben und karamellisieren lassen.','Nicht zu früh in die Pfanne – der Zucker verbrennt schnell.'],
+  ['🧄','Zitronen-Knoblauch-Joghurt','3 EL Joghurt, ½ geriebene Knoblauchzehe, Zitronenabrieb, Salz und 1 TL Olivenöl verrühren.','Der schnellste Dip zu Ofengemüse und Fladenbrot.'],
+  ['🥒','Schnelle Pickles','100 ml Essig, 100 ml Wasser, 1 EL Zucker und 1 TL Salz aufkochen und über dünn geschnittene rote Zwiebeln, Gurken oder Radieschen gießen. Nach 20 Minuten sind sie fertig.','Die Säure bringt Frische in jede Bowl.']]});
 const DECK=Object.fromEntries(DECKS.map(d=>[d.id,d]));
 Phone.prototype.vLearn=function(){const s=this.s;const L=s.learn||{};
   const tot=DECKS.reduce((a,d)=>a+d.cards.length,0),seen=DECKS.reduce((a,d)=>a+Math.min(d.cards.length,L[d.id]||0),0);
-  return `<div class="view"><div class="blob" style="opacity:.6"><i></i><i></i><i></i><i></i></div><div class="z">
+  const pr=d=>Math.min(d.cards.length,L[d.id]||0);
+  const nxt=DECKS.find(d=>pr(d)>0&&pr(d)<d.cards.length)||DECKS.find(d=>pr(d)===0)||DECKS[0],rest=DECKS.filter(d=>d!==nxt);
+  const ring=(v,n)=>{const C=2*Math.PI*15;return `<svg viewBox="0 0 36 36" width="46" height="46" aria-hidden="true"><circle cx="18" cy="18" r="15" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="3"/><circle cx="18" cy="18" r="15" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-dasharray="${(C*v/n).toFixed(1)} ${C.toFixed(1)}" transform="rotate(-90 18 18)"/></svg>`};
+  return `<div class="view lrnv"><div class="blob" style="opacity:.6"><i></i><i></i><i></i><i></i></div><div class="z">
    <div class="top-row"></div>
    <div class="eb">Kochwissen · ${seen}/${tot} Karten</div>
    <div class="h-title">Lerncenter</div>
-   <p class="h-sub" style="font-size:17px">Kurze Lernkarten – Kartei öffnen und Karte für Karte weiterwischen</p>
-   <div class="lc-list">${DECKS.map((d,k)=>{const n=d.cards.length,v=Math.min(n,L[d.id]||0);
-     return `<button class="lc" data-a="deck" data-v="${d.id}" style="--d1:${d.c[0]};--d2:${d.c[1]}"><span class="lc-st"></span><span class="lc-ic">${d.e}</span><span class="lc-tx"><small>Kartei ${k+1}</small><b>${d.t}</b><span class="lc-m">${n} Karten · ca. ${Math.max(2,Math.round(n*.6))} Min</span><span class="lc-bar"><i style="width:${v/n*100}%"></i></span></span><span class="lc-go">${v>=n?ic('check'):v?'Weiter':'Start'}</span></button>`}).join('')}</div>
+   <button class="lhero" data-a="deck" data-v="${nxt.id}" style="--d1:${nxt.c[0]};--d2:${nxt.c[1]}"><span class="lh-e">${nxt.e}</span>
+    <span class="lh-tx"><small>${pr(nxt)?'Weiterlernen':'Jetzt starten'}</small><b>${nxt.t}</b><span>${nxt.sub||nxt.cards.length+' kurze Lernkarten'}</span></span>
+    <span class="lh-r">${ring(pr(nxt),nxt.cards.length)}<i>${pr(nxt)}/${nxt.cards.length}</i></span></button>
+   <div class="lbl" style="margin:22px 0 10px">Alle Karteien</div>
+   <div class="lgrid">${rest.map(d=>{const n=d.cards.length,v=pr(d);return `<button class="lt" data-a="deck" data-v="${d.id}" style="--d1:${d.c[0]};--d2:${d.c[1]}"><span class="lt-e">${d.e}</span><b>${d.t}</b><small>${n} Karten${v>=n?' · fertig':v?` · ${v} gelesen`:''}</small><span class="lt-bar"><i style="width:${v/n*100}%"></i></span></button>`}).join('')}</div>
   </div></div>`};
 Phone.prototype.vDeck=function(){const s=this.s,d=DECK[s.deck],n=d.cards.length,k=DECKS.indexOf(d),nx=DECKS[k+1];
   return `<div class="lk" style="--d1:${d.c[0]};--d2:${d.c[1]}"><div class="lk-bg"></div>
@@ -1522,7 +1677,7 @@ Phone.prototype.vFday=function(){const s=this.s,i=s.fsel,T=s.train[i]||{};
   return `<h3>Training</h3><p>${i===TODAY?'Heute · ':''}${dayLbl(i)}</p>
    <div class="ftiles">${FACTS.map(([c,k,l])=>{const lv=lvOf(c,k);return `<button class="ftile ${lv?'on':''}" data-a="ftog" data-c="${c}" data-v="${k}" style="--c:${FA[k]}" aria-pressed="${!!lv}"><span>${ic('f_'+k)}</span>${l}${lv>0?`<em>${lv}</em>`:''}</button>`}).join('')}</div>
    <p class="fnote" style="margin-top:12px">Tippen: an oder aus · Halten und ziehen: Intensität</p>
-   <button class="gbtn" style="width:100%;margin-top:14px;background:linear-gradient(100deg,#3F8B69,#184F37 58%,#28694A);box-shadow:0 14px 26px -12px rgba(24,79,55,.75)" data-a="closesheet">${ic('check')}Fertig</button>`};
+   <button class="gbtn" style="width:100%;margin-top:14px;background:linear-gradient(100deg,#0F7C4E,#004D2E 58%,#006039);box-shadow:0 14px 26px -12px rgba(0,77,46,.75)" data-a="closesheet">${ic('check')}Fertig</button>`};
 /* Kachel gedrückt halten: drei Stufen erscheinen, nach links/rechts ziehen wählt, loslassen übernimmt */
 Phone.prototype.holdTile=function(e,el){const self=this,s=this.s,c=el.dataset.c,k=el.dataset.v;if(c==='m')return;
   const x0=e.clientX,y0=e.clientY;let bub=null,lv=0,base=0;
@@ -1649,16 +1804,27 @@ Phone.prototype.vPanel=function(i){const s=this.s;const id=s.plan[i];const r=RM[
 /* Frühstück (oben) und Abendessen (unten) als kleine Ergänzung zum Hauptgericht – Grundgerüst, wird später ausgebaut */
 const XM={b:['Frühstück','sunrise',[['🥣','Joghurt mit Beeren'],['🥣','Porridge'],['🍳','Eier und Brot'],['🥤','Smoothie'],['🍎','Obst und Nüsse'],['🧀','Käsebrot']]],
   d:['Abendessen','moon',[['🥗','Kleiner Salat'],['🍲','Suppe'],['🥪','Brot mit Aufstrich'],['🍱','Reste vom Mittag'],['🍳','Omelett'],['🥛','Topfen mit Obst']]]};
+const xName=v=>RM[v]?RM[v].n:v;
 Phone.prototype.vXm=function(i){const X=this.s.extra[i]||{};
-  return ['b','d'].map(k=>{const v=X[k];return `<button class="xm ${k} ${v?'set':''}" data-a="extra" data-v="${k}" aria-label="${XM[k][0]}${v?': '+v.replace(/"/g,'&quot;'):' hinzufügen'}">${ic(XM[k][1])}${v?`<span>${v.replace(/</g,'&lt;')}</span>`:`<i>${ic('plus')}</i>`}</button>`}).join('')};
-Phone.prototype.vExtra=function(){const s=this.s,k=s.exK,i=s.sel,cur=(s.extra[i]||{})[k];
+  return ['b','d'].map(k=>{const v=X[k];return `<button class="xm ${k} ${v?'set':''}" data-a="extra" data-v="${k}" aria-label="${XM[k][0]}${v?': '+xName(v).replace(/"/g,'&quot;'):' hinzufügen'}">${ic(XM[k][1])}${v?`<span>${xName(v).replace(/</g,'&lt;')}</span>`:`<i>${ic('plus')}</i>`}</button>`}).join('')};
+/* Auswahl wie das große Rad, nur kleiner: Teller seitlich wischen, der mittlere ist gewählt */
+Phone.prototype.vExtra=function(){const s=this.s,k=s.exK,i=s.sel,cur=(s.extra[i]||{})[k],L=RX.filter(r=>r.meal===k);
   return `<div class="ai-head"><span class="stk-ic">${ic(XM[k][1])}</span><div><h3 style="margin:0">${XM[k][0]}</h3><p class="ai-sub">${i===TODAY?'Heute · ':''}${dayLbl(i)}</p></div></div>
-   <div class="ai-tags">${XM[k][2].map(([e,n])=>`<button class="ai-tag ${cur===n?'on':''}" data-a="exset" data-v="${n}"><span>${e}</span>${n}</button>`).join('')}</div>
-   <div class="ai-in"><input data-k="exq" enterkeyhint="done" placeholder="Eigenes eintragen" value="${(s.exQ||'').replace(/"/g,'&quot;')}" aria-label="Eigenes ${XM[k][0]} eintragen"><button class="ai-mic" data-a="exadd" aria-label="Übernehmen">${ic('check')}</button></div>
-   <p class="ai-note">Kleine Mahlzeit zusätzlich zum Hauptgericht. Vorschau: kommt noch nicht auf die Einkaufsliste und hat noch keine Rezepte.</p>
-   ${cur?`<button class="ai-again" data-a="exset" data-v="">${XM[k][0]} entfernen</button>`:''}`};
+   <div class="xw" data-n="${L.length}"><span class="xw-pad"></span>${L.map((r,n)=>`<button class="xw-i" data-a="xwi" data-v="${n}" aria-label="${r.n}">${plate(r,96)}</button>`).join('')}<span class="xw-pad"></span></div>
+   <div class="xw-cap"></div>
+   <div class="acts" style="margin-top:14px"><button class="obtn" data-a="xwdet">${ic('book')}Rezept</button><button class="gbtn" data-a="xwtake">${ic('check')}Wählen</button></div>
+   <div class="ai-in"><input data-k="exq" enterkeyhint="done" placeholder="Oder eigenes eintragen" value="${(s.exQ||'').replace(/"/g,'&quot;')}" aria-label="Eigenes ${XM[k][0]} eintragen"><button class="ai-mic" data-a="exadd" aria-label="Übernehmen">${ic('check')}</button></div>
+   ${cur?`<button class="ai-again" data-a="exset" data-v="">${XM[k][0]} entfernen (${xName(cur).replace(/</g,'&lt;')})</button>`:''}`};
+Phone.prototype.initXw=function(){const w=this.scr.querySelector('.xw');if(!w)return;const s=this.s,L=RX.filter(r=>r.meal===s.exK),its=[...w.querySelectorAll('.xw-i')],cap=this.scr.querySelector('.xw-cap');let last=-1;
+  const upd=()=>{const c=w.scrollLeft+w.clientWidth/2;let best=0,bd=1e9;its.forEach((el,n)=>{const d=Math.abs(el.offsetLeft+el.offsetWidth/2-c);if(d<bd){bd=d;best=n}
+      const k=Math.min(1,d/(el.offsetWidth*1.6));el.style.transform=`scale(${1-k*.3})`;el.style.opacity=String(1-k*.5)});
+    if(best!==last){if(last>=0)haptic();last=best;s.exPick=best;const r=L[best];cap.innerHTML=`<b>${r.n}</b><span>${ic('clock')}${r.m} Min · ${r.k} kcal · ${r.p} g Protein</span>`}};
+  const cur=(s.extra[s.sel]||{})[s.exK];let st=L.findIndex(r=>r.id===cur);if(st<0)st=Math.min(s.exPick||0,L.length-1);
+  const el=its[st];if(el)w.scrollLeft=el.offsetLeft+el.offsetWidth/2-w.clientWidth/2;upd();
+  w.addEventListener('scroll',()=>requestAnimationFrame(upd),{passive:true});
+  this.xwTo=n=>{const e=its[n];if(e)w.scrollTo({left:e.offsetLeft+e.offsetWidth/2-w.clientWidth/2,behavior:'smooth'})}};
 Phone.prototype.setExtra=function(v){const s=this.s,i=s.sel,X=s.extra[i]||(s.extra[i]={});v=String(v||'').trim().slice(0,40);
-  if(v)X[s.exK]=v;else delete X[s.exK];if(!X.b&&!X.d)delete s.extra[i];s.exQ='';haptic();s.sheet=null;this.render();if(v)this.toast(`${XM[s.exK][0]}: ${v}`)};
+  if(v)X[s.exK]=v;else delete X[s.exK];if(!X.b&&!X.d)delete s.extra[i];s.exQ='';haptic();s.sheet=null;if(s.shop.some(x=>!x.manual))this.rebuildShop();this.render();if(v)this.toast(`${XM[s.exK][0]}: ${xName(v)}`)};
 Phone.prototype.setCat=function(v){const s=this.s;if(s.cat===v)return;s.cat=v;s.pick=-1;haptic();
   const pn=this.scr.querySelector('.view.planv .panel.picking');if(!pn){this.render();return}
   const tmp=document.createElement('div');tmp.innerHTML=this.vPanel(s.sel);const np=tmp.firstElementChild;
@@ -1798,32 +1964,41 @@ function twiceBtn(d){const last=d===NDAYS-1;
 Phone.prototype.back=function(){this.stopSpeak();const s=this.s;s.screen=s.from||'plan';this.render()};
 
 /* ----- Rezepte / Favoriten ----- */
-Phone.prototype.vRecipes=function(favOnly){const s=this.s;const q=s.recQ.toLowerCase();
-  let L=R.filter(r=>(s.recCat==='all'||r.c.includes(s.recCat))&&(!q||(r.n+' '+r.s).toLowerCase().includes(q)));
-  if(favOnly||s.recCat==='fav')L=R.filter(r=>s.favs.has(r.id)&&(!q||(r.n+' '+r.s).toLowerCase().includes(q)));
-  return `<div class="view"><div class="blob" style="opacity:.6"><i></i><i></i><i></i><i></i></div><div class="z">
+const MEALS=[['l','Mittagessen','sun'],['b','Frühstück','sunrise'],['d','Abendessen','moon']];
+Phone.prototype.vRecipes=function(favOnly){const s=this.s;const q=s.recQ.toLowerCase(),M=s.recMeal||'l';
+  const base=M==='l'?R:RX.filter(r=>r.meal===M),hit=r=>!q||(r.n+' '+r.s).toLowerCase().includes(q);
+  let L=base.filter(r=>(M!=='l'||s.recCat==='all'||s.recCat==='fav'||r.c.includes(s.recCat))&&hit(r));
+  if(favOnly||(M==='l'&&s.recCat==='fav'))L=R.concat(RX).filter(r=>s.favs.has(r.id)&&hit(r));
+  const heart=r=>`<span class="hb ${s.favs.has(r.id)?'on':''}" data-a="fav" data-id="${r.id}" role="button" aria-label="Favorit">${ic('heart')}</span>`;
+  const meta=r=>`<div class="meta"><span>${ic('clock')}${r.m} Min</span><span>${ic('flame')}${r.k} kcal</span></div>`;
+  const hero=!q&&!favOnly&&L.length>2&&!(M==='l'&&s.recCat==='fav')?L[(new Date().getDate()+M.charCodeAt(0))%L.length]:null;
+  const rest=hero?L.filter(r=>r!==hero):L;
+  return `<div class="view recv"><div class="blob" style="opacity:.6"><i></i><i></i><i></i><i></i></div><div class="z">
    <div class="top-row"></div>
-   <div class="eb">${favOnly?'Deine Lieblinge':R.length+' Gerichte'}</div>
+   <div class="eb">${favOnly?'Deine Lieblinge':`${R.length+RX.length} Rezepte`}</div>
    <div class="h-title">${favOnly?'Favoriten':'Rezepte'}</div>
-   ${favOnly?`<p class="h-sub" style="font-size:17px">Mit dem Herz gemerkte Gerichte</p>`:`
-   <div class="search">${ic('search')}<input data-k="recq" placeholder="Rezept suchen" value="${s.recQ.replace(/"/g,'&quot;')}" aria-label="Rezept suchen"></div>
-   <div class="hs">${CATS.map(([k,l,i])=>`<button class="chip ${s.recCat===k?'on':''}" data-a="rcat" data-v="${k}">${ic(i)}${l}</button>`).join('')}<button class="chip ${s.recCat==='fav'?'on':''}" data-a="rcat" data-v="fav">${ic('heart')}Favoriten</button></div>`}
-   ${L.length?`<div class="rgrid">${L.map(r=>`<button class="rc" data-a="detail" data-id="${r.id}"><span class="hb ${s.favs.has(r.id)?'on':''}" data-a="fav" data-id="${r.id}" role="button" aria-label="Favorit">${ic('heart')}</span>${plate(r,92)}<div class="nm">${r.n}</div><div class="meta"><span>${r.m} Min</span><span>${r.k} kcal</span></div>${enBadge(r)}</button>`).join('')}</div>`
-   :`<div class="empty-st">${favOnly||s.recCat==='fav'?'Noch keine Favoriten. Tippe bei einem Rezept auf das Herz.':'Kein Rezept gefunden.'}</div>`}
+   ${favOnly?'':`
+   <div class="mseg" role="group" aria-label="Mahlzeit">${MEALS.map(([k,l,i])=>`<button class="${M===k?'on':''}" data-a="rmeal" data-v="${k}">${ic(i)}<b>${l}</b><small>${k==='l'?R.length:RX.filter(r=>r.meal===k).length}</small></button>`).join('')}</div>
+   <div class="search">${ic('search')}<input data-k="recq" placeholder="${MEALS.find(x=>x[0]===M)[1]} suchen" value="${s.recQ.replace(/"/g,'&quot;')}" aria-label="Rezept suchen"></div>
+   ${M==='l'?`<div class="hs">${CATS.map(([k,l,i])=>`<button class="chip ${s.recCat===k?'on':''}" data-a="rcat" data-v="${k}">${ic(i)}${l}</button>`).join('')}<button class="chip ${s.recCat==='fav'?'on':''}" data-a="rcat" data-v="fav">${ic('heart')}Favoriten</button></div>`:''}`}
+   ${hero?`<button class="rhero" data-a="detail" data-id="${hero.id}" style="--t1:${hero.t[0]};--t2:${hero.t[1]}">${heart(hero)}<span class="rh-tx"><small>Empfehlung des Tages</small><b>${hero.n}</b>${meta(hero)}<i>Zum Rezept${ic('right')}</i></span><span class="rh-pl">${plate(hero,168)}</span></button>`:''}
+   ${rest.length?`${hero?`<div class="lbl" style="margin:22px 0 0">Alle ${MEALS.find(x=>x[0]===M)[1]}-Rezepte</div>`:''}<div class="rgrid">${rest.map(r=>`<button class="rc" data-a="detail" data-id="${r.id}" style="--t1:${r.t[0]};--t2:${r.t[1]}">${heart(r)}<span class="rc-pl">${plate(r,116)}</span><div class="nm">${r.n}</div>${meta(r)}</button>`).join('')}</div>`
+   :hero?'':`<div class="empty-st">${favOnly||s.recCat==='fav'?'Noch keine Favoriten. Tippe bei einem Rezept auf das Herz.':'Kein Rezept gefunden.'}</div>`}
   </div></div>`};
 
 /* ----- Detail ----- */
 Phone.prototype.vDetail=function(){const s=this.s;const r=RM[s.did];const cat=CATNAME[r.c[0]];const E=EN[enOf(r)];
-  const d=s.dday;let btn;
+  const d=s.dday;let btn;const xk=r.meal;
   if(d!==null&&d!==undefined){btn=s.plan[d]===r.id?`<button class="gbtn done" data-a="back">${ic('check')}Eingeplant</button>`:`<button class="gbtn" data-a="planfor" data-i="${d}">${ic('plus')}Einplanen</button>`}
   else btn=`<button class="gbtn" data-a="sheet" data-v="pickday">${ic('plus')}Einplanen</button>`;
+  if(xk){const xd=s.sel,is=(s.extra[xd]||{})[xk]===r.id;btn=is?`<button class="gbtn done" data-a="back">${ic('check')}Als ${XM[xk][0]} eingetragen</button>`:`<button class="gbtn" data-a="explan" data-id="${r.id}">${ic('plus')}${XM[xk][0]} für ${xd===TODAY?'heute':dn(xd)}</button>`}
   return `<div class="view det" style="padding-bottom:120px"><div class="blob"><i></i><i></i><i></i><i></i></div><div class="z">
    <div style="height:54px"></div>
-   <div class="eb" style="text-align:center">${d!==null&&d!==undefined?(d===TODAY?'Heute · ':'')+dn(d)+' · '+dm(d):r.c.map(c=>CATNAME[c][0]).join(' · ')}</div>
+   <div class="eb" style="text-align:center">${xk?XM[xk][0]:d!==null&&d!==undefined?(d===TODAY?'Heute · ':'')+dn(d)+' · '+dm(d):r.c.map(c=>CATNAME[c][0]).join(' · ')}</div>
    <div class="d-title">${r.n}</div>
    <div class="dchips"><span class="dchip">${ic('clock')}${r.m} Min.</span><button class="dchip" data-a="sheet" data-v="energy" style="color:${E[2]}">${ic(E[1])}${E[0]}</button></div>
    <div class="nutri"><div class="ring"></div><div class="nimg">${plate(r,300)}</div></div>
-   <div class="sec three"><h4>Zutaten</h4>${twiceBtn(d)}<div class="stepper"><button data-a="pers" data-v="-1" aria-label="Weniger Personen">${ic('minus')}</button>${s.persons} Pers.<button data-a="pers" data-v="1" aria-label="Mehr Personen">${ic('plus')}</button></div></div>
+   <div class="sec three"><h4>Zutaten</h4>${xk?'<span></span>':twiceBtn(d)}<div class="stepper"><button data-a="pers" data-v="-1" aria-label="Weniger Personen">${ic('minus')}</button>${s.persons} Pers.<button data-a="pers" data-v="1" aria-label="Mehr Personen">${ic('plus')}</button></div></div>
    <div class="ing">${(()=>{const sub=n=>{const m=n.match(/\((.*?)\)/);return m?`<small>${m[1]}</small>`:''};const nm=n=>n.replace(/\s*\(.*?\)/g,'');
      const main=r.i.filter(x=>x[1]),sp=r.i.filter(x=>!x[1]);
      return main.map(([n,q,u])=>`<div class="ir"><span class="ie">${emo(n)}</span><span class="in">${nm(n)}${sub(n)}</span><span class="iq">${fq(q*s.persons,u)}</span></div>`).join('')
@@ -1863,7 +2038,8 @@ Phone.prototype.addItem=function(name){if(!name)return;const s=this.s;const ex=s
 
 /* ----- Vorrat ----- */
 Phone.prototype.rebuildShop=function(){const s=this.s,w=s.shopWk||0;const keep=s.shop.filter(x=>x.manual);const was=new Set(s.shop.filter(x=>x.done&&!x.manual).map(x=>x.key));
-  const pw={};Object.keys(s.plan).forEach(i=>{if(wkOf(+i)===w)pw[i]=s.plan[i]});s.shop=applyStock(buildShop(pw,s.persons,keep),s.stock);s.shop.forEach(x=>{if(!x.manual&&was.has(x.key))x.done=true})};
+  const pw={};Object.keys(s.plan).forEach(i=>{if(wkOf(+i)===w)pw[i]=s.plan[i]});
+  Object.keys(s.extra).forEach(i=>{if(wkOf(+i)===w)['b','d'].forEach(k=>{const v=s.extra[i][k];if(RM[v])pw['x'+k+i]=v})});s.shop=applyStock(buildShop(pw,s.persons,keep),s.stock);s.shop.forEach(x=>{if(!x.manual&&was.has(x.key))x.done=true})};
 /* Vorrat geändert: eine aus dem Plan erzeugte Liste gleich neu rechnen */
 Phone.prototype.stockChanged=function(){const s=this.s;if(s.shop.some(x=>!x.manual))this.rebuildShop();clearTimeout(this.saveT);this.saveT=setTimeout(()=>this.save(),300)};
 Phone.prototype.stockAdd=function(name){if(!name)return;const s=this.s;stockPut(s.stock,[{name:name[0].toUpperCase()+name.slice(1),q:0,u:''}],'add');s.stockQ='';this.stockChanged();this.render();this.toast(`${name} im Vorrat`)};
@@ -1990,7 +2166,7 @@ Phone.prototype.vSettings=function(){const s=this.s;
    <div class="grp">${li('trash','#F0645A','Plan leeren (beide Wochen)','','clearweek')}
    ${li('cloud','#6B7B99','Rezept-Quelle','Lokal')}</div>
    ${this.opts.full?`<div class="grp">${window.EP_APP?'':li('book','#6B7B99','Prototyp-Übersicht',ic('right'),'overview')}</div>`:''}
-   <div class="grp">${li('run','#1D5A3F','Mein Fitnessbereich',ic('right'),'flip','fit')}
+   <div class="grp">${li('run','#006039','Mein Fitnessbereich',ic('right'),'flip','fit')}
    ${li('vol','var(--a-violet)','Vorlese-Stimme',(()=>{const v=pickVoice(s.voice);return v?v.name.replace(/\s*\(.*?\)/,m=>/premium/i.test(m)?' · Premium':/enhanced|erweitert/i.test(m)?' · Erweitert':''):'Standard'})(),'nextvoice')}</div>
    <p style="color:var(--a-muted);font-size:13px;text-align:center;margin-top:22px">Essensplan · Version 1.0</p>
   </div></div>`};
@@ -2223,6 +2399,7 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
    case 'cat':this.setCat(v);break;
    case 'en':s.en=s.en===v?null:v;s.pick=-1;this.render();break;
    case 'rcat':s.recCat=v;this.render();break;
+   case 'rmeal':s.recMeal=v;s.recQ='';haptic();this.render();break;
    case 'deck':s.deck=v;s.screen='deck';s.sheet=null;haptic();this.render();break;
    case 'lback':s.screen='learn';s.deck=null;this.render();break;
    case 'wi':{const k=+t.dataset.k2;if(k!==s.pick){if(this.wheelTo)this.wheelTo(k)}else{haptic();s.from='plan';s.did=t.dataset.id;s.dday=s.sel;s.screen='detail';this.render()}break}
@@ -2278,6 +2455,10 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
       const dd=this.planDish(d,id);s.sheet=null;this.backAfterPlan(d);this.anim='inF';this.pop=true;this.render();this.toast(`Eingeplant · ${miss.length} fehlende Zutat${miss.length===1?'':'en'} auf der Liste`);break}
    case 'extra':s.exK=v;s.exQ='';s.sheet='extra';haptic();this.render();break;
    case 'exset':this.setExtra(v);break;
+   case 'xwi':if(+v!==s.exPick){if(this.xwTo)this.xwTo(+v)}else this.setExtra(RX.filter(r=>r.meal===s.exK)[s.exPick].id);break;
+   case 'xwtake':{const r=RX.filter(x=>x.meal===s.exK)[s.exPick||0];if(r)this.setExtra(r.id);break}
+   case 'xwdet':{const r=RX.filter(x=>x.meal===s.exK)[s.exPick||0];if(!r)break;s.sheet=null;s.from='plan';s.did=r.id;s.dday=null;s.screen='detail';this.render();break}
+   case 'explan':{const r=RM[t.dataset.id];s.exK=r.meal;const X=s.extra[s.sel]||(s.extra[s.sel]={});X[r.meal]=r.id;haptic();if(s.shop.some(x=>!x.manual))this.rebuildShop();this.render();this.toast(`${XM[r.meal][0]} für ${s.sel===TODAY?'heute':dn(s.sel)} eingetragen`);break}
    case 'exadd':if((s.exQ||'').trim())this.setExtra(s.exQ);break;
    /* --- Fitnessbereich --- */
    case 'flip':this.flip(v);break;
