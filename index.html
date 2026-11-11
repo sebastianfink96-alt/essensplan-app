@@ -434,6 +434,43 @@ html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
 .lt-bar{height:3px;border-radius:2px;background:rgba(40,40,60,.12);margin-top:8px;overflow:hidden}
 .lt-bar i{display:block;height:100%;background:var(--a-ink);border-radius:2px}
 @media (min-width:700px){.phone.full .lgrid{grid-template-columns:repeat(3,1fr)}}
+
+/* Gewählt-Ansicht Frühstück/Abendessen */
+.xsel{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;padding:6px 0 0}
+.xsel b{font-weight:300;font-size:22px;letter-spacing:-.015em;line-height:1.2;margin-top:10px}
+.xsel>span{display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--a-muted)}
+.xsel>span .ic{width:13px;height:13px}
+.xsel-t{width:96px;height:96px;border-radius:50%;background:var(--a-today);display:grid!important;place-items:center;color:var(--a-eyebrow)}
+.xsel-t .ic{width:34px!important;height:34px!important}
+/* Speisekarte */
+.menu{margin-top:18px;background:#FFFDF9;border-radius:28px;padding:8px 20px 18px;box-shadow:0 0 0 1px #EFE9DF,0 22px 40px -30px rgba(60,40,30,.5)}
+.mn-t{display:flex;align-items:center;gap:14px;margin:22px 0 6px;font-family:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif;font-size:13px;letter-spacing:.24em;text-transform:uppercase;color:var(--a-eyebrow)}
+.mn-t::before,.mn-t::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,#DCCFC0)}
+.mn-t::after{background:linear-gradient(90deg,#DCCFC0,transparent)}
+.mi{position:relative;width:100%;border:0;background:none;text-align:left;display:block;padding:13px 40px 13px 0;color:var(--a-ink)}
+.mi+.mi{border-top:1px solid #F1EBE1}
+.mi-h{display:flex;align-items:baseline;gap:8px}
+.mi-h b{font-family:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif;font-weight:500;font-size:17.5px;line-height:1.25;letter-spacing:-.005em}
+.mi-h i{flex:1;min-width:14px;border-bottom:1.5px dotted #D5C8B8;transform:translateY(-4px)}
+.mi-h em{font-style:normal;font-size:13px;color:var(--a-muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.mi-s{display:block;font-size:13.5px;color:#7C7468;font-style:italic;margin-top:3px;line-height:1.35}
+.mi-k{display:block;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:#A89E90;margin-top:5px}
+.recv .mi .hb{position:absolute;right:-4px;bottom:9px;top:auto;width:32px;height:32px;border-radius:50%;background:none;display:grid;place-items:center;color:#C9BFB2}
+.recv .mi .hb.on{color:#C2456A;background:none}
+/* Lerncenter: Kursliste */
+.clist{background:var(--a-card);border-radius:26px;box-shadow:0 0 0 1px var(--a-line),0 18px 34px -28px rgba(40,30,60,.45);overflow:hidden}
+.crow{width:100%;border:0;background:none;text-align:left;display:flex;align-items:center;gap:14px;padding:14px;color:var(--a-ink)}
+.crow+.crow{box-shadow:inset 0 1px 0 var(--a-line)}
+.cr-e{flex:none;width:56px;height:56px;border-radius:16px;background:#F3F1F5;display:grid;place-items:center;font-size:28px}
+.cr-tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.cr-tx b{font-weight:500;font-size:16px;line-height:1.2}
+.cr-tx small{font-size:12.5px;color:var(--a-muted)}
+.cr-bar{height:3px;border-radius:2px;background:rgba(120,120,140,.14);margin-top:7px;overflow:hidden}
+.cr-bar i{display:block;height:100%;border-radius:2px;background:var(--a-grad)}
+.cr-st{flex:none;min-width:62px;height:32px;padding:0 12px;border-radius:999px;display:grid;place-items:center;font-size:13px;font-weight:500;background:var(--a-ink);color:#fff}
+.cr-st.run{background:var(--a-grad)}
+.cr-st.done{min-width:32px;width:32px;padding:0;background:#E3EEDD;color:#5E8A4C}
+.cr-st .ic{width:15px;height:15px;stroke-width:2.6}
 /* ===== KI-Assistent ===== */
 .orb{position:absolute;right:22px;bottom:90px;width:62px;height:62px;border-radius:50%;border:0;padding:0;z-index:42;display:grid;place-items:center;color:#fff;
   box-shadow:0 12px 26px -8px rgba(30,20,80,.42),0 0 22px -2px rgba(120,110,255,.38);overflow:hidden;animation:orbIn .5s cubic-bezier(.2,.8,.2,1)}
@@ -1606,8 +1643,10 @@ Phone.prototype.vLearn=function(){const s=this.s;const L=s.learn||{};
    <button class="lhero" data-a="deck" data-v="${nxt.id}" style="--d1:${nxt.c[0]};--d2:${nxt.c[1]}"><span class="lh-e">${nxt.e}</span>
     <span class="lh-tx"><small>${pr(nxt)?'Weiterlernen':'Jetzt starten'}</small><b>${nxt.t}</b><span>${nxt.sub||nxt.cards.length+' kurze Lernkarten'}</span></span>
     <span class="lh-r">${ring(pr(nxt),nxt.cards.length)}<i>${pr(nxt)}/${nxt.cards.length}</i></span></button>
-   <div class="lbl" style="margin:22px 0 10px">Alle Karteien</div>
-   <div class="lgrid">${rest.map(d=>{const n=d.cards.length,v=pr(d);return `<button class="lt" data-a="deck" data-v="${d.id}" style="--d1:${d.c[0]};--d2:${d.c[1]}"><span class="lt-e">${d.e}</span><b>${d.t}</b><small>${n} Karten${v>=n?' · fertig':v?` · ${v} gelesen`:''}</small><span class="lt-bar"><i style="width:${v/n*100}%"></i></span></button>`}).join('')}</div>
+   ${[['Grundlagen',['sauce','knife','heat','spice','prep']],['Saucen & Dressings',['french','dress','peppy']]].map(([ti,ids])=>{const ds=ids.map(x=>DECK[x]).filter(d=>d&&d!==nxt);if(!ds.length)return '';
+     return `<div class="lbl" style="margin:24px 0 10px">${ti}<span>${ds.length} ${ds.length===1?'Kurs':'Kurse'}</span></div><div class="clist">${ds.map(d=>{const n=d.cards.length,v=pr(d),C=2*Math.PI*15;
+       return `<button class="crow" data-a="deck" data-v="${d.id}"><span class="cr-e">${d.e}</span><span class="cr-tx"><b>${d.t}</b><small>${n} Lektionen · ca. ${Math.max(2,Math.round(n*.6))} Min</small><span class="cr-bar"><i style="width:${v/n*100}%"></i></span></span>
+        <span class="cr-st ${v>=n?'done':v?'run':''}">${v>=n?ic('check'):v?'Weiter':'Start'}</span></button>`}).join('')}</div>`}).join('')}
   </div></div>`};
 Phone.prototype.vDeck=function(){const s=this.s,d=DECK[s.deck],n=d.cards.length,k=DECKS.indexOf(d),nx=DECKS[k+1];
   return `<div class="lk" style="--d1:${d.c[0]};--d2:${d.c[1]}"><div class="lk-bg"></div>
@@ -1823,20 +1862,27 @@ Phone.prototype.vPanel=function(i){const s=this.s;const id=s.plan[i];const r=RM[
 const XM={b:['Frühstück','sunrise',[['🥣','Joghurt mit Beeren'],['🥣','Porridge'],['🍳','Eier und Brot'],['🥤','Smoothie'],['🍎','Obst und Nüsse'],['🧀','Käsebrot']]],
   d:['Abendessen','moon',[['🥗','Kleiner Salat'],['🍲','Suppe'],['🥪','Brot mit Aufstrich'],['🍱','Reste vom Mittag'],['🍳','Omelett'],['🥛','Topfen mit Obst']]]};
 const xName=v=>RM[v]?RM[v].n:v;
+/* Auswahl-Liste je Mahlzeit: Favoriten zuerst */
+const xList=(s,k)=>{const L=RX.filter(r=>r.meal===k);return L.filter(r=>s.favs.has(r.id)).concat(L.filter(r=>!s.favs.has(r.id)))};
 Phone.prototype.vXm=function(i){const X=this.s.extra[i]||{};
   return ['b','d'].map(k=>{const v=X[k];return `<button class="xm ${k} ${v?'set':''}" data-a="extra" data-v="${k}" aria-label="${XM[k][0]}${v?': '+xName(v).replace(/"/g,'&quot;'):' hinzufügen'}">${ic(XM[k][1])}<i>${ic(v?'check':'plus')}</i></button>`}).join('')};
 /* Gewähltes Frühstück/Abendessen als ruhige Textzeile unter dem Hauptgericht */
 Phone.prototype.vXline=function(i){const X=this.s.extra[i]||{};const a=['b','d'].filter(k=>X[k]);if(!a.length)return '';
   return `<div class="xline">${a.map(k=>`<button data-a="extra" data-v="${k}">${ic(XM[k][1])}<span>${xName(X[k]).replace(/</g,'&lt;')}</span></button>`).join('<i></i>')}</div>`};
 /* Auswahl wie das große Rad, nur kleiner: Teller seitlich wischen, der mittlere ist gewählt */
-Phone.prototype.vExtra=function(){const s=this.s,k=s.exK,i=s.sel,cur=(s.extra[i]||{})[k],L=RX.filter(r=>r.meal===k);
+Phone.prototype.vExtra=function(){const s=this.s,k=s.exK,i=s.sel,cur=(s.extra[i]||{})[k],L=xList(s,k);
+  const head=`<div class="ai-head"><span class="stk-ic">${ic(XM[k][1])}</span><div><h3 style="margin:0">${XM[k][0]}</h3><p class="ai-sub">${i===TODAY?'Heute · ':''}${dayLbl(i)}</p></div></div>`;
+  if(cur&&!s.exEdit){const r=RM[cur];
+    return head+`<div class="xsel">${r?plate(r,132):`<span class="xsel-t">${ic(XM[k][1])}</span>`}<b>${xName(cur).replace(/</g,'&lt;')}</b>${r?`<span>${ic('clock')}${r.m} Min · ${r.k} kcal · ${r.p} g Protein</span>`:''}</div>
+     <div class="acts" style="margin-top:16px">${r?`<button class="obtn" data-a="xwdet" data-id="${r.id}">${ic('book')}Rezept</button>`:''}<button class="gbtn" data-a="exedit">${ic('pencil')}Ändern</button></div>
+     <button class="ai-again" data-a="exset" data-v="">${XM[k][0]} entfernen</button>`}
   return `<div class="ai-head"><span class="stk-ic">${ic(XM[k][1])}</span><div><h3 style="margin:0">${XM[k][0]}</h3><p class="ai-sub">${i===TODAY?'Heute · ':''}${dayLbl(i)}</p></div></div>
    <div class="xw" data-n="${L.length}"><span class="xw-pad"></span>${L.map((r,n)=>`<button class="xw-i" data-a="xwi" data-v="${n}" aria-label="${r.n}">${plate(r,96)}</button>`).join('')}<span class="xw-pad"></span></div>
    <div class="xw-cap"></div>
    <div class="acts" style="margin-top:14px"><button class="obtn" data-a="xwdet">${ic('book')}Rezept</button><button class="gbtn" data-a="xwtake">${ic('check')}Wählen</button></div>
    <div class="ai-in"><input data-k="exq" enterkeyhint="done" placeholder="Oder eigenes eintragen" value="${(s.exQ||'').replace(/"/g,'&quot;')}" aria-label="Eigenes ${XM[k][0]} eintragen"><button class="ai-mic" data-a="exadd" aria-label="Übernehmen">${ic('check')}</button></div>
-   ${cur?`<button class="ai-again" data-a="exset" data-v="">${XM[k][0]} entfernen (${xName(cur).replace(/</g,'&lt;')})</button>`:''}`};
-Phone.prototype.initXw=function(){const w=this.scr.querySelector('.xw');if(!w)return;const s=this.s,L=RX.filter(r=>r.meal===s.exK),its=[...w.querySelectorAll('.xw-i')],cap=this.scr.querySelector('.xw-cap');let last=-1;
+   ${s.favs.size&&L.some(r=>s.favs.has(r.id))?`<p class="ai-note" style="text-align:center">Deine Favoriten stehen vorne.</p>`:''}`};
+Phone.prototype.initXw=function(){const w=this.scr.querySelector('.xw');if(!w)return;const s=this.s,L=xList(s,s.exK),its=[...w.querySelectorAll('.xw-i')],cap=this.scr.querySelector('.xw-cap');let last=-1;
   const upd=()=>{const c=w.scrollLeft+w.clientWidth/2;let best=0,bd=1e9;its.forEach((el,n)=>{const d=Math.abs(el.offsetLeft+el.offsetWidth/2-c);if(d<bd){bd=d;best=n}
       const k=Math.min(1,d/(el.offsetWidth*1.6));el.style.transform=`scale(${1-k*.3})`;el.style.opacity=String(1-k*.5)});
     if(best!==last){if(last>=0)haptic();last=best;s.exPick=best;const r=L[best];cap.innerHTML=`<b>${r.n}</b><span>${ic('clock')}${r.m} Min · ${r.k} kcal · ${r.p} g Protein</span>`}};
@@ -1845,7 +1891,10 @@ Phone.prototype.initXw=function(){const w=this.scr.querySelector('.xw');if(!w)re
   w.addEventListener('scroll',()=>requestAnimationFrame(upd),{passive:true});
   this.xwTo=n=>{const e=its[n];if(e)w.scrollTo({left:e.offsetLeft+e.offsetWidth/2-w.clientWidth/2,behavior:'smooth'})}};
 Phone.prototype.setExtra=function(v){const s=this.s,i=s.sel,X=s.extra[i]||(s.extra[i]={});v=String(v||'').trim().slice(0,40);
-  if(v)X[s.exK]=v;else delete X[s.exK];if(!X.b&&!X.d)delete s.extra[i];s.exQ='';haptic();s.sheet=null;if(s.shop.some(x=>!x.manual))this.rebuildShop();this.render();if(v)this.toast(`${XM[s.exK][0]}: ${xName(v)}`)};
+  if(v)X[s.exK]=v;else delete X[s.exK];if(!X.b&&!X.d)delete s.extra[i];s.exQ='';s.exEdit=false;haptic();s.sheet=null;const sh=this.shopExtra(v,i);this.render();if(v)this.toast(`${XM[s.exK][0]}: ${xName(v)}${sh?' · Zutaten auf der Einkaufsliste':''}`)};
+/* Zutaten von Frühstück/Abendessen auf die Einkaufsliste: bestehende Plan-Liste neu rechnen, sonst nur dieses Rezept dazulegen */
+Phone.prototype.shopExtra=function(v,i){const s=this.s;if(s.shop.some(x=>!x.manual&&!x.xtra)){if(wkOf(i)===(s.shopWk||0))this.rebuildShop();return !!RM[v]}
+  const r=RM[v];if(!r)return false;const n0=s.shop.length;addNeeds(s.shop,r.i,s.persons);s.shop.slice(n0).forEach(x=>x.xtra=true);applyStock(s.shop,s.stock);return true};
 Phone.prototype.setCat=function(v){const s=this.s;if(s.cat===v)return;s.cat=v;s.pick=-1;haptic();
   const pn=this.scr.querySelector('.view.planv .panel.picking');if(!pn){this.render();return}
   const tmp=document.createElement('div');tmp.innerHTML=this.vPanel(s.sel);const np=tmp.firstElementChild;
@@ -1994,6 +2043,10 @@ Phone.prototype.vRecipes=function(favOnly){const s=this.s;const q=s.recQ.toLower
   const meta=r=>`<div class="meta"><span>${ic('clock')}${r.m} Min</span><span>${ic('flame')}${r.k} kcal</span></div>`;
   const hero=!q&&!favOnly&&L.length>2&&!(M==='l'&&s.recCat==='fav')?L[(new Date().getDate()+M.charCodeAt(0))%L.length]:null;
   const rest=hero?L.filter(r=>r!==hero):L;
+  /* Speisekarte: Abschnitte, Name – Punktlinie – Zeit, Zutaten klein darunter */
+  const item=r=>`<button class="mi" data-a="detail" data-id="${r.id}"><span class="mi-h"><b>${r.n}</b><i></i><em>${r.m} Min</em></span><span class="mi-s">${r.s}</span><span class="mi-k">${r.k} kcal · ${r.p} g Protein</span>${heart(r)}</button>`;
+  const sec=(ti,a)=>a.length?`<div class="mn-t"><span>${ti}</span></div>${a.map(item).join('')}`:'';
+  const menu=a=>M==='l'&&s.recCat==='all'&&!q&&!favOnly?[['fleisch','Fleisch'],['fisch','Fisch'],['veggie','Vegetarisch']].map(([c,l])=>sec(l,a.filter(r=>r.c[0]===c))).join(''):sec(favOnly||s.recCat==='fav'?'Favoriten':M==='l'?(CATNAME[s.recCat]||['Auswahl'])[0]:MEALS.find(x=>x[0]===M)[1],a);
   return `<div class="view recv"><div class="blob" style="opacity:.6"><i></i><i></i><i></i><i></i></div><div class="z">
    <div class="top-row"></div>
    <div class="eb">${favOnly?'Deine Lieblinge':`${R.length+RX.length} Rezepte`}</div>
@@ -2003,7 +2056,7 @@ Phone.prototype.vRecipes=function(favOnly){const s=this.s;const q=s.recQ.toLower
    <div class="search">${ic('search')}<input data-k="recq" placeholder="${MEALS.find(x=>x[0]===M)[1]} suchen" value="${s.recQ.replace(/"/g,'&quot;')}" aria-label="Rezept suchen"></div>
    ${M==='l'?`<div class="hs">${CATS.map(([k,l,i])=>`<button class="chip ${s.recCat===k?'on':''}" data-a="rcat" data-v="${k}">${ic(i)}${l}</button>`).join('')}<button class="chip ${s.recCat==='fav'?'on':''}" data-a="rcat" data-v="fav">${ic('heart')}Favoriten</button></div>`:''}`}
    ${hero?`<button class="rhero" data-a="detail" data-id="${hero.id}" style="--t1:${hero.t[0]};--t2:${hero.t[1]}">${heart(hero)}<span class="rh-tx"><small>Empfehlung des Tages</small><b>${hero.n}</b>${meta(hero)}<i>Zum Rezept${ic('right')}</i></span><span class="rh-pl">${plate(hero,168)}</span></button>`:''}
-   ${rest.length?`${hero?`<div class="lbl" style="margin:22px 0 0">Alle ${MEALS.find(x=>x[0]===M)[1]}-Rezepte</div>`:''}<div class="rlist">${rest.map(r=>`<button class="rrow" data-a="detail" data-id="${r.id}"><span class="rr-pl">${plate(r,74)}</span><span class="rr-tx"><b>${r.n}</b><small>${r.s}</small>${meta(r)}</span>${heart(r)}</button>`).join('')}</div>`
+   ${rest.length?`<div class="menu">${menu(rest)}</div>`
    :hero?'':`<div class="empty-st">${favOnly||s.recCat==='fav'?'Noch keine Favoriten. Tippe bei einem Rezept auf das Herz.':'Kein Rezept gefunden.'}</div>`}
   </div></div>`};
 
@@ -2474,12 +2527,13 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
    case 'aibuy':{const id=t.dataset.id,d=s.sel,rk=aiRank(s.ai.have,s.ai.amt||{},s.persons).find(x=>x.r.id===id),miss=rk?rk.miss:aiMissing(RM[id],s.ai.have);
       addNeeds(s.shop,miss,s.persons,true);
       const dd=this.planDish(d,id);s.sheet=null;this.backAfterPlan(d);this.anim='inF';this.pop=true;this.render();this.toast(`Eingeplant · ${miss.length} fehlende Zutat${miss.length===1?'':'en'} auf der Liste`);break}
-   case 'extra':s.exK=v;s.exQ='';s.sheet='extra';haptic();this.render();break;
+   case 'extra':s.exK=v;s.exQ='';s.exEdit=false;s.sheet='extra';haptic();this.render();break;
    case 'exset':this.setExtra(v);break;
-   case 'xwi':if(+v!==s.exPick){if(this.xwTo)this.xwTo(+v)}else this.setExtra(RX.filter(r=>r.meal===s.exK)[s.exPick].id);break;
-   case 'xwtake':{const r=RX.filter(x=>x.meal===s.exK)[s.exPick||0];if(r)this.setExtra(r.id);break}
-   case 'xwdet':{const r=RX.filter(x=>x.meal===s.exK)[s.exPick||0];if(!r)break;s.sheet=null;s.from='plan';s.did=r.id;s.dday=null;s.screen='detail';this.render();break}
-   case 'explan':{const r=RM[t.dataset.id];s.exK=r.meal;const X=s.extra[s.sel]||(s.extra[s.sel]={});X[r.meal]=r.id;haptic();if(s.shop.some(x=>!x.manual))this.rebuildShop();this.render();this.toast(`${XM[r.meal][0]} für ${s.sel===TODAY?'heute':dn(s.sel)} eingetragen`);break}
+   case 'exedit':s.exEdit=true;this.render();break;
+   case 'xwi':if(+v!==s.exPick){if(this.xwTo)this.xwTo(+v)}else this.setExtra(xList(s,s.exK)[s.exPick].id);break;
+   case 'xwtake':{const r=xList(s,s.exK)[s.exPick||0];if(r)this.setExtra(r.id);break}
+   case 'xwdet':{const r=RM[t.dataset.id]||xList(s,s.exK)[s.exPick||0];if(!r)break;s.sheet=null;s.from='plan';s.did=r.id;s.dday=null;s.screen='detail';this.render();break}
+   case 'explan':{const r=RM[t.dataset.id];s.exK=r.meal;const X=s.extra[s.sel]||(s.extra[s.sel]={});X[r.meal]=r.id;haptic();this.shopExtra(r.id,s.sel);this.render();this.toast(`${XM[r.meal][0]} für ${s.sel===TODAY?'heute':dn(s.sel)} · Zutaten auf der Einkaufsliste`);break}
    case 'exadd':if((s.exQ||'').trim())this.setExtra(s.exQ);break;
    /* --- Fitnessbereich --- */
    case 'flip':this.flip(v);break;
