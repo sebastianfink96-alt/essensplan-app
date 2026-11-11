@@ -647,6 +647,19 @@ html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
 .fhead-bg{height:340px!important;background:linear-gradient(180deg,rgba(0,96,57,.78) 0,rgba(0,96,57,.62) 90px,rgba(0,96,57,.3) 200px,rgba(0,96,57,0))!important}
 .fitv>.blob{opacity:.4}
 .recv,.shopv,.lrnv{background:linear-gradient(180deg,rgba(var(--a-glow),.4) 0,rgba(var(--a-glow),.2) 70px,rgba(var(--a-glow),0) 190px)}
+/* V83: Frühstück/Abendessen auch ohne Hauptgericht; grüner Haken; Punkte links/rechts vom Teller, Haken mittig */
+.planv .wcard>.xm{position:absolute;right:10px;z-index:12;flex:none;width:38px;height:38px;border:0;border-radius:999px;padding:0;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.86);box-shadow:0 0 0 1px rgba(255,255,255,.9),0 8px 16px -10px rgba(var(--ts),.6)}
+.planv .wcard>.xm.b{top:10px;color:var(--xb)}.planv .wcard>.xm.d{top:56px;color:var(--xd)}
+.planv .wcard>.xm.b i{background:var(--xb)}.planv .wcard>.xm.d i{background:var(--xd)}
+.planv .wcard>.xm.set{color:#fff}
+.planv .wcard>.xm.b.set{background:var(--xb)}.planv .wcard>.xm.d.set{background:var(--xd)}
+.planv .dish>.xm.set i,.planv .wcard>.xm.set i{background:#5FA052!important;box-shadow:0 0 0 1.5px #fff}
+.planv .dish>.xm.set i .ic,.planv .wcard>.xm.set i .ic{stroke:#fff!important}
+.wd .ok{right:auto!important;left:50%;transform:translateX(-50%);bottom:-6px!important}
+.wd .xds{left:2.5px!important;right:2.5px;bottom:20px!important;flex-direction:row!important;justify-content:space-between;gap:0!important;pointer-events:none}
+.wd .xds i{width:6.5px!important;height:6.5px!important}
+.wd .xds i.d{margin-left:auto}
+.wd.today .a{font-size:8px!important;letter-spacing:.05em!important}
 /* Abstände im Plan-Kopf */
 .phone.full .prog{margin:12px 0 12px}
 .phone.full .wnav{margin:5px 2px 13px}
@@ -2052,10 +2065,10 @@ Phone.prototype.vPanel=function(i){const s=this.s;const id=s.plan[i];const r=RM[
     <div class="meta"><span>${ic('clock')}${r.m} Min</span><span>${ic('flame')}${r.k} kcal</span><span>${r.p} g Protein</span>${enBadge(r,false)}<button class="info sm" data-a="sheet" data-v="energy" aria-label="Energiedichte erklärt">${ic('info')}</button></div>${this.vXline(i)}</div>
     <div class="acts"><button class="obtn" data-a="edit">${ic('pencil')}Ändern</button><button class="gbtn" data-a="detail" data-id="${r.id}" data-day="${i}">${ic('chef')}${i===TODAY?'Jetzt kochen':'Rezept ansehen'}</button></div></div>`;
   if(id===OUT&&!s.edit)return `<div class="panel${an}"><div class="open-head"><div><div class="eb">${eb}</div><div class="open-title">${i===TODAY?'Heute auswärts':'Auswärts essen'}</div></div></div>
-    <div class="dish"><div class="outc">${ic('out')}</div><div class="sb" style="max-width:260px">Kein Kochen eingeplant. Für diesen Tag kommt nichts auf die Einkaufsliste.</div></div>
+    <div class="dish">${this.vXm(i)}<div class="outc">${ic('out')}</div><div class="sb" style="max-width:260px">Kein Kochen eingeplant. Für diesen Tag kommt nichts auf die Einkaufsliste.</div>${this.vXline(i)}</div>
     <div class="acts"><button class="gbtn" data-a="unskip">${ic('chef')}Doch selbst kochen</button></div></div>`;
   const L=this.list();if(s.pick<0||s.pick>=L.length)s.pick=L.length>2?1:0; /* Standard: 2. Gericht in der Mitte, damit links und rechts eines sichtbar ist */
-  const picker=L.length?`<div class="wcard"><div class="wheel-wrap">${L.map((x,k)=>`<button class="wi" data-a="wi" data-k2="${k}" data-id="${x.id}" aria-label="${x.n}">${plate(x,180)}</button>`).join('')}</div><div class="wcap"></div><div class="dots"></div></div>`
+  const picker=L.length?`<div class="wcard">${this.vXm(s.sel)}<div class="wheel-wrap">${L.map((x,k)=>`<button class="wi" data-a="wi" data-k2="${k}" data-id="${x.id}" aria-label="${x.n}">${plate(x,180)}</button>`).join('')}</div><div class="wcap"></div><div class="dots"></div></div>`
     :`<div class="empty-st" style="padding:60px 10px">Keine Gerichte für diesen Filter.${s.en?`<br><button class="pill" style="margin-top:12px" data-a="en" data-v="${s.en}">Energiedichte-Filter aufheben</button>`:''}</div>`;
   return `<div class="panel picking${an}">
    <div class="open-head"><div>${wkOf(i)?`<div class="eb">Nächste Woche · ${dm(i)}</div>`:''}<div class="open-title">${s.edit?'Gericht ändern':i===TODAY?"Was gibt's heute?":`Was gibt's am ${dn(i)}?`}</div></div>${s.edit?`<button class="xbtn" data-a="cancel" aria-label="Abbrechen">${ic('x')}</button>`:''}</div>
