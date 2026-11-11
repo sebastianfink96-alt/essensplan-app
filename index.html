@@ -308,7 +308,13 @@ html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
 .inum small{font-size:10.5px;font-weight:400;opacity:.75}
 .frm{border:0;background:none;width:32px;height:46px;display:grid;place-items:center;color:var(--a-muted)}
 .frm .ic{width:15px;height:15px}
-.ftile{position:relative}
+.ftile{position:relative;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+.ihold{position:absolute;z-index:30;width:228px;display:flex;gap:6px;padding:7px;border-radius:22px;background:rgba(255,255,255,.98);box-shadow:0 0 0 1px var(--a-line),0 22px 40px -14px rgba(20,30,50,.5);animation:ipop2 .16s ease;pointer-events:none}
+.ihold span{flex:1;height:54px;border-radius:15px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:19px;font-weight:500;line-height:1.05;color:var(--a-ink);background:#F1F2F6;transition:background .12s,color .12s,transform .12s}
+.ihold small{font-size:10.5px;font-weight:400;opacity:.75}
+.ihold span.on{background:var(--c);color:#fff;transform:scale(1.06)}
+.fl-r small i{display:inline-block;width:7px;height:7px;border-radius:50%;margin:0 4px 1px 6px}
+.fl-r small i:first-child{margin-left:0}
 .ftile em{position:absolute;right:8px;top:8px;font-style:normal;width:20px;height:20px;border-radius:50%;background:rgba(255,255,255,.28);font-size:12px;font-weight:600;display:grid;place-items:center}
 .ftile.pk{box-shadow:0 0 0 2.5px #fff,0 0 0 4.5px var(--c)}
 .inum button.on{background:var(--c);color:#fff}
@@ -883,7 +889,7 @@ stop:'<rect x="7" y="7" width="10" height="10" rx="2"/>',
 box:'<path d="M4 8.5 12 4l8 4.5v7L12 20l-8-4.5z"/><path d="M4 8.5 12 13l8-4.5M12 13v7"/>',
 receipt:'<path d="M6 3.5h12v17l-2-1.4-2 1.4-2-1.4-2 1.4-2-1.4-2 1.4z"/><path d="M9 8h6M9 11.5h6M9 15h3.5"/>',
 up:'<path d="m6 15 6-6 6 6"/>',
-f_bike:'<circle cx="6" cy="16" r="3.6"/><circle cx="18" cy="16" r="3.6"/><path d="M6 16l4-7h5.5l2.5 7M10 9l3.2 7M14.5 6H17"/>',
+f_bike:'<circle cx="5.6" cy="16.4" r="3.9"/><circle cx="18.4" cy="16.4" r="3.9"/><path d="M5.6 16.4H12L9.4 9.6zM9.4 9.6h6L12 16.4M15.4 9.6l3 6.8M15.4 9.6l-.7-2.6M13.2 7h3.2M7.8 8.3h3.4M9.4 9.6l-.3-1.3"/>',
 f_run:'<path d="M3 17.5v-1.2c0-1 .6-1.9 1.5-2.3L8 12.5l2-4.5 2.6 1.6L15 13l4.2 1.4c1.1.4 1.8 1.4 1.8 2.5v.6z"/><path d="M11 12.5l1.8-.9M12.4 14.2l1.8-.9"/>',
 f_tennis:'<circle cx="12" cy="12" r="8.2"/><path d="M5.8 6.8c3.2 2.6 3.2 7.8 0 10.4M18.2 6.8c-3.2 2.6-3.2 7.8 0 10.4"/>',
 f_swim:'<circle cx="16.8" cy="7.6" r="1.9"/><path d="M4.5 13.2l5.2-3.6 3.2 2.6 3.6 1"/><path d="M3 17.6c1.5 0 1.5-1.2 3-1.2s1.5 1.2 3 1.2 1.5-1.2 3-1.2 1.5 1.2 3 1.2 1.5-1.2 3-1.2 1.5 1.2 3 1.2"/>',
@@ -1415,16 +1421,28 @@ Phone.prototype.initDeck=function(){const sc=this.scr.querySelector('.lk-sc');if
 
 /* ===== Mein Fitnessbereich ===== */
 /* Training je Tag: {s:{k:['run',…],lv:1–3}, k:{lv:1–3}, m:{k:['yoga',…]}} – s Sport, k Kraft, m Mobilität */
-const FC={s:'#FF6A55',k:'#6C63FF',m:'#19B5C8'},FR={s:15.2,k:10.6,m:6},FNAME={s:'Sport',k:'Krafttraining',m:'Mobilität'};
+const FA={bike:'#FF6A55',run:'#F5A623',tennis:'#8BC34A',swim:'#2F9BE6',kraft:'#7A5CFA',mob:'#E0609E'};
+const FC={s:'#FF6A55',k:FA.kraft,m:FA.mob},FR={s:15.2,k:10.6,m:6},FNAME={s:'Sport',k:'Krafttraining',m:'Mobilität'};
 const SPORTS=[['bike','Radfahren','🚴'],['run','Laufen','🏃'],['tennis','Tennis','🎾'],['swim','Schwimmen','🏊']];
 const MOBS=[['mob','Mobilisierung','🤸'],['stretch','Dehnen','🙆'],['yoga','Yoga','🧘']];
 const FKN=Object.fromEntries(SPORTS.concat(MOBS).map(x=>[x[0],x[1]])),LVN=['','Locker','Mittel','Hart'];
 /* Ringe eines Tages: außen Sport, Mitte Kraft, innen Mobilität. Intensität = Länge des Bogens + Farbstärke */
+const slv=(T,k)=>(T.s&&T.s.l&&T.s.l[k])||(T.s&&T.s.lv)||2;
 function fring(T,size){let h=`<svg class="fring" width="${size}" height="${size}" viewBox="0 0 36 36" aria-hidden="true">`;
-  ['s','k','m'].forEach(c=>{const r=FR[c],C=2*Math.PI*r,on=T&&T[c],lv=on?(c==='m'?3:on.lv||2):0;
-    h+=`<circle cx="18" cy="18" r="${r}" fill="none" stroke="${FC[c]}" stroke-opacity="${on?.2:.1}" stroke-width="3.4"/>`;
-    if(on)h+=`<circle cx="18" cy="18" r="${r}" fill="none" stroke="${FC[c]}" stroke-opacity="${[0,.5,.78,1][lv]}" stroke-width="3.4" stroke-linecap="round" stroke-dasharray="${(C*lv/3-(lv<3?1.6:0)).toFixed(1)} ${C.toFixed(1)}" transform="rotate(-90 18 18)"/>`});
+  const arc=(r,col,lv,start,span,gap)=>{const C=2*Math.PI*r,len=Math.max(1,span*C*lv/3-(lv<3||gap?1.8:0));return `<circle cx="18" cy="18" r="${r}" fill="none" stroke="${col}" stroke-opacity="${[0,.5,.78,1][lv]}" stroke-width="3.4" stroke-linecap="round" stroke-dasharray="${len.toFixed(1)} ${C.toFixed(1)}" stroke-dashoffset="${(-start*C).toFixed(1)}" transform="rotate(-90 18 18)"/>`};
+  ['s','k','m'].forEach(c=>{const r=FR[c],on=T&&T[c];
+    h+=`<circle cx="18" cy="18" r="${r}" fill="none" stroke="${on?(c==='s'?FA[T.s.k[0]]||FC.s:FC[c]):'#9AA0B4'}" stroke-opacity="${on?.2:.14}" stroke-width="3.4"/>`;
+    if(!on)return;
+    if(c==='s'){const n=T.s.k.length||1;T.s.k.forEach((k,x)=>{h+=arc(r,FA[k]||FC.s,slv(T,k),x/n,1/n,n>1)})}
+    else h+=arc(r,FC[c],c==='m'?3:on.lv||2,0,1,false)});
   return h+'</svg>'}
+/* Aktivität setzen/entfernen; Sport merkt die Intensität je Sportart (l), lv = höchste */
+function setAct(s,c,k,lv){const T=s.train[s.fsel]||(s.train[s.fsel]={});
+  if(c==='k'){if(lv)T.k={lv};else delete T.k}
+  else if(c==='m'){if(lv)T.m={k:['mob']};else delete T.m}
+  else{const o=T.s||(T.s={k:[],lv:2,l:{}});o.l=o.l||{};if(lv){if(!o.k.includes(k))o.k.push(k);o.l[k]=lv}else{o.k=o.k.filter(x=>x!==k);delete o.l[k]}
+    if(!o.k.length)delete T.s;else o.lv=Math.max(...o.k.map(x=>o.l[x]||o.lv||2))}
+  if(!T.s&&!T.k&&!T.m)delete s.train[s.fsel]}
 const fLoad=T=>T?((T.s?T.s.lv||2:0)+(T.k?T.k.lv||2:0)+(T.m?.5:0)):0;
 const fCount=T=>T?((T.s?T.s.k.length:0)+(T.k?1:0)+(T.m?1:0)):0;
 /* Bewertung eines Gerichts für einen Trainingstag (für den Würfel): Kraft → Protein, harte Ausdauer → Kohlenhydrate, Ruhetag → leicht */
@@ -1455,20 +1473,32 @@ Phone.prototype.vFit=function(){const s=this.s;
   </div>
   <div class="lbl">So funktioniert's</div>
   <div class="fleg">
-   <div class="fl-r"><span>${fring({s:{k:['run'],lv:3}},30)}</span><div><b>Sport</b><small>Radfahren · Laufen · Tennis · Schwimmen</small></div></div>
+   <div class="fl-r"><span>${fring({s:{k:['bike','run','tennis','swim'],lv:3}},30)}</span><div><b>Sport</b><small>${SPORTS.map(([k,l])=>`<i style="background:${FA[k]}"></i>${l}`).join(' ')}</small></div></div>
    <div class="fl-r"><span>${fring({k:{lv:3}},30)}</span><div><b>Kraft</b><small>Krafttraining</small></div></div>
    <div class="fl-r"><span>${fring({m:{k:['mob']}},30)}</span><div><b>Dehnen & Yoga</b><small>Dehnen · Yoga · Mobilisierung</small></div></div>
-   <p class="fl-p">Tag antippen, Aktivität antippen, Intensität 1–3 wählen. Je höher die Intensität, desto länger und kräftiger der Ring.</p>
+   <p class="fl-p">Tag antippen, Aktivität antippen. Kachel halten und nach links oder rechts ziehen: Intensität 1–3. Je höher die Intensität, desto länger und kräftiger der Ring.</p>
   </div>
   </div></div>`};
 /* Fenster „Training eintragen“: 1 Aktivität, 2 Intensität */
-Phone.prototype.vFday=function(){const s=this.s,i=s.fsel,T=s.train[i]||{},pk=s.fpick;
-  const on=(c,k)=>c==='s'?!!(T.s&&T.s.k.includes(k)):!!T[c];
-  const P=pk&&FACTS.find(x=>x[1]===pk),lv=P&&T[P[0]]?T[P[0]].lv||2:0;
+Phone.prototype.vFday=function(){const s=this.s,i=s.fsel,T=s.train[i]||{};
+  const lvOf=(c,k)=>c==='s'?(T.s&&T.s.k.includes(k)?slv(T,k):0):c==='k'?(T.k?T.k.lv||2:0):(T.m?-1:0);
   return `<h3>Training</h3><p>${i===TODAY?'Heute · ':''}${dayLbl(i)}</p>
-   <div class="ftiles">${FACTS.map(([c,k,l])=>`<button class="ftile ${on(c,k)?'on':''} ${pk===k?'pk':''}" data-a="ftog" data-c="${c}" data-v="${k}" style="--c:${FC[c]}" aria-pressed="${on(c,k)}"><span>${ic('f_'+k)}</span>${l}${on(c,k)&&c!=='m'?`<em>${T[c].lv||2}</em>`:''}</button>`).join('')}</div>
-   ${P&&on(P[0],P[1])?`<div class="fint" style="--c:${FC[P[0]]}"><b>${P[2]}</b><span class="inum" role="group" aria-label="Intensität">${[1,2,3].map(n=>`<button class="n${n} ${lv===n?'on':''}" data-a="flv" data-c="${P[0]}" data-v="${n}">${n}<small>${LVN[n]}</small></button>`).join('')}</span><button class="frm" data-a="frm" data-c="${P[0]}" data-v="${P[1]}" aria-label="${P[2]} entfernen">${ic('x')}</button></div>`:''}
-   <button class="gbtn" style="width:100%;margin-top:16px;background:linear-gradient(100deg,#4E9A78,#27664A 58%,#357C5C);box-shadow:0 14px 26px -12px rgba(39,102,74,.75)" data-a="closesheet">${ic('check')}Fertig</button>`};
+   <div class="ftiles">${FACTS.map(([c,k,l])=>{const lv=lvOf(c,k);return `<button class="ftile ${lv?'on':''}" data-a="ftog" data-c="${c}" data-v="${k}" style="--c:${FA[k]}" aria-pressed="${!!lv}"><span>${ic('f_'+k)}</span>${l}${lv>0?`<em>${lv}</em>`:''}</button>`}).join('')}</div>
+   <p class="fnote" style="margin-top:12px">Tippen: an oder aus · Halten und ziehen: Intensität</p>
+   <button class="gbtn" style="width:100%;margin-top:14px;background:linear-gradient(100deg,#4E9A78,#27664A 58%,#357C5C);box-shadow:0 14px 26px -12px rgba(39,102,74,.75)" data-a="closesheet">${ic('check')}Fertig</button>`};
+/* Kachel gedrückt halten: drei Stufen erscheinen, nach links/rechts ziehen wählt, loslassen übernimmt */
+Phone.prototype.holdTile=function(e,el){const self=this,s=this.s,c=el.dataset.c,k=el.dataset.v;if(c==='m')return;
+  const x0=e.clientX,y0=e.clientY;let bub=null,lv=0,base=0;
+  const cur=()=>{const T=s.train[s.fsel];return !T?0:c==='k'?(T.k?T.k.lv||2:0):(T.s&&T.s.k.includes(k)?slv(T,k):0)};
+  const paint=()=>bub.querySelectorAll('span').forEach((x,n)=>x.classList.toggle('on',n+1===lv));
+  const tm=setTimeout(()=>{base=lv=cur()||2;haptic();self.suppressClick=true;const sh=el.closest('.sheet');bub=document.createElement('div');bub.className='ihold';bub.style.setProperty('--c',FA[k]);
+    bub.innerHTML=[1,2,3].map(n=>`<span>${n}<small>${LVN[n]}</small></span>`).join('');sh.appendChild(bub);const W=228;
+    bub.style.left=Math.max(8,Math.min(sh.clientWidth-W-8,el.offsetLeft+el.offsetWidth/2-W/2))+'px';bub.style.top=(el.offsetTop-76)+'px';el.classList.add('pk');paint()},260);
+  const mv=ev=>{if(!bub){if(Math.hypot(ev.clientX-x0,ev.clientY-y0)>12){clearTimeout(tm);off()}return}ev.preventDefault();
+    const n=Math.max(1,Math.min(3,base+Math.round((ev.clientX-x0)/(44*self.k))));if(n!==lv){lv=n;haptic();paint()}};
+  const up=()=>{clearTimeout(tm);off();if(!bub)return;bub.remove();setTimeout(()=>self.suppressClick=false,150);setAct(s,c,k,lv);self.render()};
+  const off=()=>{removeEventListener('pointermove',mv);removeEventListener('pointerup',up);removeEventListener('pointercancel',up)};
+  addEventListener('pointermove',mv,{passive:false});addEventListener('pointerup',up);addEventListener('pointercancel',up)};
 /* Intensität per langem Druck auf Sportart oder Krafttraining */
 Phone.prototype.lpress=function(e,el){const self=this,x0=e.clientX,y0=e.clientY;let fired=false;
   const tm=setTimeout(()=>{fired=true;self.suppressClick=true;haptic();self.s.ipop={c:el.dataset.lp,k:el.dataset.lp==='s'?el.dataset.k:''};self.render()},420);
@@ -1655,6 +1685,7 @@ Phone.prototype.dragSheet=function(e,sh){if(sh.scrollTop>0)return;const self=thi
     if(dy>110||v>.6){self.closeSheet()}else{sh.style.transition='transform .28s cubic-bezier(.2,.8,.2,1)';sh.style.transform=''}};
   addEventListener('pointermove',move,{passive:false});addEventListener('pointerup',up);addEventListener('pointercancel',up)};
 Phone.prototype.pdown=function(e){
+  const ft=e.target.closest('.ftile');if(ft&&this.s.sheet==='fday')return this.holdTile(e,ft);
   const sh=e.target.closest('.sheet');if(sh)return this.dragSheet(e,sh);
   const wd=e.target.closest('.wd');
   if(wd&&this.s.screen==='plan')return this.dragDay(e,wd);
@@ -2193,11 +2224,8 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
    /* --- Fitnessbereich --- */
    case 'flip':this.flip(v);break;
    case 'fday':s.fsel=+t.dataset.i;s.fpick=null;s.sheet='fday';haptic();this.render();break;
-   case 'ftog':{const c=t.dataset.c,T=s.train[s.fsel]||(s.train[s.fsel]={});haptic();
-      if(c==='m'){if(T.m)delete T.m;else T.m={k:['mob']};s.fpick=null}
-      else if(c==='k'){if(!T.k)T.k={lv:2};s.fpick=s.fpick==='kraft'&&T.k?null:'kraft'}
-      else{const o=T.s||(T.s={k:[],lv:2});const had=o.k.includes(v);if(!had)o.k.push(v);s.fpick=had&&s.fpick===v?null:v}
-      if(!T.s&&!T.k&&!T.m)delete s.train[s.fsel];this.render();break}
+   case 'ftog':{const c=t.dataset.c,T=s.train[s.fsel]||{};haptic();
+      const on=c==='k'?!!T.k:c==='m'?!!T.m:!!(T.s&&T.s.k.includes(v));setAct(s,c,v,on?0:2);this.render();break}
    case 'flv':{const c=t.dataset.c,T=s.train[s.fsel];if(T&&T[c]){T[c].lv=+v;haptic()}s.fpick=null;this.render();break}
    case 'frm':{const c=t.dataset.c,T=s.train[s.fsel];if(T){if(c==='k')delete T.k;else if(T.s){T.s.k=T.s.k.filter(x=>x!==v);if(!T.s.k.length)delete T.s}
         if(!T.s&&!T.k&&!T.m)delete s.train[s.fsel]}s.fpick=null;haptic();this.render();break}
