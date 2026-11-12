@@ -701,6 +701,8 @@ html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
 .fsw-r s,.fsw-r em{font-size:12px;color:#8A8FA3;font-style:normal;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .fsw-r i{font-style:normal;font-size:14.5px;font-weight:600;color:#1D1D1F}
 .fsw-r .stage,.fsw-r .plate{flex:none;transform:none!important}
+.fsw-r em.xb{color:var(--xb,#E09A4B);font-weight:600}.fsw-r em.xd{color:var(--xd,#5F6CA8);font-weight:600}
+.fsw-list{max-height:none}
 .fsw.done{display:flex;align-items:center;justify-content:center;gap:6px;font-size:14px;font-weight:600;color:#006039}
 .fsw.done .ic{width:16px;height:16px}
 .fstd-days{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin:2px 0 12px}
@@ -2029,6 +2031,7 @@ function fring(T,size,noIcon){const A=fActs(T),r=15.2,C=2*Math.PI*r,n=A.length||
   if(top&&!noIcon)h+=`<svg x="10.2" y="10.2" width="15.6" height="15.6" viewBox="0 0 24 24"><g fill="none" stroke="${FA[top]}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${P['f_'+top]}</g></svg>`;
   return h+'</svg>'}
 /* Aktivität setzen/entfernen; Sport merkt die Intensität je Sportart (l), lv = höchste */
+const R_IDS=new Set(R.map(r=>r.id));
 const fTgt=s=>s.sheet==='fstd'?[s.fstd,s.fstdD||0]:[s.train,s.fsel];
 function setAct(s,c,k,lv){const [O,K]=fTgt(s);const T=O[K]||(O[K]={});
   if(c==='k'){if(lv)T.k={lv};else delete T.k}
@@ -2145,9 +2148,10 @@ Phone.prototype.vFit=function(){const s=this.s;
    <div class="fai-h"><span class="ai-orb ${A&&A.step==='think'?'live':''}"><span class="orb-c"><i></i><i></i><i></i><i></i></span><span class="orb-g"></span></span><div><b>Training & Ernährung</b><small>${AI?'Analyse von Claude':'Auswertung auf dem Gerät'}</small></div></div>
    <div class="seg" role="group" aria-label="Woche für die Analyse">${[0,1].map(k=>`<button class="${w===k?'on':''}" data-a="fwk" data-v="${k}">${k?'Nächste Woche':'Diese Woche'}<small>KW ${KW(k)}</small></button>`).join('')}</div>
    ${A&&A.step==='think'?`<div class="ai-dots"><i></i><i></i><i></i></div><p class="fai-t m">Ich schaue mir Training und Essensplan an …</p>`
-    :fresh?`${A.sig!==sig&&!A.swDone?`<p class="ai-warn" style="margin:0 0 10px!important">Plan oder Training haben sich geändert – analysiere neu.</p>`:''}${A.res.map(x=>`<div class="fai-s"><span>${String(x.t).replace(/</g,'&lt;')}</span><p class="fai-t">${String(x.x).replace(/</g,'&lt;').replace(/\n+/g,'<br>')}</p></div>`).join('')}${(()=>{const L=(A.sw||[]).filter(x=>RM[x.id]);if(!L.length)return '';
+    :fresh?`${A.sig!==sig&&!A.swDone?`<p class="ai-warn" style="margin:0 0 10px!important">Plan oder Training haben sich geändert – analysiere neu.</p>`:''}${A.res.map(x=>`<div class="fai-s"><span>${String(x.t).replace(/</g,'&lt;')}</span><p class="fai-t">${String(x.x).replace(/</g,'&lt;').replace(/\n+/g,'<br>')}</p></div>`).join('')}${(()=>{const L=(A.sw||[]).filter(x=>x.id===null||RM[x.id]),E=(A.ex||[]).filter(x=>RM[x.id]);if(!L.length&&!E.length)return '';
       if(A.swDone)return `<div class="fsw done">${ic('check')}Vorschläge übernommen</div>`;if(A.sig!==sig)return '';
-      return `<div class="fsw"><div class="fsw-h">Vorschlag für deinen Essensplan</div>${L.map(x=>{const o=RM[s.plan[x.d]];return `<div class="fsw-r"><b>${ab(x.d)}</b><span>${o?`<s>${esc(o.n)}</s>`:s.plan[x.d]===OUT?'<s>Auswärts</s>':'<em>frei</em>'}<i>${esc(RM[x.id].n)}</i></span>${plate(RM[x.id],34)}</div>`}).join('')}<button class="gbtn" style="width:100%;margin-top:10px" data-a="fitswap">${ic('check')}Ernährung so anpassen</button></div>`})()}`
+      const rows=L.map(x=>({d:x.d,o:0,h:(o=>`<div class="fsw-r"><b>${ab(x.d)}</b><span>${o?`<s>${esc(o.n)}</s>`:s.plan[x.d]===OUT?'<s>Auswärts</s>':'<em>bisher frei</em>'}<i>${x.id?esc(RM[x.id].n):'frei'}</i></span>${x.id?plate(RM[x.id],34):''}</div>`)(RM[s.plan[x.d]])})).concat(E.map(x=>({d:x.d,o:x.m==='b'?-1:1,h:`<div class="fsw-r"><b>${ab(x.d)}</b><span><em class="x${x.m}">${XM[x.m][0]} ergänzen</em><i>${esc(RM[x.id].n)}</i></span>${plate(RM[x.id],34)}</div>`}))).sort((a,b)=>a.d-b.d||a.o-b.o);
+      return `<div class="fsw"><div class="fsw-h">${A.wk===1?'Vorschlag für die ganze Woche':'Vorschlag für die restliche Woche'}</div>${rows.map(x=>x.h).join('')}<button class="gbtn" style="width:100%;margin-top:10px" data-a="fitswap">${ic('check')}Ernährung so anpassen</button></div>`})()}`
     :`<p class="fai-t m">Ich vergleiche dein Training mit deinem Essensplan und sage dir, wo Eiweiß, Kohlenhydrate oder Erholung fehlen.</p>`}
    <button class="gbtn" style="width:100%;margin-top:12px" data-a="fitai" ${A&&A.step==='think'?'disabled':''}>${ic('spark')}${fresh?'Neu analysieren':'Woche analysieren'}</button>
    <button class="ai-again" data-a="fitfill">Freie Tage passend zum Training planen</button>
@@ -2216,39 +2220,63 @@ function fitLocal(s,w){const D=Array.from({length:7},(_,j)=>w*7+j),T=i=>s.train[
   const adj=hard.filter(i=>hard.includes(i+1));
   if(adj.length)a+=` ${sh(adj[0])} und ${sh(adj[0]+1)} sind beide intensiv – dazwischen besser etwas Leichtes.`;else if(!rest)a+=' Ein Ruhetag fehlt noch.';
   res.push({t:'Training',x:a});
-  const f=[],noMeal=[],sw=[],used=new Set(D.map(i=>s.plan[i]));
-  const better=(i,X)=>{if(i<TODAY)return;const sc=fitScore(X),r0=RM[s.plan[i]];const c=R.filter(r=>!used.has(r.id)).sort((a,b)=>sc(b)-sc(a))[0];if(c&&sc(c)>sc(r0)){used.add(c.id);sw.push({d:i,id:c.id})}};
+  const f=[],noMeal=[],F=[];let sw=[];const ex=[];
   D.forEach(i=>{const X=T(i);if(!X||!(X.s||X.k))return;const id=s.plan[i],r=RM[id];
     if(!r){if(id!==OUT)noMeal.push(sh(i));return}
-    if(X.k&&r.p<25){f.push(`${sh(i)}: „${r.n}“ hat wenig Eiweiß für einen Krafttag – Joghurt, Eier oder Tofu ergänzen.`);better(i,X)}
-    else if(X.s&&(X.s.lv||2)>=2&&r.kh<40){f.push(`${sh(i)}: Zu ${nm(fTop(X))} passen mehr Kohlenhydrate – Reis, Kartoffeln oder Pasta zu „${r.n}“.`);better(i,X)}});
+    if(X.k&&r.p<25){f.push(`${sh(i)}: „${r.n}“ hat wenig Eiweiß für einen Krafttag – Joghurt, Eier oder Tofu ergänzen.`);F.push(i)}
+    else if(X.s&&(X.s.lv||2)>=2&&r.kh<40){f.push(`${sh(i)}: Zu ${nm(fTop(X))} passen mehr Kohlenhydrate – Reis, Kartoffeln oder Pasta zu „${r.n}“.`);F.push(i)}});
   let b=f.slice(0,2).join('\n');
   if(noMeal.length)b+=(b?'\n':'')+`Für ${noMeal.join(', ')} fehlt noch ein Gericht.`;
   res.push({t:'Ernährung',x:b||'Deine Gerichte passen gut zum Training.'});
   const tips=[];if(hard.length)tips.push('Nach intensiven Einheiten zeitnah essen und mehr trinken.');
   tips.push(f.length||noMeal.length?'„Freie Tage passend zum Training planen“ wählt für leere Tage passende Gerichte.':'Weiter so – Training und Essen passen zusammen.');
-  if(sw.length)tips.unshift('Unten findest du passende Tauschvorschläge.');
-  res.push({t:'Empfehlung',x:tips.join(' ')});res.sw=sw.slice(0,3);return res}
+  const lightSc=r=>r.p*.6-r.k/12;
+  if(w===0){ /* laufende Woche: nur geplante Gerichte künftiger Tage untereinander tauschen + Frühstück/Abendessen ergänzen (Zutaten sind schon gekauft) */
+    const fut=D.filter(i=>i>=TODAY&&R_IDS.has(s.plan[i])),P=Object.assign({},s.plan);
+    F.filter(i=>i>=TODAY).forEach(i=>{const sc=fitScore(T(i));const j=fut.filter(j=>j!==i&&!F.includes(j)&&sc(RM[P[j]])>sc(RM[P[i]])).sort((a,b)=>sc(RM[P[b]])-sc(RM[P[a]]))[0];if(j!==undefined){const t=P[i];P[i]=P[j];P[j]=t}});
+    sw=fut.filter(i=>P[i]!==s.plan[i]).map(i=>({d:i,id:P[i]}));
+    const bf=RX.filter(r=>r.meal==='b').sort((a,b)=>b.p-a.p),usedX=new Set(D.map(i=>(s.extra[i]||{}).b));
+    D.filter(i=>i>=TODAY&&T(i)&&(T(i).k||(T(i).s&&(T(i).s.lv||2)===3))&&!(s.extra[i]||{}).b).slice(0,2).forEach(i=>{const r=bf.find(r=>!usedX.has(r.id));if(r){usedX.add(r.id);ex.push({d:i,m:'b',id:r.id})}});
+    if(sw.length||ex.length)tips.unshift('Unten steht ein Vorschlag: Gerichte der kommenden Tage tauschen oder ein Frühstück ergänzen.')}
+  else{ /* nächste Woche: Vorschlag für die ganze Woche */
+    const used=new Set();D.forEach(i=>{const sc=fitScore(T(i))||lightSc;const r=R.filter(r=>!used.has(r.id)).sort((a,b)=>sc(b)-sc(a))[0];if(r){used.add(r.id);if(s.plan[i]!==r.id)sw.push({d:i,id:r.id})}});
+    if(sw.length)tips.unshift('Unten steht ein Vorschlag für die ganze Woche, passend zu deinem Training.')}
+  res.push({t:'Empfehlung',x:tips.join(' ')});res.sw=sw;res.ex=ex;return res}
 Phone.prototype.fitAnalyze=async function(){const s=this.s,w=s.fwk||0,sig=fitSig(s,w);if(s.fitAI&&s.fitAI.step==='think')return;
   const A=s.fitAI={step:'think',wk:w};haptic();this.render();const el=this.scr.querySelector('#fai');if(el)el.scrollIntoView({block:'start',behavior:'smooth'});
-  const done=(res,sw)=>{if(s.fitAI!==A)return;s.fitAI={wk:w,sig,res:Array.from(res),sw:sw||res.sw||[]};hapticSuccess();this.render();clearTimeout(this.saveT);this.saveT=setTimeout(()=>this.save(),300)};
+  const done=(res,sw,ex)=>{if(s.fitAI!==A)return;s.fitAI={wk:w,sig,res:Array.from(res),sw:sw||res.sw||[],ex:ex||res.ex||[]};hapticSuccess();this.render();clearTimeout(this.saveT);this.saveT=setTimeout(()=>this.save(),300)};
   await aiWait();
   if(!AI){setTimeout(()=>done(fitLocal(s,w)),700);return}
-  try{const lines=Array.from({length:7},(_,j)=>w*7+j).map(i=>{const r=RM[s.plan[i]];return `Tag ${i} – ${dayLbl(i)}${i===TODAY?' (heute)':''}${i<TODAY?' (vorbei)':''}: Training: ${fText(s.train[i])}. Essen: ${r?`${r.n} (${r.k} kcal, ${r.p} g Eiweiß, ${r.kh} g Kohlenhydrate, ${r.f} g Fett)`:s.plan[i]===OUT?'auswärts':'noch nichts geplant'}`}).join('\n');
+  try{const lines=Array.from({length:7},(_,j)=>w*7+j).map(i=>{const r=RM[s.plan[i]];return `Tag ${i} – ${dayLbl(i)}${i===TODAY?' (heute)':''}${i<TODAY?' (vorbei)':''}: Training: ${fText(s.train[i])}. Hauptgericht: ${r?`${r.n} (${r.k} kcal, ${r.p} g Eiweiß, ${r.kh} g Kohlenhydrate, ${r.f} g Fett)`:s.plan[i]===OUT?'auswärts':'noch nichts geplant'}. Frühstück: ${(s.extra[i]||{}).b?xName(s.extra[i].b):'–'}. Abendessen: ${(s.extra[i]||{}).d?xName(s.extra[i].d):'–'}`}).join('\n');
     const r=await AI(`Du bist Trainings- und Ernährungscoach in einer deutschen Essensplan-App und schreibst eine kurze, persönliche Wochenanalyse wie die KI-Auswertung bei Strava. Pro Tag gibt es EIN geplantes Hauptgericht (für ${s.persons} ${s.persons===1?'Person':'Personen'}; Nährwerte je Portion). Intensität: leicht, mittel, hoch.
 
 Woche (KW ${KW(w)}):
 ${lines}
 
-Verfügbare Gerichte zum Tauschen (ID: Name …):
+${w===0?'':`Verfügbare Hauptgerichte (ID: Name …):
 ${aiCatalog()}
 
-Schreibe auf Deutsch in Du-Form, freundlich, ohne Markdown, SEHR KURZ: je Abschnitt höchstens 2 Sätze. Zähle NICHT auf, was an welchem Tag gemacht wird. 1. Training: Worauf liegt der Fokus (z. B. „Dein Fokus liegt auf Radfahren. Kraft und Dehnen ergänzen das Training ideal.“), und falls etwas fehlt, was noch gut täte. 2. Ernährung: nur das Wichtigste, wo Essen und Training nicht zusammenpassen, sonst ein kurzes Lob. 3. Empfehlung: ein konkreter Tipp, gern ein Tauschvorschlag aus den verfügbaren Gerichten. Keine medizinischen Aussagen.
-Zusätzlich "tausch": die konkreten Gerichte-Wechsel, die du in der Empfehlung nennst (0 bis 3), als Liste {"tag": Tag-Nummer, "id": Rezept-ID aus den verfügbaren Gerichten}. Nur Tage, die nicht vorbei sind; kein Gericht doppelt in der Woche. Wird ein verdrängtes Gericht auf einen anderen Tag verschoben, gib auch das als eigenen Eintrag an. Ohne Tauschvorschlag: leere Liste.
-Antworte ausschließlich mit JSON: {"abschnitte":[{"titel":"Training","text":"…"},{"titel":"Ernährung","text":"…"},{"titel":"Empfehlungen","text":"…"}],"tausch":[{"tag":3,"id":"n07"}]}`,{modelTier:'default'});
+`}Frühstück (b) und Abendessen (d) zum Ergänzen (ID: Name, Nährwerte):
+${RX.map(r=>`${r.id} [${r.meal}]: ${r.n} (${r.k} kcal, ${r.p} g Eiweiß, ${r.kh} g Kohlenhydrate)`).join('\n')}
+
+Schreibe auf Deutsch in Du-Form, freundlich, ohne Markdown, SEHR KURZ: je Abschnitt höchstens 2 Sätze. Zähle NICHT auf, was an welchem Tag gemacht wird. 1. Training: Worauf liegt der Fokus (z. B. „Dein Fokus liegt auf Radfahren. Kraft und Dehnen ergänzen das Training ideal.“), und falls etwas fehlt, was noch gut täte. 2. Ernährung: nur das Wichtigste, wo Essen und Training nicht zusammenpassen, sonst ein kurzes Lob. 3. Empfehlung: ein konkreter Tipp, der zu deinen Vorschlägen unten passt. Keine medizinischen Aussagen.
+
+${w===0?`WICHTIG – diese Woche läuft bereits, die Zutaten sind schon eingekauft. Schlage deshalb KEINE neuen Hauptgerichte vor. Erlaubt sind nur:
+- "tausch_tage": zwei Tage, die noch nicht vorbei sind, tauschen ihre bereits geplanten Hauptgerichte: Liste {"a": Tag-Nummer, "b": Tag-Nummer} (0 bis 2 Einträge).
+- "extras": ein Frühstück oder Abendessen ergänzen, wo noch keines eingetragen ist und der Tag nicht vorbei ist: Liste {"tag": Tag-Nummer, "mahl": "b" oder "d", "id": ID aus der Frühstück/Abendessen-Liste} (0 bis 3 Einträge).
+Passt schon alles, gib leere Listen zurück.
+Antworte ausschließlich mit JSON: {"abschnitte":[{"titel":"Training","text":"…"},{"titel":"Ernährung","text":"…"},{"titel":"Empfehlungen","text":"…"}],"tausch_tage":[{"a":4,"b":6}],"extras":[{"tag":4,"mahl":"b","id":"f06"}]}`
+:`Für diese kommende Woche ist noch nichts eingekauft. Mach deshalb einen Vorschlag für die GESAMTE Woche:
+- "woche": für jeden der 7 Tage genau ein Hauptgericht {"tag": Tag-Nummer, "id": Rezept-ID aus den verfügbaren Hauptgerichten}, passend zum Training des Tages (Krafttag: viel Eiweiß; harte Ausdauer: Kohlenhydrate; Ruhetag: leichter), abwechslungsreich, kein Gericht doppelt. Bereits gut passende Gerichte dürfen bleiben.
+- "extras": optional Frühstück oder Abendessen ergänzen, wo noch keines eingetragen ist: Liste {"tag": Tag-Nummer, "mahl": "b" oder "d", "id": ID aus der Frühstück/Abendessen-Liste} (0 bis 4 Einträge).
+Antworte ausschließlich mit JSON: {"abschnitte":[{"titel":"Training","text":"…"},{"titel":"Ernährung","text":"…"},{"titel":"Empfehlungen","text":"…"}],"woche":[{"tag":7,"id":"n07"}],"extras":[]}`}`,{modelTier:'default'});
     const j=aiParse(r&&r.text!==undefined?r.text:r);const res=(j&&j.abschnitte||[]).filter(x=>x&&x.text).map(x=>({t:x.titel||'',x:String(x.text)}));
-    const sw=[];(j&&Array.isArray(j.tausch)?j.tausch:[]).forEach(x=>{const d=+x.tag;if(Number.isInteger(d)&&wkOf(d)===w&&d>=TODAY&&RM[x.id]&&s.plan[d]!==x.id&&!sw.some(y=>y.d===d))sw.push({d,id:x.id})});
-    if(res.length)done(res,sw.slice(0,4));else done(fitLocal(s,w))}catch(e){AI=e&&e.code==='not_granted'?null:AI;done(fitLocal(s,w))}};
+    const inW=d=>Number.isInteger(d)&&wkOf(d)===w&&d>=0&&d<NDAYS;let sw=[];const ex=[],J=j||{};
+    if(w===0){const P=Object.assign({},s.plan);(Array.isArray(J.tausch_tage)?J.tausch_tage:[]).slice(0,3).forEach(x=>{const a=+x.a,b=+x.b;if(!inW(a)||!inW(b)||a===b||a<TODAY||b<TODAY||P[a]===OUT||P[b]===OUT||!(R_IDS.has(P[a])||R_IDS.has(P[b])))return;const t=P[a];P[a]=P[b];P[b]=t});
+      for(let d=0;d<7;d++)if(P[d]!==s.plan[d])sw.push({d,id:P[d]||null})}
+    else{const seen=new Set();(Array.isArray(J.woche)?J.woche:[]).forEach(x=>{const d=+x.tag;if(!inW(d)||!R_IDS.has(x.id)||seen.has(x.id)||sw.some(y=>y.d===d))return;seen.add(x.id);sw.push({d,id:x.id})});sw=sw.filter(x=>s.plan[x.d]!==x.id).sort((a,b)=>a.d-b.d)}
+    (Array.isArray(J.extras)?J.extras:[]).slice(0,5).forEach(x=>{const d=+x.tag,m=x.mahl;if(!inW(d)||d<TODAY||!['b','d'].includes(m)||(s.extra[d]||{})[m]||!RX.some(r=>r.id===x.id&&r.meal===m)||ex.some(y=>y.d===d&&y.m===m))return;ex.push({d,m,id:x.id})});
+    if(res.length)done(res,sw,ex);else done(fitLocal(s,w))}catch(e){AI=e&&e.code==='not_granted'?null:AI;done(fitLocal(s,w))}};
 
 /* ----- Plan ----- */
 Phone.prototype.vPlan=function(){const s=this.s;const w=s.wk||0,ks=Object.keys(s.plan).map(Number).filter(i=>wkOf(i)===w);const n=ks.length;const cooked=ks.filter(i=>RM[s.plan[i]]).length;
@@ -3061,14 +3089,11 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
    case 'fclr':delete s.train[s.fsel];haptic();this.render();break;
    case 'fwk':s.fwk=+v;this.render();break;
    case 'fitai':this.fitAnalyze();break;
-   case 'fitswap':{const A=s.fitAI;if(!A||!A.sw||!A.sw.length)break;this.prevPlan=Object.assign({},s.plan);let n=0;A.sw.forEach(x=>{if(RM[x.id]){s.plan[x.d]=x.id;n++}});A.swDone=true;hapticSuccess();this.render();this.toast(`${n} ${n===1?'Gericht':'Gerichte'} im Essensplan angepasst`,'Rückgängig','undo');break}
-   case 'kiopen':s.kiU=KI?KI.url:'';s.kiP=KI?KI.pw:'';s.kiMsg='';s.kiBusy=false;s.sheet='ki';this.render();break;
-   case 'kioff':KI=null;AI=null;try{localStorage.removeItem(KI_KEY)}catch(e){}s.sheet=null;this.render();this.toast('KI getrennt');break;
-   case 'kisave':{let u=(s.kiU||'').trim();const pw=(s.kiP||'').trim();if(u&&!/^https?:\/\//i.test(u))u='https://'+u;
-      if(!u||!pw){s.kiMsg='Bitte Adresse und Passwort eintragen.';this.render();break}
-      s.kiU=u;s.kiBusy=true;s.kiMsg='';this.render();
-      kiTest({url:u,pw}).then(err=>{s.kiBusy=false;if(err){s.kiMsg=err;this.render();return}
-        KI={url:u,pw};try{localStorage.setItem(KI_KEY,JSON.stringify(KI))}catch(e){}AI=kiRemote(KI);s.kiP='';s.sheet=null;hapticSuccess();this.render();this.toast('KI verbunden')});break}
+   case 'fitswap':{const A=s.fitAI;if(!A||!((A.sw||[]).length||(A.ex||[]).length))break;this.prevFit=JSON.stringify([s.plan,s.extra]);let n=0;
+      (A.sw||[]).forEach(x=>{if(x.id===null){delete s.plan[x.d];n++}else if(RM[x.id]){s.plan[x.d]=x.id;n++}});
+      (A.ex||[]).forEach(x=>{if(RM[x.id]){(s.extra[x.d]=s.extra[x.d]||{})[x.m]=x.id;n++}});
+      A.swDone=true;hapticSuccess();this.render();this.toast(`${n} ${n===1?'Änderung':'Änderungen'} im Essensplan übernommen`,'Rückgängig','fitundo');break}
+   case 'fitundo':if(this.prevFit){const [a,b]=JSON.parse(this.prevFit);s.plan=a;s.extra=b;this.prevFit=null;if(s.fitAI)s.fitAI.swDone=false;this.render();this.toast('Rückgängig gemacht')}break;
    case 'fimp':this.fitPhoto();break;
    case 'fimpok':this.fitImport();break;
    case 'fimpretry':if(s.fimp&&s.fimp.file)this.fitPhotoReal(s.fimp.file);break;
