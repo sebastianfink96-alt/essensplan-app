@@ -691,6 +691,22 @@ html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
 @keyframes orbP3{from{transform:rotate(96deg)}to{transform:rotate(456deg)}}
 .ai-orb.live .orb-c i,.ai-orb.live .orb-c::before{animation-duration:5s!important}
 @media (prefers-reduced-motion:reduce){.orb-c i,.orb-c::before{animation:none!important}.orb-c i:nth-child(1){transform:rotate(-24deg)}.orb-c i:nth-child(2){transform:rotate(38deg)}.orb-c i:nth-child(3){transform:rotate(96deg)}}
+/* V107: Begrüßung beim Start + Namensfeld im Intro und unten in den Einstellungen */
+.hello{position:absolute;inset:0;z-index:200;display:grid;place-items:center;text-align:center;padding:0 28px;border-radius:inherit;overflow:hidden;
+  background:linear-gradient(160deg,rgba(120,52,72,.42),rgba(60,30,50,.34));-webkit-backdrop-filter:blur(22px) saturate(1.5);backdrop-filter:blur(22px) saturate(1.5);animation:helloIn .6s ease both;transition:opacity .7s ease}
+.hello.out{opacity:0;pointer-events:none}
+.hello h2{margin:0;font-weight:600;font-size:46px;line-height:1.08;letter-spacing:-.035em;color:rgba(255,255,255,.78);-webkit-text-stroke:.6px rgba(255,255,255,.55);text-shadow:0 1px 0 rgba(255,255,255,.35),0 18px 40px rgba(40,10,30,.35);overflow-wrap:anywhere}
+.hello h2 i{display:inline-block;font-style:normal;opacity:0;animation:helloCh .7s cubic-bezier(.2,.8,.2,1) both}
+.hello p{margin:12px 0 0;font-size:21px;font-weight:300;letter-spacing:-.01em;color:rgba(255,255,255,.86);opacity:0;animation:helloP .8s ease 1s both}
+@keyframes helloIn{from{opacity:0}}
+@keyframes helloCh{from{opacity:0;filter:blur(10px);transform:translateY(10px) scale(1.06)}to{opacity:1;filter:blur(0);transform:none}}
+@keyframes helloP{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.hello h2 i,.hello p{animation:none;opacity:1}}
+.in-name{margin:18px auto 0;max-width:280px;background:rgba(255,255,255,.85);border-radius:999px;padding:0 18px;box-shadow:0 0 0 1px rgba(var(--a-glow),.2),0 14px 26px -18px rgba(var(--a-glow),.7)}
+.in-name input{width:100%;height:48px;border:0;background:none;outline:0;font:inherit;font-size:17px;font-weight:500;text-align:center;color:#1D1D1F}
+.in-name input::placeholder{color:#A9AAB4;font-weight:400}
+.pf-in{width:150px;border:0;background:none;outline:0;font:inherit;font-size:16px;font-weight:600;text-align:right;color:#1D1D1F;height:34px}
+.pf-in::placeholder{color:#C3C4CC;font-weight:400}
 /* V106: Einstellungen als Profil-Seite im Apple-Stil */
 .setv{background:linear-gradient(180deg,rgba(var(--a-glow),.4) 0,rgba(var(--a-glow),.2) 70px,rgba(var(--a-glow),0) 190px),#FBF9F5}
 .pf-head{display:flex;align-items:center;gap:16px;margin-top:10px}
@@ -1857,7 +1873,7 @@ function Phone(host,init,opts){
   let wheelT=0;this.scr.addEventListener('wheel',e=>{const s=self.s;if(s.sheet||!['plan','fit'].includes(s.screen)||performance.now()-wheelT<900)return;const v=self.scr.querySelector('.view');if(!v)return;
     if(s.screen==='plan'&&e.deltaY>30&&v.scrollTop+v.clientHeight>=v.scrollHeight-2){wheelT=performance.now();self.flip('fit')}
     else if(s.screen==='fit'&&e.deltaY<-30&&v.scrollTop<=0){wheelT=performance.now();self.flip('plan')}},{passive:true});
-  if(this.opts.full)setTimeout(()=>self.swipeHint(),2600);
+  if(this.opts.full){const g=this.greet();setTimeout(()=>self.swipeHint(),g?5200:2600)}
   if(this.opts.full){this.ph.classList.add('full');this.k=1;return} /* Vollbild-App: kein Rahmen, keine Skalierung */
   const fit=()=>{const k=host.clientWidth/410;this.k=k;this.ph.style.transform=`scale(${k})`;host.style.height=(864*k)+'px'};
   new ResizeObserver(fit).observe(host);fit();
@@ -2250,7 +2266,8 @@ Phone.prototype.lpress=function(e,el){const self=this,x0=e.clientX,y0=e.clientY;
   const off=()=>{removeEventListener('pointermove',mv);removeEventListener('pointerup',up);removeEventListener('pointercancel',up)};
   addEventListener('pointermove',mv);addEventListener('pointerup',up);addEventListener('pointercancel',up)};
 /* Durchsichtiger Wisch-Hinweis: kurz nach dem Öffnen des Essensplans, einmal pro App-Start. Verschwindet von selbst oder bei der ersten Berührung */
-Phone.prototype.swipeHint=function(){const s=this.s;if(this.hinted||s.screen!=='plan'||s.sheet||this.busy||this.scr.clientWidth>=700)return;this.hinted=true;
+Phone.prototype.swipeHint=function(){const s=this.s;if(this.ph.querySelector('.hello')){setTimeout(()=>this.swipeHint(),1500);return}
+  if(this.hinted||s.screen!=='plan'||s.sheet||this.busy||this.scr.clientWidth>=700)return;this.hinted=true;
   const d=document.createElement('div');d.className='swh';d.setAttribute('aria-hidden','true');
   d.innerHTML=`<div class="swh-t">${ic('up')}${ic('up')}<i></i></div><span>Nach oben wischen · Fitnessbereich</span>`;this.scr.appendChild(d);
   const off=()=>{d.classList.add('out');setTimeout(()=>d.remove(),500);this.scr.removeEventListener('pointerdown',off,true)};
@@ -2837,14 +2854,15 @@ Phone.prototype.vSettings=function(){const s=this.s,pf=s.prof,q=x=>String(x||'')
    <div class="top-row between"><button class="iconbtn" data-a="go" data-v="plan" aria-label="Zurück">${ic('left')}</button></div>
    <div class="pf-head rv"><button class="pf-av ${pf.photo?'has':''}" data-a="pfphoto" aria-label="${pf.photo?'Profilfoto ändern':'Profilfoto hinzufügen'}">${pf.photo?`<img src="${pf.photo}" alt="">`:ic('users')}<i>${ic('cam')}</i></button>
     <div><div class="eb">Dein Profil</div><h1 class="ap-h1" id="pfh">${pf.name?`Hi ${q(pf.name)}.`:'Hallo.'}</h1><p class="pf-sub">Schön, dass du da bist.</p></div></div>
-   <div class="pf-name rv"><label>Vorname</label><input aria-label="Vorname" data-k="pname" value="${q(pf.name)}" placeholder="Wie heißt du?" maxlength="24" autocomplete="given-name" autocapitalize="words" enterkeyhint="done">${pf.photo?`<button data-a="pfnophoto">Foto entfernen</button>`:''}</div>
    <h2 class="ap-h2 rv">Sportliche Ambition. <span>Wie trainierst du?</span></h2>
    ${opt(PF_SPORT,pf.sport,'pfsport','c3 fit rv')}
    <h2 class="ap-h2 rv">Ernährungsziel. <span>Was ist dir wichtig?</span></h2>
    ${opt(PF_GOAL,pf.goal,'pfgoal','c2 rv')}
    <p class="pf-note">Deine Angaben und dein Foto bleiben auf diesem Gerät. Die App richtet Vorschläge künftig danach aus.</p>
    <h2 class="ap-h2 rv">App. <span>Einstellungen.</span></h2>
-   <div class="grp"><div class="li"><span class="lic" style="background:var(--a-blue)">${ic('users')}</span>Personen<span class="r"><span class="stepper"><button data-a="pers" data-v="-1" aria-label="Weniger">${ic('minus')}</button>${s.persons}<button data-a="pers" data-v="1" aria-label="Mehr">${ic('plus')}</button></span></span></div>
+   <div class="grp"><div class="li"><span class="lic" style="background:var(--a-eyebrow)">${ic('pencil')}</span>Vorname<span class="r"><input class="pf-in" aria-label="Vorname" data-k="pname" value="${q(pf.name)}" placeholder="Wie heißt du?" maxlength="24" autocomplete="given-name" autocapitalize="words" enterkeyhint="done"></span></div>
+   ${pf.photo?li('cam','#6B7B99','Profilfoto entfernen','','pfnophoto'):''}
+   <div class="li"><span class="lic" style="background:var(--a-blue)">${ic('users')}</span>Personen<span class="r"><span class="stepper"><button data-a="pers" data-v="-1" aria-label="Weniger">${ic('minus')}</button>${s.persons}<button data-a="pers" data-v="1" aria-label="Mehr">${ic('plus')}</button></span></span></div>
    ${li('play','var(--a-violet)','Intro erneut ansehen',ic('right'),'reintro')}</div>
    <div class="grp">${li('cloud','#6B7B99','Rezept-Quelle','Lokal')}</div>
    ${this.opts.full?`<div class="grp">${window.EP_APP?'':li('book','#6B7B99','Prototyp-Übersicht',ic('right'),'overview')}</div>`:''}
@@ -2862,7 +2880,7 @@ Phone.prototype.vIntro=function(){const s=this.s;
    [`<div class="ill-en">${['low','mid','high'].map(l=>`<div><span class="ci" style="background:${EN[l][3]};color:${EN[l][2]}">${ic(EN[l][1])}</span><span>${EN[l][0]}<small>${EN[l][4]}</small></span></div>`).join('')}</div>`,'Energiedichte auf einen Blick','Drei Symbole zeigen, wie viele Kalorien ein Gericht pro Gramm hat. Antippen erklärt sie jederzeit.'],
    [`<div class="ill-tiles">${[['🥑','Avocado'],['🍋','Limetten'],['🐟','Lachs'],['🥛','Milch'],['🍚','Reis'],['🍅','Tomaten']].map((x,k)=>`<span class="tile ${k>3?'done':''}"><span class="em">${x[0]}</span><span class="tn">${x[1]}</span></span>`).join('')}</div>`,'Einkaufsliste mit einem Tipp','Alle Zutaten der Woche, automatisch zusammengezählt. Eigene Artikel ergänzen und abhaken.']];
   return `<div class="intro"><div class="blob"><i></i><i></i><i></i><i></i></div>
-   <div class="isl">${pages.map(([ill,t,txt],k)=>`<section class="ipg" aria-label="Intro Seite ${k+1}"><div class="ill">${ill}</div><div class="eb">Schritt ${k+1} von 4</div><h2>${t}</h2><p>${txt}</p></section>`).join('')}</div>
+   <div class="isl">${pages.map(([ill,t,txt],k)=>`<section class="ipg" aria-label="Intro Seite ${k+1}"><div class="ill">${ill}</div><div class="eb">Schritt ${k+1} von 4</div><h2>${t}</h2><p>${txt}</p>${k===0?`<div class="in-name"><input aria-label="Dein Vorname" data-k="pname" value="${String(s.prof.name||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;')}" placeholder="Wie heißt du? (optional)" maxlength="24" autocomplete="given-name" autocapitalize="words" enterkeyhint="done"></div>`:''}</section>`).join('')}</div>
    <button class="skip" data-a="introdone">Überspringen</button>
    <div class="ifoot"><div class="dots">${[0,1,2,3].map(k=>`<i class="${k===s.ip?'on':''}"></i>`).join('')}</div>
    <button class="gbtn" style="flex:none" data-a="inext">${s.ip<3?'Weiter':"Los geht's"}</button></div></div>`};
@@ -3250,7 +3268,14 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
    case 'introdone':this.finishIntro();break;
   }
 };
-Phone.prototype.finishIntro=function(){if(this.opts.persist)store.set(true);this.s.ip=0;this.goPlanToday();this.render()};
+Phone.prototype.finishIntro=function(){if(this.opts.persist)store.set(true);this.s.ip=0;this.goPlanToday();this.render();this.save();
+  if(this.opts.full){const g=this.greet();setTimeout(()=>this.swipeHint(),g?5200:2600)}};
+/* Begrüßung beim Start: Milchglas-Fläche, Name erscheint Buchstabe für Buchstabe aus der Unschärfe, blendet von selbst aus */
+Phone.prototype.greet=function(){const s=this.s,n=(s.prof&&s.prof.name||'').trim();if(!n||s.screen!=='plan'||s.sheet)return false;
+  const d=document.createElement('div');d.className='hello';d.setAttribute('role','status');
+  const L=('Hallo '+n+',').split('').map((c,i)=>`<i style="animation-delay:${(.25+i*.045).toFixed(3)}s">${c===' '?'&nbsp;':c.replace(/&/g,'&amp;').replace(/</g,'&lt;')}</i>`).join('');
+  d.innerHTML=`<div><h2 aria-label="Hallo ${n.replace(/"/g,'&quot;')},">${L}</h2><p>schön, dass du da bist!</p></div>`;this.ph.appendChild(d);
+  const off=()=>{if(d.classList.contains('out'))return;d.classList.add('out');setTimeout(()=>d.remove(),700)};d.addEventListener('pointerdown',off);setTimeout(off,3300);return true};
 
 /* ---------- Übersicht ---------- */
 const FULL={0:'n02',1:'n07',2:'n16',3:OUT,4:'n01',5:'n13',6:'r2'};
