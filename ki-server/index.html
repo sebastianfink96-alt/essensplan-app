@@ -1,0 +1,103 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Essensplan – KI-Server einrichten</title>
+<style>body{font:16px/1.5 -apple-system,system-ui,sans-serif;margin:0;padding:24px 20px 60px;background:#FAF8F5;color:#1D1D1F;max-width:640px;margin:auto}h1{font-size:28px;letter-spacing:-.02em;margin:8px 0 4px}p{color:#5C6176;margin:0 0 14px}ol{padding-left:22px;margin:0 0 18px}li{margin:0 0 10px}code{background:#EEF0F4;border-radius:6px;padding:1px 6px;font-size:14px}button{border:0;border-radius:999px;height:52px;width:100%;font-size:17px;font-weight:600;color:#fff;background:linear-gradient(100deg,#0F7C4E,#004D2E 58%,#006039)}textarea{width:100%;height:220px;box-sizing:border-box;margin-top:14px;border:1px solid #DDD;border-radius:14px;padding:10px;font:12px/1.4 ui-monospace,Menlo,monospace;background:#fff}#ok{text-align:center;color:#006039;font-weight:600;height:24px;margin-top:8px}</style></head><body>
+<h1>KI-Server einrichten</h1><p>Einmalig, ca. 10 Minuten. Der Code enthält keine Geheimnisse.</p>
+<ol><li>Unten auf <b>Code kopieren</b> tippen.</li>
+<li>Auf dash.cloudflare.com: Menü → <b>Compute</b> → <b>Workers &amp; Pages</b> → <b>Create</b> → <b>Start with Hello World!</b> → Namen <code>essensplan-ki</code> → <b>Deploy</b>.</li>
+<li><b>Edit code</b> öffnen, den vorhandenen Text komplett löschen, den kopierten Code einfügen, <b>Deploy</b>.</li>
+<li>Im Worker: <b>Settings</b> → <b>Variables and Secrets</b> → zweimal <b>Add</b>, Typ <b>Secret</b>:<br><code>ANTHROPIC_API_KEY</code> = dein API-Schlüssel<br><code>APP_PASSWORD</code> = ein langes Passwort deiner Wahl</li>
+<li>Die Adresse des Workers kopieren (endet auf <code>.workers.dev</code>) und in der App unter Einstellungen → „KI in dieser App“ zusammen mit dem Passwort eintragen.</li></ol>
+<button id="cp">Code kopieren</button><div id="ok"></div>
+<textarea id="code" readonly>/* Essensplan – kleiner KI-Server (Cloudflare Worker)
+ *
+ * Reicht Anfragen der installierten App an Claude weiter. Der API-Schlüssel liegt nur hier,
+ * nie in der App. Ohne das richtige Passwort antwortet der Server nicht.
+ *
+ * Geheimnisse (Cloudflare → Worker → Einstellungen → Variablen und Geheimnisse, Typ „Geheimnis“):
+ *   ANTHROPIC_API_KEY  – API-Schlüssel aus console.anthropic.com
+ *   APP_PASSWORD       – selbst gewähltes Passwort, das du in der App einträgst
+ *
+ * Bewusst eine einzelne Datei ohne Abhängigkeiten, damit sie sich im Cloudflare-Editor
+ * einfügen lässt (kein Build nötig) – daher fetch statt SDK.
+ */
+const ALLOWED_ORIGINS = [&#x27;https://sebastianfink96-alt.github.io&#x27;];
+const MODEL = &#x27;claude-opus-5-5&#x27;;
+const MAX_BODY = 12 * 1024 * 1024; // 12 MB
+const MAX_IMAGES = 4;
+
+const cors = origin =&gt; ({
+  &#x27;Access-Control-Allow-Origin&#x27;: ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0],
+  &#x27;Access-Control-Allow-Methods&#x27;: &#x27;GET, POST, OPTIONS&#x27;,
+  &#x27;Access-Control-Allow-Headers&#x27;: &#x27;Authorization, Content-Type&#x27;,
+  &#x27;Access-Control-Max-Age&#x27;: &#x27;86400&#x27;,
+  &#x27;Vary&#x27;: &#x27;Origin&#x27;,
+});
+const json = (obj, status, origin) =&gt;
+  new Response(JSON.stringify(obj), { status, headers: { &#x27;Content-Type&#x27;: &#x27;application/json&#x27;, ...cors(origin) } });
+
+/* Passwort-Vergleich über Hashes, damit die Antwortzeit nichts über das Passwort verrät */
+async function samePassword(a, b) {
+  const enc = new TextEncoder();
+  const [ha, hb] = await Promise.all([a, b].map(x =&gt; crypto.subtle.digest(&#x27;SHA-256&#x27;, enc.encode(x))));
+  const x = new Uint8Array(ha), y = new Uint8Array(hb);
+  let diff = 0;
+  for (let i = 0; i &lt; x.length; i++) diff |= x[i] ^ y[i];
+  return diff === 0;
+}
+
+export default {
+  async fetch(request, env) {
+    const origin = request.headers.get(&#x27;Origin&#x27;) || &#x27;&#x27;;
+    if (request.method === &#x27;OPTIONS&#x27;) return new Response(null, { status: 204, headers: cors(origin) });
+    if (!env.ANTHROPIC_API_KEY || !env.APP_PASSWORD) return json({ error: &#x27;Server ist noch nicht eingerichtet.&#x27; }, 500, origin);
+
+    const auth = request.headers.get(&#x27;Authorization&#x27;) || &#x27;&#x27;;
+    const given = auth.startsWith(&#x27;Bearer &#x27;) ? auth.slice(7) : &#x27;&#x27;;
+    if (!given || !(await samePassword(given, env.APP_PASSWORD))) return json({ error: &#x27;Falsches Passwort.&#x27; }, 401, origin);
+
+    if (request.method === &#x27;GET&#x27;) return json({ ok: true }, 200, origin); // Verbindungstest der App
+    if (request.method !== &#x27;POST&#x27;) return json({ error: &#x27;Nicht erlaubt.&#x27; }, 405, origin);
+
+    const raw = await request.text();
+    if (raw.length &gt; MAX_BODY) return json({ error: &#x27;Anfrage zu groß.&#x27; }, 413, origin);
+    let body;
+    try { body = JSON.parse(raw); } catch (e) { return json({ error: &#x27;Ungültige Anfrage.&#x27; }, 400, origin); }
+    const prompt = typeof body.prompt === &#x27;string&#x27; ? body.prompt : &#x27;&#x27;;
+    const images = Array.isArray(body.images) ? body.images.filter(x =&gt; typeof x === &#x27;string&#x27;).slice(0, MAX_IMAGES) : [];
+    if (!prompt) return json({ error: &#x27;Kein Text.&#x27; }, 400, origin);
+
+    const content = [
+      ...images.map(data =&gt; ({ type: &#x27;image&#x27;, source: { type: &#x27;base64&#x27;, media_type: &#x27;image/jpeg&#x27;, data } })),
+      { type: &#x27;text&#x27;, text: prompt },
+    ];
+    let r;
+    try {
+      r = await fetch(&#x27;https://api.anthropic.com/v1/messages&#x27;, {
+        method: &#x27;POST&#x27;,
+        headers: {
+          &#x27;Content-Type&#x27;: &#x27;application/json&#x27;,
+          &#x27;x-api-key&#x27;: env.ANTHROPIC_API_KEY,
+          &#x27;anthropic-version&#x27;: &#x27;2026-10-21&#x27;,
+          &#x27;anthropic-beta&#x27;: &#x27;server-side-fallback-2026-07-01&#x27;,
+        },
+        body: JSON.stringify({
+          model: MODEL,
+          max_tokens: 16000,
+          fallbacks: &#x27;default&#x27;, // lehnt das Modell ab, übernimmt automatisch ein anderes
+          messages: [{ role: &#x27;user&#x27;, content }],
+        }),
+      });
+    } catch (e) {
+      return json({ error: &#x27;Claude ist nicht erreichbar.&#x27; }, 502, origin);
+    }
+    const data = await r.json().catch(() =&gt; null);
+    if (!r.ok || !data) {
+      const status = r.status === 429 ? 429 : r.status === 529 || r.status &gt;= 500 ? 503 : 502;
+      return json({ error: (data &amp;&amp; data.error &amp;&amp; data.error.message) || &#x27;Fehler bei Claude (&#x27; + r.status + &#x27;).&#x27; }, status, origin);
+    }
+    if (data.stop_reason === &#x27;refusal&#x27;) return json({ error: &#x27;Claude hat die Anfrage abgelehnt.&#x27; }, 422, origin);
+    const text = (data.content || []).filter(b =&gt; b.type === &#x27;text&#x27;).map(b =&gt; b.text).join(&#x27;&#x27;);
+    return json({ text }, 200, origin);
+  },
+};
+</textarea>
+<script>document.getElementById('cp').onclick=async()=>{const t=document.getElementById('code');try{await navigator.clipboard.writeText(t.value)}catch(e){t.focus();t.select();document.execCommand('copy')}document.getElementById('ok').textContent='Kopiert ✓'}</script></body></html>
