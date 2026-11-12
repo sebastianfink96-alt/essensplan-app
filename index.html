@@ -2270,10 +2270,9 @@ Phone.prototype.lpress=function(e,el){const self=this,x0=e.clientX,y0=e.clientY;
 /* Durchsichtiger Wisch-Hinweis: kurz nach dem Öffnen des Essensplans, einmal pro App-Start. Verschwindet von selbst oder bei der ersten Berührung */
 Phone.prototype.swipeHint=function(){const s=this.s,scr=this.scr,self=this;if(this.ph.querySelector('.hello')){setTimeout(()=>this.swipeHint(),1500);return}
   if(this.hinted||s.screen!=='plan'||s.sheet||this.busy||scr.clientWidth>=700)return;this.hinted=true;
-  /* Geste vormachen: Finger-Punkt setzt beim Hauptknopf der Tageskachel an und zieht nach oben; dabei dreht sich der Würfel
+  /* Geste vormachen: Finger-Punkt zieht mittig auf der Seite nach oben; dabei dreht sich der Würfel
      wirklich zum Fitnessbereich und nach einem Moment wieder zurück zum Essensplan */
-  const btn=scr.querySelector('.view.planv .panel .gbtn'),R=scr.getBoundingClientRect(),B=btn?btn.getBoundingClientRect():null;
-  const x=B?(B.left+B.width/2-R.left)/this.k:scr.clientWidth/2,y=B?(B.top+B.height/2-R.top)/this.k:scr.clientHeight*.78;
+  const x=scr.clientWidth/2,y=scr.clientHeight/2+150; /* mittig: von unterhalb der Mitte 300 px nach oben */
   const fg=document.createElement('i');fg.className='swf';fg.setAttribute('aria-hidden','true');fg.style.left=x+'px';fg.style.top=y+'px';this.ph.appendChild(fg);
   const T=[];let done=false;const end=()=>{if(done)return;done=true;T.forEach(clearTimeout);fg.classList.remove('on');scr.removeEventListener('pointerdown',end,true);setTimeout(()=>fg.remove(),450)};
   scr.addEventListener('pointerdown',end,true);requestAnimationFrame(()=>fg.classList.add('on'));
