@@ -675,6 +675,17 @@ html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
 .phone.full .prog{margin:12px 0 12px}
 .phone.full .wnav{margin:5px 2px 13px}
 /* V89: Trainingsplan per Foto, Standardwoche */
+.fman-ph{height:170px;border-radius:18px;overflow:auto;background:#EEF0F4;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+.fman-ph img{height:320px;width:auto;max-width:none;display:block}
+.fman-days{display:flex;gap:6px;overflow-x:auto;margin:0 -4px 12px;padding:2px 4px;scrollbar-width:none}
+.fman-days::-webkit-scrollbar{display:none}
+.fman-days button{flex:none;width:44px;border:0;border-radius:14px;background:#F4F5F9;padding:6px 0 7px;display:flex;flex-direction:column;align-items:center;gap:1px;color:#1D1D1F}
+.fman-days small{font-size:9.5px;font-weight:600;letter-spacing:.04em;color:#8A8FA3;text-transform:uppercase}
+.fman-days b{font-size:15px;font-weight:500}
+.fman-days i{width:5px;height:5px;border-radius:50%;background:transparent;margin-top:2px}
+.fman-days .has i{background:#006039}
+.fman-days .on{background:#006039;color:#fff}.fman-days .on small{color:rgba(255,255,255,.8)}.fman-days .on.has i{background:#fff}
+.sbtn .ic{width:20px;height:20px}
 .sbtn{flex:none;border:0;height:46px;padding:0 18px;border-radius:999px;background:#EEF0F4;color:#1D1D1F;font-size:15px;font-weight:500;display:flex;align-items:center;justify-content:center}
 .fact{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
 .fact button{border:0;border-radius:18px;background:var(--a-card);padding:11px 12px;display:flex;align-items:center;gap:9px;text-align:left;color:var(--a-ink);box-shadow:0 0 0 1px rgba(0,96,57,.12),0 10px 22px -16px rgba(0,77,46,.5)}
@@ -1792,8 +1803,10 @@ Phone.prototype.render=function(){
   else if(s.screen==='settings')body=this.vSettings();
   const tabs=['plan','fit','recipes','shop','favs','learn'].includes(s.screen)?this.vTabs():'';
   const vd=['plan','fit'].includes(s.screen)?`<button class="vdots${s.screen==='fit'?' f':''}" data-a="flip" data-v="${s.screen==='fit'?'plan':'fit'}" aria-label="${s.screen==='fit'?'Zum Essensplan':'Zu Mein Fitnessbereich'}"><i></i><i></i></button>`:'';
-  const orb=tabs?`<button class="orb" data-a="ai" aria-label="KI-Assistent öffnen"><span class="orb-c"><i></i><i></i><i></i><i></i></span><span class="orb-g"></span><svg class="orb-w" viewBox="0 0 60 24" aria-hidden="true"><path d="M10 12 C17 1 23 1 30 12 S43 23 50 12"/></svg></button>`:'';
+  const orb=tabs&&!['shop','learn'].includes(s.screen)?`<button class="orb" data-a="ai" aria-label="KI-Assistent öffnen"><span class="orb-c"><i></i><i></i><i></i><i></i></span><span class="orb-g"></span><svg class="orb-w" viewBox="0 0 60 24" aria-hidden="true"><path d="M10 12 C17 1 23 1 30 12 S43 23 50 12"/></svg></button>`:'';
+  const kp={};this.scr.querySelectorAll('[data-keep]').forEach(e=>kp[e.dataset.keep]=[e.scrollLeft,e.scrollTop]);
   this.scr.innerHTML=`<div class="island"></div>${this.vStatus()}${body}${vd}${tabs}${orb}${this.vSheet()}<div class="homebar"></div>`;
+  this.scr.querySelectorAll('[data-keep]').forEach(e=>{const k=kp[e.dataset.keep];if(k){e.scrollLeft=k[0];e.scrollTop=k[1]}});
   const nv=this.scr.querySelector('.view');if(nv)nv.scrollTop=keep;
   clearTimeout(this.saveT);this.saveT=setTimeout(()=>this.save(),300);
   this.lastScreen=s.screen;
@@ -2006,12 +2019,11 @@ const fWeekOf=(s,w)=>Array.from({length:7},(_,j)=>{const i=w*7+j;return fPlain(i
 const fWkN=a=>a.reduce((n,T)=>n+fCount(T),0);
 /* Foto wählen → KI liest den Plan → Vorschau → übernehmen */
 Phone.prototype.fitPhoto=function(){const s=this.s;
-  if(!(window.claude&&window.claude.use)){s.fimp={step:'noai'};s.sheet='fimp';haptic();this.render();return}
   const inp=document.createElement('input');inp.type='file';inp.accept='image/*';
   inp.onchange=()=>{const f=inp.files&&inp.files[0];if(f)this.fitPhotoReal(f)};inp.click()};
 Phone.prototype.fitPhotoReal=async function(f){const s=this.s,a=s.fimp={step:'snap'};try{a.photo=URL.createObjectURL(f)}catch(e){}s.sheet='fimp';haptic();this.render();
   await aiWait();if(s.fimp!==a)return;
-  if(!AI){a.step='noai';this.render();return}
+  if(!AI){a.step='manual';s.fsel=Math.max(TODAY,0);this.render();return}
   try{const blob=await shrink(f);const r=await AI(`Dieses Foto zeigt einen Trainingsplan (z. B. Kalender aus TrainingPeaks, Garmin, Strava oder ein Plan vom Trainer). Lies jede geplante Einheit je Tag aus.
 Heute ist ${isoOf(TODAY)}. Bestimme das volle Datum jedes Tages aus Monat, Jahr und Tageszahlen im Bild (Monatswechsel wie „Dez. 1“ beachten). Steht kein Datum im Bild, nimm die Woche ab Montag ${isoOf(0)}.
 Je Einheit:
@@ -2026,7 +2038,7 @@ Ruhetage weglassen. Antworte ausschließlich mit JSON: {"tage":[{"datum":"JJJJ-M
       if(A.length&&idxOf(d.datum)>=-7)days.push({iso:d.datum,A})});
     days.sort((x,y)=>x.iso<y.iso?-1:1);
     if(!days.length){a.step='err';this.render();return}
-    a.days=days;a.step='res';hapticSuccess();this.render()}catch(e){AI=e&&e.code==='not_granted'?null:AI;if(s.fimp===a){a.step=AI?'err':'noai';this.render()}}};
+    a.days=days;a.step='res';hapticSuccess();this.render()}catch(e){AI=e&&e.code==='not_granted'?null:AI;if(s.fimp===a){if(AI)a.step='err';else{a.step='manual';s.fsel=Math.max(TODAY,0)}this.render()}}};
 Phone.prototype.fitImport=function(){const s=this.s,a=s.fimp;if(!a||!a.days)return;this.prevTrain=JSON.stringify([s.train,s.tx]);let n=0,later=0;
   a.days.forEach(d=>{const i=idxOf(d.iso),T=actsToT(d.A);n+=d.A.length;if(i>=0&&i<NDAYS)s.train[i]=T;else{s.tx[d.iso]=T;if(i>=NDAYS)later+=d.A.length}});
   s.fimp=null;s.sheet=null;hapticSuccess();this.render();this.toast(`${n} ${n===1?'Einheit':'Einheiten'} eingetragen${later?` · ${later} in späteren Wochen`:''}`,'Rückgängig','fundo')};
@@ -2040,8 +2052,12 @@ Phone.prototype.vFimp=function(){const s=this.s,a=s.fimp||{step:'noai'};const G=
     <div style="display:flex;gap:8px;margin-top:14px"><button class="sbtn" data-a="closesheet">Abbrechen</button><button class="gbtn" style="${G}" data-a="fimpok">${ic('check')}Übernehmen</button></div>`}
   if(a.step==='err')return `<h3>Nichts erkannt</h3><p>Auf dem Foto konnte ich keinen Trainingsplan lesen. Am besten klappt ein Screenshot der Wochenansicht, auf dem Datum, Name und Dauer zu sehen sind.</p>
     <button class="gbtn" style="width:100%;${G}" data-a="fimp">${ic('cam')}Anderes Foto wählen</button>`;
-  return `<h3>Foto vom Trainingsplan</h3><p>Das Erkennen eines Fotos braucht die KI. Sie läuft bisher nur im Claude-Link – dort liest die App deinen Plan automatisch aus.</p><p>In der installierten App kannst du stattdessen die Standardwoche oder die Vorwoche übernehmen.</p>
-    <button class="gbtn" style="width:100%;${G}" data-a="fstd">${ic('f_bike')}Standardwoche öffnen</button>`};
+  const i=s.fsel,T=s.train[i]||{},lvOf=(c,k)=>c==='s'?(T.s&&T.s.k.includes(k)?slv(T,k):0):c==='k'?(T.k?T.k.lv||2:0):(T.m?-1:0);
+  return `<h3>Trainingsplan eintragen</h3><p>Ohne KI kann die App das Foto hier nicht selbst lesen. Es bleibt als Vorlage sichtbar – Tag wählen, Training antippen.</p>
+   ${a.photo?`<div class="fman-ph" data-keep="fph"><img src="${a.photo}" alt="Dein Trainingsplan"></div><p class="fnote" style="margin:6px 0 10px">Foto verschieben · Kachel halten und ziehen: Intensität</p>`:''}
+   <div class="fman-days" data-keep="fdays">${Array.from({length:NDAYS},(_,d)=>d).filter(d=>d>=TODAY-TODAY%7).map(d=>`<button class="${d===i?'on':''} ${fCount(s.train[d])?'has':''}" data-a="fmday" data-i="${d}"><small>${d===TODAY?'Heute':AB[d%7]}</small><b>${dt(d)}</b><i></i></button>`).join('')}</div>
+   <div class="ftiles">${FACTS.map(([c,k,l])=>{const lv=lvOf(c,k);return `<button class="ftile ${lv?'on':''}" data-a="ftog" data-c="${c}" data-v="${k}" style="--c:${FA[k]}" aria-pressed="${!!lv}"><span>${ic('f_'+k)}</span>${l}${lv>0?`<em>${lv}</em>`:''}</button>`}).join('')}</div>
+   <div style="display:flex;gap:8px;margin-top:12px"><button class="sbtn" data-a="fimp" aria-label="Anderes Foto wählen">${ic('cam')}</button><button class="gbtn" style="${G}" data-a="closesheet">${ic('check')}Fertig</button></div>`};
 /* Standardwoche: einmal speichern, mit einem Tipp in eine Woche eintragen; alternativ Vorwoche übernehmen */
 Phone.prototype.vFstd=function(){const s=this.s,w=s.fstdW||0,G='background:linear-gradient(100deg,#0F7C4E,#004D2E 58%,#006039);box-shadow:0 14px 26px -12px rgba(0,77,46,.75)';
   const mini=a=>`<div class="fstd-w">${a.map((T,j)=>`<span><small>${AB[j]}</small>${T?fring(T,30):'<i></i>'}</span>`).join('')}</div>`;
@@ -2338,7 +2354,7 @@ Phone.prototype.dragSheet=function(e,sh){if(sh.scrollTop>0)return;const self=thi
     if(dy>110||v>.6){self.closeSheet()}else{sh.style.transition='transform .28s cubic-bezier(.2,.8,.2,1)';sh.style.transform=''}};
   addEventListener('pointermove',move,{passive:false});addEventListener('pointerup',up);addEventListener('pointercancel',up)};
 Phone.prototype.pdown=function(e){
-  const ft=e.target.closest('.ftile');if(ft&&this.s.sheet==='fday')return this.holdTile(e,ft);
+  const ft=e.target.closest('.ftile');if(ft&&(this.s.sheet==='fday'||this.s.sheet==='fimp'))return this.holdTile(e,ft);
   const sh=e.target.closest('.sheet');if(sh)return this.dragSheet(e,sh);
   const wd=e.target.closest('.wd');
   if(wd&&this.s.screen==='plan')return this.dragDay(e,wd);
@@ -2953,6 +2969,7 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
    case 'fitai':this.fitAnalyze();break;
    case 'fimp':this.fitPhoto();break;
    case 'fimpok':this.fitImport();break;
+   case 'fmday':s.fsel=+t.dataset.i;haptic();this.render();break;
    case 'fstd':s.fimp=null;s.sheet='fstd';haptic();this.render();break;
    case 'fstdw':s.fstdW=+v;this.render();break;
    case 'fstdsave':{const a=fWeekOf(s,s.fstdW||0);if(!fWkN(a))break;s.fstd=a;hapticSuccess();this.render();this.toast('Als Standardwoche gespeichert');break}
