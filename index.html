@@ -692,6 +692,19 @@ html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
 .ai-orb.live .orb-c i,.ai-orb.live .orb-c::before{animation-duration:5s!important}
 @media (prefers-reduced-motion:reduce){.orb-c i,.orb-c::before{animation:none!important}.orb-c i:nth-child(1){transform:rotate(-24deg)}.orb-c i:nth-child(2){transform:rotate(38deg)}.orb-c i:nth-child(3){transform:rotate(96deg)}}
 /* V89: Trainingsplan per Foto, Standardwoche */
+.fstd-days{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin:2px 0 12px}
+.fstd-days button{border:0;border-radius:16px;background:#F4F5F9;padding:7px 0 8px;display:flex;flex-direction:column;align-items:center;gap:5px}
+.fstd-days small{font-size:10px;font-weight:600;letter-spacing:.05em;color:#8A8FA3}
+.fstd-days i{width:34px;height:34px;border-radius:50%;border:1.5px dashed #C9CCDA;box-sizing:border-box}
+.fstd-days .on{background:#fff;box-shadow:0 0 0 2px #006039,0 8px 16px -10px rgba(0,77,46,.6)}.fstd-days .on small{color:#006039}
+.fstd-lbl{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:0 2px 8px}
+.fstd-lbl b{font-size:16px;font-weight:600;color:#1D1D1F}.fstd-lbl span{font-size:12.5px;color:#5C6176;text-align:right}
+.fstd-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.fstd-row button{border:0;border-radius:999px;background:#EEF0F4;color:#006039;font-size:13px;font-weight:500;padding:8px 12px}
+.fstd-row button:disabled{color:#9AA0B4}
+.sheet .gbtn.gb2{flex-direction:column;gap:0;height:52px;line-height:1.15}
+.sheet .gbtn small{font-size:11px;font-weight:500;opacity:.8}
+.sheet .gbtn:disabled{opacity:.45}
 .dgh .ind.fr{background:#fff}.dgh .ind.fr svg{display:block;width:100%;height:100%}
 .wd.fd{user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
 .wd.fd.nodrop{opacity:.4;transition:opacity .15s}
@@ -1794,7 +1807,7 @@ Phone.prototype.reset=function(init){
       if(d.extra){s.extra={};Object.entries(d.extra).forEach(([iso,v])=>{const i=idxOf(iso);if(i>=0&&i<NDAYS&&v)s.extra[i]=v})}
       if(d.train||d.tx){s.train={};s.tx={}; /* Training außerhalb der zwei Wochen (Vorwoche, spätere Wochen aus dem Trainingsplan) bleibt in tx erhalten */
         Object.entries(Object.assign({},d.tx||{},d.train||{})).forEach(([iso,v])=>{if(!v)return;const i=idxOf(iso);if(i>=0&&i<NDAYS)s.train[i]=v;else if(i>=-7)s.tx[iso]=v})}
-      if(Array.isArray(d.fstd))s.fstd=d.fstd;
+      if(Array.isArray(d.fstd))s.fstd=Array.from({length:7},(_,j)=>d.fstd[j]||null);
       if(d.fitSeen)s.fitSeen=true;if(d.voice)s.voice=d.voice;if(d.fitAI&&d.fitAI.res)s.fitAI=d.fitAI;}}
   this.s=s;this.lastScreen=null;this.render();
 };
@@ -2005,12 +2018,13 @@ function fring(T,size,noIcon){const A=fActs(T),r=15.2,C=2*Math.PI*r,n=A.length||
   if(top&&!noIcon)h+=`<svg x="10.2" y="10.2" width="15.6" height="15.6" viewBox="0 0 24 24"><g fill="none" stroke="${FA[top]}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${P['f_'+top]}</g></svg>`;
   return h+'</svg>'}
 /* Aktivität setzen/entfernen; Sport merkt die Intensität je Sportart (l), lv = höchste */
-function setAct(s,c,k,lv){const T=s.train[s.fsel]||(s.train[s.fsel]={});
+const fTgt=s=>s.sheet==='fstd'?[s.fstd,s.fstdD||0]:[s.train,s.fsel];
+function setAct(s,c,k,lv){const [O,K]=fTgt(s);const T=O[K]||(O[K]={});
   if(c==='k'){if(lv)T.k={lv};else delete T.k}
   else if(c==='m'){if(lv)T.m={k:['mob']};else delete T.m}
   else{const o=T.s||(T.s={k:[],lv:2,l:{}});o.l=o.l||{};if(lv){if(!o.k.includes(k))o.k.push(k);o.l[k]=lv}else{o.k=o.k.filter(x=>x!==k);delete o.l[k]}
     if(!o.k.length)delete T.s;else o.lv=Math.max(...o.k.map(x=>o.l[x]||o.lv||2))}
-  if(!T.s&&!T.k&&!T.m)delete s.train[s.fsel]}
+  if(!T.s&&!T.k&&!T.m){if(Array.isArray(O))O[K]=null;else delete O[K]}}
 const fLoad=T=>T?((T.s?T.s.lv||2:0)+(T.k?T.k.lv||2:0)+(T.m?.5:0)):0;
 const fCount=T=>T?((T.s?T.s.k.length:0)+(T.k?1:0)+(T.m?1:0)):0;
 /* Bewertung eines Gerichts für einen Trainingstag (für den Würfel): Kraft → Protein, harte Ausdauer → Kohlenhydrate, Ruhetag → leicht */
@@ -2079,19 +2093,22 @@ Phone.prototype.vFimp=function(){const s=this.s,a=s.fimp||{step:'noai'};const G=
    <div class="fman-days" data-keep="fdays">${Array.from({length:NDAYS},(_,d)=>d).filter(d=>d>=TODAY-TODAY%7).map(d=>`<button class="${d===i?'on':''} ${fCount(s.train[d])?'has':''}" data-a="fmday" data-i="${d}"><small>${d===TODAY?'Heute':AB[d%7]}</small><b>${dt(d)}</b><i></i></button>`).join('')}</div>
    <div class="ftiles">${FACTS.map(([c,k,l])=>{const lv=lvOf(c,k);return `<button class="ftile ${lv?'on':''}" data-a="ftog" data-c="${c}" data-v="${k}" style="--c:${FA[k]}" aria-pressed="${!!lv}"><span>${ic('f_'+k)}</span>${l}${lv>0?`<em>${lv}</em>`:''}</button>`}).join('')}</div>
    <div style="display:flex;gap:8px;margin-top:12px"><button class="sbtn" data-a="fimp" aria-label="Anderes Foto wählen">${ic('cam')}</button><button class="gbtn" style="${G}" data-a="closesheet">${ic('check')}Fertig</button></div>`};
-/* Standardwoche: einmal speichern, mit einem Tipp in eine Woche eintragen; alternativ Vorwoche übernehmen */
-Phone.prototype.vFstd=function(){const s=this.s,w=s.fstdW||0,G='background:linear-gradient(100deg,#0F7C4E,#004D2E 58%,#006039);box-shadow:0 14px 26px -12px rgba(0,77,46,.75)';
-  const mini=a=>`<div class="fstd-w">${a.map((T,j)=>`<span><small>${AB[j]}</small>${T?fring(T,30):'<i></i>'}</span>`).join('')}</div>`;
-  const std=s.fstd,prev=fWeekOf(s,w-1),cur=fWeekOf(s,w),nS=std?fWkN(std):0,nP=fWkN(prev),nC=fWkN(cur);
-  return `<h3>Woche befüllen</h3><p>Trage eine ganze Woche mit einem Tipp ein.</p>
-   <div class="seg" role="group" aria-label="Zielwoche">${[0,1].map(k=>`<button class="${w===k?'on':''}" data-a="fstdw" data-v="${k}">${k?'Nächste Woche':'Diese Woche'}<small>KW ${KW(k)}</small></button>`).join('')}</div>
-   <div class="fstd-c"><div class="fstd-t"><b>Standardwoche</b><small>${std?`${nS} ${nS===1?'Einheit':'Einheiten'}`:'noch nicht festgelegt'}</small></div>
-    ${std?mini(std)+`<button class="gbtn" style="width:100%;margin-top:12px;${G}" data-a="fstdapply">${ic('check')}In KW ${KW(w)} eintragen</button>`:`<p class="fnote" style="text-align:left;margin:6px 0 0">Trage eine typische Woche ein und speichere sie hier als Vorlage.</p>`}
-    <button class="ai-again" style="margin-top:12px" data-a="fstdsave" ${nC?'':'disabled'}>${nC?`KW ${KW(w)} als Standardwoche speichern`:`KW ${KW(w)} ist noch leer`}</button></div>
-   <div class="fstd-c"><div class="fstd-t"><b>Vorwoche</b><small>KW ${isoWeek(dayDate(w*7-7))} · ${nP?`${nP} ${nP===1?'Einheit':'Einheiten'}`:'kein Training gespeichert'}</small></div>
-    ${nP?mini(prev)+`<button class="sbtn" style="width:100%;margin-top:12px" data-a="fprevapply">Vorwoche in KW ${KW(w)} übernehmen</button>`:''}</div>
-   <p class="fnote" style="margin-top:12px">Das Training der Zielwoche wird ersetzt – mit Rückgängig.</p>`};
-Phone.prototype.fitFillWeek=function(arr,what){const s=this.s,w=s.fstdW||0;this.prevTrain=JSON.stringify([s.train,s.tx]);
+/* Standardwoche: eine eigene, bearbeitbare Woche (s.fstd, 7 Tage). Tag wählen, Training antippen – wird sofort gespeichert.
+   Vorlage aus Vorwoche/dieser Woche übernehmen; mit einem Tipp in diese oder nächste Woche eintragen */
+Phone.prototype.vFstd=function(){const s=this.s,G='background:linear-gradient(100deg,#0F7C4E,#004D2E 58%,#006039);box-shadow:0 14px 26px -12px rgba(0,77,46,.75)';
+  if(!Array.isArray(s.fstd))s.fstd=Array(7).fill(null);const std=s.fstd,d=s.fstdD||0,T=std[d]||{},n=fWkN(std);
+  const lvOf=(c,k)=>c==='s'?(T.s&&T.s.k.includes(k)?slv(T,k):0):c==='k'?(T.k?T.k.lv||2:0):(T.m?-1:0);
+  const nP=fWkN(fWeekOf(s,-1)),nC=fWkN(fWeekOf(s,0));
+  return `<h3>Standardwoche</h3><p>Deine typische Woche. Tag wählen, Training antippen – wird automatisch gespeichert.</p>
+   <div class="fstd-days">${std.map((X,j)=>`<button class="${j===d?'on':''}" data-a="fstdday" data-i="${j}" aria-label="${DAYS[j]}: ${fText(X)}"><small>${AB[j]}</small>${X?fring(X,34):'<i></i>'}</button>`).join('')}</div>
+   <div class="fstd-lbl"><b>${DAYS[d]}</b><span>${T.s||T.k||T.m?fText(T):'kein Training'}</span></div>
+   <div class="ftiles">${FACTS.map(([c,k,l])=>{const lv=lvOf(c,k);return `<button class="ftile ${lv?'on':''}" data-a="ftog" data-c="${c}" data-v="${k}" style="--c:${FA[k]}" aria-pressed="${!!lv}"><span>${ic('f_'+k)}</span>${l}${lv>0?`<em>${lv}</em>`:''}</button>`}).join('')}</div>
+   <p class="fnote" style="margin-top:10px">Tippen: an oder aus · Halten und ziehen: Intensität</p>
+   <div class="fstd-row"><button data-a="fstdfrom" data-v="-1" ${nP?'':'disabled'}>Letzte Woche übernehmen</button><button data-a="fstdfrom" data-v="0" ${nC?'':'disabled'}>Diese Woche übernehmen</button>${n?`<button data-a="fstdclear">Leeren</button>`:''}</div>
+   <div class="lbl" style="margin:16px 0 8px">Eintragen in</div>
+   <div style="display:flex;gap:8px"><button class="gbtn gb2" style="${G}" data-a="fstdapply" data-v="0" ${n?'':'disabled'}>Diese Woche<small>KW ${KW(0)}</small></button><button class="gbtn gb2" style="${G}" data-a="fstdapply" data-v="1" ${n?'':'disabled'}>Nächste Woche<small>KW ${KW(1)}</small></button></div>
+   <p class="fnote" style="margin-top:10px">Ersetzt das Training der gewählten Woche – mit Rückgängig.</p>`};
+Phone.prototype.fitFillWeek=function(arr,what,w){const s=this.s;this.prevTrain=JSON.stringify([s.train,s.tx]);
   arr.forEach((T,j)=>{const i=w*7+j;if(T)s.train[i]=JSON.parse(JSON.stringify(T));else delete s.train[i]});
   s.sheet=null;hapticSuccess();this.render();this.toast(`${what} in KW ${KW(w)} eingetragen`,'Rückgängig','fundo')};
 /* Tag aus einer späteren Woche (aus dem Trainingsplan): nur ansehen oder entfernen */
@@ -2110,7 +2127,7 @@ Phone.prototype.vFit=function(){const s=this.s;
   ${(()=>{const W={};Object.keys(s.tx).forEach(iso=>{const i=idxOf(iso);if(i>=NDAYS)(W[Math.floor(i/7)]=W[Math.floor(i/7)]||{})[i]=iso});
     return Object.keys(W).map(Number).sort((a,b)=>a-b).map((k,x)=>{const n=Object.values(W[k]).reduce((a,iso)=>a+fCount(s.tx[iso]),0);
       return `${x?'':'<div class="lbl" style="margin-top:20px">Kommende Wochen · aus dem Trainingsplan</div>'}<div class="lbl fl">KW ${isoWeek(dayDate(k*7))}<span>${n} ${n===1?'Einheit':'Einheiten'}</span></div><div class="fweek">${Array.from({length:7},(_,j)=>{const i=k*7+j,iso=W[k][i],X=iso&&s.tx[iso];return `<button class="wd fd fx" ${X?`data-a="fxday" data-v="${iso}"`:'disabled'} aria-label="${isoLbl(isoOf(i))}: ${fText(X)}"><span class="a">${AB[j]}</span><span class="n">${String(dayDate(i).getDate()).padStart(2,'0')}</span>${X?`<span class="ind fr">${fring(X,36)}</span>`:'<span class="ind empty"></span>'}</button>`}).join('')}</div>`}).join('')})()}
-  <div class="fact"><button data-a="fimp">${ic('cam')}<span><b>Foto vom Trainingsplan</b><small>Plan automatisch eintragen</small></span></button><button data-a="fstd">${ic('f_bike')}<span><b>Standardwoche</b><small>oder Vorwoche übernehmen</small></span></button></div>
+  <div class="fact"><button data-a="fimp">${ic('cam')}<span><b>Foto vom Trainingsplan</b><small>Plan automatisch eintragen</small></span></button><button data-a="fstd">${ic('f_bike')}<span><b>Standardwoche</b><small>bearbeiten und eintragen</small></span></button></div>
   <p class="fnote" style="margin-top:12px">Tag antippen: eintragen oder ansehen · Halten und ziehen: verschieben</p>
   <div class="lbl">KI-Analyse</div>
   <div class="fai" id="fai">
@@ -2141,7 +2158,7 @@ Phone.prototype.vFday=function(){const s=this.s,i=s.fsel,T=s.train[i]||{};
 /* Kachel gedrückt halten: drei Stufen erscheinen, nach links/rechts ziehen wählt, loslassen übernimmt */
 Phone.prototype.holdTile=function(e,el){const self=this,s=this.s,c=el.dataset.c,k=el.dataset.v;if(c==='m')return;
   const x0=e.clientX,y0=e.clientY;let bub=null,lv=0,base=0;
-  const cur=()=>{const T=s.train[s.fsel];return !T?0:c==='k'?(T.k?T.k.lv||2:0):(T.s&&T.s.k.includes(k)?slv(T,k):0)};
+  const cur=()=>{const [O,K]=fTgt(s),T=O[K];return !T?0:c==='k'?(T.k?T.k.lv||2:0):(T.s&&T.s.k.includes(k)?slv(T,k):0)};
   const paint=()=>bub.querySelectorAll('span').forEach((x,n)=>x.classList.toggle('on',n+1===lv));
   const tm=setTimeout(()=>{base=lv=cur()||2;haptic();self.suppressClick=true;const sh=el.closest('.sheet');bub=document.createElement('div');bub.className='ihold';bub.style.setProperty('--c',FA[k]);
     bub.innerHTML=[1,2,3].map(n=>`<span>${n}<small>${LVN[n]}</small></span>`).join('');sh.appendChild(bub);const W=228;
@@ -2375,7 +2392,7 @@ Phone.prototype.dragSheet=function(e,sh){if(sh.scrollTop>0)return;const self=thi
     if(dy>110||v>.6){self.closeSheet()}else{sh.style.transition='transform .28s cubic-bezier(.2,.8,.2,1)';sh.style.transform=''}};
   addEventListener('pointermove',move,{passive:false});addEventListener('pointerup',up);addEventListener('pointercancel',up)};
 Phone.prototype.pdown=function(e){
-  const ft=e.target.closest('.ftile');if(ft&&(this.s.sheet==='fday'||this.s.sheet==='fimp'))return this.holdTile(e,ft);
+  const ft=e.target.closest('.ftile');if(ft&&['fday','fimp','fstd'].includes(this.s.sheet))return this.holdTile(e,ft);
   const sh=e.target.closest('.sheet');if(sh)return this.dragSheet(e,sh);
   const wd=e.target.closest('.wd');
   if(wd&&this.s.screen==='plan')return this.dragDay(e,wd);
@@ -3025,7 +3042,7 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
    /* --- Fitnessbereich --- */
    case 'flip':this.flip(v);break;
    case 'fday':s.fsel=+t.dataset.i;s.fpick=null;s.sheet='fday';haptic();this.render();break;
-   case 'ftog':{const c=t.dataset.c,T=s.train[s.fsel]||{};haptic();
+   case 'ftog':{const c=t.dataset.c,[O,K]=fTgt(s),T=O[K]||{};haptic();
       const on=c==='k'?!!T.k:c==='m'?!!T.m:!!(T.s&&T.s.k.includes(v));setAct(s,c,v,on?0:2);this.render();break}
    case 'flv':{const c=t.dataset.c,T=s.train[s.fsel];if(T&&T[c]){T[c].lv=+v;haptic()}s.fpick=null;this.render();break}
    case 'frm':{const c=t.dataset.c,T=s.train[s.fsel];if(T){if(c==='k')delete T.k;else if(T.s){T.s.k=T.s.k.filter(x=>x!==v);if(!T.s.k.length)delete T.s}
@@ -3044,11 +3061,12 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
    case 'fimpok':this.fitImport();break;
    case 'fimpretry':if(s.fimp&&s.fimp.file)this.fitPhotoReal(s.fimp.file);break;
    case 'fmday':s.fsel=+t.dataset.i;haptic();this.render();break;
-   case 'fstd':s.fimp=null;s.sheet='fstd';haptic();this.render();break;
-   case 'fstdw':s.fstdW=+v;this.render();break;
-   case 'fstdsave':{const a=fWeekOf(s,s.fstdW||0);if(!fWkN(a))break;s.fstd=a;hapticSuccess();this.render();this.toast('Als Standardwoche gespeichert');break}
-   case 'fstdapply':if(s.fstd)this.fitFillWeek(s.fstd,'Standardwoche');break;
-   case 'fprevapply':{const a=fWeekOf(s,(s.fstdW||0)-1);if(fWkN(a))this.fitFillWeek(a,'Vorwoche');break}
+   case 'fstd':s.fimp=null;if(!Array.isArray(s.fstd))s.fstd=Array(7).fill(null);s.fstdD=s.fstdD||0;s.sheet='fstd';haptic();this.render();break;
+   case 'fstdday':s.fstdD=+t.dataset.i;haptic();this.render();break;
+   case 'fstdfrom':{const a=fWeekOf(s,+v);if(!fWkN(a))break;this.prevStd=JSON.stringify(s.fstd);s.fstd=a;hapticSuccess();this.render();this.toast(`${+v<0?'Letzte':'Diese'} Woche als Standardwoche übernommen`,'Rückgängig','fstdundo');break}
+   case 'fstdclear':this.prevStd=JSON.stringify(s.fstd);s.fstd=Array(7).fill(null);haptic();this.render();this.toast('Standardwoche geleert','Rückgängig','fstdundo');break;
+   case 'fstdundo':if(this.prevStd){s.fstd=JSON.parse(this.prevStd);this.prevStd=null;this.render()}break;
+   case 'fstdapply':if(Array.isArray(s.fstd)&&fWkN(s.fstd))this.fitFillWeek(s.fstd.map(fPlain),'Standardwoche',+v);break;
    case 'fxday':s.fxiso=v;s.sheet='fxday';haptic();this.render();break;
    case 'fxrm':this.prevTrain=JSON.stringify([s.train,s.tx]);delete s.tx[s.fxiso];s.sheet=null;haptic();this.render();this.toast('Entfernt','Rückgängig','fundo');break;
    case 'fundo':if(this.prevTrain){const [a,b]=JSON.parse(this.prevTrain);s.train=a;s.tx=b;this.prevTrain=null;this.render();this.toast('Rückgängig gemacht')}break;
