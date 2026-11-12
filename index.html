@@ -700,11 +700,11 @@ html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
 .setv .pf-o b{font-size:13px!important}.setv .pf-o small{font-size:11px!important}
 /* V107: Begrüßung beim Start + Namensfeld im Intro und unten in den Einstellungen */
 .hello{position:absolute;inset:0;z-index:200;display:grid;place-items:center;text-align:center;padding:0 28px;border-radius:inherit;overflow:hidden;
-  background:linear-gradient(160deg,rgba(120,52,72,.2),rgba(60,30,50,.16));-webkit-backdrop-filter:blur(1.5px);backdrop-filter:blur(1.5px);animation:helloIn .6s ease both;transition:opacity .7s ease}
+  background:linear-gradient(160deg,rgba(120,52,72,.2),rgba(60,30,50,.16));-webkit-backdrop-filter:blur(1.5px);backdrop-filter:blur(1.5px);animation:helloIn .4s ease both;transition:opacity .5s ease}
 .hello.out{opacity:0;pointer-events:none}
 .hello h2{margin:0;font-family:-apple-system,"SF Pro Display","Helvetica Neue",system-ui,sans-serif;font-weight:200;font-size:60px;line-height:1.02;letter-spacing:-.025em;color:#fff;text-shadow:0 2px 16px rgba(50,15,35,.45),0 18px 40px rgba(40,10,30,.3);white-space:nowrap}
-.hello h2 i{display:inline-block;font-style:normal;opacity:0;animation:helloCh .7s cubic-bezier(.2,.8,.2,1) both}
-.hello p{margin:10px 0 0;font-family:-apple-system,"SF Pro Display","Helvetica Neue",system-ui,sans-serif;font-size:25px;font-weight:300;letter-spacing:-.01em;color:#fff;text-shadow:0 1px 12px rgba(50,15,35,.55);opacity:0;animation:helloP .8s ease 1s both}
+.hello h2 i{display:inline-block;font-style:normal;opacity:0;animation:helloCh .5s cubic-bezier(.2,.8,.2,1) both}
+.hello p{margin:10px 0 0;font-family:-apple-system,"SF Pro Display","Helvetica Neue",system-ui,sans-serif;font-size:25px;font-weight:300;letter-spacing:-.01em;color:#fff;text-shadow:0 1px 12px rgba(50,15,35,.55);opacity:0;animation:helloP .6s ease .5s both}
 @keyframes helloIn{from{opacity:0}}
 @keyframes helloCh{from{opacity:0;filter:blur(10px);transform:translateY(10px) scale(1.06)}to{opacity:1;filter:blur(0);transform:none}}
 @keyframes helloP{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
@@ -753,9 +753,9 @@ html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
 .setv .ap-h2+.grp{margin-top:0}
 /* V104: kein Zoom bei Doppeltipp; durchsichtiger Wisch-Hinweis zum Fitnessbereich */
 html,body{touch-action:manipulation}
-.swf{position:absolute;z-index:46;width:46px;height:46px;margin:-23px 0 0 -23px;border-radius:50%;pointer-events:none;background:rgba(255,255,255,.55);box-shadow:0 0 0 8px rgba(255,255,255,.22),0 8px 18px -6px rgba(40,20,40,.45),inset 0 0 0 1px rgba(255,255,255,.8);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);opacity:0;scale:1.35;transition:opacity .35s ease,scale .35s ease,translate .5s cubic-bezier(.3,.1,.2,1)}
+.swf{position:absolute;z-index:46;width:46px;height:46px;margin:-23px 0 0 -23px;border-radius:50%;pointer-events:none;background:rgba(255,255,255,.55);box-shadow:0 0 0 8px rgba(255,255,255,.22),0 8px 18px -6px rgba(40,20,40,.45),inset 0 0 0 1px rgba(255,255,255,.8);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);opacity:0;scale:1.35;transition:opacity .35s ease,scale .35s ease,translate 0s}
 .swf.on{opacity:1;scale:1}
-.swf.up{translate:0 -300px}
+
 /* V102: Auswärts-Tag wirkt gewählt – getönte Fläche, Servierglocke, Haken */
 .phone .wd .ind.out{background:linear-gradient(145deg,#F8E6E9,#E9C6CC)!important;color:var(--a-eyebrow)!important;box-shadow:0 0 0 2px #fff,0 6px 12px -6px rgba(var(--a-glow),.5)!important}
 .wd .ind.out>.ic{width:17px;height:17px;stroke-width:1.7}
@@ -1883,7 +1883,7 @@ function Phone(host,init,opts){
   let wheelT=0;this.scr.addEventListener('wheel',e=>{const s=self.s;if(s.sheet||!['plan','fit'].includes(s.screen)||performance.now()-wheelT<900)return;const v=self.scr.querySelector('.view');if(!v)return;
     if(s.screen==='plan'&&e.deltaY>30&&v.scrollTop+v.clientHeight>=v.scrollHeight-2){wheelT=performance.now();self.flip('fit')}
     else if(s.screen==='fit'&&e.deltaY<-30&&v.scrollTop<=0){wheelT=performance.now();self.flip('plan')}},{passive:true});
-  if(this.opts.full){const g=this.greet();setTimeout(()=>self.swipeHint(),g?5200:2600)}
+  if(this.opts.full){const g=this.greet();setTimeout(()=>self.swipeHint(),g?3000:2200)}
   if(this.opts.full){this.ph.classList.add('full');this.k=1;return} /* Vollbild-App: kein Rahmen, keine Skalierung */
   const fit=()=>{const k=host.clientWidth/410;this.k=k;this.ph.style.transform=`scale(${k})`;host.style.height=(864*k)+'px'};
   new ResizeObserver(fit).observe(host);fit();
@@ -2276,17 +2276,20 @@ Phone.prototype.lpress=function(e,el){const self=this,x0=e.clientX,y0=e.clientY;
   const off=()=>{removeEventListener('pointermove',mv);removeEventListener('pointerup',up);removeEventListener('pointercancel',up)};
   addEventListener('pointermove',mv);addEventListener('pointerup',up);addEventListener('pointercancel',up)};
 /* Durchsichtiger Wisch-Hinweis: kurz nach dem Öffnen des Essensplans, einmal pro App-Start. Verschwindet von selbst oder bei der ersten Berührung */
-Phone.prototype.swipeHint=function(){const s=this.s,scr=this.scr,self=this;if(this.ph.querySelector('.hello')){setTimeout(()=>this.swipeHint(),1500);return}
+Phone.prototype.swipeHint=function(){const s=this.s,scr=this.scr,self=this;if(this.ph.querySelector('.hello')){setTimeout(()=>this.swipeHint(),500);return}
   if(this.hinted||s.screen!=='plan'||s.sheet||this.busy||scr.clientWidth>=700)return;this.hinted=true;
   /* Geste vormachen: Finger-Punkt zieht mittig auf der Seite nach oben; dabei dreht sich der Würfel
      wirklich zum Fitnessbereich und nach einem Moment wieder zurück zum Essensplan */
   const x=scr.clientWidth/2,y=scr.clientHeight/2+150; /* mittig: von unterhalb der Mitte 300 px nach oben */
   const fg=document.createElement('i');fg.className='swf';fg.setAttribute('aria-hidden','true');fg.style.left=x+'px';fg.style.top=y+'px';this.ph.appendChild(fg);
-  const T=[];let done=false;const end=()=>{if(done)return;done=true;T.forEach(clearTimeout);fg.classList.remove('on');scr.removeEventListener('pointerdown',end,true);setTimeout(()=>fg.remove(),450)};
-  scr.addEventListener('pointerdown',end,true);requestAnimationFrame(()=>fg.classList.add('on'));
-  T.push(setTimeout(()=>{if(self.s.screen!=='plan'||self.s.sheet||self.busy){end();return}fg.classList.add('up');self.flip('fit',.5)},420));
-  T.push(setTimeout(()=>fg.classList.remove('on'),900));
-  T.push(setTimeout(()=>{if(self.s.screen==='fit'&&!self.s.sheet)self.flip('plan',.5);end()},1500))};
+  /* ein einziger Würfel: weich hinauf zum Fitnessbereich, kurzer Halt, weich zurück – ohne Neuaufbau dazwischen */
+  let c=null,raf=0,done=false,tm=0;const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+  const end=()=>{if(done)return;done=true;clearTimeout(tm);cancelAnimationFrame(raf);fg.classList.remove('on');scr.removeEventListener('pointerdown',end,true);scr.removeEventListener('touchstart',end,true);setTimeout(()=>fg.remove(),450);
+    if(c){const p=c.p;c.finish(false,Math.max(.05,.35*p));c=null}};
+  scr.addEventListener('pointerdown',end,true);scr.addEventListener('touchstart',end,{capture:true,passive:true});requestAnimationFrame(()=>fg.classList.add('on'));
+  const run=(from,to,ms,after)=>{const t0=performance.now();const step=now=>{if(done)return;const t=Math.min(1,(now-t0)/ms),p=from+(to-from)*ease(t);c.setP(p);if(to>from)fg.style.translate=`0 ${-300*p}px`;if(t<1)raf=requestAnimationFrame(step);else after()};raf=requestAnimationFrame(step)};
+  tm=setTimeout(()=>{if(done)return;if(self.s.screen!=='plan'||self.s.sheet||self.busy){end();return}c=self.cubeStart('fit');if(!c){end();return}
+    run(0,1,1050,()=>{fg.classList.remove('on');tm=setTimeout(()=>run(1,0,1000,()=>{const k=c;c=null;k.finish(false,.05);end()}),320)})},380)};
 /* Würfel aufbauen: alte Seite vorn, neue Seite oben/unten. Liefert eine Steuerung: setP(0…1) stellt die Drehung direkt ein (Finger zieht),
    finish(übernehmen, Dauer) dreht fertig oder federt zurück */
 Phone.prototype.cubeStart=function(to){const s=this.s,self=this;if(this.busy||s.sheet||s.screen===to||!['plan','fit'].includes(to))return null;
@@ -3296,13 +3299,13 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
   }
 };
 Phone.prototype.finishIntro=function(){if(this.opts.persist)store.set(true);this.s.ip=0;this.goPlanToday();this.render();this.save();
-  if(this.opts.full){const g=this.greet();setTimeout(()=>this.swipeHint(),g?5200:2600)}};
+  if(this.opts.full){const g=this.greet();setTimeout(()=>this.swipeHint(),g?3000:2200)}};
 /* Begrüßung beim Start: Milchglas-Fläche, Name erscheint Buchstabe für Buchstabe aus der Unschärfe, blendet von selbst aus */
 Phone.prototype.greet=function(){const s=this.s,n=(s.prof&&s.prof.name||'').trim();if(!n||s.screen!=='plan'||s.sheet)return false;
   const d=document.createElement('div');d.className='hello';d.setAttribute('role','status');
-  const L=('Hallo '+n).split('').map((c,i)=>`<i style="animation-delay:${(.25+i*.045).toFixed(3)}s">${c===' '?'&nbsp;':c.replace(/&/g,'&amp;').replace(/</g,'&lt;')}</i>`).join('');
+  const L=('Hallo '+n).split('').map((c,i)=>`<i style="animation-delay:${(.1+i*.028).toFixed(3)}s">${c===' '?'&nbsp;':c.replace(/&/g,'&amp;').replace(/</g,'&lt;')}</i>`).join('');
   d.innerHTML=`<div><h2 style="font-size:${Math.max(30,Math.min(60,Math.floor(640/(n.length+6))))}px" aria-label="Hallo ${n.replace(/"/g,'&quot;')}">${L}</h2><p>schön, dass du da bist!</p></div>`;this.ph.appendChild(d);
-  const off=()=>{if(d.classList.contains('out'))return;d.classList.add('out');setTimeout(()=>d.remove(),700)};d.addEventListener('pointerdown',off);setTimeout(off,3300);return true};
+  const off=()=>{if(d.classList.contains('out'))return;d.classList.add('out');setTimeout(()=>d.remove(),520)};d.addEventListener('pointerdown',off);setTimeout(off,2100);return true};
 
 /* ---------- Übersicht ---------- */
 const FULL={0:'n02',1:'n07',2:'n16',3:OUT,4:'n01',5:'n13',6:'r2'};
