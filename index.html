@@ -691,15 +691,19 @@ html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
 @keyframes orbP3{from{transform:rotate(96deg)}to{transform:rotate(456deg)}}
 .ai-orb.live .orb-c i,.ai-orb.live .orb-c::before{animation-duration:5s!important}
 @media (prefers-reduced-motion:reduce){.orb-c i,.orb-c::before{animation:none!important}.orb-c i:nth-child(1){transform:rotate(-24deg)}.orb-c i:nth-child(2){transform:rotate(38deg)}.orb-c i:nth-child(3){transform:rotate(96deg)}}
-/* V103: kein Zoom bei Doppeltipp; Hinweis-Lasche „Fitnessbereich“ am unteren Rand der Tageskachel (antippen oder nach oben wischen) */
+/* V104: kein Zoom bei Doppeltipp; durchsichtiger Wisch-Hinweis zum Fitnessbereich */
 html,body{touch-action:manipulation}
-.fhint{position:absolute;left:50%;bottom:106px;transform:translateX(-50%);z-index:39;border:0;height:24px;padding:0 12px 0 8px;border-radius:999px;display:flex;align-items:center;gap:4px;color:#fff;font-size:11.5px;font-weight:600;letter-spacing:.02em;white-space:nowrap;background:linear-gradient(100deg,#0F7C4E,#004D2E 58%,#006039);box-shadow:0 0 0 2px #fff,0 8px 16px -8px rgba(0,77,46,.7)}
-.phone.full .fhint{bottom:calc(var(--sb) + 76px)}
-.phone .fhint,.phone .fhint span{color:#fff!important}.phone .fhint .ic{stroke:#fff}
-.fhint .ic{width:14px;height:14px;stroke-width:2.4;animation:fhBob 1.8s ease-in-out infinite}
-@keyframes fhBob{0%,100%{transform:translateY(1.5px)}50%{transform:translateY(-2.5px)}}
-@media (min-width:700px){.phone.full .fhint{display:none}}
-@media (prefers-reduced-motion:reduce){.fhint .ic{animation:none}}
+.swh{position:absolute;left:0;right:0;top:50%;z-index:45;pointer-events:none;display:flex;flex-direction:column;align-items:center;gap:10px;animation:swhIn .6s ease both;transition:opacity .5s}
+.swh.out{opacity:0}
+.swh-t{position:relative;width:58px;height:128px;border-radius:29px;background:rgba(30,32,44,.36);-webkit-backdrop-filter:blur(10px) saturate(1.3);backdrop-filter:blur(10px) saturate(1.3);box-shadow:inset 0 0 0 1px rgba(255,255,255,.35),0 14px 30px -14px rgba(20,20,40,.5);display:flex;flex-direction:column;align-items:center;padding-top:10px}
+.swh-t .ic{width:22px;height:22px;stroke:#fff;stroke-width:2.2;margin-bottom:-9px;opacity:.35;animation:swhCh 1.7s ease-in-out infinite}
+.swh-t .ic:nth-child(1){animation-delay:.22s}
+.swh-t i{position:absolute;left:50%;bottom:12px;width:34px;height:34px;margin-left:-17px;border-radius:50%;background:rgba(255,255,255,.82);box-shadow:0 0 0 6px rgba(255,255,255,.18),0 6px 14px -6px rgba(0,0,0,.4);animation:swhMove 1.7s cubic-bezier(.4,0,.2,1) infinite}
+.swh span{font-size:12.5px;font-weight:600;letter-spacing:.01em;color:#fff;padding:6px 13px;border-radius:999px;background:rgba(30,32,44,.42);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:inset 0 0 0 1px rgba(255,255,255,.3)}
+@keyframes swhIn{from{opacity:0;transform:translateY(10px)}}
+@keyframes swhMove{0%{transform:translateY(0) scale(.85);opacity:0}18%{transform:translateY(0) scale(1);opacity:1}70%{transform:translateY(-58px) scale(1);opacity:1}100%{transform:translateY(-66px) scale(.9);opacity:0}}
+@keyframes swhCh{0%,30%{opacity:.25}60%{opacity:1}100%{opacity:.25}}
+@media (prefers-reduced-motion:reduce){.swh-t i,.swh-t .ic{animation:none}.swh-t i{transform:translateY(-30px)}}
 /* V102: Auswärts-Tag wirkt gewählt – getönte Fläche, Servierglocke, Haken */
 .phone .wd .ind.out{background:linear-gradient(145deg,#F8E6E9,#E9C6CC)!important;color:var(--a-eyebrow)!important;box-shadow:0 0 0 2px #fff,0 6px 12px -6px rgba(var(--a-glow),.5)!important}
 .wd .ind.out>.ic{width:17px;height:17px;stroke-width:1.7}
@@ -1817,7 +1821,7 @@ function Phone(host,init,opts){
   let wheelT=0;this.scr.addEventListener('wheel',e=>{const s=self.s;if(s.sheet||!['plan','fit'].includes(s.screen)||performance.now()-wheelT<900)return;const v=self.scr.querySelector('.view');if(!v)return;
     if(s.screen==='plan'&&e.deltaY>30&&v.scrollTop+v.clientHeight>=v.scrollHeight-2){wheelT=performance.now();self.flip('fit')}
     else if(s.screen==='fit'&&e.deltaY<-30&&v.scrollTop<=0){wheelT=performance.now();self.flip('plan')}},{passive:true});
-  if(this.opts.full)setTimeout(()=>{if(!self.s.fitSeen&&self.s.screen==='plan'&&!self.s.sheet)self.toast('Nach oben wischen: Mein Fitnessbereich')},1600);
+  if(this.opts.full)setTimeout(()=>self.swipeHint(),2600);
   if(this.opts.full){this.ph.classList.add('full');this.k=1;return} /* Vollbild-App: kein Rahmen, keine Skalierung */
   const fit=()=>{const k=host.clientWidth/410;this.k=k;this.ph.style.transform=`scale(${k})`;host.style.height=(864*k)+'px'};
   new ResizeObserver(fit).observe(host);fit();
@@ -1865,10 +1869,9 @@ Phone.prototype.render=function(){
   else if(s.screen==='settings')body=this.vSettings();
   const tabs=['plan','fit','recipes','shop','favs','learn'].includes(s.screen)?this.vTabs():'';
   const vd=['plan','fit'].includes(s.screen)?`<button class="vdots${s.screen==='fit'?' f':''}" data-a="flip" data-v="${s.screen==='fit'?'plan':'fit'}" aria-label="${s.screen==='fit'?'Zum Essensplan':'Zu Mein Fitnessbereich'}"><i></i><i></i></button>`:'';
-  const fh=s.screen==='plan'?`<button class="fhint" data-a="flip" data-v="fit" aria-label="Zu Mein Fitnessbereich – oder nach oben wischen">${ic('up')}<span>Fitnessbereich</span></button>`:'';
   const orb=tabs&&!['shop','learn','fit'].includes(s.screen)?`<button class="orb" data-a="ai" aria-label="KI-Assistent öffnen"><span class="orb-c"><i></i><i></i><i></i><i></i></span><span class="orb-g"></span><svg class="orb-w" viewBox="0 0 60 24" aria-hidden="true"><path d="M10 12 C17 1 23 1 30 12 S43 23 50 12"/></svg></button>`:'';
   const kp={};this.scr.querySelectorAll('[data-keep]').forEach(e=>kp[e.dataset.keep]=[e.scrollLeft,e.scrollTop]);
-  this.scr.innerHTML=`<div class="island"></div>${this.vStatus()}${body}${fh}${vd}${tabs}${orb}${this.vSheet()}<div class="homebar"></div>`;
+  this.scr.innerHTML=`<div class="island"></div>${this.vStatus()}${body}${vd}${tabs}${orb}${this.vSheet()}<div class="homebar"></div>`;
   this.scr.querySelectorAll('[data-keep]').forEach(e=>{const k=kp[e.dataset.keep];if(k){e.scrollLeft=k[0];e.scrollTop=k[1]}});
   const nv=this.scr.querySelector('.view');if(nv)nv.scrollTop=keep;
   clearTimeout(this.saveT);this.saveT=setTimeout(()=>this.save(),300);
@@ -2202,6 +2205,12 @@ Phone.prototype.lpress=function(e,el){const self=this,x0=e.clientX,y0=e.clientY;
   const up=()=>{clearTimeout(tm);off();if(fired)setTimeout(()=>self.suppressClick=false,120)};
   const off=()=>{removeEventListener('pointermove',mv);removeEventListener('pointerup',up);removeEventListener('pointercancel',up)};
   addEventListener('pointermove',mv);addEventListener('pointerup',up);addEventListener('pointercancel',up)};
+/* Durchsichtiger Wisch-Hinweis: kurz nach dem Öffnen des Essensplans, einmal pro App-Start. Verschwindet von selbst oder bei der ersten Berührung */
+Phone.prototype.swipeHint=function(){const s=this.s;if(this.hinted||s.screen!=='plan'||s.sheet||this.busy||this.scr.clientWidth>=700)return;this.hinted=true;
+  const d=document.createElement('div');d.className='swh';d.setAttribute('aria-hidden','true');
+  d.innerHTML=`<div class="swh-t">${ic('up')}${ic('up')}<i></i></div><span>Nach oben wischen · Fitnessbereich</span>`;this.scr.appendChild(d);
+  const off=()=>{d.classList.add('out');setTimeout(()=>d.remove(),500);this.scr.removeEventListener('pointerdown',off,true)};
+  this.scr.addEventListener('pointerdown',off,true);setTimeout(off,4300)};
 /* Wie ein großer Würfel zwischen Essensplan und Fitnessbereich drehen */
 Phone.prototype.flip=function(to){const s=this.s;if(this.busy||s.sheet||s.screen===to||!['plan','fit'].includes(to))return;
   const old=this.scr.querySelector('.view'),up=to==='fit',H=this.scr.clientHeight;s.ipop=null;
