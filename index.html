@@ -2021,10 +2021,10 @@ const fWkN=a=>a.reduce((n,T)=>n+fCount(T),0);
 Phone.prototype.fitPhoto=function(){const s=this.s;
   const inp=document.createElement('input');inp.type='file';inp.accept='image/*';
   inp.onchange=()=>{const f=inp.files&&inp.files[0];if(f)this.fitPhotoReal(f)};inp.click()};
-Phone.prototype.fitPhotoReal=async function(f){const s=this.s,a=s.fimp={step:'snap'};try{a.photo=URL.createObjectURL(f)}catch(e){}s.sheet='fimp';haptic();this.render();
+Phone.prototype.fitPhotoReal=async function(f){const s=this.s,a=s.fimp={step:'snap',file:f};try{a.photo=URL.createObjectURL(f)}catch(e){}s.sheet='fimp';haptic();this.render();
   await aiWait();if(s.fimp!==a)return;
   if(!AI){a.step='manual';s.fsel=Math.max(TODAY,0);this.render();return}
-  try{const blob=await shrink(f);const r=await AI(`Dieses Foto zeigt einen Trainingsplan (z. B. Kalender aus TrainingPeaks, Garmin, Strava oder ein Plan vom Trainer). Lies jede geplante Einheit je Tag aus.
+  try{const blob=await shrink(f,1800);const r=await AI(`Dieses Foto zeigt einen Trainingsplan (z. B. Kalender aus TrainingPeaks, Garmin, Strava oder ein Plan vom Trainer). Lies jede geplante Einheit je Tag aus.
 Heute ist ${isoOf(TODAY)}. Bestimme das volle Datum jedes Tages aus Monat, Jahr und Tageszahlen im Bild (Monatswechsel wie „Dez. 1“ beachten). Steht kein Datum im Bild, nimm die Woche ab Montag ${isoOf(0)}.
 Je Einheit:
 - "titel": Name wie im Bild, kurz (z. B. "HIT 5x4' @105% FTP")
@@ -2038,7 +2038,7 @@ Ruhetage weglassen. Antworte ausschließlich mit JSON: {"tage":[{"datum":"JJJJ-M
       if(A.length&&idxOf(d.datum)>=-7)days.push({iso:d.datum,A})});
     days.sort((x,y)=>x.iso<y.iso?-1:1);
     if(!days.length){a.step='err';this.render();return}
-    a.days=days;a.step='res';hapticSuccess();this.render()}catch(e){AI=e&&e.code==='not_granted'?null:AI;if(s.fimp===a){if(AI)a.step='err';else{a.step='manual';s.fsel=Math.max(TODAY,0)}this.render()}}};
+    a.days=days;a.step='res';hapticSuccess();this.render()}catch(e){AI=e&&e.code==='not_granted'?null:AI;if(s.fimp===a){a.why=e&&e.code==='not_granted'?'Der Zugriff auf die KI wurde nicht erlaubt.':e&&e.code==='rate_limited'?'Die KI ist gerade ausgelastet.':'Die KI hat nicht geantwortet'+(e&&e.message?' ('+String(e.message).slice(0,80)+')':'')+'.';a.step='manual';s.fsel=Math.max(TODAY,0);this.render()}}};
 Phone.prototype.fitImport=function(){const s=this.s,a=s.fimp;if(!a||!a.days)return;this.prevTrain=JSON.stringify([s.train,s.tx]);let n=0,later=0;
   a.days.forEach(d=>{const i=idxOf(d.iso),T=actsToT(d.A);n+=d.A.length;if(i>=0&&i<NDAYS)s.train[i]=T;else{s.tx[d.iso]=T;if(i>=NDAYS)later+=d.A.length}});
   s.fimp=null;s.sheet=null;hapticSuccess();this.render();this.toast(`${n} ${n===1?'Einheit':'Einheiten'} eingetragen${later?` · ${later} in späteren Wochen`:''}`,'Rückgängig','fundo')};
@@ -2051,9 +2051,9 @@ Phone.prototype.vFimp=function(){const s=this.s,a=s.fimp||{step:'noai'};const G=
     <p class="fnote" style="margin:8px 0 0;text-align:left">Bereits eingetragenes Training an diesen Tagen wird ersetzt.</p>
     <div style="display:flex;gap:8px;margin-top:14px"><button class="sbtn" data-a="closesheet">Abbrechen</button><button class="gbtn" style="${G}" data-a="fimpok">${ic('check')}Übernehmen</button></div>`}
   if(a.step==='err')return `<h3>Nichts erkannt</h3><p>Auf dem Foto konnte ich keinen Trainingsplan lesen. Am besten klappt ein Screenshot der Wochenansicht, auf dem Datum, Name und Dauer zu sehen sind.</p>
-    <button class="gbtn" style="width:100%;${G}" data-a="fimp">${ic('cam')}Anderes Foto wählen</button>`;
+    ${a.file?`<button class="sbtn" style="width:100%;margin-bottom:8px" data-a="fimpretry">${ic('spark')}&nbsp;Nochmal versuchen</button>`:''}<button class="gbtn" style="width:100%;${G}" data-a="fimp">${ic('cam')}Anderes Foto wählen</button>`;
   const i=s.fsel,T=s.train[i]||{},lvOf=(c,k)=>c==='s'?(T.s&&T.s.k.includes(k)?slv(T,k):0):c==='k'?(T.k?T.k.lv||2:0):(T.m?-1:0);
-  return `<h3>Trainingsplan eintragen</h3><p>Ohne KI kann die App das Foto hier nicht selbst lesen. Es bleibt als Vorlage sichtbar – Tag wählen, Training antippen.</p>
+  return `<h3>Trainingsplan eintragen</h3>${window.claude&&window.claude.use?`<p>${esc(a.why||'Die KI ist gerade nicht erreichbar.')} Du kannst es nochmal versuchen oder das Training von Hand antippen.</p>${a.file?`<button class="sbtn" style="width:100%;margin:-6px 0 12px" data-a="fimpretry">${ic('spark')}&nbsp;Nochmal mit KI auswerten</button>`:''}`:`<p>Die installierte App hat noch keine KI. Das Foto bleibt als Vorlage sichtbar – Tag wählen, Training antippen.</p>`}
    ${a.photo?`<div class="fman-ph" data-keep="fph"><img src="${a.photo}" alt="Dein Trainingsplan"></div><p class="fnote" style="margin:6px 0 10px">Foto verschieben · Kachel halten und ziehen: Intensität</p>`:''}
    <div class="fman-days" data-keep="fdays">${Array.from({length:NDAYS},(_,d)=>d).filter(d=>d>=TODAY-TODAY%7).map(d=>`<button class="${d===i?'on':''} ${fCount(s.train[d])?'has':''}" data-a="fmday" data-i="${d}"><small>${d===TODAY?'Heute':AB[d%7]}</small><b>${dt(d)}</b><i></i></button>`).join('')}</div>
    <div class="ftiles">${FACTS.map(([c,k,l])=>{const lv=lvOf(c,k);return `<button class="ftile ${lv?'on':''}" data-a="ftog" data-c="${c}" data-v="${k}" style="--c:${FA[k]}" aria-pressed="${!!lv}"><span>${ic('f_'+k)}</span>${l}${lv>0?`<em>${lv}</em>`:''}</button>`}).join('')}</div>
@@ -2785,7 +2785,7 @@ function natAmt(q,u){q=+q||0;
     return w+({0.25:'¼',0.5:'½',0.75:'¾'}[f]||'')+' Stk'}
   const r=q<100?Math.max(10,Math.round(q/10)*10):Math.round(q/50)*50;return 'ca. '+(r>=1000?(r/1000).toLocaleString('de-DE')+' '+(u==='ml'?'l':'kg'):r+' '+u)}
 /* Foto: verkleinern (max. 1024 px) und Zutaten erkennen lassen */
-function shrink(file){return new Promise((ok,no)=>{const img=new Image(),u=URL.createObjectURL(file);img.onload=()=>{const k=Math.min(1,1024/Math.max(img.width,img.height));
+function shrink(file,max){return new Promise((ok,no)=>{const img=new Image(),u=URL.createObjectURL(file);img.onload=()=>{const k=Math.min(1,(max||1024)/Math.max(img.width,img.height));
   const c=document.createElement('canvas');c.width=Math.round(img.width*k);c.height=Math.round(img.height*k);c.getContext('2d').drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(u);
   c.toBlob(b=>b?ok(b):no(),'image/jpeg',.85)};img.onerror=no;img.src=u})}
 Phone.prototype.aiPhotoReal=async function(f,toStock){const s=this.s;{s.ai={step:'snap',kind:'photo',real:true,toStock:!!toStock};try{s.ai.photo=URL.createObjectURL(f)}catch(e){}s.sheet='ai';haptic();this.render();const a=s.ai;
@@ -2969,6 +2969,7 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
    case 'fitai':this.fitAnalyze();break;
    case 'fimp':this.fitPhoto();break;
    case 'fimpok':this.fitImport();break;
+   case 'fimpretry':if(s.fimp&&s.fimp.file)this.fitPhotoReal(s.fimp.file);break;
    case 'fmday':s.fsel=+t.dataset.i;haptic();this.render();break;
    case 'fstd':s.fimp=null;s.sheet='fstd';haptic();this.render();break;
    case 'fstdw':s.fstdW=+v;this.render();break;
