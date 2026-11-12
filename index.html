@@ -675,6 +675,10 @@ html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
 .phone.full .prog{margin:12px 0 12px}
 .phone.full .wnav{margin:5px 2px 13px}
 /* V89: Trainingsplan per Foto, Standardwoche */
+.dgh .ind.fr{background:#fff}.dgh .ind.fr svg{display:block;width:100%;height:100%}
+.wd.fd{user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
+.wd.fd.nodrop{opacity:.4;transition:opacity .15s}
+.fitv .wd.fd.drop{box-shadow:0 0 0 2.5px #006039,0 10px 20px -10px rgba(0,77,46,.6)}
 .fman-ph{height:170px;border-radius:18px;overflow:auto;background:#EEF0F4;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
 .fman-ph img{height:320px;width:auto;max-width:none;display:block}
 .fman-days{display:flex;gap:6px;overflow-x:auto;margin:0 -4px 12px;padding:2px 4px;scrollbar-width:none}
@@ -2090,7 +2094,7 @@ Phone.prototype.vFit=function(){const s=this.s;
     return Object.keys(W).map(Number).sort((a,b)=>a-b).map((k,x)=>{const n=Object.values(W[k]).reduce((a,iso)=>a+fCount(s.tx[iso]),0);
       return `${x?'':'<div class="lbl" style="margin-top:20px">Kommende Wochen · aus dem Trainingsplan</div>'}<div class="lbl fl">KW ${isoWeek(dayDate(k*7))}<span>${n} ${n===1?'Einheit':'Einheiten'}</span></div><div class="fweek">${Array.from({length:7},(_,j)=>{const i=k*7+j,iso=W[k][i],X=iso&&s.tx[iso];return `<button class="wd fd fx" ${X?`data-a="fxday" data-v="${iso}"`:'disabled'} aria-label="${isoLbl(isoOf(i))}: ${fText(X)}"><span class="a">${AB[j]}</span><span class="n">${String(dayDate(i).getDate()).padStart(2,'0')}</span>${X?`<span class="ind fr">${fring(X,36)}</span>`:'<span class="ind empty"></span>'}</button>`}).join('')}</div>`}).join('')})()}
   <div class="fact"><button data-a="fimp">${ic('cam')}<span><b>Foto vom Trainingsplan</b><small>Plan automatisch eintragen</small></span></button><button data-a="fstd">${ic('f_bike')}<span><b>Standardwoche</b><small>oder Vorwoche übernehmen</small></span></button></div>
-  <p class="fnote" style="margin-top:12px">Tag antippen, um Training einzutragen oder anzusehen</p>
+  <p class="fnote" style="margin-top:12px">Tag antippen: eintragen oder ansehen · Halten und ziehen: verschieben</p>
   <div class="lbl">KI-Analyse</div>
   <div class="fai" id="fai">
    <div class="fai-h"><span class="ai-orb ${A&&A.step==='think'?'live':''}"><span class="orb-c"><i></i><i></i><i></i><i></i></span><span class="orb-g"></span></span><div><b>Training & Ernährung</b><small>${AI?'Analyse von Claude':'Auswertung auf dem Gerät'}</small></div></div>
@@ -2358,6 +2362,7 @@ Phone.prototype.pdown=function(e){
   const sh=e.target.closest('.sheet');if(sh)return this.dragSheet(e,sh);
   const wd=e.target.closest('.wd');
   if(wd&&this.s.screen==='plan')return this.dragDay(e,wd);
+  if(wd&&this.s.screen==='fit'&&wd.classList.contains('fd')&&!wd.classList.contains('fx'))return this.dragFit(e,wd);
   const pn=e.target.closest('.panel');
   if(pn&&this.s.screen==='plan'&&!e.target.closest('.wheel-wrap,.hs'))return this.swipeDay(e,pn);
   if(this.s.screen==='detail'&&!e.target.closest('button'))return this.swipeBack(e);
@@ -2384,6 +2389,31 @@ Phone.prototype.dragDay=function(e,wd){
         const pl=self.scr.querySelector(`.wd[data-i="${target}"]`);if(pl)pl.classList.add('pop');
         self.toast(b===undefined?`Auf ${dn(target)} verschoben`:`${dn(src)} ↔ ${dn(target)} getauscht`,'Rückgängig','undo')}else self.render()},200)};
   window.addEventListener('pointermove',move,{passive:false});window.addEventListener('pointerup',up);window.addEventListener('pointercancel',up);
+};
+/* Fitnessbereich: Trainingstag lange drücken (0,25 s) und innerhalb der Woche auf einen anderen Tag ziehen (belegter Tag: tauschen) */
+Phone.prototype.dragFit=function(e,wd){
+  const self=this,x0=e.clientX,y0=e.clientY,src=+wd.dataset.i,wk=Math.floor(src/7),has=!!self.s.train[src];let lifted=false,target=null,gh=null,raf=0,px=x0,py=y0;
+  if(!has)return;
+  const pos=(cx,cy)=>{const r=self.scr.getBoundingClientRect();return [(cx-r.left)/self.k,(cy-r.top)/self.k]};
+  const noScroll=ev=>{if(lifted)ev.preventDefault()};
+  const timer=setTimeout(()=>{lifted=true;self.dragLift=true;haptic();const ind=wd.querySelector('.ind');gh=document.createElement('div');gh.className='dgh';gh.innerHTML=ind?ind.outerHTML:'';
+    self.scr.appendChild(gh);wd.classList.add('src');self.scr.querySelectorAll('.wd.fd').forEach(x=>{if(x.classList.contains('fx')||Math.floor(+x.dataset.i/7)!==wk)x.classList.add('nodrop')});
+    const [x,y]=pos(px,py);gh.style.transform=`translate3d(${x-26}px,${y-26}px,0)`;requestAnimationFrame(()=>gh.classList.add('up'))},250);
+  const paint=()=>{raf=0;if(!gh)return;const [x,y]=pos(px,py);gh.style.transform=`translate3d(${x-26}px,${y-34}px,0)`;
+    const el=document.elementFromPoint(px,py),tg=el&&el.closest('.wd.fd:not(.fx)');
+    const ok=tg&&tg!==wd&&self.scr.contains(tg)&&Math.floor(+tg.dataset.i/7)===wk;const nt=ok?+tg.dataset.i:null;
+    if(nt!==target){self.scr.querySelectorAll('.wd.drop').forEach(x=>x.classList.remove('drop'));target=nt;if(ok){tg.classList.add('drop');haptic()}}};
+  const move=ev=>{px=ev.clientX;py=ev.clientY;if(!lifted){if(Math.hypot(px-x0,py-y0)>8){clearTimeout(timer);off()}return}
+    ev.preventDefault();if(!raf)raf=requestAnimationFrame(paint)};
+  const off=()=>{window.removeEventListener('pointermove',move);window.removeEventListener('pointerup',up);window.removeEventListener('pointercancel',up);window.removeEventListener('touchmove',noScroll)};
+  const up=()=>{clearTimeout(timer);off();if(!lifted)return;setTimeout(()=>self.dragLift=false,80);cancelAnimationFrame(raf);self.suppressClick=true;setTimeout(()=>self.suppressClick=false,50);
+    const dest=self.scr.querySelector(`.wd.fd:not(.fx)[data-i="${target!==null?target:src}"] .ind`)||wd;const r=dest.getBoundingClientRect(),[x,y]=pos(r.left+r.width/2,r.top+r.height/2);
+    gh.classList.remove('up');gh.classList.add('land');gh.style.transform=`translate3d(${x-26}px,${y-26}px,0)`;
+    setTimeout(()=>{if(target!==null&&target!==src){const T=self.s.train,a=T[src],b=T[target];self.prevTrain=JSON.stringify([T,self.s.tx]);
+        T[target]=a;if(b===undefined)delete T[src];else T[src]=b;self.render();
+        const pl=self.scr.querySelector(`.wd.fd:not(.fx)[data-i="${target}"]`);if(pl)pl.classList.add('pop');
+        self.toast(b===undefined?`Training auf ${dn(target)} verschoben`:`${dn(src)} ↔ ${dn(target)} getauscht`,'Rückgängig','fundo')}else self.render()},200)};
+  window.addEventListener('pointermove',move,{passive:false});window.addEventListener('pointerup',up);window.addEventListener('pointercancel',up);window.addEventListener('touchmove',noScroll,{passive:false});
 };
 /* Wochenleiste seitwärts wischen: wechselt zwischen dieser und nächster Woche (mit Gummiband am Rand) */
 Phone.prototype.swipeWeek=function(ev0,x0){const self=this,tr=this.scr.querySelector('.wtrack');if(!tr)return;const w=this.s.wk||0,W=tr.parentNode.offsetWidth;let dx=0;const hist=[];
