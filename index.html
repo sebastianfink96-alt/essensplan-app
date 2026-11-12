@@ -691,15 +691,13 @@ html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
 @keyframes orbP3{from{transform:rotate(96deg)}to{transform:rotate(456deg)}}
 .ai-orb.live .orb-c i,.ai-orb.live .orb-c::before{animation-duration:5s!important}
 @media (prefers-reduced-motion:reduce){.orb-c i,.orb-c::before{animation:none!important}.orb-c i:nth-child(1){transform:rotate(-24deg)}.orb-c i:nth-child(2){transform:rotate(38deg)}.orb-c i:nth-child(3){transform:rotate(96deg)}}
-/* V109: Profil-Kacheln alle gleich groß (volle Breite, gleiche Höhe) */
-.setv .pf-opts{grid-template-columns:1fr!important;gap:8px}
-.setv .pf-o{flex-direction:row;align-items:center;gap:14px;height:72px;padding:0 16px!important;border-radius:22px}
-.setv .pf-oi{margin:0;flex:none;width:42px;height:42px}
-.setv .pf-ot{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
-.setv .pf-o b{font-size:16px!important}.setv .pf-o small{font-size:13px!important}
-.setv .pf-o>i{position:static;flex:none;display:grid;width:24px;height:24px;background:none;box-shadow:inset 0 0 0 1.5px #D6D7DE}
-.setv .pf-o>i .ic{opacity:0;width:13px;height:13px}
-.setv .pf-o.on>i{background:rgba(255,255,255,.28);box-shadow:none}.setv .pf-o.on>i .ic{opacity:1}
+/* V112: Würfel folgt dem Finger */
+.cface::after{opacity:var(--dm,0)!important;transition:opacity var(--cd,.62s) ease!important}
+.cface.live::after{transition:none!important}
+/* V112: Profil-Kacheln wieder als kleine Kacheln – drei Spalten, in beiden Abschnitten gleich groß */
+.setv .pf-opts{grid-template-columns:repeat(3,1fr)!important;gap:8px}
+.setv .pf-o{padding:12px 10px!important;min-height:138px;justify-content:flex-start}
+.setv .pf-o b{font-size:13px!important}.setv .pf-o small{font-size:11px!important}
 /* V107: Begrüßung beim Start + Namensfeld im Intro und unten in den Einstellungen */
 .hello{position:absolute;inset:0;z-index:200;display:grid;place-items:center;text-align:center;padding:0 28px;border-radius:inherit;overflow:hidden;
   background:linear-gradient(160deg,rgba(120,52,72,.2),rgba(60,30,50,.16));-webkit-backdrop-filter:blur(1.5px);backdrop-filter:blur(1.5px);animation:helloIn .6s ease both;transition:opacity .7s ease}
@@ -755,7 +753,7 @@ html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
 .setv .ap-h2+.grp{margin-top:0}
 /* V104: kein Zoom bei Doppeltipp; durchsichtiger Wisch-Hinweis zum Fitnessbereich */
 html,body{touch-action:manipulation}
-.swf{position:absolute;z-index:46;width:46px;height:46px;margin:-23px 0 0 -23px;border-radius:50%;pointer-events:none;background:rgba(255,255,255,.55);box-shadow:0 0 0 8px rgba(255,255,255,.22),0 8px 18px -6px rgba(40,20,40,.45),inset 0 0 0 1px rgba(255,255,255,.8);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);opacity:0;scale:1.35;transition:opacity .35s ease,scale .35s ease,translate .62s cubic-bezier(.4,0,.2,1)}
+.swf{position:absolute;z-index:46;width:46px;height:46px;margin:-23px 0 0 -23px;border-radius:50%;pointer-events:none;background:rgba(255,255,255,.55);box-shadow:0 0 0 8px rgba(255,255,255,.22),0 8px 18px -6px rgba(40,20,40,.45),inset 0 0 0 1px rgba(255,255,255,.8);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);opacity:0;scale:1.35;transition:opacity .35s ease,scale .35s ease,translate .5s cubic-bezier(.3,.1,.2,1)}
 .swf.on{opacity:1;scale:1}
 .swf.up{translate:0 -300px}
 /* V102: Auswärts-Tag wirkt gewählt – getönte Fläche, Servierglocke, Haken */
@@ -1867,11 +1865,21 @@ function Phone(host,init,opts){
   let vs=null;const self=this;
   this.scr.addEventListener('touchstart',e=>{const s=self.s;if(e.touches.length!==1||s.sheet||s.ipop||!['plan','fit'].includes(s.screen)||self.busy||e.target.closest('.tabbar,.orb,.sheet,.ipop,.toast')){vs=null;return}
     const tt=e.touches[0],v=self.scr.querySelector('.view');if(!v){vs=null;return}
-    vs={x:tt.clientX,y:tt.clientY,t:performance.now(),top:v.scrollTop<=0,bot:v.scrollTop+v.clientHeight>=v.scrollHeight-2}},{passive:true});
-  this.scr.addEventListener('touchcancel',()=>{vs=null},{passive:true});
-  this.scr.addEventListener('touchend',e=>{if(!vs)return;const tt=e.changedTouches[0],dx=tt.clientX-vs.x,dy=tt.clientY-vs.y,dt=performance.now()-vs.t,o=vs;vs=null;
-    if(self.dragLift||dt>700||Math.abs(dy)<64*self.k||Math.abs(dy)<Math.abs(dx)*1.8)return;
-    if(self.s.screen==='plan'&&dy<0&&o.bot)self.flip('fit');else if(self.s.screen==='fit'&&dy>0&&o.top)self.flip('plan')},{passive:true});
+    vs={x:tt.clientX,y:tt.clientY,t:performance.now(),top:v.scrollTop<=0,bot:v.scrollTop+v.clientHeight>=v.scrollHeight-2,tg:e.target};
+    /* direkt am berührten Element lauschen: es wird beim Aufbau des Würfels aus der Seite genommen, bekommt die Touch-Ereignisse aber weiter */
+    e.target.addEventListener('touchmove',vmove,{passive:false});e.target.addEventListener('touchend',vendOk,{passive:true});e.target.addEventListener('touchcancel',vendNo,{passive:true})},{passive:true});
+  /* Finger zieht den Würfel mit: ab 8 px senkrechter Bewegung übernimmt die Drehung, Loslassen dreht fertig (ab ca. 28 % oder mit Schwung) oder federt zurück */
+  const vmove=e=>{if(!vs)return;const tt=e.touches[0],dx=tt.clientX-vs.x,dy=tt.clientY-vs.y;
+    if(!vs.c){if(self.dragLift||self.busy){vs=null;return}if(Math.hypot(dx,dy)<8*self.k)return;
+      const to=self.s.screen==='plan'&&dy<0&&vs.bot?'fit':self.s.screen==='fit'&&dy>0&&vs.top?'plan':null;
+      if(!to||Math.abs(dy)<Math.abs(dx)*1.6){vs=null;return}
+      const c=self.cubeStart(to);if(!c){vs=null;return}vs.c=c;vs.y0=tt.clientY;vs.h=[];haptic()}
+    if(e.cancelable)e.preventDefault();const c=vs.c,d=(tt.clientY-vs.y0)*(c.up?-1:1);c.setP(d/(c.H*self.k*.8));
+    vs.h.push([performance.now(),d]);if(vs.h.length>5)vs.h.shift()};
+  const voff=tg=>{if(!tg)return;tg.removeEventListener('touchmove',vmove);tg.removeEventListener('touchend',vendOk);tg.removeEventListener('touchcancel',vendNo)};
+  const vend=(e,cancel)=>{voff(e.currentTarget);if(!vs)return;const o=vs;vs=null;if(!o.c)return;let v=0;if(o.h.length>1){const a=o.h[0],b=o.h[o.h.length-1];v=(b[1]-a[1])/Math.max(1,b[0]-a[0])}
+    const p=o.c.p,commit=!cancel&&(v>.45||(p>.28&&v>-.25));o.c.finish(commit,Math.max(.16,.42*(commit?1-p:p)))};
+  function vendOk(e){vend(e,false)}function vendNo(e){vend(e,true)}
   let wheelT=0;this.scr.addEventListener('wheel',e=>{const s=self.s;if(s.sheet||!['plan','fit'].includes(s.screen)||performance.now()-wheelT<900)return;const v=self.scr.querySelector('.view');if(!v)return;
     if(s.screen==='plan'&&e.deltaY>30&&v.scrollTop+v.clientHeight>=v.scrollHeight-2){wheelT=performance.now();self.flip('fit')}
     else if(s.screen==='fit'&&e.deltaY<-30&&v.scrollTop<=0){wheelT=performance.now();self.flip('plan')}},{passive:true});
@@ -2110,7 +2118,7 @@ Object.assign(P,{trophy:'<path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 5.5H5.2a
   scale:'<rect x="4" y="4" width="16" height="16" rx="4.5"/><path d="M8.3 10a5.2 5.2 0 0 1 7.4 0M12 9.4l1.7 2.6"/>'});
 /* Profil: Auswahl für sportliche Ambition und Ernährungsziel */
 const PF_SPORT=[['rookie','Rookie','Ich fange gerade an','f_run'],['hobby','Ambitionierter Hobbysportler','Regelmäßig, mit Zielen','f_bike'],['profi','Profi','Training nach Plan','trophy']];
-const PF_GOAL=[['abnehmen','Abnehmen','Leicht und sättigend','scale'],['ausgewogen','Ausgewogene Ernährung','Von allem das Richtige','leaf'],['geniesser','Genießer','Hauptsache, es schmeckt','glass'],['hobbykoch','Hobbykoch','Gern auch aufwendiger','chef']];
+const PF_GOAL=[['abnehmen','Abnehmen','Leicht und sättigend','scale'],['ausgewogen','Ausgewogen','Von allem das Richtige','leaf'],['geniesser','Genießer','Hauptsache, es schmeckt','glass'],['hobbykoch','Hobbykoch','Gern auch aufwendiger','chef']];
 const pfText=s=>{const a=PF_SPORT.find(x=>x[0]===s.prof.sport),b=PF_GOAL.find(x=>x[0]===s.prof.goal);return [a?'Sportliche Ambition: '+a[1]:'',b?'Ernährungsziel: '+b[1]:''].filter(Boolean).join('. ')};
 const R_IDS=new Set(R.map(r=>r.id));
 const fTgt=s=>s.sheet==='fstd'?[s.fstd,s.fstdD||0]:[s.train,s.fsel];
@@ -2276,24 +2284,34 @@ Phone.prototype.swipeHint=function(){const s=this.s,scr=this.scr,self=this;if(th
   const fg=document.createElement('i');fg.className='swf';fg.setAttribute('aria-hidden','true');fg.style.left=x+'px';fg.style.top=y+'px';this.ph.appendChild(fg);
   const T=[];let done=false;const end=()=>{if(done)return;done=true;T.forEach(clearTimeout);fg.classList.remove('on');scr.removeEventListener('pointerdown',end,true);setTimeout(()=>fg.remove(),450)};
   scr.addEventListener('pointerdown',end,true);requestAnimationFrame(()=>fg.classList.add('on'));
-  T.push(setTimeout(()=>{if(self.s.screen!=='plan'||self.s.sheet||self.busy){end();return}fg.classList.add('up');self.flip('fit')},520));
-  T.push(setTimeout(()=>fg.classList.remove('on'),1150));
-  T.push(setTimeout(()=>{if(self.s.screen==='fit'&&!self.s.sheet)self.flip('plan');end()},2150))};
-/* Wie ein großer Würfel zwischen Essensplan und Fitnessbereich drehen */
-Phone.prototype.flip=function(to){const s=this.s;if(this.busy||s.sheet||s.screen===to||!['plan','fit'].includes(to))return;
-  const old=this.scr.querySelector('.view'),up=to==='fit',H=this.scr.clientHeight;s.ipop=null;
-  const set=()=>{if(to==='fit'){s.screen='fit';s.fitSeen=true}else{s.screen='plan';s.edit=false}};
-  if(!old||(window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches)){set();this.render();return}
-  this.busy=true;haptic();const oldTop=old.scrollTop;
+  T.push(setTimeout(()=>{if(self.s.screen!=='plan'||self.s.sheet||self.busy){end();return}fg.classList.add('up');self.flip('fit',.5)},420));
+  T.push(setTimeout(()=>fg.classList.remove('on'),900));
+  T.push(setTimeout(()=>{if(self.s.screen==='fit'&&!self.s.sheet)self.flip('plan',.5);end()},1500))};
+/* Würfel aufbauen: alte Seite vorn, neue Seite oben/unten. Liefert eine Steuerung: setP(0…1) stellt die Drehung direkt ein (Finger zieht),
+   finish(übernehmen, Dauer) dreht fertig oder federt zurück */
+Phone.prototype.cubeStart=function(to){const s=this.s,self=this;if(this.busy||s.sheet||s.screen===to||!['plan','fit'].includes(to))return null;
+  const old=this.scr.querySelector('.view');if(!old)return null;const from=s.screen,up=to==='fit',H=this.scr.clientHeight;s.ipop=null;
+  this.busy=true;const oldTop=old.scrollTop;
   const cube=document.createElement('div');cube.className='cube';const inn=document.createElement('div');inn.className='cube-in';cube.appendChild(inn);
-  const face=(node,deg)=>{const f=document.createElement('div');f.className='cface';f.style.transform=`rotateX(${deg}deg) translateZ(${H/2}px)`;const c=node.cloneNode(true);c.querySelectorAll('.wi').forEach(x=>{if(x.style.visibility==='hidden')x.remove()});f.appendChild(c);inn.appendChild(f);return [f,c]};
+  const face=(node,deg)=>{const f=document.createElement('div');f.className='cface live';f.style.transform=`rotateX(${deg}deg) translateZ(${H/2}px)`;const c=node.cloneNode(true);c.querySelectorAll('.wi').forEach(x=>{if(x.style.visibility==='hidden')x.remove()});f.appendChild(c);inn.appendChild(f);return [f,c]};
   const [f1,c1]=face(old,0);
-  set();this.render();const nv=this.scr.querySelector('.view');
-  const [f2]=face(nv,up?-90:90);f2.classList.add('dim');
-  inn.style.transform=`translateZ(${-H/2}px) rotateX(0deg)`;
+  if(to==='fit'){s.screen='fit';s.fitSeen=true}else{s.screen='plan';s.edit=false}
+  this.render();const nv=this.scr.querySelector('.view');
+  const [f2]=face(nv,up?-90:90);
   const tb=this.scr.querySelector('.vdots')||this.scr.querySelector('.tabbar');this.scr.insertBefore(cube,tb);c1.scrollTop=oldTop;nv.style.visibility='hidden';
-  requestAnimationFrame(()=>requestAnimationFrame(()=>{inn.style.transition='transform .62s cubic-bezier(.4,0,.2,1)';inn.style.transform=`translateZ(${-H/2}px) rotateX(${up?90:-90}deg)`;f1.classList.add('dim');f2.classList.remove('dim')}));
-  setTimeout(()=>{const v=this.scr.querySelector('.view');if(v){v.style.visibility='';v.classList.add('flipin')}cube.remove();this.busy=false},650)};
+  let p=0;const put=()=>{inn.style.transform=`translateZ(${-H/2}px) rotateX(${(up?90:-90)*p}deg)`;f1.style.setProperty('--dm',(.45*p).toFixed(3));f2.style.setProperty('--dm',(.45*(1-p)).toFixed(3))};
+  put();
+  return {H,up,get p(){return p},
+    setP(v){p=Math.max(0,Math.min(1,v));inn.style.transition='none';put()},
+    finish(commit,dur){dur=dur||.62;[f1,f2].forEach(f=>{f.classList.remove('live');f.style.setProperty('--cd',dur+'s')});inn.style.transition=`transform ${dur}s cubic-bezier(.3,.1,.2,1)`;
+      requestAnimationFrame(()=>requestAnimationFrame(()=>{p=commit?1:0;put()}));
+      setTimeout(()=>{if(!commit){s.screen=from;self.render();const v0=self.scr.querySelector('.view');if(v0)v0.scrollTop=oldTop}
+        else{const v=self.scr.querySelector('.view');if(v){v.style.visibility='';v.classList.add('flipin')}}
+        cube.remove();self.busy=false},dur*1000+40)}}};
+/* Wie ein großer Würfel zwischen Essensplan und Fitnessbereich drehen */
+Phone.prototype.flip=function(to,dur){const s=this.s;if(this.busy||s.sheet||s.screen===to||!['plan','fit'].includes(to))return;
+  if(window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches){if(to==='fit'){s.screen='fit';s.fitSeen=true}else{s.screen='plan';s.edit=false}s.ipop=null;this.render();return}
+  const c=this.cubeStart(to);if(!c)return;haptic();c.finish(true,dur||.62)};
 /* Auswertung: Training der Woche gegen den Essensplan */
 function fitSig(s,w){let x='';for(let i=w*7;i<w*7+7;i++)x+=JSON.stringify(s.train[i]||0)+(s.plan[i]||'-')+'|';return x}
 function fitLocal(s,w){const D=Array.from({length:7},(_,j)=>w*7+j),T=i=>s.train[i],sh=i=>dn(i).slice(0,2);
@@ -2856,7 +2874,7 @@ Phone.prototype.speak=function(){const s=this.s,r=RM[s.did],sy=window.speechSynt
 
 Phone.prototype.vSettings=function(){const s=this.s,pf=s.prof,q=x=>String(x||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
   const li=(icn,col,t,r,a='',v='',dis=false)=>`<button class="li ${dis?'dis':''}" ${a?`data-a="${a}" data-v="${v}"`:''}><span class="lic" style="background:${col}">${ic(icn)}</span>${t}<span class="r">${r}</span></button>`;
-  const opt=(L,cur,act,cls)=>`<div class="pf-opts ${cls}">${L.map(([k,t,sub,icn])=>`<button class="pf-o ${cur===k?'on':''}" data-a="${act}" data-v="${k}" aria-pressed="${cur===k}"><span class="pf-oi">${ic(icn)}</span><span class="pf-ot"><b>${t}</b><small>${sub}</small></span><i>${ic('check')}</i></button>`).join('')}</div>`;
+  const opt=(L,cur,act,cls)=>`<div class="pf-opts ${cls}">${L.map(([k,t,sub,icn])=>`<button class="pf-o ${cur===k?'on':''}" data-a="${act}" data-v="${k}" aria-pressed="${cur===k}"><span class="pf-oi">${ic(icn)}</span><b>${t}</b><small>${sub}</small><i>${ic('check')}</i></button>`).join('')}</div>`;
   return `<div class="view setv"><div class="z">
    <div class="top-row between"><button class="iconbtn" data-a="go" data-v="plan" aria-label="Zurück">${ic('left')}</button></div>
    <div class="pf-head rv"><button class="pf-av ${pf.photo?'has':''}" data-a="pfphoto" aria-label="${pf.photo?'Profilfoto ändern':'Profilfoto hinzufügen'}">${pf.photo?`<img src="${pf.photo}" alt="">`:ic('users')}<i>${ic('cam')}</i></button>
@@ -2875,7 +2893,7 @@ Phone.prototype.vSettings=function(){const s=this.s,pf=s.prof,q=x=>String(x||'')
    ${this.opts.full?`<div class="grp">${window.EP_APP?'':li('book','#6B7B99','Prototyp-Übersicht',ic('right'),'overview')}</div>`:''}
    <div class="grp">${li('run','#006039','Mein Fitnessbereich',ic('right'),'flip','fit')}
    ${hasClaude()?'':li('spark','#006039','KI in dieser App',KI?'Verbunden':'Einrichten','kiopen')}
-   ${li('vol','var(--a-violet)','Vorlese-Stimme',(()=>{if(KI&&KI.tts&&!this.noTts)return 'Natürlich · Sarah';const v=pickVoice(s.voice);return v?v.name.replace(/\s*\(.*?\)/,m=>/premium/i.test(m)?' · Premium':/enhanced|erweitert/i.test(m)?' · Erweitert':''):'Standard'})(),'nextvoice')}</div>
+   ${li('vol','var(--a-violet)','Vorlese-Stimme',(()=>{if(KI&&KI.tts&&!this.noTts)return KI.voice?'Natürlich · eigene Stimme':'Natürlich · Sarah';const v=pickVoice(s.voice);return v?v.name.replace(/\s*\(.*?\)/,m=>/premium/i.test(m)?' · Premium':/enhanced|erweitert/i.test(m)?' · Erweitert':''):'Standard'})(),'nextvoice')}</div>
    <p style="color:var(--a-muted);font-size:13px;text-align:center;margin-top:26px">Essensplan · Version 1.0</p>
   </div></div>`};
 
@@ -2978,9 +2996,9 @@ async function kiTest(cfg){let r;try{r=await fetch(cfg.url,{headers:{'Authorizat
   if(r.status===401)return 'Falsches Passwort.';const j=await r.json().catch(()=>({}));if(!r.ok)return j.error||('Fehler '+r.status);cfg.tts=!!j.stimme;return ''}
 /* Natürliche Vorlese-Stimme über den eigenen Server. Jeder Satz wird nur einmal bezahlt: das Audio bleibt auf dem Gerät gespeichert */
 const SIL='data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQAAAAA=';
-async function kiSay(text){let h=5381;for(let i=0;i<text.length;i++)h=((h<<5)+h+text.charCodeAt(i))>>>0;const key='https://stimme.essensplan.invalid/'+h.toString(36)+'-'+text.length;let c=null;
+async function kiSay(text){let h=5381;for(let i=0;i<text.length;i++)h=((h<<5)+h+text.charCodeAt(i))>>>0;const key='https://stimme.essensplan.invalid/'+(KI.voice||'std')+'/'+h.toString(36)+'-'+text.length;let c=null;
   try{c=await caches.open('essensplan-stimme-v1');const hit=await c.match(key);if(hit)return await hit.blob()}catch(e){}
-  const r=await fetch(KI.url,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+KI.pw},body:JSON.stringify({tts:text})});
+  const r=await fetch(KI.url,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+KI.pw},body:JSON.stringify({tts:text,voice:KI.voice||undefined})});
   if(!r.ok)throw Object.assign(new Error((await r.json().catch(()=>({}))).error||('Fehler '+r.status)),{status:r.status});
   const b=await r.blob();try{if(c)await c.put(key,new Response(b,{headers:{'Content-Type':'audio/mpeg'}}))}catch(e){}return b}
 /* Beim Start nachsehen, ob der Server inzwischen eine Stimme hat */
@@ -3106,6 +3124,7 @@ Phone.prototype.vSheet=function(){const s=this.s;if(!s.sheet)return '';
     c=`<h3>KI in dieser App</h3><p>${KI?'Verbunden. Fotos und Analysen laufen über deinen eigenen Server.'+(KI.tts?' Vorlesen mit natürlicher Stimme ist aktiv.':' Natürliche Vorlese-Stimme: noch nicht eingerichtet.'):'Verbinde die App mit deinem eigenen kleinen Server. Adresse und Passwort bleiben nur auf diesem Gerät.'}</p>
     <div class="ai-in" style="margin-bottom:8px"><input data-k="kiurl" inputmode="url" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Server-Adresse (https://…workers.dev)" value="${q(s.kiU)}" aria-label="Server-Adresse"></div>
     <div class="ai-in"><input data-k="kipw" type="password" autocomplete="off" placeholder="Passwort" value="${q(s.kiP)}" aria-label="Passwort"></div>
+    <div class="ai-in" style="margin-top:8px"><input data-k="kivoice" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Stimmen-ID von ElevenLabs (optional)" value="${q(s.kiV)}" aria-label="Stimmen-ID von ElevenLabs"></div>
     ${s.kiMsg?`<p class="ai-warn" style="margin:10px 0 0!important">${esc(s.kiMsg)}</p>`:''}
     <div style="display:flex;gap:8px;margin-top:14px">${KI?`<button class="sbtn" data-a="kioff">Trennen</button>`:''}<button class="gbtn" style="background:linear-gradient(100deg,#0F7C4E,#004D2E 58%,#006039);box-shadow:0 14px 26px -12px rgba(0,77,46,.75)" data-a="kisave" ${s.kiBusy?'disabled':''}>${ic('check')}${s.kiBusy?'Prüfe …':'Verbinden'}</button></div>`}
   if(s.sheet==='fimp')c=this.vFimp();
@@ -3118,7 +3137,7 @@ Phone.prototype.vSheet=function(){const s=this.s;if(!s.sheet)return '';
   return `<div class="sheet-bg" data-a="closesheet"><div class="sheet" data-a="stop"><button class="sheet-x" data-a="closesheet" aria-label="Schließen">${ic('x')}</button>${c}</div></div>`};
 
 /* ----- Aktionen ----- */
-Phone.prototype.input=function(e){const k=e.target.dataset.k;if(k==='aiq'){this.s.aiQ=e.target.value;return}if(k==='cookq'){this.s.cookQ=e.target.value;return}if(k==='exq'){this.s.exQ=e.target.value;return}if(k==='kiurl'){this.s.kiU=e.target.value;return}if(k==='kipw'){this.s.kiP=e.target.value;return}if(k==='pname'){const v=e.target.value.trim().slice(0,24);this.s.prof.name=v;const h=this.scr.querySelector('#pfh');if(h)h.textContent=v?`Hi ${v}.`:'Hallo.';clearTimeout(this.saveT);this.saveT=setTimeout(()=>this.save(),400);return}if(k==='stockq'){this.s.stockQ=e.target.value;return}if(k==='shopq'){this.s.shopQ=e.target.value;this.render()}if(k==='recq'){this.s.recQ=e.target.value;this.render()}};
+Phone.prototype.input=function(e){const k=e.target.dataset.k;if(k==='aiq'){this.s.aiQ=e.target.value;return}if(k==='cookq'){this.s.cookQ=e.target.value;return}if(k==='exq'){this.s.exQ=e.target.value;return}if(k==='kiurl'){this.s.kiU=e.target.value;return}if(k==='kipw'){this.s.kiP=e.target.value;return}if(k==='kivoice'){this.s.kiV=e.target.value;return}if(k==='pname'){const v=e.target.value.trim().slice(0,24);this.s.prof.name=v;const h=this.scr.querySelector('#pfh');if(h)h.textContent=v?`Hi ${v}.`:'Hallo.';clearTimeout(this.saveT);this.saveT=setTimeout(()=>this.save(),400);return}if(k==='stockq'){this.s.stockQ=e.target.value;return}if(k==='shopq'){this.s.shopQ=e.target.value;this.render()}if(k==='recq'){this.s.recQ=e.target.value;this.render()}};
 Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();return}
   if(this.s.ipop&&!e.target.closest('.ipop')){this.s.ipop=null;this.render();return}
   const t=e.target.closest('[data-a]');if(!t||!this.scr.contains(t))return;const s=this.s,a=t.dataset.a,v=t.dataset.v;
@@ -3214,12 +3233,13 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
       (A.ex||[]).forEach(x=>{if(RM[x.id]){(s.extra[x.d]=s.extra[x.d]||{})[x.m]=x.id;n++}});
       A.swDone=true;hapticSuccess();this.render();this.toast(`${n} ${n===1?'Änderung':'Änderungen'} im Essensplan übernommen`,'Rückgängig','fitundo');break}
    case 'fitundo':if(this.prevFit){const [a,b]=JSON.parse(this.prevFit);s.plan=a;s.extra=b;this.prevFit=null;if(s.fitAI)s.fitAI.swDone=false;this.render();this.toast('Rückgängig gemacht')}break;
-   case 'kiopen':s.kiU=KI?KI.url:'';s.kiP=KI?KI.pw:'';s.kiMsg='';s.kiBusy=false;s.sheet='ki';this.render();break;
+   case 'kiopen':s.kiU=KI?KI.url:'';s.kiP=KI?KI.pw:'';s.kiV=KI&&KI.voice||'';s.kiMsg='';s.kiBusy=false;s.sheet='ki';this.render();break;
    case 'kioff':KI=null;AI=null;try{localStorage.removeItem(KI_KEY)}catch(e){}s.sheet=null;this.render();this.toast('KI getrennt');break;
    case 'kisave':{let u=(s.kiU||'').trim();const pw=(s.kiP||'').trim();if(u&&!/^https?:\/\//i.test(u))u='https://'+u;
       if(!u||!pw){s.kiMsg='Bitte Adresse und Passwort eintragen.';this.render();break}
       s.kiU=u;s.kiBusy=true;s.kiMsg='';this.render();
-      const cf={url:u,pw};kiTest(cf).then(err=>{s.kiBusy=false;if(err){s.kiMsg=err;this.render();return}
+      const vo=(s.kiV||'').trim();if(vo&&!/^[A-Za-z0-9]{10,40}$/.test(vo)){s.kiBusy=false;s.kiMsg='Die Stimmen-ID besteht nur aus Buchstaben und Ziffern (ca. 20 Zeichen).';this.render();break}
+      const cf={url:u,pw};if(vo)cf.voice=vo;kiTest(cf).then(err=>{s.kiBusy=false;if(err){s.kiMsg=err;this.render();return}
         KI=cf;try{localStorage.setItem(KI_KEY,JSON.stringify(KI))}catch(e){}AI=kiRemote(KI);s.kiP='';s.sheet=null;hapticSuccess();this.render();this.toast('KI verbunden')});break}
    case 'pfsport':s.prof.sport=s.prof.sport===v?'':v;haptic();this.render();break;
    case 'pfgoal':s.prof.goal=s.prof.goal===v?'':v;haptic();this.render();break;
