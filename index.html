@@ -1823,7 +1823,7 @@ Phone.prototype.render=function(){
   else if(s.screen==='settings')body=this.vSettings();
   const tabs=['plan','fit','recipes','shop','favs','learn'].includes(s.screen)?this.vTabs():'';
   const vd=['plan','fit'].includes(s.screen)?`<button class="vdots${s.screen==='fit'?' f':''}" data-a="flip" data-v="${s.screen==='fit'?'plan':'fit'}" aria-label="${s.screen==='fit'?'Zum Essensplan':'Zu Mein Fitnessbereich'}"><i></i><i></i></button>`:'';
-  const orb=tabs&&!['shop','learn'].includes(s.screen)?`<button class="orb" data-a="ai" aria-label="KI-Assistent öffnen"><span class="orb-c"><i></i><i></i><i></i><i></i></span><span class="orb-g"></span><svg class="orb-w" viewBox="0 0 60 24" aria-hidden="true"><path d="M10 12 C17 1 23 1 30 12 S43 23 50 12"/></svg></button>`:'';
+  const orb=tabs&&!['shop','learn','fit'].includes(s.screen)?`<button class="orb" data-a="ai" aria-label="KI-Assistent öffnen"><span class="orb-c"><i></i><i></i><i></i><i></i></span><span class="orb-g"></span><svg class="orb-w" viewBox="0 0 60 24" aria-hidden="true"><path d="M10 12 C17 1 23 1 30 12 S43 23 50 12"/></svg></button>`:'';
   const kp={};this.scr.querySelectorAll('[data-keep]').forEach(e=>kp[e.dataset.keep]=[e.scrollLeft,e.scrollTop]);
   this.scr.innerHTML=`<div class="island"></div>${this.vStatus()}${body}${vd}${tabs}${orb}${this.vSheet()}<div class="homebar"></div>`;
   this.scr.querySelectorAll('[data-keep]').forEach(e=>{const k=kp[e.dataset.keep];if(k){e.scrollLeft=k[0];e.scrollTop=k[1]}});
