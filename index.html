@@ -691,13 +691,22 @@ html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
 @keyframes orbP3{from{transform:rotate(96deg)}to{transform:rotate(456deg)}}
 .ai-orb.live .orb-c i,.ai-orb.live .orb-c::before{animation-duration:5s!important}
 @media (prefers-reduced-motion:reduce){.orb-c i,.orb-c::before{animation:none!important}.orb-c i:nth-child(1){transform:rotate(-24deg)}.orb-c i:nth-child(2){transform:rotate(38deg)}.orb-c i:nth-child(3){transform:rotate(96deg)}}
+/* V109: Profil-Kacheln alle gleich groß (volle Breite, gleiche Höhe) */
+.setv .pf-opts{grid-template-columns:1fr!important;gap:8px}
+.setv .pf-o{flex-direction:row;align-items:center;gap:14px;height:72px;padding:0 16px!important;border-radius:22px}
+.setv .pf-oi{margin:0;flex:none;width:42px;height:42px}
+.setv .pf-ot{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.setv .pf-o b{font-size:16px!important}.setv .pf-o small{font-size:13px!important}
+.setv .pf-o>i{position:static;flex:none;display:grid;width:24px;height:24px;background:none;box-shadow:inset 0 0 0 1.5px #D6D7DE}
+.setv .pf-o>i .ic{opacity:0;width:13px;height:13px}
+.setv .pf-o.on>i{background:rgba(255,255,255,.28);box-shadow:none}.setv .pf-o.on>i .ic{opacity:1}
 /* V107: Begrüßung beim Start + Namensfeld im Intro und unten in den Einstellungen */
 .hello{position:absolute;inset:0;z-index:200;display:grid;place-items:center;text-align:center;padding:0 28px;border-radius:inherit;overflow:hidden;
-  background:linear-gradient(160deg,rgba(120,52,72,.42),rgba(60,30,50,.34));-webkit-backdrop-filter:blur(22px) saturate(1.5);backdrop-filter:blur(22px) saturate(1.5);animation:helloIn .6s ease both;transition:opacity .7s ease}
+  background:linear-gradient(160deg,rgba(120,52,72,.2),rgba(60,30,50,.16));-webkit-backdrop-filter:blur(1.5px);backdrop-filter:blur(1.5px);animation:helloIn .6s ease both;transition:opacity .7s ease}
 .hello.out{opacity:0;pointer-events:none}
-.hello h2{margin:0;font-weight:600;font-size:46px;line-height:1.08;letter-spacing:-.035em;color:rgba(255,255,255,.3);-webkit-text-stroke:.7px rgba(255,255,255,.5);text-shadow:0 18px 40px rgba(40,10,30,.22);overflow-wrap:anywhere}
+.hello h2{margin:0;font-weight:600;font-size:46px;line-height:1.08;letter-spacing:-.035em;color:rgba(255,255,255,.88);-webkit-text-stroke:.6px rgba(255,255,255,.55);text-shadow:0 1px 0 rgba(255,255,255,.35),0 2px 14px rgba(50,15,35,.5),0 18px 40px rgba(40,10,30,.35);overflow-wrap:anywhere}
 .hello h2 i{display:inline-block;font-style:normal;opacity:0;animation:helloCh .7s cubic-bezier(.2,.8,.2,1) both}
-.hello p{margin:12px 0 0;font-size:21px;font-weight:300;letter-spacing:-.01em;color:rgba(255,255,255,.86);opacity:0;animation:helloP .8s ease 1s both}
+.hello p{margin:12px 0 0;font-size:21px;font-weight:400;letter-spacing:-.01em;color:#fff;text-shadow:0 1px 10px rgba(50,15,35,.6);opacity:0;animation:helloP .8s ease 1s both}
 @keyframes helloIn{from{opacity:0}}
 @keyframes helloCh{from{opacity:0;filter:blur(10px);transform:translateY(10px) scale(1.06)}to{opacity:1;filter:blur(0);transform:none}}
 @keyframes helloP{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
@@ -714,7 +723,8 @@ html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
 .pf-sub{margin:4px 0 0;font-size:16px;color:#86868B;letter-spacing:-.01em}
 .pf-av{position:relative;flex:none;width:98px;height:98px;border-radius:50%;border:0;padding:0;display:grid;place-items:center;color:var(--a-eyebrow);background:linear-gradient(145deg,#fff,#F3E3E6);box-shadow:0 0 0 4px #fff,0 18px 30px -16px rgba(var(--a-glow),.75)}
 .pf-av>.ic{width:36px;height:36px;stroke-width:1.5;opacity:.8}
-.pf-av img{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block}
+.pf-av{min-width:98px;max-width:98px;min-height:98px;max-height:98px;aspect-ratio:1;align-self:center}
+.pf-av img{position:absolute;inset:0;width:100%;height:100%;border-radius:50%;object-fit:cover;display:block}
 .pf-av>i{position:absolute;right:-2px;bottom:-2px;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--a-deep,var(--a-grad));color:#fff;box-shadow:0 0 0 3px #fff}
 .pf-av>i .ic{width:15px;height:15px;stroke:#fff;stroke-width:2}
 .pf-name{display:flex;align-items:center;gap:12px;margin-top:22px;background:#fff;border-radius:20px;padding:6px 16px;box-shadow:0 0 0 1px rgba(0,0,0,.05),0 14px 28px -22px rgba(60,40,60,.5)}
@@ -745,17 +755,18 @@ html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
 .setv .ap-h2+.grp{margin-top:0}
 /* V104: kein Zoom bei Doppeltipp; durchsichtiger Wisch-Hinweis zum Fitnessbereich */
 html,body{touch-action:manipulation}
-.swh{position:absolute;left:0;right:0;top:36%;z-index:45;pointer-events:none;display:flex;flex-direction:column;align-items:center;gap:6px;transition:opacity .6s}
-.swh.out{opacity:0}
-.swh svg{width:92px;height:194px;overflow:visible;stroke:#fff;stroke-width:2.2;filter:drop-shadow(0 1px 2px rgba(30,15,30,.6)) drop-shadow(0 0 8px rgba(30,15,30,.35))}
-.swh path{stroke-dasharray:1;stroke-dashoffset:1}
-.swh .tr{animation:swhTr 2.2s cubic-bezier(.45,0,.2,1) 2 both}
-.swh .hd{stroke-width:2.1;animation:swhHd 2.2s ease 2 both}
-.swh span{font-size:12px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:#fff;text-shadow:0 1px 3px rgba(40,20,40,.55);opacity:0;animation:swhTx 4.4s ease both}
-@keyframes swhTr{0%{stroke-dashoffset:1;opacity:1}55%{stroke-dashoffset:0;opacity:1}82%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}
-@keyframes swhHd{0%,48%{stroke-dashoffset:1;opacity:1}66%{stroke-dashoffset:0;opacity:1}82%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}
-@keyframes swhTx{0%,10%{opacity:0}25%,85%{opacity:.95}100%{opacity:0}}
-@media (prefers-reduced-motion:reduce){.swh path{animation:none;stroke-dashoffset:0}.swh span{animation:none;opacity:1}}
+.scr>.view,.scr>.tabbar,.scr>.orb,.scr>.vdots,.scr>.peek{transition:translate .75s cubic-bezier(.3,.7,.2,1)}
+.scr.peeking>.view,.scr.peeking>.tabbar,.scr.peeking>.orb,.scr.peeking>.vdots,.scr.peeking>.peek{translate:0 -132px}
+.peek{position:absolute;left:0;right:0;top:100%;height:320px;z-index:44;pointer-events:none;display:flex;flex-direction:column;align-items:center;padding-top:22px;color:#fff;border-radius:30px 30px 0 0;
+  background:linear-gradient(180deg,#0F7C4E 0,#006039 46%,#004D2E 100%);box-shadow:0 -18px 36px -18px rgba(0,60,36,.55)}
+.peek span{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.16);margin-bottom:8px}
+.peek span .ic{width:24px;height:24px;stroke:#fff;stroke-width:1.8}
+.peek b{font-size:19px;font-weight:600;letter-spacing:-.02em}
+.peek small{font-size:12.5px;opacity:.8;margin-top:2px}
+.swf{position:absolute;z-index:46;width:46px;height:46px;margin:-23px 0 0 -23px;border-radius:50%;pointer-events:none;background:rgba(255,255,255,.55);box-shadow:0 0 0 8px rgba(255,255,255,.22),0 8px 18px -6px rgba(40,20,40,.45),inset 0 0 0 1px rgba(255,255,255,.8);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);opacity:0;scale:1.35;transition:opacity .35s ease,scale .35s ease,translate .75s cubic-bezier(.3,.7,.2,1)}
+.swf.on{opacity:1;scale:1}
+.swf.up{translate:0 -132px}
+@media (prefers-reduced-motion:reduce){.scr>.view,.scr>.tabbar,.scr>.orb,.scr>.vdots,.scr>.peek,.swf{transition-duration:.01s}}
 /* V102: Auswärts-Tag wirkt gewählt – getönte Fläche, Servierglocke, Haken */
 .phone .wd .ind.out{background:linear-gradient(145deg,#F8E6E9,#E9C6CC)!important;color:var(--a-eyebrow)!important;box-shadow:0 0 0 2px #fff,0 6px 12px -6px rgba(var(--a-glow),.5)!important}
 .wd .ind.out>.ic{width:17px;height:17px;stroke-width:1.7}
@@ -2266,12 +2277,19 @@ Phone.prototype.lpress=function(e,el){const self=this,x0=e.clientX,y0=e.clientY;
   const off=()=>{removeEventListener('pointermove',mv);removeEventListener('pointerup',up);removeEventListener('pointercancel',up)};
   addEventListener('pointermove',mv);addEventListener('pointerup',up);addEventListener('pointercancel',up)};
 /* Durchsichtiger Wisch-Hinweis: kurz nach dem Öffnen des Essensplans, einmal pro App-Start. Verschwindet von selbst oder bei der ersten Berührung */
-Phone.prototype.swipeHint=function(){const s=this.s;if(this.ph.querySelector('.hello')){setTimeout(()=>this.swipeHint(),1500);return}
-  if(this.hinted||s.screen!=='plan'||s.sheet||this.busy||this.scr.clientWidth>=700)return;this.hinted=true;
-  const d=document.createElement('div');d.className='swh';d.setAttribute('aria-hidden','true');
-  d.innerHTML=`<svg viewBox="0 0 90 190" fill="none" stroke-linecap="round" stroke-linejoin="round"><path class="tr" pathLength="1" d="M52 182C22 146 70 112 44 70C35 55 38 34 45 14"/><path class="hd" pathLength="1" d="M32 27L45.5 12L58 26"/></svg><span>Fitnessbereich</span>`;this.scr.appendChild(d);
-  const off=()=>{d.classList.add('out');setTimeout(()=>d.remove(),500);this.scr.removeEventListener('pointerdown',off,true)};
-  this.scr.addEventListener('pointerdown',off,true);setTimeout(off,4600)};
+Phone.prototype.swipeHint=function(){const s=this.s,scr=this.scr;if(this.ph.querySelector('.hello')){setTimeout(()=>this.swipeHint(),1500);return}
+  if(this.hinted||s.screen!=='plan'||s.sheet||this.busy||scr.clientWidth>=700)return;this.hinted=true;
+  /* Startpunkt der Geste: ungefähr beim Hauptknopf der Tageskachel („Jetzt kochen“ / „Wählen“) */
+  const btn=scr.querySelector('.view.planv .panel .gbtn'),R=scr.getBoundingClientRect(),B=btn?btn.getBoundingClientRect():null;
+  const x=B?(B.left+B.width/2-R.left)/this.k:scr.clientWidth/2,y=B?(B.top+B.height/2-R.top)/this.k:scr.clientHeight*.78;
+  const pk=document.createElement('div');pk.className='peek';pk.setAttribute('aria-hidden','true');pk.innerHTML=`<span>${ic('run')}</span><b>Mein Fitnessbereich</b><small>Nach oben ziehen</small>`;
+  const fg=document.createElement('i');fg.className='swf';fg.setAttribute('aria-hidden','true');fg.style.left=x+'px';fg.style.top=y+'px';
+  scr.appendChild(pk);scr.appendChild(fg);const T=[];let done=false;
+  const end=()=>{if(done)return;done=true;T.forEach(clearTimeout);scr.classList.remove('peeking');fg.classList.remove('on','up');scr.removeEventListener('pointerdown',end,true);setTimeout(()=>{pk.remove();fg.remove()},750)};
+  scr.addEventListener('pointerdown',end,true);
+  requestAnimationFrame(()=>fg.classList.add('on'));
+  T.push(setTimeout(()=>{scr.classList.add('peeking');fg.classList.add('up')},480));
+  T.push(setTimeout(end,2500))};
 /* Wie ein großer Würfel zwischen Essensplan und Fitnessbereich drehen */
 Phone.prototype.flip=function(to){const s=this.s;if(this.busy||s.sheet||s.screen===to||!['plan','fit'].includes(to))return;
   const old=this.scr.querySelector('.view'),up=to==='fit',H=this.scr.clientHeight;s.ipop=null;
@@ -2849,15 +2867,15 @@ Phone.prototype.speak=function(){const s=this.s,r=RM[s.did],sy=window.speechSynt
 
 Phone.prototype.vSettings=function(){const s=this.s,pf=s.prof,q=x=>String(x||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
   const li=(icn,col,t,r,a='',v='',dis=false)=>`<button class="li ${dis?'dis':''}" ${a?`data-a="${a}" data-v="${v}"`:''}><span class="lic" style="background:${col}">${ic(icn)}</span>${t}<span class="r">${r}</span></button>`;
-  const opt=(L,cur,act,cls)=>`<div class="pf-opts ${cls}">${L.map(([k,t,sub,icn])=>`<button class="pf-o ${cur===k?'on':''}" data-a="${act}" data-v="${k}" aria-pressed="${cur===k}"><span class="pf-oi">${ic(icn)}</span><b>${t}</b><small>${sub}</small><i>${ic('check')}</i></button>`).join('')}</div>`;
+  const opt=(L,cur,act,cls)=>`<div class="pf-opts ${cls}">${L.map(([k,t,sub,icn])=>`<button class="pf-o ${cur===k?'on':''}" data-a="${act}" data-v="${k}" aria-pressed="${cur===k}"><span class="pf-oi">${ic(icn)}</span><span class="pf-ot"><b>${t}</b><small>${sub}</small></span><i>${ic('check')}</i></button>`).join('')}</div>`;
   return `<div class="view setv"><div class="z">
    <div class="top-row between"><button class="iconbtn" data-a="go" data-v="plan" aria-label="Zurück">${ic('left')}</button></div>
    <div class="pf-head rv"><button class="pf-av ${pf.photo?'has':''}" data-a="pfphoto" aria-label="${pf.photo?'Profilfoto ändern':'Profilfoto hinzufügen'}">${pf.photo?`<img src="${pf.photo}" alt="">`:ic('users')}<i>${ic('cam')}</i></button>
     <div><div class="eb">Dein Profil</div><h1 class="ap-h1" id="pfh">${pf.name?`Hi ${q(pf.name)}.`:'Hallo.'}</h1><p class="pf-sub">Schön, dass du da bist.</p></div></div>
    <h2 class="ap-h2 rv">Sportliche Ambition. <span>Wie trainierst du?</span></h2>
-   ${opt(PF_SPORT,pf.sport,'pfsport','c3 fit rv')}
+   ${opt(PF_SPORT,pf.sport,'pfsport','fit rv')}
    <h2 class="ap-h2 rv">Ernährungsziel. <span>Was ist dir wichtig?</span></h2>
-   ${opt(PF_GOAL,pf.goal,'pfgoal','c2 rv')}
+   ${opt(PF_GOAL,pf.goal,'pfgoal','rv')}
    <p class="pf-note">Deine Angaben und dein Foto bleiben auf diesem Gerät. Die App richtet Vorschläge künftig danach aus.</p>
    <h2 class="ap-h2 rv">App. <span>Einstellungen.</span></h2>
    <div class="grp"><div class="li"><span class="lic" style="background:var(--a-eyebrow)">${ic('pencil')}</span>Vorname<span class="r"><input class="pf-in" aria-label="Vorname" data-k="pname" value="${q(pf.name)}" placeholder="Wie heißt du?" maxlength="24" autocomplete="given-name" autocapitalize="words" enterkeyhint="done"></span></div>
