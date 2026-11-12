@@ -695,7 +695,7 @@ html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
 .hello{position:absolute;inset:0;z-index:200;display:grid;place-items:center;text-align:center;padding:0 28px;border-radius:inherit;overflow:hidden;
   background:linear-gradient(160deg,rgba(120,52,72,.42),rgba(60,30,50,.34));-webkit-backdrop-filter:blur(22px) saturate(1.5);backdrop-filter:blur(22px) saturate(1.5);animation:helloIn .6s ease both;transition:opacity .7s ease}
 .hello.out{opacity:0;pointer-events:none}
-.hello h2{margin:0;font-weight:600;font-size:46px;line-height:1.08;letter-spacing:-.035em;color:rgba(255,255,255,.78);-webkit-text-stroke:.6px rgba(255,255,255,.55);text-shadow:0 1px 0 rgba(255,255,255,.35),0 18px 40px rgba(40,10,30,.35);overflow-wrap:anywhere}
+.hello h2{margin:0;font-weight:600;font-size:46px;line-height:1.08;letter-spacing:-.035em;color:rgba(255,255,255,.3);-webkit-text-stroke:.7px rgba(255,255,255,.5);text-shadow:0 18px 40px rgba(40,10,30,.22);overflow-wrap:anywhere}
 .hello h2 i{display:inline-block;font-style:normal;opacity:0;animation:helloCh .7s cubic-bezier(.2,.8,.2,1) both}
 .hello p{margin:12px 0 0;font-size:21px;font-weight:300;letter-spacing:-.01em;color:rgba(255,255,255,.86);opacity:0;animation:helloP .8s ease 1s both}
 @keyframes helloIn{from{opacity:0}}
@@ -745,17 +745,17 @@ html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
 .setv .ap-h2+.grp{margin-top:0}
 /* V104: kein Zoom bei Doppeltipp; durchsichtiger Wisch-Hinweis zum Fitnessbereich */
 html,body{touch-action:manipulation}
-.swh{position:absolute;left:0;right:0;top:50%;z-index:45;pointer-events:none;display:flex;flex-direction:column;align-items:center;gap:10px;animation:swhIn .6s ease both;transition:opacity .5s}
+.swh{position:absolute;left:0;right:0;top:36%;z-index:45;pointer-events:none;display:flex;flex-direction:column;align-items:center;gap:6px;transition:opacity .6s}
 .swh.out{opacity:0}
-.swh-t{position:relative;width:58px;height:128px;border-radius:29px;background:rgba(30,32,44,.36);-webkit-backdrop-filter:blur(10px) saturate(1.3);backdrop-filter:blur(10px) saturate(1.3);box-shadow:inset 0 0 0 1px rgba(255,255,255,.35),0 14px 30px -14px rgba(20,20,40,.5);display:flex;flex-direction:column;align-items:center;padding-top:10px}
-.swh-t .ic{width:22px;height:22px;stroke:#fff;stroke-width:2.2;margin-bottom:-9px;opacity:.35;animation:swhCh 1.7s ease-in-out infinite}
-.swh-t .ic:nth-child(1){animation-delay:.22s}
-.swh-t i{position:absolute;left:50%;bottom:12px;width:34px;height:34px;margin-left:-17px;border-radius:50%;background:rgba(255,255,255,.82);box-shadow:0 0 0 6px rgba(255,255,255,.18),0 6px 14px -6px rgba(0,0,0,.4);animation:swhMove 1.7s cubic-bezier(.4,0,.2,1) infinite}
-.swh span{font-size:12.5px;font-weight:600;letter-spacing:.01em;color:#fff;padding:6px 13px;border-radius:999px;background:rgba(30,32,44,.42);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:inset 0 0 0 1px rgba(255,255,255,.3)}
-@keyframes swhIn{from{opacity:0;transform:translateY(10px)}}
-@keyframes swhMove{0%{transform:translateY(0) scale(.85);opacity:0}18%{transform:translateY(0) scale(1);opacity:1}70%{transform:translateY(-58px) scale(1);opacity:1}100%{transform:translateY(-66px) scale(.9);opacity:0}}
-@keyframes swhCh{0%,30%{opacity:.25}60%{opacity:1}100%{opacity:.25}}
-@media (prefers-reduced-motion:reduce){.swh-t i,.swh-t .ic{animation:none}.swh-t i{transform:translateY(-30px)}}
+.swh svg{width:92px;height:194px;overflow:visible;stroke:#fff;stroke-width:2.2;filter:drop-shadow(0 1px 2px rgba(30,15,30,.6)) drop-shadow(0 0 8px rgba(30,15,30,.35))}
+.swh path{stroke-dasharray:1;stroke-dashoffset:1}
+.swh .tr{animation:swhTr 2.2s cubic-bezier(.45,0,.2,1) 2 both}
+.swh .hd{stroke-width:2.1;animation:swhHd 2.2s ease 2 both}
+.swh span{font-size:12px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:#fff;text-shadow:0 1px 3px rgba(40,20,40,.55);opacity:0;animation:swhTx 4.4s ease both}
+@keyframes swhTr{0%{stroke-dashoffset:1;opacity:1}55%{stroke-dashoffset:0;opacity:1}82%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}
+@keyframes swhHd{0%,48%{stroke-dashoffset:1;opacity:1}66%{stroke-dashoffset:0;opacity:1}82%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}
+@keyframes swhTx{0%,10%{opacity:0}25%,85%{opacity:.95}100%{opacity:0}}
+@media (prefers-reduced-motion:reduce){.swh path{animation:none;stroke-dashoffset:0}.swh span{animation:none;opacity:1}}
 /* V102: Auswärts-Tag wirkt gewählt – getönte Fläche, Servierglocke, Haken */
 .phone .wd .ind.out{background:linear-gradient(145deg,#F8E6E9,#E9C6CC)!important;color:var(--a-eyebrow)!important;box-shadow:0 0 0 2px #fff,0 6px 12px -6px rgba(var(--a-glow),.5)!important}
 .wd .ind.out>.ic{width:17px;height:17px;stroke-width:1.7}
@@ -2269,9 +2269,9 @@ Phone.prototype.lpress=function(e,el){const self=this,x0=e.clientX,y0=e.clientY;
 Phone.prototype.swipeHint=function(){const s=this.s;if(this.ph.querySelector('.hello')){setTimeout(()=>this.swipeHint(),1500);return}
   if(this.hinted||s.screen!=='plan'||s.sheet||this.busy||this.scr.clientWidth>=700)return;this.hinted=true;
   const d=document.createElement('div');d.className='swh';d.setAttribute('aria-hidden','true');
-  d.innerHTML=`<div class="swh-t">${ic('up')}${ic('up')}<i></i></div><span>Nach oben wischen · Fitnessbereich</span>`;this.scr.appendChild(d);
+  d.innerHTML=`<svg viewBox="0 0 90 190" fill="none" stroke-linecap="round" stroke-linejoin="round"><path class="tr" pathLength="1" d="M52 182C22 146 70 112 44 70C35 55 38 34 45 14"/><path class="hd" pathLength="1" d="M32 27L45.5 12L58 26"/></svg><span>Fitnessbereich</span>`;this.scr.appendChild(d);
   const off=()=>{d.classList.add('out');setTimeout(()=>d.remove(),500);this.scr.removeEventListener('pointerdown',off,true)};
-  this.scr.addEventListener('pointerdown',off,true);setTimeout(off,4300)};
+  this.scr.addEventListener('pointerdown',off,true);setTimeout(off,4600)};
 /* Wie ein großer Würfel zwischen Essensplan und Fitnessbereich drehen */
 Phone.prototype.flip=function(to){const s=this.s;if(this.busy||s.sheet||s.screen===to||!['plan','fit'].includes(to))return;
   const old=this.scr.querySelector('.view'),up=to==='fit',H=this.scr.clientHeight;s.ipop=null;
@@ -3273,8 +3273,8 @@ Phone.prototype.finishIntro=function(){if(this.opts.persist)store.set(true);this
 /* Begrüßung beim Start: Milchglas-Fläche, Name erscheint Buchstabe für Buchstabe aus der Unschärfe, blendet von selbst aus */
 Phone.prototype.greet=function(){const s=this.s,n=(s.prof&&s.prof.name||'').trim();if(!n||s.screen!=='plan'||s.sheet)return false;
   const d=document.createElement('div');d.className='hello';d.setAttribute('role','status');
-  const L=('Hallo '+n+',').split('').map((c,i)=>`<i style="animation-delay:${(.25+i*.045).toFixed(3)}s">${c===' '?'&nbsp;':c.replace(/&/g,'&amp;').replace(/</g,'&lt;')}</i>`).join('');
-  d.innerHTML=`<div><h2 aria-label="Hallo ${n.replace(/"/g,'&quot;')},">${L}</h2><p>schön, dass du da bist!</p></div>`;this.ph.appendChild(d);
+  const L=('Hallo '+n).split('').map((c,i)=>`<i style="animation-delay:${(.25+i*.045).toFixed(3)}s">${c===' '?'&nbsp;':c.replace(/&/g,'&amp;').replace(/</g,'&lt;')}</i>`).join('');
+  d.innerHTML=`<div><h2 aria-label="Hallo ${n.replace(/"/g,'&quot;')}">${L}</h2><p>schön, dass du da bist!</p></div>`;this.ph.appendChild(d);
   const off=()=>{if(d.classList.contains('out'))return;d.classList.add('out');setTimeout(()=>d.remove(),700)};d.addEventListener('pointerdown',off);setTimeout(off,3300);return true};
 
 /* ---------- Übersicht ---------- */
