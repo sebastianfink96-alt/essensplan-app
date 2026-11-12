@@ -4,7 +4,7 @@
 <ol><li>Unten auf <b>Code kopieren</b> tippen.</li>
 <li>Auf dash.cloudflare.com: Menü → <b>Compute</b> → <b>Workers &amp; Pages</b> → <b>Create</b> → <b>Start with Hello World!</b> → Namen <code>essensplan-ki</code> → <b>Deploy</b>.</li>
 <li><b>Edit code</b> öffnen, den vorhandenen Text komplett löschen, den kopierten Code einfügen, <b>Deploy</b>.</li>
-<li>Im Worker: <b>Settings</b> → <b>Variables and Secrets</b> → zweimal <b>Add</b>, Typ <b>Secret</b>:<br><code>ANTHROPIC_API_KEY</code> = dein API-Schlüssel<br><code>APP_PASSWORD</code> = ein langes Passwort deiner Wahl</li>
+<li>Im Worker: <b>Settings</b> → <b>Variables and Secrets</b> → zweimal <b>Add</b>, Typ <b>Secret</b>:<br><code>ANTHROPIC_API_KEY</code> = dein API-Schlüssel<br><code>APP_PASSWORD</code> = ein langes Passwort deiner Wahl<br><code>ELEVENLABS_API_KEY</code> = optional, Schlüssel von elevenlabs.io für die natürliche Vorlese-Stimme</li>
 <li>Die Adresse des Workers kopieren (endet auf <code>.workers.dev</code>) und in der App unter Einstellungen → „KI in dieser App“ zusammen mit dem Passwort eintragen.</li></ol>
 <button id="cp">Code kopieren</button><div id="ok"></div>
 <textarea id="code" readonly>/* Essensplan – kleiner KI-Server (Cloudflare Worker)
@@ -15,6 +15,8 @@
  * Geheimnisse (Cloudflare → Worker → Einstellungen → Variablen und Geheimnisse, Typ „Geheimnis“):
  *   ANTHROPIC_API_KEY  – API-Schlüssel aus console.anthropic.com
  *   APP_PASSWORD       – selbst gewähltes Passwort, das du in der App einträgst
+ *   ELEVENLABS_API_KEY – optional: Schlüssel von elevenlabs.io für die natürliche Vorlese-Stimme
+ * Optional als normale Variable: ELEVENLABS_VOICE_ID – andere Stimme als die voreingestellte
  *
  * Bewusst eine einzelne Datei ohne Abhängigkeiten, damit sie sich im Cloudflare-Editor
  * einfügen lässt (kein Build nötig) – daher fetch statt SDK.
@@ -25,6 +27,10 @@ const ALLOWED_ORIGINS = [&#x27;https://sebastianfink96-alt.github.io&#x27;];
 const MODEL_TEXT = &#x27;claude-haiku-5-5&#x27;;
 const MODEL_FOTO = &#x27;claude-sonnet-5-5&#x27;;
 const MAX_TOKENS = 6000;
+/* Vorlesen: warme Frauenstimme „Sarah“, günstiges Modell (halber Preis je Zeichen gegenüber dem größten Modell). */
+const STIMME = &#x27;EXAVITQu4vr4xnSDxMaL&#x27;;
+const STIMME_MODELL = &#x27;eleven_turbo_v2_5&#x27;;
+const MAX_VORLESEN = 1500; // Zeichen je Anfrage
 const MAX_BODY = 12 * 1024 * 1024; // 12 MB
 const MAX_IMAGES = 4;
 
@@ -58,13 +64,34 @@ export default {
     const given = auth.startsWith(&#x27;Bearer &#x27;) ? auth.slice(7) : &#x27;&#x27;;
     if (!given || !(await samePassword(given, env.APP_PASSWORD))) return json({ error: &#x27;Falsches Passwort.&#x27; }, 401, origin);
 
-    if (request.method === &#x27;GET&#x27;) return json({ ok: true }, 200, origin); // Verbindungstest der App
+    if (request.method === &#x27;GET&#x27;) return json({ ok: true, stimme: !!env.ELEVENLABS_API_KEY }, 200, origin); // Verbindungstest der App
     if (request.method !== &#x27;POST&#x27;) return json({ error: &#x27;Nicht erlaubt.&#x27; }, 405, origin);
 
     const raw = await request.text();
     if (raw.length &gt; MAX_BODY) return json({ error: &#x27;Anfrage zu groß.&#x27; }, 413, origin);
     let body;
     try { body = JSON.parse(raw); } catch (e) { return json({ error: &#x27;Ungültige Anfrage.&#x27; }, 400, origin); }
+    if (typeof body.tts === &#x27;string&#x27;) { // Text vorlesen → MP3
+      if (!env.ELEVENLABS_API_KEY) return json({ error: &#x27;Stimme ist nicht eingerichtet.&#x27; }, 501, origin);
+      const text = body.tts.trim().slice(0, MAX_VORLESEN);
+      if (!text) return json({ error: &#x27;Kein Text.&#x27; }, 400, origin);
+      let a;
+      try {
+        a = await fetch(&#x27;https://api.elevenlabs.io/v1/text-to-speech/&#x27; + encodeURIComponent(env.ELEVENLABS_VOICE_ID || STIMME) + &#x27;?output_format=mp3_44100_128&#x27;, {
+          method: &#x27;POST&#x27;,
+          headers: { &#x27;Content-Type&#x27;: &#x27;application/json&#x27;, &#x27;xi-api-key&#x27;: env.ELEVENLABS_API_KEY },
+          body: JSON.stringify({ text, model_id: STIMME_MODELL, language_code: &#x27;de&#x27;, voice_settings: { stability: 0.5, similarity_boost: 0.8, style: 0.15, use_speaker_boost: true } }),
+        });
+      } catch (e) {
+        return json({ error: &#x27;Sprachdienst ist nicht erreichbar.&#x27; }, 502, origin);
+      }
+      if (!a.ok) {
+        const d = await a.json().catch(() =&gt; null);
+        const m = d &amp;&amp; d.detail &amp;&amp; (d.detail.message || d.detail.status || d.detail);
+        return json({ error: typeof m === &#x27;string&#x27; ? m : &#x27;Fehler beim Sprachdienst (&#x27; + a.status + &#x27;).&#x27; }, a.status === 401 ? 502 : a.status === 429 ? 429 : 502, origin);
+      }
+      return new Response(a.body, { status: 200, headers: { &#x27;Content-Type&#x27;: &#x27;audio/mpeg&#x27;, ...cors(origin) } });
+    }
     const prompt = typeof body.prompt === &#x27;string&#x27; ? body.prompt : &#x27;&#x27;;
     const images = Array.isArray(body.images) ? body.images.filter(x =&gt; typeof x === &#x27;string&#x27;).slice(0, MAX_IMAGES) : [];
     if (!prompt) return json({ error: &#x27;Kein Text.&#x27; }, 400, origin);
