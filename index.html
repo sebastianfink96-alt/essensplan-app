@@ -2038,7 +2038,7 @@ Ruhetage weglassen. Antworte ausschließlich mit JSON: {"tage":[{"datum":"JJJJ-M
       if(A.length&&idxOf(d.datum)>=-7)days.push({iso:d.datum,A})});
     days.sort((x,y)=>x.iso<y.iso?-1:1);
     if(!days.length){a.step='err';this.render();return}
-    a.days=days;a.step='res';hapticSuccess();this.render()}catch(e){AI=e&&e.code==='not_granted'?null:AI;if(s.fimp===a){a.why=e&&e.code==='not_granted'?'Der Zugriff auf die KI wurde nicht erlaubt.':e&&e.code==='rate_limited'?'Die KI ist gerade ausgelastet.':'Die KI hat nicht geantwortet'+(e&&e.message?' ('+String(e.message).slice(0,80)+')':'')+'.';a.step='manual';s.fsel=Math.max(TODAY,0);this.render()}}};
+    a.days=days;a.step='res';hapticSuccess();this.render()}catch(e){AI=e&&e.code==='not_granted'?null:AI;if(s.fimp===a){a.why=e&&e.code==='not_granted'?'Der Zugriff auf die KI wurde nicht erlaubt.':e&&e.code==='bad_password'?'Das Passwort für deinen Server stimmt nicht mehr.':e&&e.code==='offline'?'Dein Server ist nicht erreichbar.':e&&e.code==='rate_limited'?'Die KI ist gerade ausgelastet.':'Die KI hat nicht geantwortet'+(e&&e.message?' ('+String(e.message).slice(0,80)+')':'')+'.';a.step='manual';s.fsel=Math.max(TODAY,0);this.render()}}};
 Phone.prototype.fitImport=function(){const s=this.s,a=s.fimp;if(!a||!a.days)return;this.prevTrain=JSON.stringify([s.train,s.tx]);let n=0,later=0;
   a.days.forEach(d=>{const i=idxOf(d.iso),T=actsToT(d.A);n+=d.A.length;if(i>=0&&i<NDAYS)s.train[i]=T;else{s.tx[d.iso]=T;if(i>=NDAYS)later+=d.A.length}});
   s.fimp=null;s.sheet=null;hapticSuccess();this.render();this.toast(`${n} ${n===1?'Einheit':'Einheiten'} eingetragen${later?` · ${later} in späteren Wochen`:''}`,'Rückgängig','fundo')};
@@ -2053,7 +2053,7 @@ Phone.prototype.vFimp=function(){const s=this.s,a=s.fimp||{step:'noai'};const G=
   if(a.step==='err')return `<h3>Nichts erkannt</h3><p>Auf dem Foto konnte ich keinen Trainingsplan lesen. Am besten klappt ein Screenshot der Wochenansicht, auf dem Datum, Name und Dauer zu sehen sind.</p>
     ${a.file?`<button class="sbtn" style="width:100%;margin-bottom:8px" data-a="fimpretry">${ic('spark')}&nbsp;Nochmal versuchen</button>`:''}<button class="gbtn" style="width:100%;${G}" data-a="fimp">${ic('cam')}Anderes Foto wählen</button>`;
   const i=s.fsel,T=s.train[i]||{},lvOf=(c,k)=>c==='s'?(T.s&&T.s.k.includes(k)?slv(T,k):0):c==='k'?(T.k?T.k.lv||2:0):(T.m?-1:0);
-  return `<h3>Trainingsplan eintragen</h3>${window.claude&&window.claude.use?`<p>${esc(a.why||'Die KI ist gerade nicht erreichbar.')} Du kannst es nochmal versuchen oder das Training von Hand antippen.</p>${a.file?`<button class="sbtn" style="width:100%;margin:-6px 0 12px" data-a="fimpretry">${ic('spark')}&nbsp;Nochmal mit KI auswerten</button>`:''}`:`<p>Die installierte App hat noch keine KI. Das Foto bleibt als Vorlage sichtbar – Tag wählen, Training antippen.</p>`}
+  return `<h3>Trainingsplan eintragen</h3>${hasClaude()||KI?`<p>${esc(a.why||'Die KI ist gerade nicht erreichbar.')} Du kannst es nochmal versuchen oder das Training von Hand antippen.</p>${a.file?`<button class="sbtn" style="width:100%;margin:-6px 0 12px" data-a="fimpretry">${ic('spark')}&nbsp;Nochmal mit KI auswerten</button>`:''}`:`<p>Die KI ist in dieser App noch nicht verbunden (Einstellungen → „KI in dieser App“). Das Foto bleibt als Vorlage sichtbar – Tag wählen, Training antippen.</p>`}
    ${a.photo?`<div class="fman-ph" data-keep="fph"><img src="${a.photo}" alt="Dein Trainingsplan"></div><p class="fnote" style="margin:6px 0 10px">Foto verschieben · Kachel halten und ziehen: Intensität</p>`:''}
    <div class="fman-days" data-keep="fdays">${Array.from({length:NDAYS},(_,d)=>d).filter(d=>d>=TODAY-TODAY%7).map(d=>`<button class="${d===i?'on':''} ${fCount(s.train[d])?'has':''}" data-a="fmday" data-i="${d}"><small>${d===TODAY?'Heute':AB[d%7]}</small><b>${dt(d)}</b><i></i></button>`).join('')}</div>
    <div class="ftiles">${FACTS.map(([c,k,l])=>{const lv=lvOf(c,k);return `<button class="ftile ${lv?'on':''}" data-a="ftog" data-c="${c}" data-v="${k}" style="--c:${FA[k]}" aria-pressed="${!!lv}"><span>${ic('f_'+k)}</span>${l}${lv>0?`<em>${lv}</em>`:''}</button>`}).join('')}</div>
@@ -2659,6 +2659,7 @@ Phone.prototype.vSettings=function(){const s=this.s;
    ${li('cloud','#6B7B99','Rezept-Quelle','Lokal')}</div>
    ${this.opts.full?`<div class="grp">${window.EP_APP?'':li('book','#6B7B99','Prototyp-Übersicht',ic('right'),'overview')}</div>`:''}
    <div class="grp">${li('run','#006039','Mein Fitnessbereich',ic('right'),'flip','fit')}
+   ${hasClaude()?'':li('spark','#006039','KI in dieser App',KI?'Verbunden':'Einrichten','kiopen')}
    ${li('vol','var(--a-violet)','Vorlese-Stimme',(()=>{const v=pickVoice(s.voice);return v?v.name.replace(/\s*\(.*?\)/,m=>/premium/i.test(m)?' · Premium':/enhanced|erweitert/i.test(m)?' · Erweitert':''):'Standard'})(),'nextvoice')}</div>
    <p style="color:var(--a-muted);font-size:13px;text-align:center;margin-top:22px">Essensplan · Version 1.0</p>
   </div></div>`};
@@ -2748,8 +2749,20 @@ function aiMissing(r,have){return r.i.filter(([n,q])=>q&&!PANTRY.test(n)&&!have.
 const AI_EX=[['rice','Ich habe Reis zuhause – schlag mir ein Gericht vor'],['week','Wochenvorschlag: 1× Fisch, 1× Fleisch, Rest Bowls']];
 /* Echte KI: im Claude-Artifact über die Fähigkeit „sample“ (läuft über das Claude-Konto des Nutzers). Sonst Demo. */
 let AI=null;
-const aiReady=(async()=>{for(let i=0;i<40&&!(window.claude&&window.claude.use);i++)await new Promise(r=>setTimeout(r,250));
-  try{if(window.claude&&window.claude.use)AI=await window.claude.use('sample')}catch(e){AI=null}})();
+/* KI über den eigenen kleinen Server (installierte App): Adresse + Passwort liegen nur auf diesem Gerät */
+const KI_KEY='essensplan-ki';let KI=null;try{KI=JSON.parse(localStorage.getItem(KI_KEY)||'null')}catch(e){}
+const hasClaude=()=>!!(window.claude&&window.claude.use);
+const blobB64=b=>new Promise((ok,no)=>{const r=new FileReader();r.onload=()=>ok(String(r.result).split(',')[1]);r.onerror=no;r.readAsDataURL(b)});
+function kiRemote(cfg){return async(prompt,o)=>{const images=[];for(const b of (o&&o.images)||[])images.push(await blobB64(b));
+  let r;try{r=await fetch(cfg.url,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+cfg.pw},body:JSON.stringify({prompt,images})})}catch(e){throw Object.assign(new Error('Server nicht erreichbar'),{code:'offline'})}
+  const j=await r.json().catch(()=>({}));
+  if(!r.ok)throw Object.assign(new Error(j.error||('Fehler '+r.status)),{code:r.status===401?'bad_password':r.status===429?'rate_limited':'server'});
+  return {text:j.text||''}}}
+async function kiTest(cfg){let r;try{r=await fetch(cfg.url,{headers:{'Authorization':'Bearer '+cfg.pw}})}catch(e){return 'Server nicht erreichbar – Adresse prüfen.'}
+  if(r.status===401)return 'Falsches Passwort.';if(!r.ok)return (await r.json().catch(()=>({}))).error||('Fehler '+r.status);return ''}
+const aiReady=(async()=>{if(window.EP_APP&&!hasClaude()){if(KI)AI=kiRemote(KI);return}
+  for(let i=0;i<40&&!(window.claude&&window.claude.use);i++)await new Promise(r=>setTimeout(r,250));
+  try{if(window.claude&&window.claude.use)AI=await window.claude.use('sample');else if(KI)AI=kiRemote(KI)}catch(e){AI=null}})();
 /* Nach der Foto-Auswahl kurz auf die KI warten (lädt im Claude-Link bis zu 10 s nach dem Start), statt sofort auf „von Hand“ zu fallen */
 const aiWait=()=>AI?Promise.resolve():Promise.race([aiReady,new Promise(r=>setTimeout(r,window.EP_APP?0:9000))]);
 const aiCatalog=()=>R.map(r=>`${r.id}: ${r.n} [${r.c.join(',')}] ${r.m} Min, ${r.k} kcal; Zutaten: ${r.i.filter(x=>x[1]).map(x=>x[0].replace(/\s*\(.*?\)/g,'')).join(', ')}`).join('\n');
@@ -2866,6 +2879,12 @@ Phone.prototype.vSheet=function(){const s=this.s;if(!s.sheet)return '';
   if(s.sheet==='ai')c=this.vAI();
   if(s.sheet==='stock')c=this.vStock();
   if(s.sheet==='fday')c=this.vFday();
+  if(s.sheet==='ki'){const q=x=>String(x||'').replace(/"/g,'&quot;');
+    c=`<h3>KI in dieser App</h3><p>${KI?'Verbunden. Fotos und Analysen laufen über deinen eigenen Server.':'Verbinde die App mit deinem eigenen kleinen Server. Adresse und Passwort bleiben nur auf diesem Gerät.'}</p>
+    <div class="ai-in" style="margin-bottom:8px"><input data-k="kiurl" inputmode="url" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Server-Adresse (https://…workers.dev)" value="${q(s.kiU)}" aria-label="Server-Adresse"></div>
+    <div class="ai-in"><input data-k="kipw" type="password" autocomplete="off" placeholder="Passwort" value="${q(s.kiP)}" aria-label="Passwort"></div>
+    ${s.kiMsg?`<p class="ai-warn" style="margin:10px 0 0!important">${esc(s.kiMsg)}</p>`:''}
+    <div style="display:flex;gap:8px;margin-top:14px">${KI?`<button class="sbtn" data-a="kioff">Trennen</button>`:''}<button class="gbtn" style="background:linear-gradient(100deg,#0F7C4E,#004D2E 58%,#006039);box-shadow:0 14px 26px -12px rgba(0,77,46,.75)" data-a="kisave" ${s.kiBusy?'disabled':''}>${ic('check')}${s.kiBusy?'Prüfe …':'Verbinden'}</button></div>`}
   if(s.sheet==='fimp')c=this.vFimp();
   if(s.sheet==='fstd')c=this.vFstd();
   if(s.sheet==='fxday')c=this.vFxday();
@@ -2876,7 +2895,7 @@ Phone.prototype.vSheet=function(){const s=this.s;if(!s.sheet)return '';
   return `<div class="sheet-bg" data-a="closesheet"><div class="sheet" data-a="stop"><button class="sheet-x" data-a="closesheet" aria-label="Schließen">${ic('x')}</button>${c}</div></div>`};
 
 /* ----- Aktionen ----- */
-Phone.prototype.input=function(e){const k=e.target.dataset.k;if(k==='aiq'){this.s.aiQ=e.target.value;return}if(k==='cookq'){this.s.cookQ=e.target.value;return}if(k==='exq'){this.s.exQ=e.target.value;return}if(k==='stockq'){this.s.stockQ=e.target.value;return}if(k==='shopq'){this.s.shopQ=e.target.value;this.render()}if(k==='recq'){this.s.recQ=e.target.value;this.render()}};
+Phone.prototype.input=function(e){const k=e.target.dataset.k;if(k==='aiq'){this.s.aiQ=e.target.value;return}if(k==='cookq'){this.s.cookQ=e.target.value;return}if(k==='exq'){this.s.exQ=e.target.value;return}if(k==='kiurl'){this.s.kiU=e.target.value;return}if(k==='kipw'){this.s.kiP=e.target.value;return}if(k==='stockq'){this.s.stockQ=e.target.value;return}if(k==='shopq'){this.s.shopQ=e.target.value;this.render()}if(k==='recq'){this.s.recQ=e.target.value;this.render()}};
 Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();return}
   if(this.s.ipop&&!e.target.closest('.ipop')){this.s.ipop=null;this.render();return}
   const t=e.target.closest('[data-a]');if(!t||!this.scr.contains(t))return;const s=this.s,a=t.dataset.a,v=t.dataset.v;
@@ -2967,6 +2986,13 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
    case 'fclr':delete s.train[s.fsel];haptic();this.render();break;
    case 'fwk':s.fwk=+v;this.render();break;
    case 'fitai':this.fitAnalyze();break;
+   case 'kiopen':s.kiU=KI?KI.url:'';s.kiP=KI?KI.pw:'';s.kiMsg='';s.kiBusy=false;s.sheet='ki';this.render();break;
+   case 'kioff':KI=null;AI=null;try{localStorage.removeItem(KI_KEY)}catch(e){}s.sheet=null;this.render();this.toast('KI getrennt');break;
+   case 'kisave':{let u=(s.kiU||'').trim();const pw=(s.kiP||'').trim();if(u&&!/^https?:\/\//i.test(u))u='https://'+u;
+      if(!u||!pw){s.kiMsg='Bitte Adresse und Passwort eintragen.';this.render();break}
+      s.kiU=u;s.kiBusy=true;s.kiMsg='';this.render();
+      kiTest({url:u,pw}).then(err=>{s.kiBusy=false;if(err){s.kiMsg=err;this.render();return}
+        KI={url:u,pw};try{localStorage.setItem(KI_KEY,JSON.stringify(KI))}catch(e){}AI=kiRemote(KI);s.kiP='';s.sheet=null;hapticSuccess();this.render();this.toast('KI verbunden')});break}
    case 'fimp':this.fitPhoto();break;
    case 'fimpok':this.fitImport();break;
    case 'fimpretry':if(s.fimp&&s.fimp.file)this.fitPhotoReal(s.fimp.file);break;
