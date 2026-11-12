@@ -20,7 +20,11 @@
  * einfügen lässt (kein Build nötig) – daher fetch statt SDK.
  */
 const ALLOWED_ORIGINS = [&#x27;https://sebastianfink96-alt.github.io&#x27;];
-const MODEL = &#x27;claude-opus-5-5&#x27;;
+/* Kosten: Texte (Analyse, Assistent, Kochfragen) laufen über das günstige Haiku, Fotos über Sonnet (liest kleine Schrift zuverlässiger).
+   Beide mit niedrigem Aufwand (&quot;effort: low&quot;) und knapper Antwortlänge. Wer überall das Günstigste will, setzt MODEL_FOTO auf &#x27;claude-haiku-5-5&#x27;. */
+const MODEL_TEXT = &#x27;claude-haiku-5-5&#x27;;
+const MODEL_FOTO = &#x27;claude-sonnet-5-5&#x27;;
+const MAX_TOKENS = 6000;
 const MAX_BODY = 12 * 1024 * 1024; // 12 MB
 const MAX_IMAGES = 4;
 
@@ -69,23 +73,16 @@ export default {
       ...images.map(data =&gt; ({ type: &#x27;image&#x27;, source: { type: &#x27;base64&#x27;, media_type: &#x27;image/jpeg&#x27;, data } })),
       { type: &#x27;text&#x27;, text: prompt },
     ];
+    const model = images.length ? MODEL_FOTO : MODEL_TEXT;
+    const headers = { &#x27;Content-Type&#x27;: &#x27;application/json&#x27;, &#x27;x-api-key&#x27;: env.ANTHROPIC_API_KEY, &#x27;anthropic-version&#x27;: &#x27;2026-10-21&#x27; };
+    const payload = { model, max_tokens: MAX_TOKENS, output_config: { effort: &#x27;low&#x27; }, messages: [{ role: &#x27;user&#x27;, content }] };
+    if (model === &#x27;claude-sonnet-5-5&#x27;) { // lehnt das Modell ab, übernimmt automatisch ein anderes (bei Haiku nicht verfügbar)
+      headers[&#x27;anthropic-beta&#x27;] = &#x27;server-side-fallback-2026-07-01&#x27;;
+      payload.fallbacks = &#x27;default&#x27;;
+    }
     let r;
     try {
-      r = await fetch(&#x27;https://api.anthropic.com/v1/messages&#x27;, {
-        method: &#x27;POST&#x27;,
-        headers: {
-          &#x27;Content-Type&#x27;: &#x27;application/json&#x27;,
-          &#x27;x-api-key&#x27;: env.ANTHROPIC_API_KEY,
-          &#x27;anthropic-version&#x27;: &#x27;2026-10-21&#x27;,
-          &#x27;anthropic-beta&#x27;: &#x27;server-side-fallback-2026-07-01&#x27;,
-        },
-        body: JSON.stringify({
-          model: MODEL,
-          max_tokens: 16000,
-          fallbacks: &#x27;default&#x27;, // lehnt das Modell ab, übernimmt automatisch ein anderes
-          messages: [{ role: &#x27;user&#x27;, content }],
-        }),
-      });
+      r = await fetch(&#x27;https://api.anthropic.com/v1/messages&#x27;, { method: &#x27;POST&#x27;, headers, body: JSON.stringify(payload) });
     } catch (e) {
       return json({ error: &#x27;Claude ist nicht erreichbar.&#x27; }, 502, origin);
     }
@@ -94,6 +91,7 @@ export default {
       const status = r.status === 429 ? 429 : r.status === 529 || r.status &gt;= 500 ? 503 : 502;
       return json({ error: (data &amp;&amp; data.error &amp;&amp; data.error.message) || &#x27;Fehler bei Claude (&#x27; + r.status + &#x27;).&#x27; }, status, origin);
     }
+    if (data.stop_reason === &#x27;max_tokens&#x27;) return json({ error: &#x27;Antwort zu lang – bitte nochmal versuchen.&#x27; }, 502, origin);
     if (data.stop_reason === &#x27;refusal&#x27;) return json({ error: &#x27;Claude hat die Anfrage abgelehnt.&#x27; }, 422, origin);
     const text = (data.content || []).filter(b =&gt; b.type === &#x27;text&#x27;).map(b =&gt; b.text).join(&#x27;&#x27;);
     return json({ text }, 200, origin);
