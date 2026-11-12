@@ -674,22 +674,31 @@ html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
 /* Abstände im Plan-Kopf */
 .phone.full .prog{margin:12px 0 12px}
 .phone.full .wnav{margin:5px 2px 13px}
-/* V94: KI-Kugel als dunkle Glaskugel mit leuchtenden, sich kreuzenden Lichtblättern */
-.orb,.ai-orb{background:radial-gradient(circle at 50% 42%,#1c1d44 0%,#0b0b22 58%,#04040f 100%)!important}
+/* V96: KI-Kugel – dunkle Glaskugel, innen klare, durchscheinende Lichtflächen (kaum Unschärfe), zwei scharfe Lichtklingen, heller Kern */
+.orb,.ai-orb{background:radial-gradient(circle at 50% 40%,#17183c 0%,#090920 56%,#03030c 100%)!important}
 .orb{box-shadow:0 12px 26px -8px rgba(20,16,60,.55),0 0 20px -4px rgba(90,150,255,.45)}
-.orb-c i{left:50%!important;top:50%!important;right:auto!important;bottom:auto!important;inset:auto;border-radius:50%!important;opacity:1!important;mix-blend-mode:screen!important}
-.orb-c i:nth-child(1){width:96%;height:34%;margin:-17% 0 0 -48%;background:radial-gradient(ellipse at center,rgba(255,255,255,.95) 0,rgba(90,200,255,.95) 22%,rgba(40,110,255,.75) 48%,rgba(40,110,255,0) 72%)!important;filter:blur(1.2px)!important;animation:orbP1 14s linear infinite!important}
-.orb-c i:nth-child(2){width:92%;height:30%;margin:-15% 0 0 -46%;background:radial-gradient(ellipse at center,rgba(255,255,255,.9) 0,rgba(255,110,200,.95) 24%,rgba(190,60,220,.7) 50%,rgba(190,60,220,0) 72%)!important;filter:blur(1.2px)!important;animation:orbP2 19s linear infinite!important}
-.orb-c i:nth-child(3){width:88%;height:26%;margin:-13% 0 0 -44%;background:radial-gradient(ellipse at center,rgba(255,255,255,.85) 0,rgba(90,240,200,.9) 24%,rgba(40,190,170,.6) 50%,rgba(40,190,170,0) 72%)!important;filter:blur(1.4px)!important;animation:orbP3 24s linear infinite!important}
-.orb-c i:nth-child(4){width:100%;height:100%;margin:-50% 0 0 -50%;mix-blend-mode:normal!important;background:radial-gradient(circle at 32% 20%,rgba(255,255,255,.34),rgba(255,255,255,.06) 28%,rgba(255,255,255,0) 44%),radial-gradient(circle at 50% 50%,rgba(4,4,15,0) 52%,rgba(4,4,15,.55) 86%,rgba(4,4,15,.85) 100%)!important;filter:none!important;animation:none!important}
-.orb-g{inset:36%!important;background:radial-gradient(circle,#fff 0,rgba(235,245,255,.85) 28%,rgba(200,225,255,.25) 58%,rgba(255,255,255,0) 76%)!important;filter:blur(.6px)}
+.orb-c i{left:50%!important;top:50%!important;right:auto!important;bottom:auto!important;inset:auto;opacity:1!important;mix-blend-mode:screen!important;filter:none!important}
+/* große blaue Fläche */
+.orb-c i:nth-child(1){width:66%;height:56%;margin:-30% 0 0 -27%;border-radius:58% 42% 50% 50%/55% 60% 40% 45%!important;background:linear-gradient(135deg,rgba(120,225,255,.95) 0%,rgba(60,150,255,.9) 45%,rgba(40,90,230,.55) 100%)!important;animation:orbP1 26s linear infinite!important}
+/* türkis-grüne Fläche */
+.orb-c i:nth-child(2){width:62%;height:44%;margin:-14% 0 0 -30%;border-radius:45% 55% 60% 40%/60% 45% 55% 40%!important;background:linear-gradient(200deg,rgba(150,255,225,.9) 0%,rgba(60,215,190,.8) 50%,rgba(40,160,170,.35) 100%)!important;animation:orbP2 34s linear infinite!important}
+/* magenta Fläche am Rand */
+.orb-c i:nth-child(3){width:50%;height:58%;margin:-26% 0 0 -40%;border-radius:60% 40% 45% 55%/50% 45% 55% 50%!important;background:linear-gradient(160deg,rgba(255,120,200,.75) 0%,rgba(190,70,200,.55) 55%,rgba(120,40,150,.2) 100%)!important;animation:orbP3 40s linear infinite!important}
+/* Glanz + dunkler Rand */
+.orb-c i:nth-child(4){width:100%;height:100%;margin:-50% 0 0 -50%;border-radius:50%!important;mix-blend-mode:normal!important;background:radial-gradient(circle at 32% 18%,rgba(255,255,255,.3),rgba(255,255,255,.05) 26%,rgba(255,255,255,0) 42%),radial-gradient(circle at 50% 50%,rgba(3,3,12,0) 56%,rgba(3,3,12,.5) 84%,rgba(3,3,12,.85) 100%)!important;animation:none!important;z-index:3}
+/* zwei scharfe Lichtklingen */
+.orb-c::before,.orb-c::after{content:'';position:absolute;left:50%;top:50%;mix-blend-mode:screen;z-index:2}
+.orb-c::before{width:74%;height:74%;margin:-37% 0 0 -37%;mix-blend-mode:normal;background:linear-gradient(100deg,rgba(255,90,190,0) 0%,rgba(255,90,190,.95) 30%,#ffd9f0 52%,rgba(255,80,190,.95) 70%,rgba(255,80,190,0) 100%);clip-path:polygon(4% 18%,56% 46%,62% 96%,50% 54%);animation:orbP2 22s linear infinite}
+.orb-c::after{width:74%;height:74%;margin:-37% 0 0 -37%;background:linear-gradient(20deg,rgba(190,240,255,0) 0%,rgba(190,240,255,.9) 45%,#fff 55%,rgba(190,240,255,0) 100%);clip-path:polygon(96% 30%,48% 52%,8% 70%,52% 46%);animation:orbP1 30s linear infinite}
+/* heller Kern */
+.orb-g{inset:39%!important;z-index:2;background:radial-gradient(circle,#fff 0,#fff 30%,rgba(225,245,255,.7) 52%,rgba(200,230,255,0) 78%)!important;filter:none;box-shadow:0 0 10px 4px rgba(210,240,255,.55)}
 .orb .orb-w{display:none}
 .orb::after,.ai-orb::after{box-shadow:inset 0 0 0 1px rgba(255,255,255,.16),inset 0 -8px 14px -8px rgba(0,0,0,.6)!important}
-@keyframes orbP1{from{transform:rotate(-38deg)}to{transform:rotate(322deg)}}
-@keyframes orbP2{from{transform:rotate(52deg)}to{transform:rotate(-308deg)}}
-@keyframes orbP3{from{transform:rotate(98deg)}to{transform:rotate(458deg)}}
-.ai-orb.live .orb-c i{animation-duration:4s!important}
-@media (prefers-reduced-motion:reduce){.orb-c i{animation:none!important}.orb-c i:nth-child(1){transform:rotate(-38deg)}.orb-c i:nth-child(2){transform:rotate(52deg)}.orb-c i:nth-child(3){transform:rotate(98deg)}}
+@keyframes orbP1{from{transform:rotate(-20deg)}to{transform:rotate(340deg)}}
+@keyframes orbP2{from{transform:rotate(15deg)}to{transform:rotate(-345deg)}}
+@keyframes orbP3{from{transform:rotate(40deg)}to{transform:rotate(400deg)}}
+.ai-orb.live .orb-c i,.ai-orb.live .orb-c::before,.ai-orb.live .orb-c::after{animation-duration:5s!important}
+@media (prefers-reduced-motion:reduce){.orb-c i,.orb-c::before,.orb-c::after{animation:none!important}}
 /* V89: Trainingsplan per Foto, Standardwoche */
 .dgh .ind.fr{background:#fff}.dgh .ind.fr svg{display:block;width:100%;height:100%}
 .wd.fd{user-select:none;-webkit-user-select:none;-webkit-touch-callout:none}
