@@ -691,6 +691,11 @@ html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
 @keyframes orbP3{from{transform:rotate(96deg)}to{transform:rotate(456deg)}}
 .ai-orb.live .orb-c i,.ai-orb.live .orb-c::before{animation-duration:5s!important}
 @media (prefers-reduced-motion:reduce){.orb-c i,.orb-c::before{animation:none!important}.orb-c i:nth-child(1){transform:rotate(-24deg)}.orb-c i:nth-child(2){transform:rotate(38deg)}.orb-c i:nth-child(3){transform:rotate(96deg)}}
+/* V102: Auswärts-Tag wirkt gewählt – getönte Fläche, Servierglocke, Haken */
+.phone .wd .ind.out{background:linear-gradient(145deg,#F8E6E9,#E9C6CC)!important;color:var(--a-eyebrow)!important;box-shadow:0 0 0 2px #fff,0 6px 12px -6px rgba(var(--a-glow),.5)!important}
+.wd .ind.out>.ic{width:17px;height:17px;stroke-width:1.7}
+.phone .wd.on .ind.out{background:rgba(255,255,255,.94)!important;color:var(--a-eyebrow)!important;box-shadow:0 0 0 2px rgba(255,255,255,.85),0 6px 12px -6px rgba(30,20,90,.5)!important}
+.dgh .ind.out{background:linear-gradient(145deg,#F8E6E9,#E9C6CC);color:var(--a-eyebrow)}
 /* V89: Trainingsplan per Foto, Standardwoche */
 .fsw{margin-top:12px;border-radius:20px;padding:12px;background:rgba(0,96,57,.07)}
 .fsw-h{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#006039;margin-bottom:4px}
@@ -1379,7 +1384,7 @@ down:'<path d="m6 9 6 6 6-6"/>', right:'<path d="m9 6 6 6-6 6"/>',
   cloud:'<path d="M7 18.5h10a4 4 0 0 0 .6-7.95A5.5 5.5 0 0 0 7 11a3.75 3.75 0 0 0 0 7.5z"/>',
   run:'<circle cx="14" cy="4.8" r="1.8"/><path d="M8 21l3-6 3 2.5V21M6 12l3-3.5 4 1.5 2.5 3 3 .5"/>',
   /* Außer Haus: Gabel + Messer */
-  out:'<path d="M7 3v7a2 2 0 0 0 2 2h0a2 2 0 0 0 2-2V3M9 3v18"/><path d="M17 21V3c-2 1-3 3.5-3 6.5V13h3"/>',
+  out:'<path d="M4.5 16.5a7.5 7.5 0 0 1 15 0"/><path d="M3 16.5h18"/><path d="M5 19.5h14"/><path d="M12 9V7.6"/><circle cx="12" cy="6.2" r="1.3"/>',
   pencil:'<path d="M4 20h4L19 9a2.1 2.1 0 0 0-4-4L4 16z"/><path d="m13.5 6.5 4 4"/>',
   chef:'<path d="M7 14.5V20h10v-5.5"/><path d="M7 14.5a4 4 0 0 1-.7-7.9A5 5 0 0 1 12 3.5a5 5 0 0 1 5.7 3.1 4 4 0 0 1-.7 7.9"/><path d="M7 17h10"/>'
 };
@@ -1745,7 +1750,8 @@ function buildShop(plan,persons,keep){
 const stockKey=t=>{const p=prodOf(String(t.name).replace(/erd(ä|a)pfel/i,'Kartoffeln').replace(/paradeiser/i,'Tomate'),t.u||'');return p||null};
 const stem5=w=>String(w).toLowerCase().replace(/\(.*?\)/g,'').replace(/[^a-zäöüß]/g,'').slice(0,5);
 /* Einträge in den Vorrat legen. mode 'set' = Foto (aktueller Stand ersetzt), 'add' = Kassenbon/Einkauf (kommt dazu) */
-function stockPut(stock,items,mode){let n=0;items.forEach(it=>{if(!it||!it.name)return;const k=stockKey(it);
+function stockPut(stock,items,mode){return 0; /* V102: Vorratsfunktion abgeschaltet – der Vorrat bleibt leer */
+  let n=0;items.forEach(it=>{if(!it||!it.name)return;const k=stockKey(it);
     let o=stock.find(x=>{const kx=stockKey(x);return (k&&kx&&k.key===kx.key&&k.key.startsWith('p:'))||x.name.toLowerCase()===it.name.toLowerCase()});
     if(!o){stock.push({name:it.name,q:+it.q||0,u:it.u||''});n++;return}
     if(mode==='add'&&o.u===(it.u||'')&&o.q&&it.q)o.q+=+it.q;else if(it.q||mode==='set'){o.q=+it.q||o.q||0;o.u=it.q?(it.u||''):o.u}});return n}
@@ -1816,7 +1822,7 @@ Phone.prototype.reset=function(init){
   if(this.opts.persist){const d=data.load();if(d){ /* gespeicherten Stand übernehmen; Plan-Daten in Tages-Indizes umrechnen, Vergangenes fällt weg */
       s.plan={};Object.entries(d.plan||{}).forEach(([iso,id])=>{const i=idxOf(iso);if(i>=0&&i<NDAYS&&(RM[id]||id===OUT))s.plan[i]=id});
       if(Array.isArray(d.shop))s.shop=d.shop;if(Array.isArray(d.favs))s.favs=new Set(d.favs);
-      if(d.persons)s.persons=d.persons;if(d.done)s.done=d.done;if(d.learn)s.learn=d.learn;if(Array.isArray(d.stock))s.stock=d.stock;
+      if(d.persons)s.persons=d.persons;if(d.done)s.done=d.done;if(d.learn)s.learn=d.learn;
       if(d.extra){s.extra={};Object.entries(d.extra).forEach(([iso,v])=>{const i=idxOf(iso);if(i>=0&&i<NDAYS&&v)s.extra[i]=v})}
       if(d.train||d.tx){s.train={};s.tx={}; /* Training außerhalb der zwei Wochen (Vorwoche, spätere Wochen aus dem Trainingsplan) bleibt in tx erhalten */
         Object.entries(Object.assign({},d.tx||{},d.train||{})).forEach(([iso,v])=>{if(!v)return;const i=idxOf(iso);if(i>=0&&i<NDAYS)s.train[i]=v;else if(i>=-7)s.tx[iso]=v})}
@@ -2293,7 +2299,7 @@ Phone.prototype.vPill=function(i){const s=this.s;const id=s.plan[i];const r=RM[i
   const X=s.extra[i]||{};const xd=X.b||X.d?`<span class="xds">${X.b?'<i class="b"></i>':''}${X.d?'<i class="d"></i>':''}</span>`:'';
   let ind;
   if(r)ind=`<span class="ind" style="background:radial-gradient(circle at 35% 30%,${r.t[0]},${r.t[1]})">${r.img?`<img src="${r.img}" alt="">`:r.e}<span class="ok">${ic('check')}</span>${xd}</span>`;
-  else if(id===OUT)ind=`<span class="ind out">${ic('out')}${xd}</span>`;
+  else if(id===OUT)ind=`<span class="ind out">${ic('out')}<span class="ok">${ic('check')}</span>${xd}</span>`;
   else ind=`<span class="ind empty">${ic('plus')}${xd}</span>`;
   const label=`${dayLbl(i)}: ${r?r.n:id===OUT?'auswärts':'noch frei'}${i===TODAY?' (heute)':''}`;
   return `<button class="wd ${i===TODAY?'today':''} ${s.sel===i?'on':''} ${s.sel===i&&this.pop?'pop':''}" data-a="day" data-i="${i}" aria-label="${label}"><span class="a">${i===TODAY?'HEUTE':ab(i)}</span><span class="n">${String(dt(i)).padStart(2,'0')}</span>${ind}</button>`};
@@ -2618,7 +2624,7 @@ Phone.prototype.vShop=function(){const s=this.s;const all=s.shop.filter(x=>!x.do
    <div class="eb">KW ${KW(s.shopWk||0)} · für ${s.persons} ${s.persons===1?"Person":"Personen"}</div>
    <h1 class="ap-h1">Einkaufsliste. <span>${open.length?`${open.length} offen.`:s.shop.length?'Alles erledigt.':'Noch leer.'}</span></h1>
    <div class="seg" role="group" aria-label="Woche für die Einkaufsliste">${[0,1].map(w=>`<button class="${(s.shopWk||0)===w?'on':''}" data-a="shopwk" data-v="${w}">${w?'Nächste Woche':'Diese Woche'}<small>KW ${KW(w)}</small></button>`).join('')}</div>
-   <div class="srow"><button class="pill" data-a="regen">${ic('refresh')}Aus Wochenplan</button><button class="pill" data-a="sheet" data-v="stock">${ic('box')}Vorrat${s.stock.length?` · ${s.stock.length}`:''}</button><button class="pill icononly" data-a="share" aria-label="Als Text teilen">${ic('share')}</button>${open.length?`<button class="pill allb" data-a="allbought">${ic('check')}Alles eingekauft</button>`:''}</div>
+   <div class="srow"><button class="pill" data-a="regen">${ic('refresh')}Aus Wochenplan</button><button class="pill icononly" data-a="share" aria-label="Als Text teilen">${ic('share')}</button>${open.length?`<button class="pill allb" data-a="allbought">${ic('check')}Alles eingekauft</button>`:''}</div>
    <div class="search">${ic('plus')}<input data-k="shopq" placeholder="Artikel hinzufügen" value="${s.shopQ.replace(/"/g,'&quot;')}" aria-label="Artikel hinzufügen"></div>
    ${sug}
    ${open.length?AISLES.map(([k,l,e])=>{const g=open.filter(x=>aisleOf(x.name)===k);return g.length?`<h2 class="ap-h2 sh rv">${l}. <span>${g.length} ${g.length===1?'Artikel':'Artikel'}.</span></h2><div class="tiles rv">${g.map(x=>tile(x)).join('')}</div>`:''}).join(''):`<div class="empty-st" style="padding:20px">${s.shop.length?'Alles erledigt.':'Noch nichts auf der Liste.<br>Tippe auf „Aus Wochenplan“ oder füge Artikel hinzu.'}</div>`}
@@ -2944,9 +2950,7 @@ Phone.prototype.vAI=function(){const s=this.s,a=s.ai||{step:'idle'};
   const plate2=r=>plate(r,56);
   let body='';
   if(a.step==='idle'){body=`<div class="ai-ex"><div class="ai-chip two">${ic('spark')}<span>${AI_EX.map(([k,t])=>`<button data-a="aiex" data-q="${k}">„${t}“</button>`).join('')}</span></div>
-      <button class="ai-chip" data-a="aiphoto">${ic('cam')}<span>Foto meiner Zutaten – was kann ich kochen?</span></button>
-      ${s.stock.length?`<button class="ai-chip" data-a="stockcook">${ic('box')}<span>Mit meinem Vorrat kochen · ${s.stock.length} Artikel</span></button>`:''}
-      <button class="ai-chip" data-a="aireceipt">${ic('receipt')}<span>Kassenbon scannen – Einkauf in den Vorrat</span></button></div>
+      <button class="ai-chip" data-a="aiphoto">${ic('cam')}<span>Foto meiner Zutaten – was kann ich kochen?</span></button></div>
     <div class="ai-in"><input data-k="aiq" enterkeyhint="send" placeholder="Wunsch tippen oder diktieren" value="${(s.aiQ||'').replace(/"/g,'&quot;')}" aria-label="Wunsch eingeben"><button class="ai-mic" data-a="aisend" aria-label="Senden">${ic('send')}</button></div>`}
   else if(a.step==='listen'){body=`<p class="ai-tr">${a.shown||''}</p><div class="ai-wave">${'<i></i>'.repeat(18)}</div>`}
   else if(a.step==='think'){body=`<p class="ai-tr done">„${a.text||'Zutaten'}“</p><div class="ai-dots"><i></i><i></i><i></i></div>`}
@@ -2958,7 +2962,7 @@ Phone.prototype.vAI=function(){const s=this.s,a=s.ai||{step:'idle'};
       ${a.receipt||a.toStock?`<p class="ai-note">${a.manual?'':'Alles Erkannte ist schon markiert – tippe ab, was nicht stimmt. '}Die Artikel kommen in deinen Vorrat. Die Einkaufsliste zieht sie automatisch ab.</p>
       <button class="gbtn" style="width:100%;margin-top:14px" data-a="aistock">${ic('box')}In den Vorrat legen${a.have.length?` (${a.have.length})`:''}</button>
       ${a.receipt?'':`<button class="ai-again" data-a="aifind">Stattdessen Gerichte finden</button>`}`
-      :`<p class="ai-note">Salz, Pfeffer, Öl und Gewürze setze ich als vorhanden voraus. Was du auswählst, merke ich mir im Vorrat.</p>
+      :`<p class="ai-note">Salz, Pfeffer, Öl und Gewürze setze ich als vorhanden voraus.</p>
       <button class="gbtn" style="width:100%;margin-top:14px" data-a="aifind">${ic('spark')}Gerichte finden</button>`}`}
   else if(a.step==='result'){
     if(a.msg)body+=`<p class="ai-msg">${a.msg.replace(/</g,'&lt;')}</p>`;
@@ -3157,7 +3161,6 @@ const SCREENS=[
  ['Lernkarten',{screen:'deck',deck:'sauce'},['Karten rasten senkrecht ein: nach oben wischen = nächste Karte','Emoji, Überschrift, kurzer Text und Tipp','Am Ende: weiter zur nächsten Kartei']],
  ['Einkaufsliste',{screen:'shop',shopFromPlan:true},['Oben wählen: Diese Woche oder Nächste Woche (z. B. am Samstag für die Folgewoche einkaufen)','Kachel antippen = gekauft, wandert nach unten','„Alles eingekauft“ oben rechts hakt alles auf einmal ab','Artikel suchen mit Vorschlägen oder freiem Text','„Aus Wochenplan“ zählt Zutaten zusammen, eigene Artikel bleiben','„Als Text teilen“ z. B. für WhatsApp oder Notizen']],
  ['Mein Fitnessbereich',{screen:'fit',fsel:2,train:{0:{s:{k:['run'],lv:2}},1:{k:{lv:3}},2:{s:{k:['bike'],lv:3},m:{k:['stretch']}},4:{k:{lv:2},m:{k:['yoga']}},5:{s:{k:['tennis'],lv:1}},8:{s:{k:['swim'],lv:2}},10:{k:{lv:2}}},plan:FULL},['Im Essensplan nach oben wischen: Seite dreht sich wie ein Würfel','Zwei Wochen untereinander, Ringe je Tag: Sport, Kraft, Mobilität','Aktivität antippen, gedrückt halten = Intensität','KI-Analyse vergleicht Training und Essensplan','Der Würfel im Essensplan wählt passend zum Training']],
- ['Vorrat',{screen:'shop',shopFromPlan:true,plan:FULL,sheet:'stock',stock:[{name:'Erdäpfel',q:3,u:'Stk'},{name:'Feta',q:150,u:'g'},{name:'Eier',q:6,u:'Stk'},{name:'Basmatireis',q:500,u:'g'},{name:'Tomate',q:.75,u:'Stk'}]},['Zutaten vom Foto und vom Kassenbon bleiben gespeichert','Die Einkaufsliste zieht den Vorrat automatisch ab','„Was kann ich damit kochen?“ ohne neues Foto']],
  ['Koch-Assistent',{screen:'detail',did:'n01',dday:2,sheet:'cook',plan:{0:'n02',1:'r2'}},['„Fragen“ bei der Zubereitung öffnet den Assistenten','Zutat antippen = Ersatz vorschlagen','„Vorlesen“ liest die Schritte laut vor']],
  ['Energiedichte erklärt',{sheet:'energy'},['Öffnet sich bei jedem Antippen eines Energie-Symbols','3 Stufen: Leicht, Ausgewogen, Energiereich']],
  ['Einstellungen',{screen:'settings'},['Personenzahl für alle Mengen','Intro erneut ansehen, Plan leeren','Rezept-Quelle: jetzt lokal, später online','Vorlese-Stimme wählen, Mein Fitnessbereich öffnen']]
