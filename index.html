@@ -749,6 +749,11 @@ html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
 .det.rz .step b{width:46px;font-size:32px;line-height:1.05}
 .rz-st p{line-height:1.4}
 .det.rz .sing{margin:8px 0 0;gap:8px 16px}
+/* V122: Erklärung zur Wisch-Vorschau (nur einmal, direkt nach dem Intro) */
+.swc{position:absolute;left:20px;right:20px;top:calc(env(safe-area-inset-top,0px) + 76px);z-index:210;pointer-events:none;padding:14px 18px;border-radius:22px;text-align:center;color:#fff;background:rgba(30,32,44,.5);-webkit-backdrop-filter:blur(16px) saturate(1.4);backdrop-filter:blur(16px) saturate(1.4);box-shadow:inset 0 0 0 1px rgba(255,255,255,.28),0 18px 34px -18px rgba(20,20,40,.6);opacity:0;transform:translateY(-8px);transition:opacity .45s ease,transform .45s ease}
+.swc.on{opacity:1;transform:none}
+.swc b{display:block;font-size:17px;font-weight:600;letter-spacing:-.02em;margin-bottom:3px}
+.swc span{font-size:13.5px;line-height:1.4;opacity:.92}
 /* V107: Begrüßung beim Start + Namensfeld im Intro und unten in den Einstellungen */
 .hello{position:absolute;inset:0;z-index:200;display:grid;place-items:center;text-align:center;padding:0 28px;border-radius:inherit;overflow:hidden;
   background:linear-gradient(160deg,rgba(120,52,72,.2),rgba(60,30,50,.16));-webkit-backdrop-filter:blur(1.5px);backdrop-filter:blur(1.5px);animation:helloIn .4s ease both;transition:opacity .5s ease}
@@ -1934,7 +1939,7 @@ function Phone(host,init,opts){
   let wheelT=0;this.scr.addEventListener('wheel',e=>{const s=self.s;if(s.sheet||!['plan','fit'].includes(s.screen)||performance.now()-wheelT<900)return;const v=self.scr.querySelector('.view');if(!v)return;
     if(s.screen==='plan'&&e.deltaY>30&&v.scrollTop+v.clientHeight>=v.scrollHeight-2){wheelT=performance.now();self.flip('fit')}
     else if(s.screen==='fit'&&e.deltaY<-30&&v.scrollTop<=0){wheelT=performance.now();self.flip('plan')}},{passive:true});
-  if(this.opts.full){const g=this.greet();setTimeout(()=>self.swipeHint(),g?3000:2200)}
+  if(this.opts.full)this.greet(); /* Wisch-Vorschau nur noch einmal: als letzter Schritt nach dem Intro */
   if(this.opts.full){this.ph.classList.add('full');this.k=1;return} /* Vollbild-App: kein Rahmen, keine Skalierung */
   const fit=()=>{const k=host.clientWidth/410;this.k=k;this.ph.style.transform=`scale(${k})`;host.style.height=(864*k)+'px'};
   new ResizeObserver(fit).observe(host);fit();
@@ -2333,9 +2338,10 @@ Phone.prototype.swipeHint=function(){const s=this.s,scr=this.scr,self=this;if(th
      wirklich zum Fitnessbereich und nach einem Moment wieder zurück zum Essensplan */
   const x=scr.clientWidth/2,y=scr.clientHeight/2+150; /* mittig: von unterhalb der Mitte 300 px nach oben */
   const fg=document.createElement('i');fg.className='swf';fg.setAttribute('aria-hidden','true');fg.style.left=x+'px';fg.style.top=y+'px';this.ph.appendChild(fg);
+  const cap=document.createElement('div');cap.className='swc';cap.innerHTML='<b>Zwei Seiten, ein Wisch</b><span>Nach oben wischen: Mein Fitnessbereich.<br>Nach unten wischen: zurück zum Essensplan.</span>';this.ph.appendChild(cap);requestAnimationFrame(()=>cap.classList.add('on'));
   /* ein einziger Würfel: weich hinauf zum Fitnessbereich, kurzer Halt, weich zurück – ohne Neuaufbau dazwischen */
   let c=null,raf=0,done=false,tm=0;const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
-  const end=()=>{if(done)return;done=true;clearTimeout(tm);cancelAnimationFrame(raf);fg.classList.remove('on');scr.removeEventListener('pointerdown',end,true);scr.removeEventListener('touchstart',end,true);setTimeout(()=>fg.remove(),450);
+  const end=()=>{if(done)return;done=true;clearTimeout(tm);cancelAnimationFrame(raf);fg.classList.remove('on');scr.removeEventListener('pointerdown',end,true);scr.removeEventListener('touchstart',end,true);setTimeout(()=>fg.remove(),450);setTimeout(()=>{cap.classList.remove('on');setTimeout(()=>cap.remove(),500)},c?600:1400);
     if(c){const p=c.p;c.finish(false,Math.max(.05,.35*p));c=null}};
   scr.addEventListener('pointerdown',end,true);scr.addEventListener('touchstart',end,{capture:true,passive:true});requestAnimationFrame(()=>fg.classList.add('on'));
   const run=(from,to,ms,after)=>{const t0=performance.now();const step=now=>{if(done)return;const t=Math.min(1,(now-t0)/ms),p=from+(to-from)*ease(t);c.setP(p);if(to>from)fg.style.translate=`0 ${-300*p}px`;if(t<1)raf=requestAnimationFrame(step);else after()};raf=requestAnimationFrame(step)};
@@ -3357,7 +3363,7 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
   }
 };
 Phone.prototype.finishIntro=function(){if(this.opts.persist)store.set(true);this.s.ip=0;this.goPlanToday();this.render();this.save();
-  if(this.opts.full){const g=this.greet();setTimeout(()=>this.swipeHint(),g?3000:2200)}};
+  if(this.opts.full){const g=this.greet();this.hinted=false;setTimeout(()=>this.swipeHint(),g?2600:900)}};
 /* Begrüßung beim Start: Milchglas-Fläche, Name erscheint Buchstabe für Buchstabe aus der Unschärfe, blendet von selbst aus */
 Phone.prototype.greet=function(){const s=this.s,n=(s.prof&&s.prof.name||'').trim();if(!n||s.screen!=='plan'||s.sheet)return false;
   const d=document.createElement('div');d.className='hello';d.setAttribute('role','status');
