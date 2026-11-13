@@ -734,6 +734,21 @@ html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
 .rz-st p{margin:0;font-size:16px;line-height:1.45;color:#1D1D1F;letter-spacing:-.01em}
 .det.rz .step.ok .rz-st p{color:#9A9AA0}
 .det.rz .sing{margin:10px 0 0}
+/* V121: gleichmäßige Abstände auf der Rezeptseite, Vorlesen/Fragen unter der Überschrift */
+.rz-ing{margin-top:10px}
+.rz-ir{height:60px;padding:0!important;gap:12px}
+.rz-ir .e{width:28px}
+.rz-ir .n{line-height:1.2}
+.rz-ir .n small{margin-top:2px}
+.det.rz .rz-eb2{margin-top:34px}
+.rz-t2{margin:6px 0 0!important}
+.rz-act{justify-content:flex-start!important;margin:14px 0 6px!important}
+.det.rz .step{padding:16px 0}
+.det.rz .step:first-child{padding-top:12px}
+.det.rz .step .stx{gap:10px}
+.det.rz .step b{width:46px;font-size:32px;line-height:1.05}
+.rz-st p{line-height:1.4}
+.det.rz .sing{margin:8px 0 0;gap:8px 16px}
 /* V107: Begrüßung beim Start + Namensfeld im Intro und unten in den Einstellungen */
 .hello{position:absolute;inset:0;z-index:200;display:grid;place-items:center;text-align:center;padding:0 28px;border-radius:inherit;overflow:hidden;
   background:linear-gradient(160deg,rgba(120,52,72,.2),rgba(60,30,50,.16));-webkit-backdrop-filter:blur(1.5px);backdrop-filter:blur(1.5px);animation:helloIn .4s ease both;transition:opacity .5s ease}
@@ -2722,9 +2737,9 @@ Phone.prototype.vDetail=function(){const s=this.s;const r=RM[s.did];const cat=CA
      const main=r.i.filter(x=>x[1]),sp=r.i.filter(x=>!x[1]);
      return main.map(([n,q,u])=>`<div class="rz-ir"><span class="e">${emo(n)}</span><span class="n">${nm(n)}${sub(n)}</span><b>${fq(q*s.persons,u)}</b></div>`).join('')
       +(sp.length?`<div class="rz-ir"><span class="e">🧂</span><span class="n">${sp.map(x=>nm(x[0])).join(', ')}<small>Gewürze nach Geschmack</small></span><b></b></div>`:'')})()}</div>
-   <div class="rz-act"><button class="pill sm${this.speaking?' on':''}" data-a="speak">${ic(this.speaking?'stop':'vol')}${this.speaking?'Stopp':'Vorlesen'}</button><button class="pill sm ask" data-a="cook">${ic('spark')}Fragen</button></div>
-   <div class="eb">Zubereitung</div>
+   <div class="eb rz-eb2">Zubereitung</div>
    <h2 class="ap-h1 rz-t2">So gelingt's. <span>Schritt für Schritt.</span></h2>
+   <div class="rz-act"><button class="pill sm${this.speaking?' on':''}" data-a="speak">${ic(this.speaking?'stop':'vol')}${this.speaking?'Stopp':'Vorlesen'}</button><button class="pill sm ask" data-a="cook">${ic('spark')}Fragen</button></div>
    <div class="steps">${(()=>{const M=stepIngs(r);return r.st.map((t,k)=>`<div class="step${(s.done[r.id]||[]).includes(k)?' ok':''}" data-a="stepok" data-k="${k}" role="button" aria-label="Schritt ${k+1} abhaken"><div class="stx"><b><span class="n">${String(k+1).padStart(2,'0')}</span>${ic('check','ck')}</b><div class="rz-st"><p>${t}</p>${M[k].length?`<div class="sing">`:''}${M[k].map(j=>{const [n,q,u]=r.i[j];const nm=n.replace(/\s*\(.*?\)/g,'');return `<span class="sic"><span class="em">${emo(n)}</span><span class="st"><span>${nm}</span><i>${q?fq(q*s.persons,u):'n. G.'}</i></span></span>`}).join('')}${M[k].length?'</div>':''}</div></div></div>`).join('')})()}</div>
   </div></div>
   <div class="swipehint"></div>
