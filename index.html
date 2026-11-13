@@ -3716,11 +3716,14 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
 Phone.prototype.finishIntro=function(){if(this.opts.persist)store.set(true);this.s.ip=0;this.goPlanToday();this.render();this.save();
   if(this.opts.full)this.greet()};
 /* Begrüßung beim Start: Milchglas-Fläche, Name erscheint Buchstabe für Buchstabe aus der Unschärfe, blendet von selbst aus */
+/* V141: Begrüßung startet 1 s nach dem Öffnen, „schön, dass du da bist!“ nach 1,5 s */
 Phone.prototype.greet=function(){const s=this.s,n=(s.prof&&s.prof.name||'').trim();if(!n||s.screen!=='plan'||s.sheet)return false;
+  clearTimeout(this.greetT);this.greetT=setTimeout(()=>this.greetNow(),1000);return true};
+Phone.prototype.greetNow=function(){const s=this.s,n=(s.prof&&s.prof.name||'').trim();if(!n||s.screen!=='plan'||s.sheet||this.ph.querySelector('.hello'))return false;
   const d=document.createElement('div');d.className='hello';d.setAttribute('role','status');
   const L=('Hallo '+n).split('').map((c,i)=>`<i style="animation-delay:${(.06+i*.02).toFixed(3)}s">${c===' '?'&nbsp;':c.replace(/&/g,'&amp;').replace(/</g,'&lt;')}</i>`).join('');
   d.innerHTML=`<div><h2 style="font-size:${Math.max(30,Math.min(60,Math.floor(640/(n.length+6))))}px" aria-label="Hallo ${n.replace(/"/g,'&quot;')}">${L}</h2><p>schön, dass du da bist!</p></div>`;this.ph.appendChild(d);
-  const off=()=>{if(d.classList.contains('out'))return;d.classList.add('out');setTimeout(()=>d.remove(),520)};d.addEventListener('pointerdown',off);setTimeout(off,1400);return true};
+  const off=()=>{if(d.classList.contains('out'))return;d.classList.add('out');setTimeout(()=>d.remove(),520)};d.addEventListener('pointerdown',off);setTimeout(off,1700);return true};
 
 /* ---------- Übersicht ---------- */
 const FULL={0:'n02',1:'n07',2:'n16',3:OUT,4:'n01',5:'n13',6:'r2'};
