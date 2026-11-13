@@ -3348,7 +3348,7 @@ async function kiTest(cfg){let r;try{r=await fetch(cfg.url,{headers:{'Authorizat
 const SIL='data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQAAAAA=';
 /* V126: Standard-Stimme „Mrs. Sophie – Friendly & professional“ (ElevenLabs) */
 /* V131: Auswahl aus zwei ElevenLabs-Stimmen. Die Namen sind Sebastians Zuordnung; der Worker (ab V131) liefert die echten Namen von ElevenLabs nach (vNames) */
-const VOICES=[['EXAVITQu4vr4xnSDxMaL','Sarah','Warm und ruhig · kostenlos']];
+const VOICES=[['EXAVITQu4vr4xnSDxMaL','Sarah','Warm und ruhig · kostenlos'],['EJ8WfuiSBF5VrCKgbcXW','Annabel','Deine eigene Stimme']];
 const STD_VOICE=VOICES[0][0];
 /* V135: früher angebotene Stimmen (Akzent bzw. nur mit Abo) wieder auf Sarah zurückstellen */
 if(KI&&['h8PCn0HukMaFj1sJwcjY','R24r0IV80Iw9eyByq1ps','cgSgspJ2msm4clMCkdW9','FGY2WhTYpPnrIDTdsKH5','XrExE9yKIg1WjnnlVkGX','pFZP5JQG7iQjIQuC4Bku','Xb7hH8MSUJpSvfVCaDPf'].includes(KI.voice)){KI.voice='';try{localStorage.setItem(KI_KEY,JSON.stringify(KI))}catch(e){}}let vNames={},kiUsed='',kiFree=false;
