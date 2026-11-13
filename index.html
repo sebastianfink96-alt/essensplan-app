@@ -2342,7 +2342,7 @@ const pfText=s=>{const a=PF_SPORT.find(x=>x[0]===s.prof.sport),b=PF_GOAL.find(x=
 /* V127: Sportart, Saisonziele (max. 3) und Saisonphasen */
 Object.assign(P,{f_tri:'<circle cx="5.8" cy="14.6" r="3.3"/><circle cx="12" cy="8.6" r="3.3"/><circle cx="18.2" cy="14.6" r="3.3"/>',flag:'<path d="M5.5 21V3.6"/><path d="M5.5 4.6c2.4-1.4 4.6-1.4 7 0s4.6 1.4 7 0v8.6c-2.4 1.4-4.6 1.4-7 0s-4.6-1.4-7 0"/>'});
 const PF_DISC=[['rad','Rennrad','Straße & Pässe','f_bike'],['lauf','Laufen','Straße & Trail','f_run'],['schwimm','Schwimmen','Becken & Freiwasser','f_swim'],['tri','Triathlet','Swim · Bike · Run','f_tri'],['kraft','Kraftsportler','Gewichte & Kraft','f_kraft'],['yoga','Yoga','Beweglichkeit & Ruhe','f_mob'],['ballett','Ballett','Tanz & Haltung','f_ballett']];
-const DCOL={rad:FA.bike,lauf:FA.run,schwimm:FA.swim,tri:FA.swim,kraft:FA.kraft,yoga:FA.mob,ballett:FA.ballett},DGRAD={tri:'linear-gradient(135deg,#2F9BE6,#FF6A55 55%,#F5A623)'};
+const DCOL={rad:FA.bike,lauf:FA.run,schwimm:FA.swim,tri:FA.swim,kraft:FA.kraft,yoga:'#E5484D',ballett:FA.ballett},DGRAD={tri:'linear-gradient(135deg,#2F9BE6,#FF6A55 55%,#F5A623)'};
 const discOpts=(cur,cls='')=>`<div class="pf-opts c3 fit disc ${cls}">${PF_DISC.map(([k,t,sub,icn])=>`<button class="pf-o ${cur===k?'on':''}" style="--c:${DCOL[k]}${DGRAD[k]?';--g:'+DGRAD[k]:''}" data-a="pfdisc" data-v="${k}" aria-pressed="${cur===k}"><span class="pf-oi">${ic(icn)}</span><b>${t}</b><i>${ic('check')}</i></button>`).join('')}</div>`;
 const PH=[['g','Grundlage','#7DAFE3','Ruhig und lang – Ausdauer aufbauen'],['a','Aufbau','#2E9E6B','Mehr Umfang, erste harte Einheiten'],['s','Spezifisch','#F0A03A','Wettkampfnah trainieren'],['t','Tapering','#E0688C','Weniger Umfang, frisch werden']];
 const phOf=k=>PH.find(x=>x[0]===k);
