@@ -28,7 +28,7 @@ const MODEL_TEXT = &#x27;claude-haiku-5-5&#x27;;
 const MODEL_FOTO = &#x27;claude-sonnet-5-5&#x27;;
 const MAX_TOKENS = 6000;
 /* Vorlesen: warme Frauenstimme „Sarah“, günstiges Modell (halber Preis je Zeichen gegenüber dem größten Modell). */
-const STIMME = &#x27;R24r0IV80Iw9eyByq1ps&#x27;; // Mrs. Sophie – Friendly &amp; professional
+const STIMME = &#x27;h8PCn0HukMaFj1sJwcjY&#x27;; // Standard, falls die App keine Stimme mitschickt (zweite Stimme: R24r0IV80Iw9eyByq1ps)
 const STIMME_MODELL = &#x27;eleven_turbo_v2_5&#x27;;
 const MAX_VORLESEN = 1500; // Zeichen je Anfrage
 const MAX_BODY = 12 * 1024 * 1024; // 12 MB
@@ -64,7 +64,21 @@ export default {
     const given = auth.startsWith(&#x27;Bearer &#x27;) ? auth.slice(7) : &#x27;&#x27;;
     if (!given || !(await samePassword(given, env.APP_PASSWORD))) return json({ error: &#x27;Falsches Passwort.&#x27; }, 401, origin);
 
-    if (request.method === &#x27;GET&#x27;) return json({ ok: true, stimme: !!env.ELEVENLABS_API_KEY }, 200, origin); // Verbindungstest der App
+    if (request.method === &#x27;GET&#x27;) {
+      const want = new URL(request.url).searchParams.get(&#x27;voices&#x27;);
+      if (want &amp;&amp; env.ELEVENLABS_API_KEY) { // Namen der Stimmen bei ElevenLabs nachschlagen (für die Auswahl in der App)
+        const names = {};
+        for (const id of want.split(&#x27;,&#x27;).filter(x =&gt; /^[A-Za-z0-9]{10,40}$/.test(x)).slice(0, 6)) {
+          try {
+            const v = await fetch(&#x27;https://api.elevenlabs.io/v1/voices/&#x27; + id, { headers: { &#x27;xi-api-key&#x27;: env.ELEVENLABS_API_KEY } });
+            const d = v.ok ? await v.json() : null;
+            if (d &amp;&amp; d.name) names[id] = d.name;
+          } catch (e) {}
+        }
+        return json({ ok: true, stimme: true, names }, 200, origin);
+      }
+      return json({ ok: true, stimme: !!env.ELEVENLABS_API_KEY }, 200, origin); // Verbindungstest der App
+    }
     if (request.method !== &#x27;POST&#x27;) return json({ error: &#x27;Nicht erlaubt.&#x27; }, 405, origin);
 
     const raw = await request.text();

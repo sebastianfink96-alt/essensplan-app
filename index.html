@@ -1531,6 +1531,18 @@ img,svg{-webkit-user-drag:none}
 .pf-av{z-index:3}
 .pf-head.big .pf-av{width:240px!important;height:240px!important;min-width:240px!important;max-width:240px!important;min-height:240px!important;max-height:240px!important;margin:0 -142px -142px 0!important;align-self:flex-start!important;box-shadow:0 0 0 5px #fff,0 30px 50px -22px rgba(var(--a-glow),.8)}
 .pf-head.big .pf-cam{right:14px;bottom:14px;width:40px;height:40px}
+
+/* V131: Stimmen-Auswahl */
+.vsel{display:flex;flex-direction:column;gap:8px}
+.vs-o{border:0;border-radius:20px;background:#fff;padding:12px 14px;display:flex;align-items:center;gap:12px;text-align:left;color:#1D1D1F;box-shadow:0 0 0 1px rgba(0,0,0,.06),0 12px 24px -20px rgba(60,40,60,.5)}
+.vs-i{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:rgba(var(--a-glow),.1);color:var(--a-eyebrow);flex:none}
+.vs-i .ic{width:18px;height:18px}
+.vs-t{display:flex;flex-direction:column;min-width:0;flex:1}
+.vs-t b{font-size:15.5px;font-weight:600;letter-spacing:-.015em}
+.vs-t small{font-size:12px;color:#86868B}
+.vs-o>i .ic{width:16px;height:16px;color:#86868B}
+.vs-o.on{box-shadow:0 0 0 2px rgba(var(--a-glow),.55),0 12px 24px -20px rgba(60,40,60,.5)}
+.vs-o.on .vs-i{background:var(--a-deep,var(--a-grad));color:#fff}
 </style>
 
 <div class="page">
@@ -2390,6 +2402,11 @@ ${fcoCtx(s)}
 
 Frage: ${q}`,{modelTier:'default'});const txt=String(res&&res.text!==undefined?res.text:res||'').trim();done(txt||fcoOffline(s,q))}
   catch(e){AI=e&&e.code==='not_granted'?null:AI;done(fcoOffline(s,q))}};
+Phone.prototype.vVoice=function(){const cur=KI&&KI.voice||STD_VOICE,known=Object.keys(vNames).length>0;
+  return `<h3>Vorlese-Stimme</h3><p>Antippen wählt die Stimme und spielt eine Probe.</p>
+   <div class="vsel">${VOICES.map(([id,n,d])=>`<button class="vs-o ${cur===id?'on':''}" data-a="vprobe" data-v="${id}" aria-pressed="${cur===id}"><span class="vs-i">${ic(cur===id?'check':'vol')}</span><span class="vs-t"><b>${esc(vNames[id]||n)}</b><small>${vNames[id]?'Name laut ElevenLabs':d}</small></span><i>${ic('play')}</i></button>`).join('')}</div>
+   ${known?'':'<p class="fnote" style="margin-top:10px">Die echten Namen zeigt die App, sobald der neue Worker-Code eingefügt ist.</p>'}
+   <button class="gbtn" style="width:100%;margin-top:14px" data-a="closesheet">${ic('check')}Fertig</button>`};
 Phone.prototype.vFco=function(){const s=this.s,c=s.fco||{step:'idle'};
   const head=`<div class="ai-head"><span class="ai-orb ${c.step==='think'?'live':''}"><span class="orb-c"><i></i><i></i><i></i><i></i></span><span class="orb-g"></span></span><div><h3 style="margin:0">Trainings-Coach</h3><p class="ai-sub">Saison, Training & Ernährung</p></div></div>`;
   if(c.step==='think')return head+`<p class="ai-tr done">„${esc(c.q)}“</p><div class="ai-dots"><i></i><i></i><i></i></div>`;
@@ -3208,7 +3225,7 @@ Phone.prototype.vSettings=function(){const s=this.s,pf=s.prof,q=x=>String(x||'')
    ${this.opts.full?`<div class="grp">${window.EP_APP?'':li('book','#6B7B99','Prototyp-Übersicht',ic('right'),'overview')}</div>`:''}
    <div class="grp">${li('run','#006039','Mein Fitnessbereich',ic('right'),'flip','fit')}
    ${hasClaude()?'':li('spark','#006039','KI in dieser App',KI?'Verbunden':'Einrichten','kiopen')}
-   ${li('vol','var(--a-violet)','Vorlese-Stimme',(()=>{if(KI&&KI.tts&&!this.noTts)return KI.voice?'Natürlich · eigene Stimme':'Natürlich · Mrs. Sophie';const v=pickVoice(s.voice);return v?v.name.replace(/\s*\(.*?\)/,m=>/premium/i.test(m)?' · Premium':/enhanced|erweitert/i.test(m)?' · Erweitert':''):'Standard'})(),'nextvoice')}</div>
+   ${li('vol','var(--a-violet)','Vorlese-Stimme',(()=>{if(KI&&KI.tts&&!this.noTts)return 'Natürlich · '+vName(KI.voice||STD_VOICE).split(/\s+[–-]\s+/)[0];const v=pickVoice(s.voice);return v?v.name.replace(/\s*\(.*?\)/,m=>/premium/i.test(m)?' · Premium':/enhanced|erweitert/i.test(m)?' · Erweitert':''):'Standard'})(),'nextvoice')}</div>
    <p style="color:var(--a-muted);font-size:13px;text-align:center;margin-top:26px">Essensplan · Version 1.0</p>
   </div></div>`};
 
@@ -3320,7 +3337,11 @@ async function kiTest(cfg){let r;try{r=await fetch(cfg.url,{headers:{'Authorizat
 /* Natürliche Vorlese-Stimme über den eigenen Server. Jeder Satz wird nur einmal bezahlt: das Audio bleibt auf dem Gerät gespeichert */
 const SIL='data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQAAAAA=';
 /* V126: Standard-Stimme „Mrs. Sophie – Friendly & professional“ (ElevenLabs) */
-const STD_VOICE='R24r0IV80Iw9eyByq1ps';
+/* V131: Auswahl aus zwei ElevenLabs-Stimmen. Die Namen sind Sebastians Zuordnung; der Worker (ab V131) liefert die echten Namen von ElevenLabs nach (vNames) */
+const VOICES=[['h8PCn0HukMaFj1sJwcjY','Mrs. Sophie','Freundlich & professionell'],['R24r0IV80Iw9eyByq1ps','Elena','Junge Erzählerstimme']];
+const STD_VOICE=VOICES[0][0];let vNames={};
+const vName=id=>vNames[id]||(VOICES.find(v=>v[0]===id)||[0,'eigene Stimme'])[1];
+async function kiVoiceNames(){if(!KI)return;try{const r=await fetch(KI.url+(KI.url.includes('?')?'&':'?')+'voices='+VOICES.map(v=>v[0]).join(','),{headers:{'Authorization':'Bearer '+KI.pw}});const j=await r.json().catch(()=>({}));if(j&&j.names)Object.assign(vNames,j.names)}catch(e){}}
 async function kiSay(text){let h=5381;for(let i=0;i<text.length;i++)h=((h<<5)+h+text.charCodeAt(i))>>>0;const key='https://stimme.essensplan.invalid/'+(KI.voice||STD_VOICE)+'/'+h.toString(36)+'-'+text.length;let c=null;
   try{c=await caches.open('essensplan-stimme-v1');const hit=await c.match(key);if(hit)return await hit.blob()}catch(e){}
   const r=await fetch(KI.url,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+KI.pw},body:JSON.stringify({tts:text,voice:KI.voice||STD_VOICE})});
@@ -3456,6 +3477,7 @@ Phone.prototype.vSheet=function(){const s=this.s;if(!s.sheet)return '';
   if(s.sheet==='fstd')c=this.vFstd();
   if(s.sheet==='fdisc')c=this.vFdisc();
   if(s.sheet==='fco')c=this.vFco();
+  if(s.sheet==='voice')c=this.vVoice();
   if(s.sheet==='fgoal')c=this.vFgoal();
   if(s.sheet==='fxday')c=this.vFxday();
   if(s.sheet==='extra')c=this.vExtra();
@@ -3614,7 +3636,9 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
       for(let i=w*7;i<w*7+7;i++){if(s.plan[i]||i<TODAY)continue;const pool=R.filter(r=>!used.has(r.id));if(!pool.length)break;const f=fitScore(s.train[i]);
         const top=f?pool.slice().sort((a,b)=>f(b)-f(a)).slice(0,6):pool;const r=top[Math.floor(Math.random()*top.length)];s.plan[i]=r.id;used.add(r.id);n++}
       haptic();this.render();this.toast(n?`${n} freie Tage passend zum Training geplant`:'Keine freien Tage in dieser Woche',n?'Rückgängig':null,'undo');break}
-   case 'nextvoice':{if(KI&&KI.tts&&!this.noTts){const a=this.aud||(this.aud=new Audio());a.onended=a.onerror=null;try{a.src=SIL;const pr=a.play();if(pr&&pr.catch)pr.catch(()=>{})}catch(e){}
+   case 'nextvoice':if(KI&&KI.tts&&!this.noTts){s.sheet='voice';haptic();this.render();kiVoiceNames().then(()=>{if(s.sheet==='voice')this.render()});break}
+   /* fallthrough nicht nötig: Gerätestimmen weiter unten */
+   case 'vprobe':{if(KI&&KI.tts&&!this.noTts){if(v){KI.voice=v===STD_VOICE?'':v;try{localStorage.setItem(KI_KEY,JSON.stringify(KI))}catch(e){}hapticSuccess();this.render()}const a=this.aud||(this.aud=new Audio());a.onended=a.onerror=null;try{a.src=SIL;const pr=a.play();if(pr&&pr.catch)pr.catch(()=>{})}catch(e){}
         kiSay('So klinge ich beim Vorlesen deiner Rezepte.').then(b=>{a.src=URL.createObjectURL(b);a.play().catch(()=>{})}).catch(e=>this.toast(e&&e.message?String(e.message).slice(0,90):'Stimme nicht erreichbar'));break}
       const vs=deVoices();if(!vs.length){this.toast('Hier sind keine deutschen Stimmen verfügbar');break}
       const cur=pickVoice(s.voice),ix=vs.indexOf(cur);const nv=vs[(ix+1)%vs.length];s.voice=nv.name;this.render();
