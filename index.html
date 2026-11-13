@@ -1503,6 +1503,20 @@ img,svg{-webkit-user-drag:none}
 .pf-cam .ic{width:15px;height:15px;stroke:#fff;stroke-width:2}
 .pf-head.big .pf-cam{right:22px;bottom:22px;width:44px;height:44px}
 .pf-head.big .pf-cam .ic{width:20px;height:20px}
+
+/* V129 */
+.pf-opts.disc .pf-oi{background:color-mix(in srgb,var(--c) 14%,#fff);color:var(--c)}
+.pf-opts.disc .pf-o.on{background:var(--g,var(--c));box-shadow:0 18px 30px -18px var(--c)}
+.pf-opts.disc .pf-o.on .pf-oi{background:rgba(255,255,255,.22);color:#fff}
+.fx-f.on[style] .fx-i{background:var(--g,var(--c));color:#fff}
+.fx-rose{background:linear-gradient(135deg,#C2607A 0%,#93375A 55%,#6E2444 100%);-webkit-background-clip:text;background-clip:text;color:transparent!important}
+.fx-addr{display:flex;justify-content:flex-end;margin-top:8px}
+.fx-add{width:40px;height:40px;border:0;border-radius:50%;display:grid;place-items:center;background:#fff;color:#006039;box-shadow:0 0 0 1px rgba(0,96,57,.18),0 10px 22px -14px rgba(0,77,46,.6)}
+.fx-add .ic{width:20px;height:20px;stroke-width:2.2}
+.ftl-g{transform:translateX(calc(-100% + 4px))!important;flex-direction:row!important}
+.ftl-g em{order:0!important}
+.ftl-g.l{transform:translateX(-4px)!important;flex-direction:row-reverse!important}
+.fai-s[data-a],.fai-t[data-a]{cursor:pointer}
 </style>
 
 <div class="page">
@@ -2024,6 +2038,7 @@ function Phone(host,init,opts){
   this.scr.addEventListener('change',e=>{const t=e.target;if(!t.classList||!t.classList.contains('hap'))return;const v=t.dataset.v;
     if(t.dataset.act==='tog'){try{if(navigator.vibrate)navigator.vibrate(10)}catch(err){}const x=this.s.shop.find(y=>y.name===v);if(x){x.done=!x.done;this.render()}}else this.addItem(v)});
   this.scr.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.dataset.k==='shopq'){this.addItem(e.target.value.trim());}if(e.key==='Enter'&&e.target.dataset.k==='aiq'){e.preventDefault();this.aiAsk(e.target.value.trim())}
+    if(e.key==='Enter'&&e.target.dataset.k==='fcq'){e.preventDefault();const q=e.target.value.trim();if(q)this.fcoAsk(q)}
     if(e.key==='Enter'&&e.target.dataset.k==='cookq'){e.preventDefault();const q=e.target.value.trim();if(q)this.cookAsk(q,{})}
     if(e.key==='Enter'&&e.target.dataset.k==='exq'){e.preventDefault();if(e.target.value.trim())this.setExtra(e.target.value)}
     if(e.key==='Enter'&&e.target.dataset.k==='stockq'){e.preventDefault();this.stockAdd(e.target.value.trim())}});
@@ -2101,7 +2116,7 @@ Phone.prototype.render=function(){
   else if(s.screen==='settings')body=this.vSettings();
   const tabs=['plan','fit','recipes','shop','favs','learn'].includes(s.screen)?this.vTabs():'';
   const vd=['plan','fit'].includes(s.screen)?`<button class="vdots${s.screen==='fit'?' f':''}" data-a="flip" data-v="${s.screen==='fit'?'plan':'fit'}" aria-label="${s.screen==='fit'?'Zum Essensplan':'Zu Mein Fitnessbereich'}"><i></i><i></i></button>`:'';
-  const orb=tabs&&!['shop','learn','fit'].includes(s.screen)?`<button class="orb" data-a="ai" aria-label="KI-Assistent öffnen"><span class="orb-c"><i></i><i></i><i></i><i></i></span><span class="orb-g"></span><svg class="orb-w" viewBox="0 0 60 24" aria-hidden="true"><path d="M10 12 C17 1 23 1 30 12 S43 23 50 12"/></svg></button>`:'';
+  const orb=tabs&&!['shop','learn'].includes(s.screen)?`<button class="orb" data-a="ai" aria-label="KI-Assistent öffnen"><span class="orb-c"><i></i><i></i><i></i><i></i></span><span class="orb-g"></span><svg class="orb-w" viewBox="0 0 60 24" aria-hidden="true"><path d="M10 12 C17 1 23 1 30 12 S43 23 50 12"/></svg></button>`:'';
   const kp={};this.scr.querySelectorAll('[data-keep]').forEach(e=>kp[e.dataset.keep]=[e.scrollLeft,e.scrollTop]);
   this.scr.innerHTML=`<div class="island"></div>${this.vStatus()}${body}${vd}${tabs}${orb}${this.vSheet()}<div class="homebar"></div>`;
   this.scr.querySelectorAll('[data-keep]').forEach(e=>{const k=kp[e.dataset.keep];if(k){e.scrollLeft=k[0];e.scrollTop=k[1]}});
@@ -2293,6 +2308,8 @@ const pfText=s=>{const a=PF_SPORT.find(x=>x[0]===s.prof.sport),b=PF_GOAL.find(x=
 /* V127: Sportart, Saisonziele (max. 3) und Saisonphasen */
 Object.assign(P,{f_tri:'<circle cx="5.8" cy="14.6" r="3.3"/><circle cx="12" cy="8.6" r="3.3"/><circle cx="18.2" cy="14.6" r="3.3"/>',flag:'<path d="M5.5 21V3.6"/><path d="M5.5 4.6c2.4-1.4 4.6-1.4 7 0s4.6 1.4 7 0v8.6c-2.4 1.4-4.6 1.4-7 0s-4.6-1.4-7 0"/>'});
 const PF_DISC=[['rad','Rennrad','Straße & Pässe','f_bike'],['lauf','Laufen','Straße & Trail','f_run'],['schwimm','Schwimmen','Becken & Freiwasser','f_swim'],['tri','Triathlet','Swim · Bike · Run','f_tri'],['kraft','Kraftsportler','Gewichte & Kraft','f_kraft'],['yoga','Yoga','Beweglichkeit & Ruhe','f_mob']];
+const DCOL={rad:FA.bike,lauf:FA.run,schwimm:FA.swim,tri:FA.swim,kraft:FA.kraft,yoga:FA.mob},DGRAD={tri:'linear-gradient(135deg,#2F9BE6,#FF6A55 55%,#F5A623)'};
+const discOpts=(cur,cls='')=>`<div class="pf-opts c3 fit disc ${cls}">${PF_DISC.map(([k,t,sub,icn])=>`<button class="pf-o ${cur===k?'on':''}" style="--c:${DCOL[k]}${DGRAD[k]?';--g:'+DGRAD[k]:''}" data-a="pfdisc" data-v="${k}" aria-pressed="${cur===k}"><span class="pf-oi">${ic(icn)}</span><b>${t}</b><small>${sub}</small><i>${ic('check')}</i></button>`).join('')}</div>`;
 const PH=[['g','Grundlage','#7DAFE3','Ruhig und lang – Ausdauer aufbauen'],['a','Aufbau','#2E9E6B','Mehr Umfang, erste harte Einheiten'],['s','Spezifisch','#F0A03A','Wettkampfnah trainieren'],['t','Tapering','#E0688C','Weniger Umfang, frisch werden']];
 const phOf=k=>PH.find(x=>x[0]===k);
 const fGoals=s=>(s.prof.goals||[]).filter(g=>g&&g.d&&idxOf(g.d)>=TODAY).sort((a,b)=>a.d<b.d?-1:1);
@@ -2309,12 +2326,12 @@ const wkTxt=n=>{const w=Math.round(n/7);return n<10?`${n} ${n===1?'Tag':'Tage'}`
 Phone.prototype.vFprof=function(){const s=this.s,pf=s.prof,FG=fGoals(s),D=PF_DISC.find(x=>x[0]===pf.disc),A=PF_SPORT.find(x=>x[0]===pf.sport),G=pf.goals||[];
   const lvl=L=>`<div class="pf-opts c3 fit fx-lv">${L.map(([k,t,sub,icn])=>`<button class="pf-o ${pf.sport===k?'on':''}" data-a="pfsport" data-v="${k}" aria-pressed="${pf.sport===k}"><span class="pf-oi">${ic(icn)}</span><b>${k==='hobby'?'Hobby':t}</b><small>${sub}</small><i>${ic('check')}</i></button>`).join('')}</div>`;
   return `<h2 class="ap-h2 fx-h rv">Für was <span>trainierst du?</span></h2>
-   <div class="fx-row rv"><button class="fx-f ${D?'on':''}" data-a="fdisc">${D?`<span class="fx-i">${ic(D[3])}</span><span><b>${D[1]}</b><small>${D[2]}</small></span>`:`<span class="fx-i">${ic('plus')}</span><span><b>Sportart wählen</b><small>Rennrad, Laufen, Triathlon …</small></span>`}${ic('down','cv')}</button>
-    ${A?`<button class="fx-f fx-f2 on" data-a="fdisc"><span><small>Ambition</small><b>${A[0]==='hobby'?'Hobby':A[1]}</b></span>${ic('down','cv')}</button>`:''}</div>
-   ${A?'':lvl(PF_SPORT)}
-   <h2 class="ap-h2 fx-h rv" style="margin-top:30px">Saisonziele. <span>Bis zu drei.</span></h2>
+   <div class="fx-row rv"><button class="fx-f ${D?'on':''}" data-a="fdisc" ${D?`style="--c:${DCOL[D[0]]}${DGRAD[D[0]]?';--g:'+DGRAD[D[0]]:''}"`:''}>${D?`<span class="fx-i">${ic(D[3])}</span><span><b>${D[1]}</b><small>${D[2]}</small></span>`:`<span class="fx-i">${ic('plus')}</span><span><b>Sportart wählen</b><small>Rennrad, Laufen, Triathlon …</small></span>`}${ic('down','cv')}</button>
+</div>
+   <h2 class="ap-h2 fx-h rv" style="margin-top:30px">Saisonziele. <span class="fx-rose">Bis zu vier.</span></h2>
    <div class="fx-goals rv">${G.map((g,i)=>{const e=idxOf(g.d),n=e-TODAY;return `<button class="fx-g ${n<0?'past':''}" data-a="fgoal" data-v="${i}"><span class="fx-gi">${FG.length>1&&FG.indexOf(g)>=0?`<b>${FG.indexOf(g)+1}</b>`:ic('flag')}</span><span class="fx-gt"><b>${esc(g.t)}</b><small>${isoLbl(g.d)} ${dayDate(e).getFullYear()}</small></span><em>${n<0?'vorbei':n===0?'heute':'in '+wkTxt(n)}</em></button>`}).join('')}
-    ${G.length<3?`<button class="fx-g add" data-a="fgoal" data-v="-1"><span class="fx-gi">${ic('plus')}</span><span class="fx-gt"><b>Saisonziel hinzufügen</b><small>z. B. Ötztaler Radmarathon</small></span></button>`:''}</div>`};
+    ${!G.length?`<button class="fx-g add" data-a="fgoal" data-v="-1"><span class="fx-gi">${ic('plus')}</span><span class="fx-gt"><b>Saisonziel hinzufügen</b><small>z. B. Ötztaler Radmarathon</small></span></button>`:''}</div>
+   ${G.length&&G.length<4?`<div class="fx-addr"><button class="fx-add" data-a="fgoal" data-v="-1" aria-label="Weiteres Saisonziel hinzufügen">${ic('plus')}</button></div>`:''}`};
 /* Zeitstrahl: Grundlage → Aufbau → Spezifisch → Tapering bis zu den Saisonzielen; bei langer Strecke zwei Zeilen untereinander */
 Phone.prototype.vSeason=function(){const s=this.s,{G,segs}=seasonPlan(s);
   const head=`<h2 class="ap-h2 fx-h rv" style="margin-top:34px">Dein Weg. <span>Bis zum Ziel.</span></h2>`;
@@ -2327,7 +2344,7 @@ Phone.prototype.vSeason=function(){const s=this.s,{G,segs}=seasonPlan(s);
     const ms=[];for(let d=new Date(dayDate(a).getFullYear(),dayDate(a).getMonth()+1,1);;d=new Date(d.getFullYear(),d.getMonth()+1,1)){const i=Math.round((d-BASE)/864e5);if(i>=b)break;ms.push([i,d])}
     const step=ms.length>7?2:1;
     const mk=ms.filter((_,j)=>j%step===0).filter(([i])=>ri>0||(i-a)/L>.13).map(([i,d])=>`<span style="left:${pc(i)}%">${d.getMonth()===0?d.getFullYear():MON[d.getMonth()].replace('.','')}</span>`).join('');
-    const gs=G.map((g,n)=>[g,n]).filter(([g])=>{const e=idxOf(g.d);return e>a&&e<=b}).map(([g,n])=>{const x=+pc(idxOf(g.d));return multi?`<span class="ftl-p" style="left:${x}%">${n+1}</span>`:`<span class="ftl-g ${x>62?'r':''}" style="left:${x}%"><em>${esc(g.t)}</em><b>${ic('flag')}</b></span>`}).join('');
+    const gs=G.map((g,n)=>[g,n]).filter(([g])=>{const e=idxOf(g.d);return e>a&&e<=b}).map(([g,n])=>{const x=+pc(idxOf(g.d));return multi?`<span class="ftl-p" style="left:${x}%">${n+1}</span>`:`<span class="ftl-g ${x<35?'l':''}" style="left:${x}%"><em>${esc(g.t)}</em><b>${ic('flag')}</b></span>`}).join('');
     return `<div class="ftl-r"><div class="ftl-gs">${gs}</div><div class="ftl-b">${bars}</div><div class="ftl-m">${ri===0?'<span class="now" style="left:0">Heute</span>':''}${mk}</div></div>`};
   const cur=segs.find(g=>g.a<=TODAY&&TODAY<g.b)||segs[0],P0=phOf(cur.k),nx=segs[segs.indexOf(cur)+1],goal=G.find(g=>idxOf(g.d)>=cur.b)||G[G.length-1];
   const sub=cur.k==='t'?`Noch ${wkTxt(cur.b-TODAY)} bis ${esc(goal.t)}`:`Noch ${wkTxt(cur.b-TODAY)}, dann ${phOf(nx?nx.k:'t')[1]}`;
@@ -2335,9 +2352,41 @@ Phone.prototype.vSeason=function(){const s=this.s,{G,segs}=seasonPlan(s);
    ${rows.map(row).join('')}
    ${multi?`<div class="ftl-k">${G.map((g,n)=>`<span><i>${n+1}</i>${esc(g.t)}</span>`).join('')}</div>`:''}
    <div class="ftl-lg">${PH.map(([k,t,c,d])=>{const L=segs.filter(g=>g.k===k);return `<div class="${L.length?'':'off'}"><i style="background:${c}"></i><span><b>${t}</b><small>${L.length?wkTxt(L.reduce((n,g)=>n+g.b-g.a,0))+(L.length>1?' insgesamt':'')+' · ab '+dt(L[0].a)+'. '+MON[dayDate(L[0].a).getMonth()]:'diesmal nicht nötig'}</small></span></div>`}).join('')}</div></div>`};
+/* V129: Trainings-Coach (KI-Kugel im Fitnessbereich): Fragen zu Saisonplanung, Trainingswoche und passender Ernährung */
+const FCO_EX=[['Was bedeutet meine aktuelle Phase für mein Training?','Was bedeutet meine Phase?'],['Passt mein Essen zu meiner Trainingswoche?','Passt mein Essen zum Training?'],['Was esse ich vor und nach einer langen Einheit?','Essen rund um lange Einheiten']];
+function fcoCtx(s){const {G,segs}=seasonPlan(s),f=i=>{const r=RM[s.plan[i]];return `${dayLbl(i)}${i===TODAY?' (heute)':''}: Training ${fText(s.train[i])}; Hauptgericht ${r?`${r.n} (${r.k} kcal, ${r.p} g Eiweiß, ${r.kh} g KH)`:s.plan[i]===OUT?'auswärts':'nichts geplant'}; Frühstück ${(s.extra[i]||{}).b?xName(s.extra[i].b):'–'}; Abendessen ${(s.extra[i]||{}).d?xName(s.extra[i].d):'–'}`};
+  return `Profil: ${pfText(s)||'keine Angaben'}
+Saisonphasen: ${segs.length?segs.map(g=>`${phOf(g.k)[1]} ${dm(g.a)} – ${dm(g.b)}`).join('; '):'keine Saisonziele eingetragen'}
+Saisonziele: ${G.length?G.map(g=>`${g.t} (${isoLbl(g.d)})`).join('; '):'keine'}
+Diese und nächste Woche:
+${Array.from({length:14},(_,i)=>f(i)).join('\n')}`}
+function fcoOffline(s,q){const ql=q.toLowerCase(),{G,segs}=seasonPlan(s),cur=segs.find(g=>g.a<=TODAY&&TODAY<g.b);
+  const ph=cur?`Du bist gerade in der Phase ${phOf(cur.k)[1]} (noch ${wkTxt(cur.b-TODAY)}): ${phOf(cur.k)[3]}.`:'Trag ein Saisonziel mit Datum ein, dann teile ich deine Saison in Phasen ein.';
+  const tip={g:'Viele lockere, lange Einheiten; dazu reichlich Kohlenhydrate an langen Tagen und genug Eiweiß.',a:'Umfang und harte Einheiten steigen – an harten Tagen mehr Kohlenhydrate, nach dem Training 20–30 g Eiweiß.',s:'Trainiere wettkampfnah und teste deine Wettkampfverpflegung.',t:'Weniger Umfang, Intensität kurz halten; die letzten 2–3 Tage vor dem Ziel kohlenhydratbetont essen.'};
+  if(/lang|vor |nach |verpfleg|riegel|gel/.test(ql))return 'Vor einer langen Einheit (2–3 Stunden vorher): kohlenhydratreich und leicht, z. B. Porridge, Reis oder Brot mit Honig. Unterwegs ab 90 Minuten 60–90 g Kohlenhydrate pro Stunde. Danach innerhalb von einer Stunde Eiweiß plus Kohlenhydrate, z. B. Skyr-Bowl oder ein Reisgericht mit Hähnchen.';
+  if(/essen|ernähr|passt|eiweiß|kohlen|mahlzeit/.test(ql))return fitLocal(s,0).map(x=>x.x).join('\n\n');
+  return ph+(cur?' '+tip[cur.k]:'')+(G.length?` Dein nächstes Ziel: ${G[0].t} am ${isoLbl(G[0].d)}.`:'')}
+Phone.prototype.fcoAsk=async function(q){const s=this.s,c=s.fco={step:'think',q};s.fcQ='';haptic();this.render();
+  const done=txt=>{if(s.sheet!=='fco'||s.fco!==c)return;c.step='ans';c.ans=txt;haptic();this.render()};
+  await aiWait();
+  if(!AI){setTimeout(()=>done(fcoOffline(s,q)),650);return}
+  try{const res=await AI(`Du bist Trainings- und Ernährungscoach in einer deutschen Essensplan-App mit Fitnessbereich. Beantworte die Frage auf Deutsch in Du-Form, konkret, persönlich und kurz (höchstens 5 Sätze), ohne Markdown und ohne Aufzählungszeichen. Beziehe dich auf Saisonphase, Saisonziele, die eingetragenen Trainingstage und die geplanten Gerichte.
+
+${fcoCtx(s)}
+
+Frage: ${q}`,{modelTier:'default'});const txt=String(res&&res.text!==undefined?res.text:res||'').trim();done(txt||fcoOffline(s,q))}
+  catch(e){AI=e&&e.code==='not_granted'?null:AI;done(fcoOffline(s,q))}};
+Phone.prototype.vFco=function(){const s=this.s,c=s.fco||{step:'idle'};
+  const head=`<div class="ai-head"><span class="ai-orb ${c.step==='think'?'live':''}"><span class="orb-c"><i></i><i></i><i></i><i></i></span><span class="orb-g"></span></span><div><h3 style="margin:0">Trainings-Coach</h3><p class="ai-sub">Saison, Training & Ernährung</p></div></div>`;
+  if(c.step==='think')return head+`<p class="ai-tr done">„${esc(c.q)}“</p><div class="ai-dots"><i></i><i></i><i></i></div>`;
+  if(c.step==='ans')return head+`<p class="ai-tr done">„${esc(c.q)}“</p><div class="ck-ans">${esc(c.ans).replace(/\n+/g,'<br>')}</div><button class="ai-again" data-a="fcoback">Neue Frage</button>`;
+  return head+`<div class="lbl" style="margin:0 0 8px">Häufige Fragen</div>
+   <div class="ai-ex"><div class="ai-chip two">${ic('spark')}<span>${FCO_EX.map(([q,l])=>`<button data-a="fcopre" data-q="${q}">${l}</button>`).join('')}</span></div></div>
+   <div class="ai-in"><div class="ai-inw"><input data-k="fcq" enterkeyhint="send" placeholder="Frage tippen oder diktieren" value="${esc(s.fcQ||'').replace(/"/g,'&quot;')}" aria-label="Frage an den Trainings-Coach"><button class="ai-dic" data-a="dictate" data-k="fcq" aria-label="Diktieren">${ic('mic')}</button></div><button class="ai-mic" data-a="fcosend" aria-label="Senden">${ic('send')}</button></div>
+   <p class="ai-note">${AI?'Antworten von Claude.':'Hier ohne Internet-KI: Antworten aus deinem Saisonplan und deiner Woche.'}</p>`};
 Phone.prototype.vFdisc=function(){const s=this.s,pf=s.prof,G='background:linear-gradient(100deg,#0F7C4E,#004D2E 58%,#006039);box-shadow:0 14px 26px -12px rgba(0,77,46,.75)';
   const opt=(L,cur,act)=>`<div class="pf-opts c3 fit">${L.map(([k,t,sub,icn])=>`<button class="pf-o ${cur===k?'on':''}" data-a="${act}" data-v="${k}" aria-pressed="${cur===k}"><span class="pf-oi">${ic(icn)}</span><b>${k==='hobby'?'Hobby':t}</b><small>${sub}</small><i>${ic('check')}</i></button>`).join('')}</div>`;
-  return `<h3>Für was trainierst du?</h3><p>Danach richten sich Analyse und Saisonplan.</p>${opt(PF_DISC,pf.disc,'pfdisc')}
+  return `<h3>Für was trainierst du?</h3><p>Danach richten sich Analyse und Saisonplan.</p>${discOpts(pf.disc)}
    <div class="lbl" style="margin:16px 0 8px">Ambition</div>${opt(PF_SPORT,pf.sport,'pfsport')}
    <button class="gbtn" style="width:100%;margin-top:14px;${G}" data-a="closesheet">${ic('check')}Fertig</button>`};
 Phone.prototype.vFgoal=function(){const s=this.s,G='background:linear-gradient(100deg,#0F7C4E,#004D2E 58%,#006039);box-shadow:0 14px 26px -12px rgba(0,77,46,.75)',ed=s.fgI>=0;
@@ -2465,11 +2514,11 @@ Phone.prototype.vFit=function(){const s=this.s;
    <div class="fai-h" data-a="faitog" role="button" aria-expanded="${!s.faiC}"><span class="ai-orb ${A&&A.step==='think'?'live':''}"><span class="orb-c"><i></i><i></i><i></i><i></i></span><span class="orb-g"></span></span><div><b>Training & Ernährung</b><small>${s.faiC?'Antippen zum Öffnen':AI?'Analyse von Claude':'Auswertung auf dem Gerät'}</small></div>${ic('down','fai-cv')}</div>
    ${s.faiC?'':`   <div class="seg" role="group" aria-label="Woche für die Analyse">${[0,1].map(k=>`<button class="${w===k?'on':''}" data-a="fwk" data-v="${k}">${k?'Nächste Woche':'Diese Woche'}<small>KW ${KW(k)}</small></button>`).join('')}</div>
    ${A&&A.step==='think'?`<div class="ai-dots"><i></i><i></i><i></i></div><p class="fai-t m">Ich schaue mir Training und Essensplan an …</p>`
-    :fresh?`${A.sig!==sig&&!A.swDone?`<p class="ai-warn" style="margin:0 0 10px!important">Plan oder Training haben sich geändert – analysiere neu.</p>`:''}${A.res.map(x=>`<div class="fai-s"><span>${String(x.t).replace(/</g,'&lt;')}</span><p class="fai-t">${String(x.x).replace(/</g,'&lt;').replace(/\n+/g,'<br>')}</p></div>`).join('')}${(()=>{const L=(A.sw||[]).filter(x=>x.id===null||RM[x.id]),E=(A.ex||[]).filter(x=>RM[x.id]);if(!L.length&&!E.length)return '';
+    :fresh?`${A.sig!==sig&&!A.swDone?`<p class="ai-warn" style="margin:0 0 10px!important">Plan oder Training haben sich geändert – analysiere neu.</p>`:''}${A.res.map(x=>`<div class="fai-s" data-a="faitog"><span>${String(x.t).replace(/</g,'&lt;')}</span><p class="fai-t">${String(x.x).replace(/</g,'&lt;').replace(/\n+/g,'<br>')}</p></div>`).join('')}${(()=>{const L=(A.sw||[]).filter(x=>x.id===null||RM[x.id]),E=(A.ex||[]).filter(x=>RM[x.id]);if(!L.length&&!E.length)return '';
       if(A.swDone)return `<div class="fsw done">${ic('check')}Vorschläge übernommen</div>`;if(A.sig!==sig)return '';
       const rows=L.map(x=>({d:x.d,o:0,h:(o=>`<div class="fsw-r"><b>${ab(x.d)}</b><span>${o?`<s>${esc(o.n)}</s>`:s.plan[x.d]===OUT?'<s>Auswärts</s>':'<em>bisher frei</em>'}<i>${x.id?esc(RM[x.id].n):'frei'}</i></span>${x.id?plate(RM[x.id],34):''}</div>`)(RM[s.plan[x.d]])})).concat(E.map(x=>({d:x.d,o:x.m==='b'?-1:1,h:`<div class="fsw-r"><b>${ab(x.d)}</b><span><em class="x${x.m}">${XM[x.m][0]} ergänzen</em><i>${esc(RM[x.id].n)}</i></span>${plate(RM[x.id],34)}</div>`}))).sort((a,b)=>a.d-b.d||a.o-b.o);
       return `<div class="fsw"><div class="fsw-h">${A.wk===1?'Vorschlag für die ganze Woche':'Vorschlag für die restliche Woche'}</div>${rows.map(x=>x.h).join('')}<button class="gbtn" style="width:100%;margin-top:10px" data-a="fitswap">${ic('check')}Ernährung so anpassen</button></div>`})()}`
-    :`<p class="fai-t m">Ich vergleiche dein Training mit deinem Essensplan und sage dir, wo Eiweiß, Kohlenhydrate oder Erholung fehlen.</p>`}
+    :`<p class="fai-t m" data-a="faitog">Ich vergleiche dein Training mit deinem Essensplan und sage dir, wo Eiweiß, Kohlenhydrate oder Erholung fehlen.</p>`}
    <button class="gbtn" style="width:100%;margin-top:12px" data-a="fitai" ${A&&A.step==='think'?'disabled':''}>${ic('spark')}${fresh?'Neu analysieren':'Woche analysieren'}</button>
    <button class="ai-again" data-a="fitfill">Freie Tage passend zum Training planen</button>`}
   </div>
@@ -3129,7 +3178,7 @@ Phone.prototype.vSettings=function(){const s=this.s,pf=s.prof,q=x=>String(x||'')
    <div class="pf-head rv ${pf.photo&&s.pfBig?'big':''}"><div class="pf-av ${pf.photo?'has':''}" role="button" data-a="${pf.photo?'pfzoom':'pfphoto'}" aria-label="${pf.photo?'Profilfoto vergrößern':'Profilfoto hinzufügen'}">${pf.photo?`<img src="${pf.photo}" alt="">`:ic('users')}<button class="pf-cam" data-a="pfphoto" aria-label="${pf.photo?'Profilfoto ändern':'Profilfoto hinzufügen'}">${ic('cam')}</button></div>
     <div><div class="eb">Dein Profil</div><h1 class="ap-h1" id="pfh">${pf.name?`Hi ${q(pf.name)}.`:'Hallo.'}</h1><p class="pf-sub">Schön, dass du da bist.</p></div></div>
    <h2 class="ap-h2 rv">Sportart. <span>Wofür trainierst du?</span></h2>
-   ${opt(PF_DISC,pf.disc,'pfdisc','fit rv')}
+   ${discOpts(pf.disc,'rv')}
    <h2 class="ap-h2 rv">Sportliche Ambition. <span>Wie trainierst du?</span></h2>
    ${opt(PF_SPORT,pf.sport,'pfsport','fit rv')}
    <h2 class="ap-h2 rv">Ernährungsziel. <span>Was ist dir wichtig?</span></h2>
@@ -3391,6 +3440,7 @@ Phone.prototype.vSheet=function(){const s=this.s;if(!s.sheet)return '';
   if(s.sheet==='fimp')c=this.vFimp();
   if(s.sheet==='fstd')c=this.vFstd();
   if(s.sheet==='fdisc')c=this.vFdisc();
+  if(s.sheet==='fco')c=this.vFco();
   if(s.sheet==='fgoal')c=this.vFgoal();
   if(s.sheet==='fxday')c=this.vFxday();
   if(s.sheet==='extra')c=this.vExtra();
@@ -3401,7 +3451,7 @@ Phone.prototype.vSheet=function(){const s=this.s;if(!s.sheet)return '';
 
 /* ----- Aktionen ----- */
 /* V125: Diktieren direkt ins Feld (Spracherkennung des Geräts); nochmal tippen beendet */
-Phone.prototype.dictate=function(key){const SR=window.SpeechRecognition||window.webkitSpeechRecognition,q=`input[data-k="${key}"]`,sk=key==='aiq'?'aiQ':'cookQ',self=this;
+Phone.prototype.dictate=function(key){const SR=window.SpeechRecognition||window.webkitSpeechRecognition,q=`input[data-k="${key}"]`,sk=key==='aiq'?'aiQ':key==='fcq'?'fcQ':'cookQ',self=this;
   const inp=()=>this.scr.querySelector(q),btn=()=>this.scr.querySelector(`.ai-dic[data-k="${key}"]`);
   if(this.rec){try{this.rec.stop()}catch(e){}return}
   const fb=m=>{const el=inp();if(el)el.focus();this.toast(m)};
@@ -3413,7 +3463,7 @@ Phone.prototype.dictate=function(key){const SR=window.SpeechRecognition||window.
   rec.onend=()=>{self.rec=null;const b=btn();if(b)b.classList.remove('on');if(err&&err!=='no-speech'&&err!=='aborted')fb(err==='not-allowed'||err==='service-not-allowed'?'Mikrofon nicht freigegeben – bitte das Mikrofon auf der Tastatur nutzen':'Spracherkennung nicht erreichbar – bitte das Mikrofon auf der Tastatur nutzen')};
   try{rec.start()}catch(e){fb('Hier bitte das Mikrofon auf der Tastatur nutzen');return}
   this.rec=rec;haptic();const b=btn();if(b)b.classList.add('on')};
-Phone.prototype.input=function(e){const k=e.target.dataset.k;if(k==='aiq'){this.s.aiQ=e.target.value;return}if(k==='cookq'){this.s.cookQ=e.target.value;return}if(k==='exq'){this.s.exQ=e.target.value;return}if(k==='kiurl'){this.s.kiU=e.target.value;return}if(k==='kipw'){this.s.kiP=e.target.value;return}if(k==='kivoice'){this.s.kiV=e.target.value;return}if(k==='fgt'){this.s.fgT=e.target.value;return}if(k==='fgd'){this.s.fgD=e.target.value;return}if(k==='pname'){const v=e.target.value.trim().slice(0,24);this.s.prof.name=v;const h=this.scr.querySelector('#pfh');if(h)h.textContent=v?`Hi ${v}.`:'Hallo.';clearTimeout(this.saveT);this.saveT=setTimeout(()=>this.save(),400);return}if(k==='stockq'){this.s.stockQ=e.target.value;return}if(k==='shopq'){this.s.shopQ=e.target.value;this.render()}if(k==='recq'){this.s.recQ=e.target.value;this.render()}};
+Phone.prototype.input=function(e){const k=e.target.dataset.k;if(k==='aiq'){this.s.aiQ=e.target.value;return}if(k==='cookq'){this.s.cookQ=e.target.value;return}if(k==='exq'){this.s.exQ=e.target.value;return}if(k==='kiurl'){this.s.kiU=e.target.value;return}if(k==='kipw'){this.s.kiP=e.target.value;return}if(k==='kivoice'){this.s.kiV=e.target.value;return}if(k==='fgt'){this.s.fgT=e.target.value;return}if(k==='fcq'){this.s.fcQ=e.target.value;return}if(k==='fgd'){this.s.fgD=e.target.value;return}if(k==='pname'){const v=e.target.value.trim().slice(0,24);this.s.prof.name=v;const h=this.scr.querySelector('#pfh');if(h)h.textContent=v?`Hi ${v}.`:'Hallo.';clearTimeout(this.saveT);this.saveT=setTimeout(()=>this.save(),400);return}if(k==='stockq'){this.s.stockQ=e.target.value;return}if(k==='shopq'){this.s.shopQ=e.target.value;this.render()}if(k==='recq'){this.s.recQ=e.target.value;this.render()}};
 Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();return}
   if(this.s.ipop&&!e.target.closest('.ipop')){this.s.ipop=null;this.render();return}
   const t=e.target.closest('[data-a]');if(!t||!this.scr.contains(t))return;const s=this.s,a=t.dataset.a,v=t.dataset.v;
@@ -3471,7 +3521,7 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
       const ok=()=>this.toast('Liste als Text kopiert'),no=()=>this.toast('Kopieren hier nicht möglich');
       try{navigator.clipboard.writeText(txt).then(ok,no)}catch(err){no()}break}
    case 'sheet':s.sheet=v;this.render();break;
-   case 'ai':if(s.screen==='fit'){this.fitAnalyze();break}haptic();s.ai={step:'idle'};s.aiQ='';s.sheet='ai';this.render();break;
+   case 'ai':if(s.screen==='fit'){haptic();s.fco={step:'idle'};s.fcQ='';s.sheet='fco';this.render();break}haptic();s.ai={step:'idle'};s.aiQ='';s.sheet='ai';this.render();break;
    case 'aiex':this.aiAsk(t.dataset.q,true);break;
    case 'aisend':{const q=(s.aiQ||'').trim();if(q)this.aiAsk(q);break}
    case 'aiphoto':this.aiPhoto(false);break;
@@ -3508,9 +3558,9 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
    case 'faitog':s.faiC=!s.faiC;haptic();this.render();break;
    case 'fdisc':s.sheet='fdisc';haptic();this.render();break;
    case 'pfdisc':s.prof.disc=s.prof.disc===v?'':v;haptic();this.render();break;
-   case 'fgoal':{const i=+v,G=s.prof.goals||[],g=G[i];if(!g&&G.length>=3){this.toast('Höchstens drei Saisonziele');break}s.fgI=g?i:-1;s.fgT=g?g.t:'';s.fgD=g?g.d:'';s.sheet='fgoal';haptic();this.render();break}
+   case 'fgoal':{const i=+v,G=s.prof.goals||[],g=G[i];if(!g&&G.length>=4){this.toast('Höchstens vier Saisonziele');break}s.fgI=g?i:-1;s.fgT=g?g.t:'';s.fgD=g?g.d:'';s.sheet='fgoal';haptic();this.render();break}
    case 'fgsave':{const t=String(s.fgT||'').trim().slice(0,60),d=s.fgD||'';if(!t){this.toast('Bitte einen Titel eingeben');break}if(!/^\d{4}-\d{2}-\d{2}$/.test(d)||idxOf(d)<TODAY){this.toast('Bitte ein Datum in der Zukunft wählen');break}
-      const G=s.prof.goals=(s.prof.goals||[]).slice();if(s.fgI>=0&&G[s.fgI])G[s.fgI]={t,d};else if(G.length<3)G.push({t,d});G.sort((a,b)=>a.d<b.d?-1:1);s.sheet=null;hapticSuccess();this.render();break}
+      const G=s.prof.goals=(s.prof.goals||[]).slice();if(s.fgI>=0&&G[s.fgI])G[s.fgI]={t,d};else if(G.length<4)G.push({t,d});G.sort((a,b)=>a.d<b.d?-1:1);s.sheet=null;hapticSuccess();this.render();break}
    case 'fgdel':{const G=s.prof.goals||[];if(s.fgI>=0&&G[s.fgI]){this.prevGoals=JSON.stringify(G);G.splice(s.fgI,1)}s.sheet=null;haptic();this.render();this.toast('Saisonziel entfernt','Rückgängig','fgundo');break}
    case 'fgundo':if(this.prevGoals){s.prof.goals=JSON.parse(this.prevGoals);this.prevGoals=null;this.render()}break;
    case 'fitswap':{const A=s.fitAI;if(!A||!((A.sw||[]).length||(A.ex||[]).length))break;this.prevFit=JSON.stringify([s.plan,s.extra]);let n=0;
@@ -3569,6 +3619,9 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
    case 'cook':haptic();s.cook={step:'idle'};s.cookQ='';s.sheet='cook';this.render();break;
    case 'cooksub':this.cookAsk(`Mir fehlt: ${v}. Was kann ich stattdessen nehmen?`,{sub:v});break;
    case 'cookpre':this.cookAsk(t.dataset.q,{pre:v});break;
+   case 'fcopre':this.fcoAsk(t.dataset.q);break;
+   case 'fcosend':{const q=(s.fcQ||'').trim();if(q)this.fcoAsk(q);break}
+   case 'fcoback':s.fco={step:'idle'};s.fcQ='';this.render();break;
    case 'cooksend':{const q=(s.cookQ||'').trim();if(q)this.cookAsk(q,{});break}
    case 'cookback':s.cook={step:'idle'};s.cookQ='';this.render();break;
    case 'speak':this.speak();break;
