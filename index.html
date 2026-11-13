@@ -2996,7 +2996,7 @@ Phone.prototype.vSettings=function(){const s=this.s,pf=s.prof,q=x=>String(x||'')
    ${this.opts.full?`<div class="grp">${window.EP_APP?'':li('book','#6B7B99','Prototyp-Übersicht',ic('right'),'overview')}</div>`:''}
    <div class="grp">${li('run','#006039','Mein Fitnessbereich',ic('right'),'flip','fit')}
    ${hasClaude()?'':li('spark','#006039','KI in dieser App',KI?'Verbunden':'Einrichten','kiopen')}
-   ${li('vol','var(--a-violet)','Vorlese-Stimme',(()=>{if(KI&&KI.tts&&!this.noTts)return KI.voice?'Natürlich · eigene Stimme':'Natürlich · Sarah';const v=pickVoice(s.voice);return v?v.name.replace(/\s*\(.*?\)/,m=>/premium/i.test(m)?' · Premium':/enhanced|erweitert/i.test(m)?' · Erweitert':''):'Standard'})(),'nextvoice')}</div>
+   ${li('vol','var(--a-violet)','Vorlese-Stimme',(()=>{if(KI&&KI.tts&&!this.noTts)return KI.voice?'Natürlich · eigene Stimme':'Natürlich · Mrs. Sophie';const v=pickVoice(s.voice);return v?v.name.replace(/\s*\(.*?\)/,m=>/premium/i.test(m)?' · Premium':/enhanced|erweitert/i.test(m)?' · Erweitert':''):'Standard'})(),'nextvoice')}</div>
    <p style="color:var(--a-muted);font-size:13px;text-align:center;margin-top:26px">Essensplan · Version 1.0</p>
   </div></div>`};
 
@@ -3100,9 +3100,11 @@ async function kiTest(cfg){let r;try{r=await fetch(cfg.url,{headers:{'Authorizat
   if(r.status===401)return 'Falsches Passwort.';const j=await r.json().catch(()=>({}));if(!r.ok)return j.error||('Fehler '+r.status);cfg.tts=!!j.stimme;return ''}
 /* Natürliche Vorlese-Stimme über den eigenen Server. Jeder Satz wird nur einmal bezahlt: das Audio bleibt auf dem Gerät gespeichert */
 const SIL='data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQAAAAA=';
-async function kiSay(text){let h=5381;for(let i=0;i<text.length;i++)h=((h<<5)+h+text.charCodeAt(i))>>>0;const key='https://stimme.essensplan.invalid/'+(KI.voice||'std')+'/'+h.toString(36)+'-'+text.length;let c=null;
+/* V126: Standard-Stimme „Mrs. Sophie – Friendly & professional“ (ElevenLabs) */
+const STD_VOICE='R24r0IV80Iw9eyByq1ps';
+async function kiSay(text){let h=5381;for(let i=0;i<text.length;i++)h=((h<<5)+h+text.charCodeAt(i))>>>0;const key='https://stimme.essensplan.invalid/'+(KI.voice||STD_VOICE)+'/'+h.toString(36)+'-'+text.length;let c=null;
   try{c=await caches.open('essensplan-stimme-v1');const hit=await c.match(key);if(hit)return await hit.blob()}catch(e){}
-  const r=await fetch(KI.url,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+KI.pw},body:JSON.stringify({tts:text,voice:KI.voice||undefined})});
+  const r=await fetch(KI.url,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+KI.pw},body:JSON.stringify({tts:text,voice:KI.voice||STD_VOICE})});
   if(!r.ok)throw Object.assign(new Error((await r.json().catch(()=>({}))).error||('Fehler '+r.status)),{status:r.status});
   const b=await r.blob();try{if(c)await c.put(key,new Response(b,{headers:{'Content-Type':'audio/mpeg'}}))}catch(e){}return b}
 /* Beim Start nachsehen, ob der Server inzwischen eine Stimme hat */
