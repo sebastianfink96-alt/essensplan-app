@@ -2410,7 +2410,7 @@ Frage: ${q}`,{modelTier:'default'});const txt=String(res&&res.text!==undefined?r
 Phone.prototype.vVoice=function(){const cur=KI&&KI.voice||STD_VOICE,known=Object.keys(vNames).length>0;
   return `<h3>Vorlese-Stimme</h3><p>Antippen wählt die Stimme und spielt eine Probe.</p>
    <div class="vsel">${VOICES.map(([id,n,d])=>`<button class="vs-o ${cur===id?'on':''}" data-a="vprobe" data-v="${id}" aria-pressed="${cur===id}"><span class="vs-i">${ic(cur===id?'check':'vol')}</span><span class="vs-t"><b>${esc((vNames[id]||n).split(/\s+[–-]\s+/)[0])}</b><small>${d}</small></span><i>${ic('play')}</i></button>`).join('')}</div>
-   ${kiFree?`<p class="vs-dbg warn"><b>Mrs. Sophie und Elena brauchen ein ElevenLabs-Abo</b> (Starter). Im kostenlosen Tarif liest Sarah.</p>`:''}
+   ${kiFree?`<p class="vs-dbg warn"><b>Diese Stimme braucht ein ElevenLabs-Abo</b> (Starter). Im kostenlosen Tarif liest Sarah.</p>`:''}
    ${kiUsed==='alt'?`<p class="vs-dbg warn"><b>Dein Worker ist noch der alte Code</b> – er ignoriert die gewählte Stimme. Bitte den neuen Code bei Cloudflare einfügen.</p>`:kiUsed?`<p class="vs-dbg">Der Server hat zuletzt mit <b>${esc(vName(kiUsed))}</b> gesprochen (${esc(kiUsed)}).</p>`:''}
 
    <button class="gbtn" style="width:100%;margin-top:14px" data-a="closesheet">${ic('check')}Fertig</button>`};
@@ -3348,9 +3348,10 @@ async function kiTest(cfg){let r;try{r=await fetch(cfg.url,{headers:{'Authorizat
 const SIL='data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABAAZGF0YQAAAAA=';
 /* V126: Standard-Stimme „Mrs. Sophie – Friendly & professional“ (ElevenLabs) */
 /* V131: Auswahl aus zwei ElevenLabs-Stimmen. Die Namen sind Sebastians Zuordnung; der Worker (ab V131) liefert die echten Namen von ElevenLabs nach (vNames) */
-const VOICES=[['EXAVITQu4vr4xnSDxMaL','Sarah','Warm und ruhig · kostenlos'],
-  ['cgSgspJ2msm4clMCkdW9','Jessica','Jung, verspielt, warm · kostenlos'],['FGY2WhTYpPnrIDTdsKH5','Laura','Jung, sonnig, lebhaft · kostenlos'],['XrExE9yKIg1WjnnlVkGX','Matilda','Freundlich, warm · kostenlos'],['pFZP5JQG7iQjIQuC4Bku','Lily','Sanft, warm · kostenlos'],['Xb7hH8MSUJpSvfVCaDPf','Alice','Klar, freundlich · kostenlos'],['h8PCn0HukMaFj1sJwcjY','Mrs. Sophie','Freundlich & professionell · braucht ElevenLabs-Abo'],['R24r0IV80Iw9eyByq1ps','Elena','Junge Erzählerstimme · braucht ElevenLabs-Abo']];
-const STD_VOICE=VOICES[0][0];let vNames={},kiUsed='',kiFree=false;
+const VOICES=[['EXAVITQu4vr4xnSDxMaL','Sarah','Warm und ruhig · kostenlos']];
+const STD_VOICE=VOICES[0][0];
+/* V135: früher angebotene Stimmen (Akzent bzw. nur mit Abo) wieder auf Sarah zurückstellen */
+if(KI&&['h8PCn0HukMaFj1sJwcjY','R24r0IV80Iw9eyByq1ps','cgSgspJ2msm4clMCkdW9','FGY2WhTYpPnrIDTdsKH5','XrExE9yKIg1WjnnlVkGX','pFZP5JQG7iQjIQuC4Bku','Xb7hH8MSUJpSvfVCaDPf'].includes(KI.voice)){KI.voice='';try{localStorage.setItem(KI_KEY,JSON.stringify(KI))}catch(e){}}let vNames={},kiUsed='',kiFree=false;
 try{caches.delete('essensplan-stimme-v1')}catch(e){}
 const vName=id=>vNames[id]||(VOICES.find(v=>v[0]===id)||[0,'eigene Stimme'])[1];
 async function kiVoiceNames(){if(!KI)return;try{const U=KI.url+(KI.url.includes('?')?'&':'?')+'voices=',get=async ids=>{const r=await fetch(U+ids.join(','),{headers:{'Authorization':'Bearer '+KI.pw}});const j=await r.json().catch(()=>({}));if(j&&j.names)Object.assign(vNames,j.names)};const I=VOICES.map(v=>v[0]);await Promise.all([get(I.slice(0,6)),get(I.slice(6))])}catch(e){}}
