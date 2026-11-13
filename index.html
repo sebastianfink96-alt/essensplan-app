@@ -1517,6 +1517,20 @@ img,svg{-webkit-user-drag:none}
 .ftl-g em{order:0!important}
 .ftl-g.l{transform:translateX(-4px)!important;flex-direction:row-reverse!important}
 .fai-s[data-a],.fai-t[data-a]{cursor:pointer}
+
+/* V130 */
+.fx-rose{background:none!important;-webkit-background-clip:border-box!important;background-clip:border-box!important;color:#86868B!important}
+.fx-goals{position:relative}
+.fx-goals.hasadd{padding-bottom:6px}
+.fx-add{position:absolute;right:26px;bottom:-14px;z-index:2;width:38px;height:38px;border:0;border-radius:50%;display:grid;place-items:center;background:#fff;color:#006039;box-shadow:0 0 0 1px rgba(0,96,57,.16),0 8px 18px -8px rgba(0,77,46,.55)}
+.fx-addr{display:none}
+.fx-f span b{font-size:16px}
+.pf-opts.disc .pf-o{min-height:0!important;padding-bottom:14px!important}
+.pf-head{flex-wrap:nowrap!important}
+.pf-head.big>div:not(.pf-av){flex-basis:auto!important}
+.pf-av{z-index:3}
+.pf-head.big .pf-av{width:240px!important;height:240px!important;min-width:240px!important;max-width:240px!important;min-height:240px!important;max-height:240px!important;margin:0 -142px -142px 0!important;align-self:flex-start!important;box-shadow:0 0 0 5px #fff,0 30px 50px -22px rgba(var(--a-glow),.8)}
+.pf-head.big .pf-cam{right:14px;bottom:14px;width:40px;height:40px}
 </style>
 
 <div class="page">
@@ -2309,7 +2323,7 @@ const pfText=s=>{const a=PF_SPORT.find(x=>x[0]===s.prof.sport),b=PF_GOAL.find(x=
 Object.assign(P,{f_tri:'<circle cx="5.8" cy="14.6" r="3.3"/><circle cx="12" cy="8.6" r="3.3"/><circle cx="18.2" cy="14.6" r="3.3"/>',flag:'<path d="M5.5 21V3.6"/><path d="M5.5 4.6c2.4-1.4 4.6-1.4 7 0s4.6 1.4 7 0v8.6c-2.4 1.4-4.6 1.4-7 0s-4.6-1.4-7 0"/>'});
 const PF_DISC=[['rad','Rennrad','Straße & Pässe','f_bike'],['lauf','Laufen','Straße & Trail','f_run'],['schwimm','Schwimmen','Becken & Freiwasser','f_swim'],['tri','Triathlet','Swim · Bike · Run','f_tri'],['kraft','Kraftsportler','Gewichte & Kraft','f_kraft'],['yoga','Yoga','Beweglichkeit & Ruhe','f_mob']];
 const DCOL={rad:FA.bike,lauf:FA.run,schwimm:FA.swim,tri:FA.swim,kraft:FA.kraft,yoga:FA.mob},DGRAD={tri:'linear-gradient(135deg,#2F9BE6,#FF6A55 55%,#F5A623)'};
-const discOpts=(cur,cls='')=>`<div class="pf-opts c3 fit disc ${cls}">${PF_DISC.map(([k,t,sub,icn])=>`<button class="pf-o ${cur===k?'on':''}" style="--c:${DCOL[k]}${DGRAD[k]?';--g:'+DGRAD[k]:''}" data-a="pfdisc" data-v="${k}" aria-pressed="${cur===k}"><span class="pf-oi">${ic(icn)}</span><b>${t}</b><small>${sub}</small><i>${ic('check')}</i></button>`).join('')}</div>`;
+const discOpts=(cur,cls='')=>`<div class="pf-opts c3 fit disc ${cls}">${PF_DISC.map(([k,t,sub,icn])=>`<button class="pf-o ${cur===k?'on':''}" style="--c:${DCOL[k]}${DGRAD[k]?';--g:'+DGRAD[k]:''}" data-a="pfdisc" data-v="${k}" aria-pressed="${cur===k}"><span class="pf-oi">${ic(icn)}</span><b>${t}</b><i>${ic('check')}</i></button>`).join('')}</div>`;
 const PH=[['g','Grundlage','#7DAFE3','Ruhig und lang – Ausdauer aufbauen'],['a','Aufbau','#2E9E6B','Mehr Umfang, erste harte Einheiten'],['s','Spezifisch','#F0A03A','Wettkampfnah trainieren'],['t','Tapering','#E0688C','Weniger Umfang, frisch werden']];
 const phOf=k=>PH.find(x=>x[0]===k);
 const fGoals=s=>(s.prof.goals||[]).filter(g=>g&&g.d&&idxOf(g.d)>=TODAY).sort((a,b)=>a.d<b.d?-1:1);
@@ -2326,12 +2340,12 @@ const wkTxt=n=>{const w=Math.round(n/7);return n<10?`${n} ${n===1?'Tag':'Tage'}`
 Phone.prototype.vFprof=function(){const s=this.s,pf=s.prof,FG=fGoals(s),D=PF_DISC.find(x=>x[0]===pf.disc),A=PF_SPORT.find(x=>x[0]===pf.sport),G=pf.goals||[];
   const lvl=L=>`<div class="pf-opts c3 fit fx-lv">${L.map(([k,t,sub,icn])=>`<button class="pf-o ${pf.sport===k?'on':''}" data-a="pfsport" data-v="${k}" aria-pressed="${pf.sport===k}"><span class="pf-oi">${ic(icn)}</span><b>${k==='hobby'?'Hobby':t}</b><small>${sub}</small><i>${ic('check')}</i></button>`).join('')}</div>`;
   return `<h2 class="ap-h2 fx-h rv">Für was <span>trainierst du?</span></h2>
-   <div class="fx-row rv"><button class="fx-f ${D?'on':''}" data-a="fdisc" ${D?`style="--c:${DCOL[D[0]]}${DGRAD[D[0]]?';--g:'+DGRAD[D[0]]:''}"`:''}>${D?`<span class="fx-i">${ic(D[3])}</span><span><b>${D[1]}</b><small>${D[2]}</small></span>`:`<span class="fx-i">${ic('plus')}</span><span><b>Sportart wählen</b><small>Rennrad, Laufen, Triathlon …</small></span>`}${ic('down','cv')}</button>
-</div>
-   <h2 class="ap-h2 fx-h rv" style="margin-top:30px">Saisonziele. <span class="fx-rose">Bis zu vier.</span></h2>
-   <div class="fx-goals rv">${G.map((g,i)=>{const e=idxOf(g.d),n=e-TODAY;return `<button class="fx-g ${n<0?'past':''}" data-a="fgoal" data-v="${i}"><span class="fx-gi">${FG.length>1&&FG.indexOf(g)>=0?`<b>${FG.indexOf(g)+1}</b>`:ic('flag')}</span><span class="fx-gt"><b>${esc(g.t)}</b><small>${isoLbl(g.d)} ${dayDate(e).getFullYear()}</small></span><em>${n<0?'vorbei':n===0?'heute':'in '+wkTxt(n)}</em></button>`}).join('')}
-    ${!G.length?`<button class="fx-g add" data-a="fgoal" data-v="-1"><span class="fx-gi">${ic('plus')}</span><span class="fx-gt"><b>Saisonziel hinzufügen</b><small>z. B. Ötztaler Radmarathon</small></span></button>`:''}</div>
-   ${G.length&&G.length<4?`<div class="fx-addr"><button class="fx-add" data-a="fgoal" data-v="-1" aria-label="Weiteres Saisonziel hinzufügen">${ic('plus')}</button></div>`:''}`};
+   <div class="fx-row rv"><button class="fx-f ${D?'on':''}" data-a="fdisc" ${D?`style="--c:${DCOL[D[0]]}${DGRAD[D[0]]?';--g:'+DGRAD[D[0]]:''}"`:''}>${D?`<span class="fx-i">${ic(D[3])}</span><span><b>${D[1]}</b></span>`:`<span class="fx-i">${ic('plus')}</span><span><b>Sportart wählen</b></span>`}${ic('down','cv')}</button>
+</div>`};
+Phone.prototype.vFgoals=function(){const s=this.s,pf=s.prof,FG=fGoals(s),G=pf.goals||[];
+  return `<h2 class="ap-h2 fx-h rv" style="margin-top:34px">Saisonziele. <span class="fx-rose">Bis zu vier.</span></h2>
+   <div class="fx-goals rv ${G.length&&G.length<4?'hasadd':''}">${G.map((g,i)=>{const e=idxOf(g.d),n=e-TODAY;return `<button class="fx-g ${n<0?'past':''}" data-a="fgoal" data-v="${i}"><span class="fx-gi">${FG.length>1&&FG.indexOf(g)>=0?`<b>${FG.indexOf(g)+1}</b>`:ic('flag')}</span><span class="fx-gt"><b>${esc(g.t)}</b><small>${isoLbl(g.d)} ${dayDate(e).getFullYear()}</small></span><em>${n<0?'vorbei':n===0?'heute':'in '+wkTxt(n)}</em></button>`}).join('')}
+    ${!G.length?`<button class="fx-g add" data-a="fgoal" data-v="-1"><span class="fx-gi">${ic('plus')}</span><span class="fx-gt"><b>Saisonziel hinzufügen</b><small>z. B. Ötztaler Radmarathon</small></span></button>`:''}${G.length&&G.length<4?`<button class="fx-add" data-a="fgoal" data-v="-1" aria-label="Weiteres Saisonziel hinzufügen">${ic('plus')}</button>`:''}</div>`};
 /* Zeitstrahl: Grundlage → Aufbau → Spezifisch → Tapering bis zu den Saisonzielen; bei langer Strecke zwei Zeilen untereinander */
 Phone.prototype.vSeason=function(){const s=this.s,{G,segs}=seasonPlan(s);
   const head=`<h2 class="ap-h2 fx-h rv" style="margin-top:34px">Dein Weg. <span>Bis zum Ziel.</span></h2>`;
@@ -2522,6 +2536,7 @@ Phone.prototype.vFit=function(){const s=this.s;
    <button class="gbtn" style="width:100%;margin-top:12px" data-a="fitai" ${A&&A.step==='think'?'disabled':''}>${ic('spark')}${fresh?'Neu analysieren':'Woche analysieren'}</button>
    <button class="ai-again" data-a="fitfill">Freie Tage passend zum Training planen</button>`}
   </div>
+  ${this.vFgoals()}
   ${this.vSeason()}
   </div></div>`};
 /* Fenster „Training eintragen“: 1 Aktivität, 2 Intensität */
@@ -3581,7 +3596,7 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
    case 'pfzoom':{s.pfBig=!s.pfBig;haptic();const h=this.scr.querySelector('.pf-head');if(h)h.classList.toggle('big',s.pfBig);break}
    case 'pfnophoto':s.prof.photo='';this.render();break;
    case 'pfphoto':{const inp=document.createElement('input');inp.type='file';inp.accept='image/*';
-      inp.onchange=async()=>{const f=inp.files&&inp.files[0];if(!f)return;try{const b=await shrink(f,360);s.prof.photo='data:image/jpeg;base64,'+await blobB64(b);hapticSuccess();this.render()}catch(e){this.toast('Das Foto konnte nicht geladen werden')}};inp.click();break}
+      inp.onchange=async()=>{const f=inp.files&&inp.files[0];if(!f)return;try{const b=await shrink(f,900);s.prof.photo='data:image/jpeg;base64,'+await blobB64(b);hapticSuccess();this.render()}catch(e){this.toast('Das Foto konnte nicht geladen werden')}};inp.click();break}
    case 'fimp':this.fitPhoto();break;
    case 'fimpok':this.fitImport();break;
    case 'fimpretry':if(s.fimp&&s.fimp.file)this.fitPhotoReal(s.fimp.file);break;
