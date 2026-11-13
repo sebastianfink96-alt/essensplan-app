@@ -1570,6 +1570,14 @@ img,svg{-webkit-user-drag:none}
 
 /* V143: Seitentitel „Mein Essensplan“ / „Mein Fitnessbereich“ dünner und eleganter (Apple-Stil) */
 .phone .h-title,.phone .phead .h-title{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",Inter,"Segoe UI",Roboto,sans-serif;font-weight:500!important;letter-spacing:-.028em!important}
+
+/* V144: Tellerschatten ohne CSS-Filter (iOS zeichnet Filter-Schatten als Rechteck) – runder Schatten über einen Kreis mit box-shadow */
+.stage img{filter:none!important}
+.stage::before{content:'';position:absolute;left:7%;right:7%;top:6%;bottom:6%;border-radius:50%;pointer-events:none;
+  box-shadow:0 calc(var(--s)*.055) calc(var(--s)*.08) calc(var(--s)*-.01) rgba(40,30,60,.26)}
+.rhero .stage::before{box-shadow:0 calc(var(--s)*.07) calc(var(--s)*.09) calc(var(--s)*-.005) rgba(50,10,30,.5)}
+.mn-hp .stage::before{box-shadow:0 calc(var(--s)*-.02) calc(var(--s)*.07) rgba(60,45,30,.16)}
+.cface .stage::before,.wi .stage::before{display:none}
 </style>
 
 <div class="page">
