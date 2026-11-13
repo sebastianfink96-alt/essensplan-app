@@ -754,6 +754,25 @@ html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
 .swc.on{opacity:1;transform:none}
 .swc b{display:block;font-size:17px;font-weight:600;letter-spacing:-.02em;margin-bottom:3px}
 .swc span{font-size:13.5px;line-height:1.4;opacity:.92}
+/* V123: Intro-Seite 5 – kleiner Würfel zeigt den Wechsel Essensplan ↔ Fitnessbereich */
+.ill-cube{position:relative;width:176px;height:236px;perspective:900px;margin:0 auto}
+.icb{position:absolute;inset:0;transform-style:preserve-3d;animation:icbTurn 4.6s cubic-bezier(.45,0,.2,1) infinite}
+.icf{position:absolute;inset:0;border-radius:26px;padding:16px 14px;display:flex;flex-direction:column;gap:6px;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;box-shadow:0 0 0 1px rgba(0,0,0,.05),0 26px 40px -24px rgba(60,30,50,.55)}
+.icf.a{transform:rotateX(0deg) translateZ(118px);background:linear-gradient(180deg,#EBC3CB 0,#F7E9EC 40%,#fff 100%)}
+.icf.b{transform:rotateX(-90deg) translateZ(118px);background:linear-gradient(180deg,#8FC0A7 0,#E3F1EA 42%,#fff 100%)}
+.icf small{font-size:8px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#94425A}
+.icf.b small{color:#006039}
+.icf b{font-size:15px;font-weight:600;letter-spacing:-.03em;color:#1D1D1F;margin-top:-4px}
+.icf .row{display:flex;gap:5px;margin-top:4px}
+.icf .row i{flex:1;height:30px;border-radius:9px;background:rgba(255,255,255,.9);box-shadow:0 2px 6px -4px rgba(0,0,0,.3)}
+.icf.a .row i.on{background:linear-gradient(160deg,#C88691,#94425A)}.icf.b .row i.on{background:linear-gradient(160deg,#0F7C4E,#004D2E)}
+.icf .card{flex:1;margin-top:6px;border-radius:18px;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.05);display:flex;align-items:center;justify-content:center;gap:10px;color:#006039;overflow:hidden}
+.icf .card .ic{width:26px;height:26px;stroke-width:1.7}
+.icf .card .stage,.icf .card .plate{transform:none!important}
+.ill-cube .fing{position:absolute;left:50%;top:70%;width:34px;height:34px;margin-left:-17px;border-radius:50%;background:rgba(255,255,255,.7);box-shadow:0 0 0 6px rgba(255,255,255,.3),0 6px 14px -6px rgba(40,20,40,.5),inset 0 0 0 1px rgba(255,255,255,.9);animation:icbFing 4.6s cubic-bezier(.45,0,.2,1) infinite}
+@keyframes icbTurn{0%,14%{transform:translateZ(-118px) rotateX(0)}40%,60%{transform:translateZ(-118px) rotateX(90deg)}86%,100%{transform:translateZ(-118px) rotateX(0)}}
+@keyframes icbFing{0%,8%{opacity:0;transform:translateY(0) scale(1.3)}14%{opacity:1;transform:translateY(0) scale(1)}40%{opacity:1;transform:translateY(-110px) scale(1)}48%,54%{opacity:0;transform:translateY(-110px) scale(1.2)}60%{opacity:1;transform:translateY(-110px) scale(1)}86%{opacity:1;transform:translateY(0) scale(1)}94%,100%{opacity:0;transform:translateY(0) scale(1.2)}}
+@media (prefers-reduced-motion:reduce){.icb,.ill-cube .fing{animation:none}.icb{transform:translateZ(-118px) rotateX(35deg)}}
 /* V107: Begrüßung beim Start + Namensfeld im Intro und unten in den Einstellungen */
 .hello{position:absolute;inset:0;z-index:200;display:grid;place-items:center;text-align:center;padding:0 28px;border-radius:inherit;overflow:hidden;
   background:linear-gradient(160deg,rgba(120,52,72,.2),rgba(60,30,50,.16));-webkit-backdrop-filter:blur(1.5px);backdrop-filter:blur(1.5px);animation:helloIn .4s ease both;transition:opacity .5s ease}
@@ -2970,16 +2989,17 @@ Phone.prototype.vIntro=function(){const s=this.s;
    [`<div class="halo" style="width:300px;height:300px">${plate(RM.n01,230)}</div>`,'Willkommen bei Essensplan','Plane deine Woche in wenigen Minuten. Ein Gericht pro Tag, ganz entspannt.'],
    [`<div class="ill-week">${AB.map((a,i)=>`<span class="${i===0?'tdy':''} ${i===2?'on':''}">${i===0?'HEUTE':a}<em>${i===0?RM.n02.e:i===1?RM.n07.e:i===3?ic('out'):'＋'}</em></span>`).join('')}</div>`,'Tag antippen, Gericht wählen','Wische durch die Vorschläge, filtere nach Fisch, Fleisch, Vegetarisch oder Bowl. Isst du auswärts, lass den Tag einfach aus.'],
    [`<div class="ill-en">${['low','mid','high'].map(l=>`<div><span class="ci" style="background:${EN[l][3]};color:${EN[l][2]}">${ic(EN[l][1])}</span><span>${EN[l][0]}<small>${EN[l][4]}</small></span></div>`).join('')}</div>`,'Energiedichte auf einen Blick','Drei Symbole zeigen, wie viele Kalorien ein Gericht pro Gramm hat. Antippen erklärt sie jederzeit.'],
-   [`<div class="ill-tiles">${[['🥑','Avocado'],['🍋','Limetten'],['🐟','Lachs'],['🥛','Milch'],['🍚','Reis'],['🍅','Tomaten']].map((x,k)=>`<span class="tile ${k>3?'done':''}"><span class="em">${x[0]}</span><span class="tn">${x[1]}</span></span>`).join('')}</div>`,'Einkaufsliste mit einem Tipp','Alle Zutaten der Woche, automatisch zusammengezählt. Eigene Artikel ergänzen und abhaken.']];
+   [`<div class="ill-tiles">${[['🥑','Avocado'],['🍋','Limetten'],['🐟','Lachs'],['🥛','Milch'],['🍚','Reis'],['🍅','Tomaten']].map((x,k)=>`<span class="tile ${k>3?'done':''}"><span class="em">${x[0]}</span><span class="tn">${x[1]}</span></span>`).join('')}</div>`,'Einkaufsliste mit einem Tipp','Alle Zutaten der Woche, automatisch zusammengezählt. Eigene Artikel ergänzen und abhaken.'],
+   [`<div class="ill-cube" aria-hidden="true"><div class="icb"><div class="icf a"><small>KW ${KW(0)}</small><b>Mein Essensplan</b><span class="row">${[0,1,2,3,4].map(k=>`<i${k===1?' class="on"':''}></i>`).join('')}</span><span class="card">${plate(RM.n02,96)}</span></div><div class="icf b"><small>KW ${KW(0)}</small><b>Mein Fitnessbereich</b><span class="row">${[0,1,2,3,4].map(k=>`<i${k===2?' class="on"':''}></i>`).join('')}</span><span class="card">${ic('f_bike')}${ic('f_run')}${ic('f_kraft')}</span></div></div><i class="fing"></i></div>`,'Zwei Seiten, ein Wisch','Im Essensplan nach oben wischen öffnet deinen Fitnessbereich. Nach unten wischen bringt dich zurück.']];
   return `<div class="intro"><div class="blob"><i></i><i></i><i></i><i></i></div>
-   <div class="isl">${pages.map(([ill,t,txt],k)=>`<section class="ipg" aria-label="Intro Seite ${k+1}"><div class="ill">${ill}</div><div class="eb">Schritt ${k+1} von 4</div><h2>${t}</h2><p>${txt}</p>${k===0?`<div class="in-name"><input aria-label="Dein Vorname" data-k="pname" value="${String(s.prof.name||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;')}" placeholder="Wie heißt du? (optional)" maxlength="24" autocomplete="given-name" autocapitalize="words" enterkeyhint="done"></div>`:''}</section>`).join('')}</div>
+   <div class="isl">${pages.map(([ill,t,txt],k)=>`<section class="ipg" aria-label="Intro Seite ${k+1}"><div class="ill">${ill}</div><div class="eb">Schritt ${k+1} von 5</div><h2>${t}</h2><p>${txt}</p></section>`).join('')}</div>
    <button class="skip" data-a="introdone">Überspringen</button>
-   <div class="ifoot"><div class="dots">${[0,1,2,3].map(k=>`<i class="${k===s.ip?'on':''}"></i>`).join('')}</div>
-   <button class="gbtn" style="flex:none" data-a="inext">${s.ip<3?'Weiter':"Los geht's"}</button></div></div>`};
+   <div class="ifoot"><div class="dots">${[0,1,2,3,4].map(k=>`<i class="${k===s.ip?'on':''}"></i>`).join('')}</div>
+   <button class="gbtn" style="flex:none" data-a="inext">${s.ip<4?'Weiter':"Los geht's"}</button></div></div>`};
 Phone.prototype.initIntro=function(){const s=this.s;const isl=this.scr.querySelector('.isl');if(!isl)return;
   isl.scrollLeft=s.ip*390;
   const dots=[...this.scr.querySelectorAll('.ifoot .dots i')],btn=this.scr.querySelector('.ifoot .gbtn'),skip=this.scr.querySelector('.skip');
-  const upd=()=>{const p=Math.round(isl.scrollLeft/isl.clientWidth);s.ip=Math.max(0,Math.min(3,p));dots.forEach((d,k)=>d.classList.toggle('on',k===s.ip));btn.textContent=s.ip<3?'Weiter':"Los geht's";skip.hidden=s.ip===3};
+  const upd=()=>{const p=Math.round(isl.scrollLeft/isl.clientWidth);s.ip=Math.max(0,Math.min(4,p));dots.forEach((d,k)=>d.classList.toggle('on',k===s.ip));btn.textContent=s.ip<4?'Weiter':"Los geht's";skip.hidden=s.ip===4};
   upd();isl.addEventListener('scroll',()=>requestAnimationFrame(upd),{passive:true})};
 
 /* ----- Sheets ----- */
@@ -3358,12 +3378,12 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
    case 'nexttheme':{const o=['rose','beige','bunt'];window.__setTheme(o[(o.indexOf(curTheme())+1)%3]);this.render();break}
    case 'overview':if(window.__mode)window.__mode('screens');break;
    case 'reintro':if(this.opts.persist)store.set(false);s.screen='intro';s.ip=0;this.render();break;
-   case 'inext':{if(s.ip<3){const isl=this.scr.querySelector('.isl');isl.scrollTo({left:(s.ip+1)*isl.clientWidth,behavior:'smooth'})}else this.finishIntro();break}
+   case 'inext':{if(s.ip<4){const isl=this.scr.querySelector('.isl');isl.scrollTo({left:(s.ip+1)*isl.clientWidth,behavior:'smooth'})}else this.finishIntro();break}
    case 'introdone':this.finishIntro();break;
   }
 };
 Phone.prototype.finishIntro=function(){if(this.opts.persist)store.set(true);this.s.ip=0;this.goPlanToday();this.render();this.save();
-  if(this.opts.full){const g=this.greet();this.hinted=false;setTimeout(()=>this.swipeHint(),g?2600:900)}};
+  if(this.opts.full)this.greet()};
 /* Begrüßung beim Start: Milchglas-Fläche, Name erscheint Buchstabe für Buchstabe aus der Unschärfe, blendet von selbst aus */
 Phone.prototype.greet=function(){const s=this.s,n=(s.prof&&s.prof.name||'').trim();if(!n||s.screen!=='plan'||s.sheet)return false;
   const d=document.createElement('div');d.className='hello';d.setAttribute('role','status');
