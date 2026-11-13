@@ -2631,7 +2631,10 @@ Phone.prototype.planDish=function(d,id){const s=this.s;s.plan[d]=id;let txt=dn(d
 /* Kleiner Knopf „2×“ (Kalender-Symbol): Gericht sofort für diesen Tag UND den Folgetag eintragen. Am Sonntag deaktiviert. */
 function twiceBtn(d){const last=d===NDAYS-1;
   return `<button class="twice" data-a="twice" ${last?'disabled':''} title="${last?'Kein Folgetag mehr planbar':'2× kochen: auch für den Folgetag'}" aria-label="2× kochen – auch für den Folgetag">${ic('twice')}</button>`}
-Phone.prototype.back=function(){this.stopSpeak();const s=this.s;s.screen=s.from||'plan';this.render()};
+Phone.prototype.back=function(){this.stopSpeak();const s=this.s;s.screen=s.from||'plan';this.render();this.restoreScroll()};
+/* Zurück aus der Detailansicht: wieder an die Stelle springen, an der das Gericht angetippt wurde */
+Phone.prototype.restoreScroll=function(){const s=this.s;if(this.backFrom!==s.screen||!this.backTop)return;const v=this.scr.querySelector('.view');if(!v)return;
+  v.querySelectorAll('.rv').forEach(e=>e.classList.add('in'));v.scrollTop=this.backTop;requestAnimationFrame(()=>{v.scrollTop=this.backTop})};
 
 /* ----- Rezepte / Favoriten ----- */
 const MEALS=[['l','Mittagessen','sun'],['b','Frühstück','sunrise'],['d','Abendessen','moon']];
@@ -3181,7 +3184,7 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
    case 'fav':{const id=t.dataset.id;s.favs.has(id)?s.favs.delete(id):s.favs.add(id);this.render();break}
    case 'stepok':{const id=s.did,k=+t.dataset.k,d=s.done[id]=s.done[id]||[];const i=d.indexOf(k);const all=i<0&&d.length+1===RM[id].st.length;if(i<0){d.push(k);all?hapticSuccess():haptic()}else d.splice(i,1);t.classList.toggle('ok',i<0);this.save();
       if(all)setTimeout(()=>this.cooked(),150);break}
-   case 'detail':s.from=s.screen;s.did=t.dataset.id;s.dday=t.dataset.day!==undefined?+t.dataset.day:null;s.screen='detail';this.render();break;
+   case 'detail':{const v0=this.scr.querySelector('.view');this.backTop=v0?v0.scrollTop:0;this.backFrom=s.screen}s.from=s.screen;s.did=t.dataset.id;s.dday=t.dataset.day!==undefined?+t.dataset.day:null;s.screen='detail';this.render();break;
    case 'back':this.back();break;
    case 'planfor':{const i=+t.dataset.i;const dd=this.planDish(i,s.did);s.sheet=null;this.backAfterPlan(i);this.render();this.toast(`${RM[s.did].n} für ${dd} eingeplant`);break}
    case 'pers':s.persons=Math.max(1,Math.min(8,s.persons+(+v)));this.render();break;
