@@ -968,6 +968,13 @@ html,body{touch-action:manipulation}
 .ai-in input{flex:1;min-width:0;border:0;border-radius:999px;padding:12px 16px;font:15px var(--font);background:#fff;box-shadow:0 0 0 1px var(--a-line);color:var(--a-ink)}
 .ai-mic{width:46px;height:46px;border-radius:50%;border:0;background:var(--a-grad);color:#fff;display:grid;place-items:center;flex:none}
 .ai-mic .ic{width:20px;height:20px}
+/* V125: Mikrofon im Eingabefeld */
+.ai-inw{flex:1;min-width:0;position:relative;display:flex}
+.ai-inw input{padding-right:46px}
+.ai-dic{position:absolute;right:5px;top:50%;translate:0 -50%;width:36px;height:36px;border-radius:50%;border:0;background:none;color:#8E8E93;display:grid;place-items:center}
+.ai-dic .ic{width:20px;height:20px}
+.ai-dic.on{background:var(--a-grad);color:#fff;animation:dicp 1.2s ease-in-out infinite}
+@keyframes dicp{0%,100%{box-shadow:0 0 0 0 rgba(var(--a-glow),.45)}50%{box-shadow:0 0 0 7px rgba(var(--a-glow),0)}}
 .ai-tr{font-size:20px;font-weight:300;line-height:1.35;min-height:54px;margin:4px 0 10px!important;color:var(--a-ink)!important;letter-spacing:-.01em}
 .ai-tr.done{font-size:15px;min-height:0;color:var(--a-muted)!important}
 .ai-wave{display:flex;align-items:center;justify-content:center;gap:4px;height:46px}
@@ -1480,7 +1487,7 @@ const P = {
   bag:'<path d="M5 8h14l-1.1 11.6a1.5 1.5 0 0 1-1.5 1.4H7.6a1.5 1.5 0 0 1-1.5-1.4z"/><path d="M9 10V7a3 3 0 0 1 6 0v3"/>',
   cap:'<path d="M2.5 9.5 12 5l9.5 4.5L12 14z"/><path d="M6.5 11.8v4c0 1.4 2.5 2.8 5.5 2.8s5.5-1.4 5.5-2.8v-4"/><path d="M21.5 9.5v5"/>',
 vol:'<path d="M4 9.5v5h3.5L12 18V6L7.5 9.5z"/><path d="M15.5 9a4 4 0 0 1 0 6"/><path d="M18 6.5a7.5 7.5 0 0 1 0 11"/>',
-stop:'<rect x="7" y="7" width="10" height="10" rx="2"/>',
+stop:'<rect x="7" y="7" width="10" height="10" rx="2"/>',pause:'<path d="M9 6v12M15 6v12"/>',
 box:'<path d="M4 8.5 12 4l8 4.5v7L12 20l-8-4.5z"/><path d="M4 8.5 12 13l8-4.5M12 13v7"/>',
 receipt:'<path d="M6 3.5h12v17l-2-1.4-2 1.4-2-1.4-2 1.4-2-1.4-2 1.4z"/><path d="M9 8h6M9 11.5h6M9 15h3.5"/>',
 up:'<path d="m6 15 6-6 6 6"/>',
@@ -2765,8 +2772,8 @@ Phone.prototype.vDetail=function(){const s=this.s;const r=RM[s.did];const cat=CA
       +(sp.length?`<div class="rz-ir"><span class="e">🧂</span><span class="n">${sp.map(x=>nm(x[0])).join(', ')}<small>Gewürze nach Geschmack</small></span><b></b></div>`:'')})()}</div>
    <div class="eb rz-eb2">Zubereitung</div>
    <h2 class="ap-h1 rz-t2">So gelingt's. <span>Schritt für Schritt.</span></h2>
-   <div class="rz-act"><button class="pill sm${this.speaking?' on':''}" data-a="speak">${ic(this.speaking?'stop':'vol')}${this.speaking?'Stopp':'Vorlesen'}</button><button class="pill sm ask" data-a="cook">${ic('spark')}Fragen</button></div>
-   <div class="steps">${(()=>{const M=stepIngs(r);return r.st.map((t,k)=>`<div class="step${(s.done[r.id]||[]).includes(k)?' ok':''}" data-a="stepok" data-k="${k}" role="button" aria-label="Schritt ${k+1} abhaken"><div class="stx"><b><span class="n">${String(k+1).padStart(2,'0')}</span>${ic('check','ck')}</b><div class="rz-st"><p>${t}</p>${M[k].length?`<div class="sing">`:''}${M[k].map(j=>{const [n,q,u]=r.i[j];const nm=n.replace(/\s*\(.*?\)/g,'');return `<span class="sic"><span class="em">${emo(n)}</span><span class="st"><span>${nm}</span><i>${q?fq(q*s.persons,u):'n. G.'}</i></span></span>`}).join('')}${M[k].length?'</div>':''}</div></div></div>`).join('')})()}</div>
+   <div class="rz-act">${this.sayBtns()}</div>
+   <div class="steps">${(()=>{const M=stepIngs(r);return r.st.map((t,k)=>`<div class="step${(s.done[r.id]||[]).includes(k)?' ok':''}${this.speaking&&this.sayK===k?' say':''}" data-a="stepok" data-k="${k}" role="button" aria-label="Schritt ${k+1} abhaken"><div class="stx"><b><span class="n">${String(k+1).padStart(2,'0')}</span>${ic('check','ck')}</b><div class="rz-st"><p>${t}</p>${M[k].length?`<div class="sing">`:''}${M[k].map(j=>{const [n,q,u]=r.i[j];const nm=n.replace(/\s*\(.*?\)/g,'');return `<span class="sic"><span class="em">${emo(n)}</span><span class="st"><span>${nm}</span><i>${q?fq(q*s.persons,u):'n. G.'}</i></span></span>`}).join('')}${M[k].length?'</div>':''}</div></div></div>`).join('')})()}</div>
   </div></div>
   <div class="swipehint"></div>
   <div class="det-top"><button class="iconbtn" data-a="back" aria-label="Zurück">${ic('left')}</button></div>
@@ -2922,10 +2929,13 @@ Phone.prototype.vCook=function(){const s=this.s,r=RM[s.did],c=s.cook||{step:'idl
    <div class="ai-tags many">${main.map(n=>`<button class="ai-tag" data-a="cooksub" data-v="${n}"><span>${emo(n)}</span>${n}</button>`).join('')}</div>
    <div class="lbl" style="margin:16px 0 8px">Häufige Fragen</div>
    <div class="ai-ex"><div class="ai-chip two">${ic('spark')}<span><button data-a="cookpre" data-v="keep" data-q="Wie lange hält sich das Gericht?">Wie lange hält sich das?</button><button data-a="cookpre" data-v="prep" data-q="Kann ich das vorbereiten?">Kann ich das vorbereiten?</button><button data-a="cookpre" data-v="side" data-q="Was passt dazu?">Was passt dazu?</button></span></div></div>
-   <div class="ai-in"><input data-k="cookq" enterkeyhint="send" placeholder="Eigene Frage tippen oder diktieren" value="${(s.cookQ||'').replace(/"/g,'&quot;')}" aria-label="Frage an den Koch-Assistenten"><button class="ai-mic" data-a="cooksend" aria-label="Senden">${ic('send')}</button></div>
+   <div class="ai-in"><div class="ai-inw"><input data-k="cookq" enterkeyhint="send" placeholder="Frage tippen oder diktieren" value="${(s.cookQ||'').replace(/"/g,'&quot;')}" aria-label="Frage an den Koch-Assistenten"><button class="ai-dic" data-a="dictate" data-k="cookq" aria-label="Diktieren">${ic('mic')}</button></div><button class="ai-mic" data-a="cooksend" aria-label="Senden">${ic('send')}</button></div>
    <p class="ai-note">${AI?'Antworten von Claude.':'Hier ohne Internet-KI: Ersatz-Zutaten, Haltbarkeit, Vorbereiten und Beilagen.'}</p>`};
 /* Schritte vorlesen (ab dem ersten nicht abgehakten Schritt); nochmal tippen stoppt */
-Phone.prototype.stopSpeak=function(){if(this.speaking){this.speaking=false;try{speechSynthesis.cancel()}catch(e){}if(this.aud){this.aud.onended=this.aud.onerror=null;try{this.aud.pause()}catch(e){}}}};
+Phone.prototype.stopSpeak=function(){if(this.speaking){if(this.sayCtl)this.sayCtl.halt();this.speaking=false;this.paused=false;this.sayCtl=null;this.sayK=null}};
+/* V125: Knöpfe über den Schritten – Vorlesen → Pause → Weiter / Beenden */
+Phone.prototype.sayBtns=function(){const a=this.speaking,p=this.paused;
+  return `<button class="pill sm${a&&!p?' on':''}" data-a="speak">${ic(!a?'vol':p?'play':'pause')}${!a?'Vorlesen':p?'Weiter':'Pause'}</button>${a&&p?`<button class="pill sm" data-a="speakend">${ic('stop')}Beenden</button>`:''}<button class="pill sm ask" data-a="cook">${ic('spark')}Fragen</button>`};
 /* Stimme: natürlichste weibliche deutsche Stimme, die das Gerät hat (Premium > Erweitert/Neural > Standard); Roboter-Stimmen ausschließen */
 const V_FEM=/anna|petra|helena|marlene|vicki|katja|amala|seraphina|hedda|google deutsch/i,V_MALE=/markus|martin|yannick|viktor|stefan|conrad|killian|hans|daniel|florian/i,V_BAD=/eloquence|novelty|eddy|flo\b|grandma|grandpa|reed|rocko|sandy|shelley|albert|bahh|bells|boing|bubbles|cellos|jester|organ|superstar|trinoids|whisper|wobble|zarvox/i;
 function deVoices(){let vs=[];try{vs=speechSynthesis.getVoices()||[]}catch(e){}
@@ -2939,24 +2949,30 @@ function sayText(x){return x.replace(/(\d)\s*[–-]\s*(\d)/g,'$1 bis $2').replac
 /* Schritte vorlesen (ab dem ersten nicht abgehakten Schritt); nochmal tippen stoppt */
 Phone.prototype.speak=function(){const s=this.s,r=RM[s.did],sy=window.speechSynthesis,canDev=!!(sy&&window.SpeechSynthesisUtterance);
   const useKi=()=>!!(KI&&KI.tts&&!this.noTts);
+  if(this.speaking&&this.sayCtl){this.paused?this.sayCtl.resume():this.sayCtl.pause();return}
   if(!useKi()&&!canDev){this.toast('Vorlesen wird hier nicht unterstützt');return}
-  if(this.speaking){this.stopSpeak();this.render();return}
-  try{if(sy)sy.cancel()}catch(e){}const dn2=s.done[r.id]||[];let k=r.st.findIndex((_,i)=>!dn2.includes(i));if(k<0)k=0;const k0=k,n=r.st.length;this.speaking=true;const self=this,voice=pickVoice(s.voice);
-  const mark=()=>{self.scr.querySelectorAll('.step.say').forEach(x=>x.classList.remove('say'));const el=self.scr.querySelector(`.step[data-k="${k}"]`);if(el&&self.speaking){el.classList.add('say');el.scrollIntoView({block:'center',behavior:'smooth'})}};
-  const lead=i=>i===k0?(i===0?`${r.n}. Zuerst: `:'Weiter geht\'s: '):i===n-1?'Und zum Schluss: ':['Dann: ','Danach: ','Als Nächstes: '][(i-k0-1)%3];
+  try{if(sy)sy.cancel()}catch(e){}const dn2=s.done[r.id]||[];let k=r.st.findIndex((_,i)=>!dn2.includes(i));if(k<0)k=0;let k0=k,plain=false,g=0;const n=r.st.length;this.speaking=true;this.paused=false;const self=this,voice=pickVoice(s.voice);
+  const mark=sc=>{self.sayK=k;self.scr.querySelectorAll('.step.say').forEach(x=>x.classList.remove('say'));const el=self.scr.querySelector(`.step[data-k="${k}"]`);if(el&&self.speaking){el.classList.add('say');if(sc)el.scrollIntoView({block:'center',behavior:'smooth'})}};
+  const upd=()=>{const el=self.scr.querySelector('.rz-act');if(el)el.innerHTML=self.sayBtns()};
+  const end=()=>{self.speaking=false;self.paused=false;self.sayCtl=null;self.sayK=null;self.render()};
+  const lead=i=>i===k0?(plain?'':i===0?`${r.n}. Zuerst: `:'Weiter geht\'s: '):i===n-1?'Und zum Schluss: ':['Dann: ','Danach: ','Als Nächstes: '][(i-k0-1)%3];
   const txt=i=>lead(i)+sayText(r.st[i]);
   /* Audio-Element schon beim Antippen „aufwecken“, sonst blockiert iOS das spätere Abspielen */
   let aud=null;if(useKi()){aud=this.aud||(this.aud=new Audio());aud.onended=aud.onerror=null;try{aud.src=SIL;const pr=aud.play();if(pr&&pr.catch)pr.catch(()=>{})}catch(e){}}
-  const pre={},get=i=>pre[i]||(pre[i]=kiSay(txt(i)));
-  const dev=()=>{if(!canDev){self.speaking=false;self.render();return}
-    const u=new SpeechSynthesisUtterance(txt(k));if(voice){u.voice=voice;u.lang=voice.lang}else u.lang='de-DE';u.rate=1;u.pitch=1;u.onend=()=>{k++;setTimeout(next,1800)};u.onerror=()=>{self.speaking=false;self.render()};sy.speak(u)};
+  const halt=()=>{g++;try{if(sy)sy.cancel()}catch(e){}if(aud){aud.onended=aud.onerror=null;try{aud.pause()}catch(e){}}};
+  const pre={},get=i=>{const t=txt(i);return pre[t]||(pre[t]=kiSay(t))};
+  const live=mg=>self.speaking&&!self.paused&&g===mg;
+  const dev=()=>{if(!canDev){end();return}const mg=g;
+    const u=new SpeechSynthesisUtterance(txt(k));if(voice){u.voice=voice;u.lang=voice.lang}else u.lang='de-DE';u.rate=1;u.pitch=1;u.onend=()=>{if(!live(mg))return;k++;setTimeout(()=>{if(live(mg))next()},1800)};u.onerror=()=>{if(live(mg))end()};sy.speak(u)};
   const fall=e=>{self.noTts=true;self.toast(e&&e.status===429?'Stimmen-Kontingent aufgebraucht – ich lese mit der Gerätestimme':'Natürliche Stimme nicht erreichbar – ich lese mit der Gerätestimme');dev()};
-  const next=()=>{if(!self.speaking||self.s.screen!=='detail')return;if(k>=n){self.speaking=false;self.render();return}
-    mark();if(!useKi()||!aud){dev();return}
-    const my=k;get(my).then(b=>{if(!self.speaking||k!==my)return;const url=URL.createObjectURL(b);
-      aud.onended=()=>{URL.revokeObjectURL(url);if(!self.speaking||k!==my)return;k++;setTimeout(next,900)};aud.onerror=()=>{if(self.speaking&&k===my)fall()};
-      aud.src=url;const pr=aud.play();if(pr&&pr.catch)pr.catch(()=>{if(self.speaking&&k===my)fall()});
-      if(my+1<n)get(my+1).catch(()=>{})}).catch(e=>{if(self.speaking&&k===my)fall(e)})};
+  const next=()=>{if(!self.speaking||self.paused||self.s.screen!=='detail')return;if(k>=n){end();return}
+    mark(true);if(!useKi()||!aud){dev();return}
+    const my=k,mg=g,ok=()=>live(mg)&&k===my;get(my).then(b=>{if(!ok())return;const url=URL.createObjectURL(b);
+      aud.onended=()=>{URL.revokeObjectURL(url);if(!ok())return;k++;setTimeout(()=>{if(live(mg))next()},900)};aud.onerror=()=>{if(ok())fall()};
+      aud.src=url;const pr=aud.play();if(pr&&pr.catch)pr.catch(()=>{if(ok())fall()});
+      if(my+1<n)get(my+1).catch(()=>{})}).catch(e=>{if(ok())fall(e)})};
+  /* Pause hält an; Weiter liest den markierten Schritt von vorn; Schritt antippen = diesen (nochmal) vorlesen */
+  this.sayCtl={halt,pause(){halt();self.paused=true;if(k>=n)k=n-1;upd()},resume(){halt();self.paused=false;k0=k;plain=true;upd();next()},jump(i){halt();self.paused=false;k=i;k0=i;plain=true;upd();next()}};
   this.render();next()};
 
 Phone.prototype.vSettings=function(){const s=this.s,pf=s.prof,q=x=>String(x||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
@@ -3173,7 +3189,7 @@ Phone.prototype.vAI=function(){const s=this.s,a=s.ai||{step:'idle'};
   let body='';
   if(a.step==='idle'){body=`<div class="ai-ex"><div class="ai-chip two">${ic('spark')}<span>${AI_EX.map(([k,t])=>`<button data-a="aiex" data-q="${k}">„${t}“</button>`).join('')}</span></div>
       <button class="ai-chip" data-a="aiphoto">${ic('cam')}<span>Foto meiner Zutaten – was kann ich kochen?</span></button></div>
-    <div class="ai-in"><input data-k="aiq" enterkeyhint="send" placeholder="Wunsch tippen oder diktieren" value="${(s.aiQ||'').replace(/"/g,'&quot;')}" aria-label="Wunsch eingeben"><button class="ai-mic" data-a="aisend" aria-label="Senden">${ic('send')}</button></div>`}
+    <div class="ai-in"><div class="ai-inw"><input data-k="aiq" enterkeyhint="send" placeholder="Wunsch tippen oder diktieren" value="${(s.aiQ||'').replace(/"/g,'&quot;')}" aria-label="Wunsch eingeben"><button class="ai-dic" data-a="dictate" data-k="aiq" aria-label="Diktieren">${ic('mic')}</button></div><button class="ai-mic" data-a="aisend" aria-label="Senden">${ic('send')}</button></div>`}
   else if(a.step==='listen'){body=`<p class="ai-tr">${a.shown||''}</p><div class="ai-wave">${'<i></i>'.repeat(18)}</div>`}
   else if(a.step==='think'){body=`<p class="ai-tr done">„${a.text||'Zutaten'}“</p><div class="ai-dots"><i></i><i></i><i></i></div>`}
   else if(a.step==='snap'&&a.photo){body=`<div class="ai-photo scan" style="display:block;padding:0;height:220px"><img src="${a.photo}" alt="" style="width:100%;height:100%;object-fit:cover;display:block"><i class="ai-scan"></i></div>`}
@@ -3225,6 +3241,19 @@ Phone.prototype.vSheet=function(){const s=this.s;if(!s.sheet)return '';
   return `<div class="sheet-bg" data-a="closesheet"><div class="sheet" data-a="stop"><button class="sheet-x" data-a="closesheet" aria-label="Schließen">${ic('x')}</button>${c}</div></div>`};
 
 /* ----- Aktionen ----- */
+/* V125: Diktieren direkt ins Feld (Spracherkennung des Geräts); nochmal tippen beendet */
+Phone.prototype.dictate=function(key){const SR=window.SpeechRecognition||window.webkitSpeechRecognition,q=`input[data-k="${key}"]`,sk=key==='aiq'?'aiQ':'cookQ',self=this;
+  const inp=()=>this.scr.querySelector(q),btn=()=>this.scr.querySelector(`.ai-dic[data-k="${key}"]`);
+  if(this.rec){try{this.rec.stop()}catch(e){}return}
+  const fb=m=>{const el=inp();if(el)el.focus();this.toast(m)};
+  if(!SR){fb('Hier bitte das Mikrofon auf der Tastatur nutzen');return}
+  this.stopSpeak();let rec,err='';try{rec=new SR()}catch(e){fb('Hier bitte das Mikrofon auf der Tastatur nutzen');return}
+  rec.lang='de-DE';rec.interimResults=true;rec.continuous=false;const el0=inp(),base=el0&&el0.value.trim()?el0.value.trim()+' ':'';
+  rec.onresult=e=>{let t='';for(let i=0;i<e.results.length;i++)t+=e.results[i][0].transcript;const v=base+t.trim();self.s[sk]=v;const el=inp();if(el)el.value=v};
+  rec.onerror=e=>{err=e.error||'x'};
+  rec.onend=()=>{self.rec=null;const b=btn();if(b)b.classList.remove('on');if(err&&err!=='no-speech'&&err!=='aborted')fb(err==='not-allowed'||err==='service-not-allowed'?'Mikrofon nicht freigegeben – bitte das Mikrofon auf der Tastatur nutzen':'Spracherkennung nicht erreichbar – bitte das Mikrofon auf der Tastatur nutzen')};
+  try{rec.start()}catch(e){fb('Hier bitte das Mikrofon auf der Tastatur nutzen');return}
+  this.rec=rec;haptic();const b=btn();if(b)b.classList.add('on')};
 Phone.prototype.input=function(e){const k=e.target.dataset.k;if(k==='aiq'){this.s.aiQ=e.target.value;return}if(k==='cookq'){this.s.cookQ=e.target.value;return}if(k==='exq'){this.s.exQ=e.target.value;return}if(k==='kiurl'){this.s.kiU=e.target.value;return}if(k==='kipw'){this.s.kiP=e.target.value;return}if(k==='kivoice'){this.s.kiV=e.target.value;return}if(k==='pname'){const v=e.target.value.trim().slice(0,24);this.s.prof.name=v;const h=this.scr.querySelector('#pfh');if(h)h.textContent=v?`Hi ${v}.`:'Hallo.';clearTimeout(this.saveT);this.saveT=setTimeout(()=>this.save(),400);return}if(k==='stockq'){this.s.stockQ=e.target.value;return}if(k==='shopq'){this.s.shopQ=e.target.value;this.render()}if(k==='recq'){this.s.recQ=e.target.value;this.render()}};
 Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();return}
   if(this.s.ipop&&!e.target.closest('.ipop')){this.s.ipop=null;this.render();return}
@@ -3264,7 +3293,7 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
       s.edit=false;s.pick=-1;haptic();this.render();this.toast(`KW ${KW(w)} geleert`,'Rückgängig','undo');break}
    case 'undo':if(this.prevPlan){s.plan=this.prevPlan;this.prevPlan=null;if(s.fitAI&&s.fitAI.swDone)s.fitAI.swDone=false;this.render();this.toast('Rückgängig gemacht')}break;
    case 'fav':{const id=t.dataset.id;s.favs.has(id)?s.favs.delete(id):s.favs.add(id);this.render();break}
-   case 'stepok':{const id=s.did,k=+t.dataset.k,d=s.done[id]=s.done[id]||[];const i=d.indexOf(k);const all=i<0&&d.length+1===RM[id].st.length;if(i<0){d.push(k);all?hapticSuccess():haptic()}else d.splice(i,1);t.classList.toggle('ok',i<0);this.save();
+   case 'stepok':{if(this.speaking&&this.sayCtl){haptic();this.sayCtl.jump(+t.dataset.k);break}const id=s.did,k=+t.dataset.k,d=s.done[id]=s.done[id]||[];const i=d.indexOf(k);const all=i<0&&d.length+1===RM[id].st.length;if(i<0){d.push(k);all?hapticSuccess():haptic()}else d.splice(i,1);t.classList.toggle('ok',i<0);this.save();
       if(all)setTimeout(()=>this.cooked(),150);break}
    case 'detail':{const v0=this.scr.querySelector('.view');this.backTop=v0?v0.scrollTop:0;this.backFrom=s.screen}s.from=s.screen;s.did=t.dataset.id;s.dday=t.dataset.day!==undefined?+t.dataset.day:null;s.screen='detail';this.render();break;
    case 'back':this.back();break;
@@ -3374,6 +3403,8 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
    case 'cooksend':{const q=(s.cookQ||'').trim();if(q)this.cookAsk(q,{});break}
    case 'cookback':s.cook={step:'idle'};s.cookQ='';this.render();break;
    case 'speak':this.speak();break;
+   case 'speakend':this.stopSpeak();this.render();break;
+   case 'dictate':this.dictate(t.dataset.k);break;
    case 'closesheet':this.closeSheet();break;
    case 'clearweek':s.plan={};this.goPlanToday();this.render();this.toast('Plan geleert');break;
    case 'nexttheme':{const o=['rose','beige','bunt'];window.__setTheme(o[(o.indexOf(curTheme())+1)%3]);this.render();break}
