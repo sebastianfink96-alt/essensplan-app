@@ -1548,6 +1548,9 @@ img,svg{-webkit-user-drag:none}
 .fx-rose{color:#006039!important}
 .vs-dbg{margin:10px 0 0;font-size:12px;line-height:1.4;color:#86868B}
 .vs-dbg b{color:#1D1D1F;font-weight:600}.vs-dbg.warn b{color:#B3261E}
+
+/* V137: Einstellungen per Wischen schließen */
+.view.setv{touch-action:pan-y;transition:transform .18s ease}.view.setv.dragging{transition:none}
 </style>
 
 <div class="page">
@@ -1630,7 +1633,7 @@ f_run:'<path d="M3 17.5v-1.2c0-1 .6-1.9 1.5-2.3L8 12.5l2-4.5 2.6 1.6L15 13l4.2 1
 f_tennis:'<circle cx="12" cy="12" r="8.2"/><path d="M5.8 6.8c3.2 2.6 3.2 7.8 0 10.4M18.2 6.8c-3.2 2.6-3.2 7.8 0 10.4"/>',
 f_swim:'<circle cx="16.8" cy="7.6" r="1.9"/><path d="M4.5 13.2l5.2-3.6 3.2 2.6 3.6 1"/><path d="M3 17.6c1.5 0 1.5-1.2 3-1.2s1.5 1.2 3 1.2 1.5-1.2 3-1.2 1.5 1.2 3 1.2 1.5-1.2 3-1.2 1.5 1.2 3 1.2"/>',
 f_kraft:'<path d="M3.5 9.5v5M6.5 7v10M17.5 7v10M20.5 9.5v5M6.5 12h11"/>',
-f_mob:'<circle cx="12" cy="5" r="1.9"/><path d="M12 8.2v5.3M12 9.8l-5 3.4M12 9.8l5 3.4M4.5 19c2.5-2.6 5-3.6 7.5-5.5 2.5 1.9 5 2.9 7.5 5.5M8.5 19h7"/>',
+f_ballett:'<circle cx="12" cy="4.3" r="1.8"/><path d="M12 6.4v5M12 8c-2.3-.5-3.7-2.1-4.3-4.3M12 8c2.3-.5 3.7-2.1 4.3-4.3M6.2 12.4c2-1 3.8-1.4 5.8-1.4s3.8.4 5.8 1.4c-1.9.7-3.8 1-5.8 1s-3.9-.3-5.8-1zM11.3 13.4l-.5 7.3M10.8 20.7h1.6M12.8 13.4l4 5.6"/>',f_mob:'<circle cx="12" cy="5" r="1.9"/><path d="M12 8.2v5.3M12 9.8l-5 3.4M12 9.8l5 3.4M4.5 19c2.5-2.6 5-3.6 7.5-5.5 2.5 1.9 5 2.9 7.5 5.5M8.5 19h7"/>',
 heart:'<path d="M12 20.3s-7.5-4.5-7.5-10.3A4.2 4.2 0 0 1 12 7.4a4.2 4.2 0 0 1 7.5 2.6c0 5.8-7.5 10.3-7.5 10.3z"/>',
   sliders:'<path d="M4 7h9M17 7h3M4 12h3M11 12h9M4 17h11M19 17h1"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="17" cy="17" r="2"/>',
   left:'<path d="m15 18-6-6 6-6"/>',
@@ -2310,9 +2313,9 @@ Phone.prototype.initDeck=function(){const sc=this.scr.querySelector('.lk-sc');if
 
 /* ===== Mein Fitnessbereich ===== */
 /* Training je Tag: {s:{k:['run',…],lv:1–3}, k:{lv:1–3}, m:{k:['yoga',…]}} – s Sport, k Kraft, m Mobilität */
-const FA={bike:'#FF6A55',run:'#F5A623',tennis:'#8BC34A',swim:'#2F9BE6',kraft:'#7A5CFA',mob:'#E0609E'};
+const FA={bike:'#FF6A55',run:'#F5A623',tennis:'#8BC34A',swim:'#2F9BE6',ballett:'#F28DB2',kraft:'#7A5CFA',mob:'#E0609E'};
 const FC={s:'#FF6A55',k:FA.kraft,m:FA.mob},FR={s:15.2,k:10.6,m:6},FNAME={s:'Sport',k:'Krafttraining',m:'Mobilität'};
-const SPORTS=[['bike','Radfahren','🚴'],['run','Laufen','🏃'],['tennis','Tennis','🎾'],['swim','Schwimmen','🏊']];
+const SPORTS=[['bike','Radfahren','🚴'],['run','Laufen','🏃'],['tennis','Tennis','🎾'],['swim','Schwimmen','🏊'],['ballett','Ballett','🩰']];
 const MOBS=[['mob','Mobilisierung','🤸'],['stretch','Dehnen','🙆'],['yoga','Yoga','🧘']];
 const FKN=Object.fromEntries(SPORTS.concat(MOBS).map(x=>[x[0],x[1]])),LVN=['','Leicht','Mittel','Hoch'];
 /* Ringe eines Tages: außen Sport, Mitte Kraft, innen Mobilität. Intensität = Länge des Bogens + Farbstärke */
@@ -2338,8 +2341,8 @@ const pfText=s=>{const a=PF_SPORT.find(x=>x[0]===s.prof.sport),b=PF_GOAL.find(x=
   return [d?'Sportart: '+d[1]:'',a?'Sportliche Ambition: '+a[1]:'',b?'Ernährungsziel: '+b[1]:'',G.length?'Saisonziele: '+G.map(g=>`${g.t} am ${isoLbl(g.d)}`).join(', '):'',cur?'Aktuelle Trainingsphase: '+phOf(cur.k)[1]+' ('+phOf(cur.k)[3]+')':''].filter(Boolean).join('. ')};
 /* V127: Sportart, Saisonziele (max. 3) und Saisonphasen */
 Object.assign(P,{f_tri:'<circle cx="5.8" cy="14.6" r="3.3"/><circle cx="12" cy="8.6" r="3.3"/><circle cx="18.2" cy="14.6" r="3.3"/>',flag:'<path d="M5.5 21V3.6"/><path d="M5.5 4.6c2.4-1.4 4.6-1.4 7 0s4.6 1.4 7 0v8.6c-2.4 1.4-4.6 1.4-7 0s-4.6-1.4-7 0"/>'});
-const PF_DISC=[['rad','Rennrad','Straße & Pässe','f_bike'],['lauf','Laufen','Straße & Trail','f_run'],['schwimm','Schwimmen','Becken & Freiwasser','f_swim'],['tri','Triathlet','Swim · Bike · Run','f_tri'],['kraft','Kraftsportler','Gewichte & Kraft','f_kraft'],['yoga','Yoga','Beweglichkeit & Ruhe','f_mob']];
-const DCOL={rad:FA.bike,lauf:FA.run,schwimm:FA.swim,tri:FA.swim,kraft:FA.kraft,yoga:FA.mob},DGRAD={tri:'linear-gradient(135deg,#2F9BE6,#FF6A55 55%,#F5A623)'};
+const PF_DISC=[['rad','Rennrad','Straße & Pässe','f_bike'],['lauf','Laufen','Straße & Trail','f_run'],['schwimm','Schwimmen','Becken & Freiwasser','f_swim'],['tri','Triathlet','Swim · Bike · Run','f_tri'],['kraft','Kraftsportler','Gewichte & Kraft','f_kraft'],['yoga','Yoga','Beweglichkeit & Ruhe','f_mob'],['ballett','Ballett','Tanz & Haltung','f_ballett']];
+const DCOL={rad:FA.bike,lauf:FA.run,schwimm:FA.swim,tri:FA.swim,kraft:FA.kraft,yoga:FA.mob,ballett:FA.ballett},DGRAD={tri:'linear-gradient(135deg,#2F9BE6,#FF6A55 55%,#F5A623)'};
 const discOpts=(cur,cls='')=>`<div class="pf-opts c3 fit disc ${cls}">${PF_DISC.map(([k,t,sub,icn])=>`<button class="pf-o ${cur===k?'on':''}" style="--c:${DCOL[k]}${DGRAD[k]?';--g:'+DGRAD[k]:''}" data-a="pfdisc" data-v="${k}" aria-pressed="${cur===k}"><span class="pf-oi">${ic(icn)}</span><b>${t}</b><i>${ic('check')}</i></button>`).join('')}</div>`;
 const PH=[['g','Grundlage','#7DAFE3','Ruhig und lang – Ausdauer aufbauen'],['a','Aufbau','#2E9E6B','Mehr Umfang, erste harte Einheiten'],['s','Spezifisch','#F0A03A','Wettkampfnah trainieren'],['t','Tapering','#E0688C','Weniger Umfang, frisch werden']];
 const phOf=k=>PH.find(x=>x[0]===k);
@@ -2448,10 +2451,10 @@ function fitScore(T){if(!T||!(T.s||T.k||T.m))return null;
   if(T.s&&(T.s.lv||2)>=2)return r=>r.kh*1.2+r.p*.5+r.k/50;
   return r=>r.p*.6-r.k/12}
 const fText=T=>!T?'frei':(T.info&&T.info.length?'['+T.info.map(x=>`${x.t||''} ${x.min?x.min+' min':''}`.trim()).join('; ')+'] ':'')+[T.s?`Sport (${T.s.k.map(k=>FKN[k]).join(', ')}, ${LVN[T.s.lv||2].toLowerCase()})`:'',T.k?`Krafttraining (${LVN[T.k.lv||2].toLowerCase()})`:'',T.m?'Dehnen/Yoga':''].filter(Boolean).join(' + ');
-const FACTS=[['s','bike','Radfahren'],['s','run','Laufen'],['s','tennis','Tennis'],['s','swim','Schwimmen'],['k','kraft','Kraft'],['m','mob','Dehnen']];
+const FACTS=[['s','bike','Radfahren'],['s','run','Laufen'],['s','tennis','Tennis'],['s','swim','Schwimmen'],['s','ballett','Ballett'],['k','kraft','Kraft'],['m','mob','Dehnen']];
 
 /* ===== V89: Trainingsplan per Foto, Details je Tag, Standardwoche ===== */
-const FAN={bike:'Radfahren',run:'Laufen',tennis:'Tennis',swim:'Schwimmen',kraft:'Kraft',mob:'Mobility'};
+const FAN={bike:'Radfahren',run:'Laufen',tennis:'Tennis',swim:'Schwimmen',ballett:'Ballett',kraft:'Kraft',mob:'Mobility'};
 const fDur=m=>!m?'':m<60?`${m} min`:`${Math.floor(m/60)}:${String(m%60).padStart(2,'0')} h`;
 const isoLbl=iso=>{const [y,m,d]=iso.split('-').map(Number);return `${['So','Mo','Di','Mi','Do','Fr','Sa'][new Date(y,m-1,d).getDay()]}, ${d}. ${MON[m-1]}`};
 const esc=t=>String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;');
@@ -2478,7 +2481,7 @@ Phone.prototype.fitPhotoReal=async function(f){const s=this.s,a=s.fimp={step:'sn
 Heute ist ${isoOf(TODAY)}. Bestimme das volle Datum jedes Tages aus Monat, Jahr und Tageszahlen im Bild (Monatswechsel wie „Dez. 1“ beachten). Steht kein Datum im Bild, nimm die Woche ab Montag ${isoOf(0)}.
 Je Einheit:
 - "titel": Name wie im Bild, kurz (z. B. "HIT 5x4' @105% FTP")
-- "art": genau eines von bike, run, tennis, swim, kraft, mob. Rad/Rolle = bike. Krafttraining = kraft. Mobility, Core, Stabi, Dehnen, Yoga = mob. Sonst das Ähnlichste.
+- "art": genau eines von bike, run, tennis, swim, ballett, kraft, mob. Ballett/Tanz = ballett. Rad/Rolle = bike. Krafttraining = kraft. Mobility, Core, Stabi, Dehnen, Yoga = mob. Sonst das Ähnlichste.
 - "dauer_min": Dauer in Minuten als Zahl (1:30:00 = 90), sonst null
 - "intensitaet": 1 leicht (LIT, Grundlage, Zone 1–2, Fatmax, Regeneration), 2 mittel (Tempo, Sweet Spot/SST, Zone 3, Schwelle bis 95 %), 3 hoch (HIT, VO2max, Intervalle über 100 % FTP, Wettkampf)
 - "tss": Zahl oder null
@@ -2871,6 +2874,7 @@ Phone.prototype.pdown=function(e){
   const pn=e.target.closest('.panel');
   if(pn&&this.s.screen==='plan'&&!e.target.closest('.wheel-wrap,.hs'))return this.swipeDay(e,pn);
   if(this.s.screen==='detail'&&!e.target.closest('button'))return this.swipeBack(e);
+  if(this.s.screen==='settings'&&!e.target.closest('input'))return this.swipeBack(e);
 };
 Phone.prototype.dragDay=function(e,wd){
   /* Gericht lange drücken (0,25 s) und frei herumschieben: Teller folgt dem Finger, Loslassen auf einem Tag verschiebt es dorthin (belegter Tag: tauschen) */
@@ -2934,13 +2938,13 @@ Phone.prototype.toWeek=function(w){const s=this.s,tr=this.scr.querySelector('.wt
   const fin=()=>{if((s.wk||0)!==w){haptic();s.wk=w;s.sel=w===0?TODAY:7;s.edit=false;s.pick=-1;this.anim='inF'}this.render()};
   if(!tr)return fin();tr.style.transition='transform .38s cubic-bezier(.2,.9,.3,1)';tr.style.transform=`translateX(${-w*50}%)`;setTimeout(fin,(s.wk||0)!==w?300:380)};
 Phone.prototype.swipeBack=function(e){
-  const self=this,x0=e.clientX,y0=e.clientY,v=this.scr.querySelector('.view.det');if(!v)return;let active=false,dx=0;
+  const self=this,x0=e.clientX,y0=e.clientY,set=this.s.screen==='settings',v=this.scr.querySelector(set?'.view.setv':'.view.det');if(!v)return;let active=false,dx=0;
   const move=ev=>{dx=(ev.clientX-x0)/self.k;const dy=(ev.clientY-y0)/self.k;
     if(!active){if(dx>12&&Math.abs(dx)>Math.abs(dy)*1.4){active=true;v.classList.add('dragging')}else if(Math.abs(dy)>12)return end()}
     if(active){v.style.transform=`translateX(${Math.max(0,dx)}px)`}};
   const end=()=>{window.removeEventListener('pointermove',move);window.removeEventListener('pointerup',up);window.removeEventListener('pointercancel',up)};
   const up=()=>{end();if(!active)return;self.suppressClick=true;setTimeout(()=>self.suppressClick=false,50);v.classList.remove('dragging');
-    if(dx>90){v.style.transform='translateX(390px)';setTimeout(()=>self.back(),180)}else v.style.transform=''};
+    if(dx>90){v.style.transform='translateX(390px)';setTimeout(()=>{if(set){self.s.screen='plan';self.render()}else self.back()},180)}else v.style.transform=''};
   window.addEventListener('pointermove',move);window.addEventListener('pointerup',up);window.addEventListener('pointercancel',up);
 };
 /* Gericht einplanen; mit 2×-Option zusätzlich für den Folgetag. Gibt die Tage als Text zurück. */
