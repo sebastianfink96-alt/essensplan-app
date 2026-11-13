@@ -742,7 +742,7 @@ html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
 .rz-ir .n small{margin-top:2px}
 .det.rz .rz-eb2{margin-top:34px}
 .rz-t2{margin:6px 0 0!important}
-.rz-act{justify-content:flex-end!important;margin:14px 0 6px!important}
+.rz-act{justify-content:flex-end!important;margin:14px 0 20px!important}
 .det.rz .step{padding:16px 0}
 .det.rz .step:first-child{padding-top:12px}
 .det.rz .step .stx{gap:10px}
@@ -1953,7 +1953,8 @@ function Phone(host,init,opts){
     vs.h.push([performance.now(),d]);if(vs.h.length>5)vs.h.shift()};
   const voff=tg=>{if(!tg)return;tg.removeEventListener('touchmove',vmove);tg.removeEventListener('touchend',vendOk);tg.removeEventListener('touchcancel',vendNo)};
   const vend=(e,cancel)=>{voff(e.currentTarget);if(!vs)return;const o=vs;vs=null;if(!o.c)return;let v=0;if(o.h.length>1){const a=o.h[0],b=o.h[o.h.length-1];v=(b[1]-a[1])/Math.max(1,b[0]-a[0])}
-    const p=o.c.p,commit=!cancel&&(v>.45||(p>.28&&v>-.25));o.c.finish(commit,Math.max(.16,.42*(commit?1-p:p)))};
+    const p=o.c.p,commit=!cancel&&(v>.45||(p>.28&&v>-.25));/* Soft-Close: nach dem Loslassen gleitet der Würfel ruhig und auslaufend in die Endlage */
+    const rest=commit?1-p:p;o.c.finish(commit,.55+.55*rest,true)};
   function vendOk(e){vend(e,false)}function vendNo(e){vend(e,true)}
   let wheelT=0;this.scr.addEventListener('wheel',e=>{const s=self.s;if(s.sheet||!['plan','fit'].includes(s.screen)||performance.now()-wheelT<900)return;const v=self.scr.querySelector('.view');if(!v)return;
     if(s.screen==='plan'&&e.deltaY>30&&v.scrollTop+v.clientHeight>=v.scrollHeight-2){wheelT=performance.now();self.flip('fit')}
@@ -2382,7 +2383,7 @@ Phone.prototype.cubeStart=function(to){const s=this.s,self=this;if(this.busy||s.
   put();
   return {H,up,get p(){return p},
     setP(v){p=Math.max(0,Math.min(1,v));inn.style.transition='none';put()},
-    finish(commit,dur){dur=dur||.62;[f1,f2].forEach(f=>{f.classList.remove('live');f.style.setProperty('--cd',dur+'s')});inn.style.transition=`transform ${dur}s cubic-bezier(.3,.1,.2,1)`;
+    finish(commit,dur,soft){dur=dur||.62;[f1,f2].forEach(f=>{f.classList.remove('live');f.style.setProperty('--cd',dur+'s')});inn.style.transition=`transform ${dur}s ${soft?'cubic-bezier(.22,.8,.24,1)':'cubic-bezier(.3,.1,.2,1)'}`;
       requestAnimationFrame(()=>requestAnimationFrame(()=>{p=commit?1:0;put()}));
       setTimeout(()=>{if(!commit){s.screen=from;self.render();const v0=self.scr.querySelector('.view');if(v0)v0.scrollTop=oldTop}
         else{const v=self.scr.querySelector('.view');if(v){v.style.visibility='';v.classList.add('flipin')}}
