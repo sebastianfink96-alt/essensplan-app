@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="de">
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#F6F7FC">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -1417,6 +1417,82 @@ html,body{touch-action:manipulation}
 @keyframes inF{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:none}}
 @keyframes pop{0%{transform:scale(.9)}60%{transform:scale(1.06)}100%{transform:scale(1)}}
 @media (prefers-reduced-motion: reduce){*{animation-duration:.01ms!important;transition:none!important;scroll-behavior:auto!important}}
+
+/* V127: kein Markieren/Ziehen */
+html,body,.phone,.phone *{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+img,svg{-webkit-user-drag:none}
+.phone input,.phone textarea,.phone select{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
+/* V127: Fitnessbereich – Woche leeren, Sportart, Saisonziele, Zeitstrahl */
+.lbl.fl span{display:inline-flex;align-items:center;gap:12px}
+.fclr{color:#006039;letter-spacing:0;text-transform:none;font-size:12px;font-weight:500}
+.fitv .ap-h2.fx-h,.fx-h{margin:34px 0 14px;font-weight:600;font-size:28px;line-height:1.08;letter-spacing:-.03em;color:#1D1D1F}
+.fx-h span{color:#006039}
+.fx-row{display:flex;gap:8px}
+.fx-f{flex:1;min-width:0;border:0;border-radius:20px;background:#fff;padding:12px 14px;display:flex;align-items:center;gap:11px;text-align:left;color:#1D1D1F;box-shadow:0 0 0 1px rgba(0,0,0,.05),0 14px 28px -22px rgba(0,77,46,.55)}
+.fx-f2{flex:0 0 auto;max-width:44%}
+.fx-f span{display:flex;flex-direction:column;min-width:0}
+.fx-f b{font-size:15.5px;font-weight:600;letter-spacing:-.015em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fx-f small{font-size:11.5px;color:#86868B;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fx-f .cv{width:16px;height:16px;margin-left:auto;flex:none;color:#86868B}
+.fx-i{width:36px;height:36px;border-radius:50%;display:grid!important;place-items:center;background:rgba(0,96,57,.1);color:#006039;flex:none}
+.fx-i .ic{width:19px;height:19px}
+.fx-f.on .fx-i{background:linear-gradient(135deg,#0F7C4E,#004D2E 60%,#006039);color:#fff}
+.fx-lv{margin-top:8px}
+.fx-lv .pf-o{min-height:0!important;padding:11px 10px!important}
+.fx-goals{display:flex;flex-direction:column;gap:8px}
+.fx-g{border:0;border-radius:20px;background:#fff;padding:12px 14px;display:flex;align-items:center;gap:12px;text-align:left;color:#1D1D1F;box-shadow:0 0 0 1px rgba(0,0,0,.05),0 14px 28px -22px rgba(0,77,46,.55)}
+.fx-gi{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,#0F7C4E,#004D2E 60%,#006039);color:#fff;flex:none}
+.fx-gi .ic{width:18px;height:18px}
+.fx-gt{display:flex;flex-direction:column;min-width:0;flex:1}
+.fx-gt b{font-size:15.5px;font-weight:600;letter-spacing:-.015em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fx-gt small{font-size:12px;color:#86868B}
+.fx-g em{font-style:normal;font-size:13px;font-weight:600;color:#006039;white-space:nowrap}
+.fx-g.add{background:transparent;box-shadow:inset 0 0 0 1.5px rgba(0,96,57,.25)}
+.fx-g.add .fx-gi{background:rgba(0,96,57,.1);color:#006039}
+.fx-g.past{opacity:.55}
+.fai-h[data-a]{cursor:pointer}
+.fai-cv{width:18px;height:18px;margin-left:auto;color:#86868B;transform:rotate(180deg);transition:transform .25s}
+.fai.col .fai-cv{transform:none}
+.fai.col{padding-bottom:16px}
+.ftl{background:#fff;border-radius:28px;padding:18px 16px 16px;box-shadow:0 0 0 1px rgba(0,0,0,.05),0 22px 40px -26px rgba(0,77,46,.5)}
+.ftl-e{margin:0;font-size:15px;line-height:1.4;color:#6E6E73}
+.ftl-now small{display:block;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:#86868B;font-weight:600}
+.ftl-now b{display:block;font-size:30px;font-weight:600;letter-spacing:-.03em;line-height:1.1;margin-top:2px}
+.ftl-now p{margin:4px 0 6px;font-size:13.5px;line-height:1.35;color:#6E6E73}
+.ftl-r{position:relative;margin-top:12px;min-width:30%}
+.ftl-gs{position:relative;height:22px}
+.ftl-g{position:absolute;bottom:2px;display:flex;align-items:center;gap:3px;transform:translateX(-10px);max-width:70%}
+.ftl-g.r{transform:translateX(calc(-100% + 10px));flex-direction:row-reverse}
+.ftl-g b{display:grid;place-items:center;color:#006039;flex:none}.ftl-g b .ic{width:15px;height:15px}
+.ftl-g em{font-style:normal;font-size:11.5px;font-weight:600;color:#1D1D1F;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;order:2}
+.ftl-g.r em{order:0}
+.ftl-b{position:relative;height:16px;border-radius:999px;overflow:hidden;background:#EEF0F2}
+.ftl-b i{position:absolute;top:0;bottom:0;box-shadow:inset 2px 0 0 #fff}
+.ftl-b i:first-child{box-shadow:none}
+.ftl-b u{position:absolute;left:0;top:0;bottom:0;width:3px;background:#1D1D1F;border-radius:2px}
+.ftl-m{position:relative;height:18px;margin-top:5px}
+.ftl-m span{position:absolute;top:0;font-size:11px;color:#86868B;transform:translateX(-50%);white-space:nowrap}
+.ftl-m span.now{transform:none;color:#1D1D1F;font-weight:600}
+.ftl-lg{display:grid;grid-template-columns:1fr 1fr;gap:12px 10px;margin-top:16px;padding-top:14px;border-top:1px solid rgba(0,0,0,.06)}
+.ftl-lg>div{display:flex;gap:8px;align-items:flex-start}
+.ftl-lg i{width:10px;height:10px;border-radius:50%;flex:none;margin-top:4px}
+.ftl-lg span{display:flex;flex-direction:column;min-width:0}
+.ftl-lg b{font-size:13.5px;font-weight:600;letter-spacing:-.01em}
+.ftl-lg small{font-size:11.5px;color:#86868B;line-height:1.3}
+.ftl-lg .off{opacity:.45}
+.fstd-from{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.fstd-from button{white-space:nowrap;letter-spacing:-.01em;border:0;border-radius:16px;background:#EEF4F0;color:#006039;font-size:12.5px;font-weight:600;padding:10px 6px;display:flex;flex-direction:column;align-items:center;gap:2px}
+.fstd-from small{font-size:10.5px;font-weight:500;color:#5E8A74}
+.fstd-from button.em{background:#F2F3F5;color:#8E8E93}.fstd-from button.em small{color:#A1A1A6}
+.fg-d{margin-top:8px}.fg-d input{min-height:46px;-webkit-appearance:none;appearance:none;text-align:left}
+
+.ftl-p{position:absolute;bottom:3px;width:19px;height:19px;margin-left:-9.5px;border-radius:50%;background:#1D1D1F;color:#fff;font-size:11px;font-weight:700;display:grid;place-items:center;box-shadow:0 0 0 2px #fff}
+.ftl-p::after{content:'';position:absolute;left:50%;top:100%;width:1.5px;height:5px;margin-left:-.75px;background:#1D1D1F}
+.ftl-k{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:10px}
+.ftl-k span{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:500;color:#1D1D1F}
+.ftl-k i{width:17px;height:17px;border-radius:50%;background:#1D1D1F;color:#fff;font-size:10.5px;font-weight:700;font-style:normal;display:grid;place-items:center}
+.fx-gi b{font-size:17px;font-weight:700}
+.ftl-r{margin-top:14px}
 </style>
 
 <div class="page">
@@ -1986,13 +2062,13 @@ Phone.prototype.reset=function(init){
         Object.entries(Object.assign({},d.tx||{},d.train||{})).forEach(([iso,v])=>{if(!v)return;const i=idxOf(iso);if(i>=0&&i<NDAYS)s.train[i]=v;else if(i>=-7)s.tx[iso]=v})}
       if(d.prof&&typeof d.prof==='object')s.prof=Object.assign(s.prof,d.prof);
       if(Array.isArray(d.fstd))s.fstd=Array.from({length:7},(_,j)=>d.fstd[j]||null);
-      if(d.fitSeen)s.fitSeen=true;if(d.voice)s.voice=d.voice;if(d.fitAI&&d.fitAI.res)s.fitAI=d.fitAI;}}
+      if(d.fitSeen)s.fitSeen=true;if(d.voice)s.voice=d.voice;if(d.fitAI&&d.fitAI.res)s.fitAI=d.fitAI;if(d.faiC)s.faiC=true;}}
   this.s=s;this.lastScreen=null;this.render();
 };
 Phone.prototype.save=function(){if(!this.opts.persist)return;const s=this.s;const plan={};Object.keys(s.plan).forEach(i=>plan[isoOf(+i)]=s.plan[i]);
   data.save({plan,shop:s.shop,favs:[...s.favs],persons:s.persons,done:s.done,learn:s.learn,stock:s.stock,
     extra:Object.fromEntries(Object.entries(s.extra).map(([i,v])=>[isoOf(+i),v])),
-    train:Object.fromEntries(Object.entries(s.train).map(([i,v])=>[isoOf(+i),v])),tx:s.tx,fstd:s.fstd,prof:s.prof,fitSeen:s.fitSeen,voice:s.voice,fitAI:s.fitAI&&s.fitAI.res?s.fitAI:null})};
+    train:Object.fromEntries(Object.entries(s.train).map(([i,v])=>[isoOf(+i),v])),tx:s.tx,fstd:s.fstd,prof:s.prof,fitSeen:s.fitSeen,voice:s.voice,fitAI:s.fitAI&&s.fitAI.res?s.fitAI:null,faiC:!!s.faiC})};
 Phone.prototype.list=function(){const s=this.s;return R.filter(r=>(s.cat==='all'||r.c.includes(s.cat))&&(!s.en||enOf(r)===s.en))};
 Phone.prototype.toast=function(t,btn,act){const old=this.scr.querySelector('.toast');if(old)old.remove();const d=document.createElement('div');d.className='toast'+(btn?' act':'');d.innerHTML=`<span></span>${btn?`<button data-a="${act}">${btn}</button>`:''}`;d.firstChild.textContent=t;this.scr.appendChild(d);setTimeout(()=>d.remove(),btn?4600:2500)};
 Phone.prototype.backAfterPlan=function(d){if(wkOf(d)===0)return this.goPlanToday();const s=this.s;s.screen='plan';s.wk=1;s.sel=7;s.edit=false;s.pick=-1}; /* nächste Woche: dort bleiben (Montag) */
@@ -2202,7 +2278,63 @@ Object.assign(P,{trophy:'<path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 5.5H5.2a
 /* Profil: Auswahl für sportliche Ambition und Ernährungsziel */
 const PF_SPORT=[['rookie','Rookie','Ich fange gerade an','f_run'],['hobby','Ambitionierter Hobbysportler','Regelmäßig, mit Zielen','f_bike'],['profi','Profi','Training nach Plan','trophy']];
 const PF_GOAL=[['abnehmen','Abnehmen','Leicht und sättigend','scale'],['ausgewogen','Ausgewogen','Von allem das Richtige','leaf'],['geniesser','Genießer','Hauptsache, es schmeckt','glass'],['hobbykoch','Hobbykoch','Gern auch aufwendiger','chef']];
-const pfText=s=>{const a=PF_SPORT.find(x=>x[0]===s.prof.sport),b=PF_GOAL.find(x=>x[0]===s.prof.goal);return [a?'Sportliche Ambition: '+a[1]:'',b?'Ernährungsziel: '+b[1]:''].filter(Boolean).join('. ')};
+const pfText=s=>{const a=PF_SPORT.find(x=>x[0]===s.prof.sport),b=PF_GOAL.find(x=>x[0]===s.prof.goal),d=PF_DISC.find(x=>x[0]===s.prof.disc),G=fGoals(s),cur=seasonPlan(s).segs.find(g=>g.a<=TODAY&&TODAY<g.b);
+  return [d?'Sportart: '+d[1]:'',a?'Sportliche Ambition: '+a[1]:'',b?'Ernährungsziel: '+b[1]:'',G.length?'Saisonziele: '+G.map(g=>`${g.t} am ${isoLbl(g.d)}`).join(', '):'',cur?'Aktuelle Trainingsphase: '+phOf(cur.k)[1]+' ('+phOf(cur.k)[3]+')':''].filter(Boolean).join('. ')};
+/* V127: Sportart, Saisonziele (max. 3) und Saisonphasen */
+Object.assign(P,{f_tri:'<circle cx="5.8" cy="14.6" r="3.3"/><circle cx="12" cy="8.6" r="3.3"/><circle cx="18.2" cy="14.6" r="3.3"/>',flag:'<path d="M5.5 21V3.6"/><path d="M5.5 4.6c2.4-1.4 4.6-1.4 7 0s4.6 1.4 7 0v8.6c-2.4 1.4-4.6 1.4-7 0s-4.6-1.4-7 0"/>'});
+const PF_DISC=[['rad','Rennrad','Straße & Pässe','f_bike'],['lauf','Laufen','Straße & Trail','f_run'],['schwimm','Schwimmen','Becken & Freiwasser','f_swim'],['tri','Triathlet','Swim · Bike · Run','f_tri'],['kraft','Kraftsportler','Gewichte & Kraft','f_kraft'],['yoga','Yoga','Beweglichkeit & Ruhe','f_mob']];
+const PH=[['g','Grundlage','#7DAFE3','Ruhig und lang – Ausdauer aufbauen'],['a','Aufbau','#2E9E6B','Mehr Umfang, erste harte Einheiten'],['s','Spezifisch','#F0A03A','Wettkampfnah trainieren'],['t','Tapering','#E0688C','Weniger Umfang, frisch werden']];
+const phOf=k=>PH.find(x=>x[0]===k);
+const fGoals=s=>(s.prof.goals||[]).filter(g=>g&&g.d&&idxOf(g.d)>=TODAY).sort((a,b)=>a.d<b.d?-1:1);
+const dLong=i=>{const d=dayDate(i);return `${d.getDate()}. ${MON[d.getMonth()]} ${d.getFullYear()}`};
+/* Phasen rückwärts vom Wettkampf: Tapering 1–2 Wochen, davor Spezifisch, Aufbau, Grundlage (je nach verfügbarer Zeit) */
+function seasonPlan(s){const G=fGoals(s),segs=[];let st=TODAY;
+  G.forEach((g,gi)=>{const e=idxOf(g.d),days=e-st;if(days<=0)return;const W=days/7;
+    const t=W>=12?14:W>=5?7:Math.min(days,4),R=days-t;let gr=0,au=0,sp=0;
+    if(gi>0&&W<10)sp=R;else if(W>=16){sp=Math.round(R*.25);au=Math.round(R*.33);gr=R-sp-au}else if(W>=8){gr=Math.round(R*.3);au=Math.round(R*.35);sp=R-gr-au}else if(W>=4){au=Math.round(R*.5);sp=R-au}else sp=R;
+    [['g',gr],['a',au],['s',sp],['t',t]].forEach(([k,n])=>{if(n<=0)return;const L=segs[segs.length-1];if(L&&L.k===k&&L.b===st)L.b+=n;else segs.push({k,a:st,b:st+n});st+=n});st=e});
+  return {G,segs}}
+const wkTxt=n=>{const w=Math.round(n/7);return n<10?`${n} ${n===1?'Tag':'Tage'}`:`${w} ${w===1?'Woche':'Wochen'}`};
+/* Für was trainierst du? + Saisonziele (zwischen Plan und KI-Analyse) */
+Phone.prototype.vFprof=function(){const s=this.s,pf=s.prof,FG=fGoals(s),D=PF_DISC.find(x=>x[0]===pf.disc),A=PF_SPORT.find(x=>x[0]===pf.sport),G=pf.goals||[];
+  const lvl=L=>`<div class="pf-opts c3 fit fx-lv">${L.map(([k,t,sub,icn])=>`<button class="pf-o ${pf.sport===k?'on':''}" data-a="pfsport" data-v="${k}" aria-pressed="${pf.sport===k}"><span class="pf-oi">${ic(icn)}</span><b>${k==='hobby'?'Hobby':t}</b><small>${sub}</small><i>${ic('check')}</i></button>`).join('')}</div>`;
+  return `<h2 class="ap-h2 fx-h rv">Für was <span>trainierst du?</span></h2>
+   <div class="fx-row rv"><button class="fx-f ${D?'on':''}" data-a="fdisc">${D?`<span class="fx-i">${ic(D[3])}</span><span><b>${D[1]}</b><small>${D[2]}</small></span>`:`<span class="fx-i">${ic('plus')}</span><span><b>Sportart wählen</b><small>Rennrad, Laufen, Triathlon …</small></span>`}${ic('down','cv')}</button>
+    ${A?`<button class="fx-f fx-f2 on" data-a="fdisc"><span><small>Ambition</small><b>${A[0]==='hobby'?'Hobby':A[1]}</b></span>${ic('down','cv')}</button>`:''}</div>
+   ${A?'':lvl(PF_SPORT)}
+   <h2 class="ap-h2 fx-h rv" style="margin-top:30px">Saisonziele. <span>Bis zu drei.</span></h2>
+   <div class="fx-goals rv">${G.map((g,i)=>{const e=idxOf(g.d),n=e-TODAY;return `<button class="fx-g ${n<0?'past':''}" data-a="fgoal" data-v="${i}"><span class="fx-gi">${FG.length>1&&FG.indexOf(g)>=0?`<b>${FG.indexOf(g)+1}</b>`:ic('flag')}</span><span class="fx-gt"><b>${esc(g.t)}</b><small>${isoLbl(g.d)} ${dayDate(e).getFullYear()}</small></span><em>${n<0?'vorbei':n===0?'heute':'in '+wkTxt(n)}</em></button>`}).join('')}
+    ${G.length<3?`<button class="fx-g add" data-a="fgoal" data-v="-1"><span class="fx-gi">${ic('plus')}</span><span class="fx-gt"><b>Saisonziel hinzufügen</b><small>z. B. Ötztaler Radmarathon</small></span></button>`:''}</div>`};
+/* Zeitstrahl: Grundlage → Aufbau → Spezifisch → Tapering bis zu den Saisonzielen; bei langer Strecke zwei Zeilen untereinander */
+Phone.prototype.vSeason=function(){const s=this.s,{G,segs}=seasonPlan(s);
+  const head=`<h2 class="ap-h2 fx-h rv" style="margin-top:34px">Dein Weg. <span>Bis zum Ziel.</span></h2>`;
+  if(!G.length||!segs.length)return head+`<div class="ftl rv"><p class="ftl-e">Trag ein Saisonziel mit Datum ein – dann teile ich deine Saison in Grundlage, Aufbau, spezifisches Training und Tapering ein.</p><button class="gbtn" style="width:100%;margin-top:12px" data-a="fgoal" data-v="-1">${ic('flag')}Saisonziel eintragen</button></div>`;
+  const A0=TODAY,Z=segs[segs.length-1].b,span=Z-A0;let rows=[[A0,Z]];
+  if(span>190){const m=dayDate(Math.round(A0+span/2)),c1=Math.round((new Date(m.getFullYear(),m.getMonth(),1)-BASE)/864e5),c2=Math.round((new Date(m.getFullYear(),m.getMonth()+1,1)-BASE)/864e5),mid=A0+span/2,c=Math.abs(c1-mid)<Math.abs(c2-mid)?c1:c2;rows=[[A0,c],[c,Z]]}
+  const multi=G.length>1;
+  const row=([a,b],ri)=>{const L=b-a,pc=x=>((x-a)/L*100).toFixed(2);
+    const bars=segs.filter(g=>g.b>a&&g.a<b).map(g=>{const x=Math.max(g.a,a),y=Math.min(g.b,b);return `<i style="left:${pc(x)}%;width:${((y-x)/L*100).toFixed(2)}%;background:${phOf(g.k)[2]}"></i>`}).join('');
+    const ms=[];for(let d=new Date(dayDate(a).getFullYear(),dayDate(a).getMonth()+1,1);;d=new Date(d.getFullYear(),d.getMonth()+1,1)){const i=Math.round((d-BASE)/864e5);if(i>=b)break;ms.push([i,d])}
+    const step=ms.length>7?2:1;
+    const mk=ms.filter((_,j)=>j%step===0).filter(([i])=>ri>0||(i-a)/L>.13).map(([i,d])=>`<span style="left:${pc(i)}%">${d.getMonth()===0?d.getFullYear():MON[d.getMonth()].replace('.','')}</span>`).join('');
+    const gs=G.map((g,n)=>[g,n]).filter(([g])=>{const e=idxOf(g.d);return e>a&&e<=b}).map(([g,n])=>{const x=+pc(idxOf(g.d));return multi?`<span class="ftl-p" style="left:${x}%">${n+1}</span>`:`<span class="ftl-g ${x>62?'r':''}" style="left:${x}%"><em>${esc(g.t)}</em><b>${ic('flag')}</b></span>`}).join('');
+    return `<div class="ftl-r"><div class="ftl-gs">${gs}</div><div class="ftl-b">${bars}</div><div class="ftl-m">${ri===0?'<span class="now" style="left:0">Heute</span>':''}${mk}</div></div>`};
+  const cur=segs.find(g=>g.a<=TODAY&&TODAY<g.b)||segs[0],P0=phOf(cur.k),nx=segs[segs.indexOf(cur)+1],goal=G.find(g=>idxOf(g.d)>=cur.b)||G[G.length-1];
+  const sub=cur.k==='t'?`Noch ${wkTxt(cur.b-TODAY)} bis ${esc(goal.t)}`:`Noch ${wkTxt(cur.b-TODAY)}, dann ${phOf(nx?nx.k:'t')[1]}`;
+  return head+`<div class="ftl rv"><div class="ftl-now"><small>Aktuelle Phase</small><b style="color:${P0[2]}">${P0[1]}.</b><p>${sub}.<br>${P0[3]}.</p></div>
+   ${rows.map(row).join('')}
+   ${multi?`<div class="ftl-k">${G.map((g,n)=>`<span><i>${n+1}</i>${esc(g.t)}</span>`).join('')}</div>`:''}
+   <div class="ftl-lg">${PH.map(([k,t,c,d])=>{const L=segs.filter(g=>g.k===k);return `<div class="${L.length?'':'off'}"><i style="background:${c}"></i><span><b>${t}</b><small>${L.length?wkTxt(L.reduce((n,g)=>n+g.b-g.a,0))+(L.length>1?' insgesamt':'')+' · ab '+dt(L[0].a)+'. '+MON[dayDate(L[0].a).getMonth()]:'diesmal nicht nötig'}</small></span></div>`}).join('')}</div></div>`};
+Phone.prototype.vFdisc=function(){const s=this.s,pf=s.prof,G='background:linear-gradient(100deg,#0F7C4E,#004D2E 58%,#006039);box-shadow:0 14px 26px -12px rgba(0,77,46,.75)';
+  const opt=(L,cur,act)=>`<div class="pf-opts c3 fit">${L.map(([k,t,sub,icn])=>`<button class="pf-o ${cur===k?'on':''}" data-a="${act}" data-v="${k}" aria-pressed="${cur===k}"><span class="pf-oi">${ic(icn)}</span><b>${k==='hobby'?'Hobby':t}</b><small>${sub}</small><i>${ic('check')}</i></button>`).join('')}</div>`;
+  return `<h3>Für was trainierst du?</h3><p>Danach richten sich Analyse und Saisonplan.</p>${opt(PF_DISC,pf.disc,'pfdisc')}
+   <div class="lbl" style="margin:16px 0 8px">Ambition</div>${opt(PF_SPORT,pf.sport,'pfsport')}
+   <button class="gbtn" style="width:100%;margin-top:14px;${G}" data-a="closesheet">${ic('check')}Fertig</button>`};
+Phone.prototype.vFgoal=function(){const s=this.s,G='background:linear-gradient(100deg,#0F7C4E,#004D2E 58%,#006039);box-shadow:0 14px 26px -12px rgba(0,77,46,.75)',ed=s.fgI>=0;
+  return `<h3>${ed?'Saisonziel':'Neues Saisonziel'}</h3><p>Titel und Datum deines Wettkampfs oder Ziels.</p>
+   <div class="ai-in"><input data-k="fgt" maxlength="60" enterkeyhint="done" placeholder="z. B. Ötztaler Radmarathon" value="${esc(s.fgT||'').replace(/"/g,'&quot;')}" aria-label="Titel"></div>
+   <div class="ai-in fg-d"><input data-k="fgd" type="date" min="${isoOf(TODAY)}" value="${s.fgD||''}" aria-label="Datum"></div>
+   <div style="display:flex;gap:8px;margin-top:14px">${ed?`<button class="sbtn" data-a="fgdel">Entfernen</button>`:''}<button class="gbtn" style="${G}" data-a="fgsave">${ic('check')}Speichern</button></div>`};
 const R_IDS=new Set(R.map(r=>r.id));
 const fTgt=s=>s.sheet==='fstd'?[s.fstd,s.fstdD||0]:[s.train,s.fsel];
 function setAct(s,c,k,lv){const [O,K]=fTgt(s);const T=O[K]||(O[K]={});
@@ -2284,13 +2416,15 @@ Phone.prototype.vFimp=function(){const s=this.s,a=s.fimp||{step:'noai'};const G=
 Phone.prototype.vFstd=function(){const s=this.s,G='background:linear-gradient(100deg,#0F7C4E,#004D2E 58%,#006039);box-shadow:0 14px 26px -12px rgba(0,77,46,.75)';
   if(!Array.isArray(s.fstd))s.fstd=Array(7).fill(null);const std=s.fstd,d=s.fstdD||0,T=std[d]||{},n=fWkN(std);
   const lvOf=(c,k)=>c==='s'?(T.s&&T.s.k.includes(k)?slv(T,k):0):c==='k'?(T.k?T.k.lv||2:0):(T.m?-1:0);
-  const nP=fWkN(fWeekOf(s,-1)),nC=fWkN(fWeekOf(s,0));
+  
   return `<h3>Standardwoche</h3><p>Deine typische Woche. Tag wählen, Training antippen – wird automatisch gespeichert.</p>
    <div class="fstd-days">${std.map((X,j)=>`<button class="${j===d?'on':''}" data-a="fstdday" data-i="${j}" aria-label="${DAYS[j]}: ${fText(X)}"><small>${AB[j]}</small>${X?fring(X,34):'<i></i>'}</button>`).join('')}</div>
    <div class="fstd-lbl"><b>${DAYS[d]}</b><span>${T.s||T.k||T.m?fText(T):'kein Training'}</span></div>
    <div class="ftiles">${FACTS.map(([c,k,l])=>{const lv=lvOf(c,k);return `<button class="ftile ${lv?'on':''}" data-a="ftog" data-c="${c}" data-v="${k}" style="--c:${FA[k]}" aria-pressed="${!!lv}"><span>${ic('f_'+k)}</span>${l}${lv>0?`<em>${lv}</em>`:''}</button>`}).join('')}</div>
    <p class="fnote" style="margin-top:10px">Tippen: an oder aus · Halten und ziehen: Intensität</p>
-   <div class="fstd-row"><button data-a="fstdfrom" data-v="-1" ${nP?'':'disabled'}>Letzte Woche übernehmen</button><button data-a="fstdfrom" data-v="0" ${nC?'':'disabled'}>Diese Woche übernehmen</button>${n?`<button data-a="fstdclear">Leeren</button>`:''}</div>
+   <div class="lbl" style="margin:16px 0 8px">Übernehmen aus</div>
+   <div class="fstd-from">${[[-1,'Letzte Woche'],[0,'Diese Woche'],[1,'Nächste Woche']].map(([w,l])=>{const m=fWkN(fWeekOf(s,w));return `<button data-a="fstdfrom" data-v="${w}" class="${m?'':'em'}">${l}<small>KW ${KW(w)} · ${m?m+(m===1?' Einheit':' Einheiten'):'leer'}</small></button>`}).join('')}</div>
+   ${n?`<div class="fstd-row"><button data-a="fstdclear">Standardwoche leeren</button></div>`:''}
    <div class="lbl" style="margin:16px 0 8px">Eintragen in</div>
    <div style="display:flex;gap:8px"><button class="gbtn gb2" style="${G}" data-a="fstdapply" data-v="0" ${n?'':'disabled'}>Diese Woche<small>KW ${KW(0)}</small></button><button class="gbtn gb2" style="${G}" data-a="fstdapply" data-v="1" ${n?'':'disabled'}>Nächste Woche<small>KW ${KW(1)}</small></button></div>
    <p class="fnote" style="margin-top:10px">Ersetzt das Training der gewählten Woche – mit Rückgängig.</p>`};
@@ -2309,16 +2443,17 @@ Phone.prototype.vFit=function(){const s=this.s;
   return `<div class="view fitv"><div class="fhead-bg"></div><div class="blob"><i></i><i></i><i></i><i></i></div><div class="z">
   <div class="phead"><div><div class="eb">KW ${KW(0)}–${KW(1)} · ${tot} ${tot===1?'Einheit':'Einheiten'} geplant</div><div class="h-title">Mein Fitnessbereich</div></div>
    <div class="hbtns"><button class="iconbtn" data-a="flip" data-v="plan" aria-label="Zurück zum Essensplan" title="Zum Essensplan">${ic('up')}</button></div></div>
-  ${[0,1].map(k=>{const n=Array.from({length:7},(_,j)=>fCount(s.train[k*7+j])).reduce((a,b)=>a+b,0);return `<div class="lbl fl">${k?'Nächste Woche':'Diese Woche'} · KW ${KW(k)}<span>${n} ${n===1?'Einheit':'Einheiten'}</span></div><div class="fweek">${Array.from({length:7},(_,j)=>pill(k*7+j)).join('')}</div>`}).join('')}
+  ${[0,1].map(k=>{const n=Array.from({length:7},(_,j)=>fCount(s.train[k*7+j])).reduce((a,b)=>a+b,0);return `<div class="lbl fl">${k?'Nächste Woche':'Diese Woche'} · KW ${KW(k)}<span>${n} ${n===1?'Einheit':'Einheiten'}${n?`<button class="wclr fclr" data-a="fclr" data-v="${k}" aria-label="Training in KW ${KW(k)} löschen">${ic('trash')}Leeren</button>`:''}</span></div><div class="fweek">${Array.from({length:7},(_,j)=>pill(k*7+j)).join('')}</div>`}).join('')}
   ${(()=>{const W={};Object.keys(s.tx).forEach(iso=>{const i=idxOf(iso);if(i>=NDAYS)(W[Math.floor(i/7)]=W[Math.floor(i/7)]||{})[i]=iso});
     return Object.keys(W).map(Number).sort((a,b)=>a-b).map((k,x)=>{const n=Object.values(W[k]).reduce((a,iso)=>a+fCount(s.tx[iso]),0);
       return `${x?'':'<div class="lbl" style="margin-top:20px">Kommende Wochen · aus dem Trainingsplan</div>'}<div class="lbl fl">KW ${isoWeek(dayDate(k*7))}<span>${n} ${n===1?'Einheit':'Einheiten'}</span></div><div class="fweek">${Array.from({length:7},(_,j)=>{const i=k*7+j,iso=W[k][i],X=iso&&s.tx[iso];return `<button class="wd fd fx" ${X?`data-a="fxday" data-v="${iso}"`:'disabled'} aria-label="${isoLbl(isoOf(i))}: ${fText(X)}"><span class="a">${AB[j]}</span><span class="n">${String(dayDate(i).getDate()).padStart(2,'0')}</span>${X?`<span class="ind fr">${fring(X,36)}</span>`:'<span class="ind empty"></span>'}</button>`}).join('')}</div>`}).join('')})()}
   <div class="fact"><button data-a="fimp">${ic('cam')}<span><b>Foto vom Trainingsplan</b><small>Plan automatisch eintragen</small></span></button><button data-a="fstd">${ic('f_bike')}<span><b>Standardwoche</b><small>bearbeiten und eintragen</small></span></button></div>
   <p class="fnote" style="margin-top:12px">Tag antippen: eintragen oder ansehen · Halten und ziehen: verschieben oder Intensität wählen</p>
-  <div class="lbl">KI-Analyse</div>
-  <div class="fai" id="fai">
-   <div class="fai-h"><span class="ai-orb ${A&&A.step==='think'?'live':''}"><span class="orb-c"><i></i><i></i><i></i><i></i></span><span class="orb-g"></span></span><div><b>Training & Ernährung</b><small>${AI?'Analyse von Claude':'Auswertung auf dem Gerät'}</small></div></div>
-   <div class="seg" role="group" aria-label="Woche für die Analyse">${[0,1].map(k=>`<button class="${w===k?'on':''}" data-a="fwk" data-v="${k}">${k?'Nächste Woche':'Diese Woche'}<small>KW ${KW(k)}</small></button>`).join('')}</div>
+  ${this.vFprof()}
+  <div class="lbl" style="margin-top:34px">KI-Analyse</div>
+  <div class="fai ${s.faiC?'col':''}" id="fai">
+   <div class="fai-h" data-a="faitog" role="button" aria-expanded="${!s.faiC}"><span class="ai-orb ${A&&A.step==='think'?'live':''}"><span class="orb-c"><i></i><i></i><i></i><i></i></span><span class="orb-g"></span></span><div><b>Training & Ernährung</b><small>${s.faiC?'Antippen zum Öffnen':AI?'Analyse von Claude':'Auswertung auf dem Gerät'}</small></div>${ic('down','fai-cv')}</div>
+   ${s.faiC?'':`   <div class="seg" role="group" aria-label="Woche für die Analyse">${[0,1].map(k=>`<button class="${w===k?'on':''}" data-a="fwk" data-v="${k}">${k?'Nächste Woche':'Diese Woche'}<small>KW ${KW(k)}</small></button>`).join('')}</div>
    ${A&&A.step==='think'?`<div class="ai-dots"><i></i><i></i><i></i></div><p class="fai-t m">Ich schaue mir Training und Essensplan an …</p>`
     :fresh?`${A.sig!==sig&&!A.swDone?`<p class="ai-warn" style="margin:0 0 10px!important">Plan oder Training haben sich geändert – analysiere neu.</p>`:''}${A.res.map(x=>`<div class="fai-s"><span>${String(x.t).replace(/</g,'&lt;')}</span><p class="fai-t">${String(x.x).replace(/</g,'&lt;').replace(/\n+/g,'<br>')}</p></div>`).join('')}${(()=>{const L=(A.sw||[]).filter(x=>x.id===null||RM[x.id]),E=(A.ex||[]).filter(x=>RM[x.id]);if(!L.length&&!E.length)return '';
       if(A.swDone)return `<div class="fsw done">${ic('check')}Vorschläge übernommen</div>`;if(A.sig!==sig)return '';
@@ -2326,8 +2461,9 @@ Phone.prototype.vFit=function(){const s=this.s;
       return `<div class="fsw"><div class="fsw-h">${A.wk===1?'Vorschlag für die ganze Woche':'Vorschlag für die restliche Woche'}</div>${rows.map(x=>x.h).join('')}<button class="gbtn" style="width:100%;margin-top:10px" data-a="fitswap">${ic('check')}Ernährung so anpassen</button></div>`})()}`
     :`<p class="fai-t m">Ich vergleiche dein Training mit deinem Essensplan und sage dir, wo Eiweiß, Kohlenhydrate oder Erholung fehlen.</p>`}
    <button class="gbtn" style="width:100%;margin-top:12px" data-a="fitai" ${A&&A.step==='think'?'disabled':''}>${ic('spark')}${fresh?'Neu analysieren':'Woche analysieren'}</button>
-   <button class="ai-again" data-a="fitfill">Freie Tage passend zum Training planen</button>
+   <button class="ai-again" data-a="fitfill">Freie Tage passend zum Training planen</button>`}
   </div>
+  ${this.vSeason()}
   </div></div>`};
 /* Fenster „Training eintragen“: 1 Aktivität, 2 Intensität */
 Phone.prototype.vFday=function(){const s=this.s,i=s.fsel,T=s.train[i]||{};
@@ -2483,7 +2619,7 @@ Phone.prototype.vPlan=function(){const s=this.s;const w=s.wk||0,ks=Object.keys(s
    <div class="hbtns">${cooked?`<button class="iconbtn" data-a="mkshop" aria-label="Einkaufsliste erstellen" title="Einkaufsliste erstellen">${ic('bag')}</button>`:''}<button class="iconbtn" data-a="randweek" aria-label="Woche zufällig füllen" title="Woche zufällig füllen">${ic('dice')}</button><button class="iconbtn" data-a="go" data-v="settings" aria-label="Einstellungen">${ic('sliders')}</button></div></div>
   <div class="prog"><div class="bar"><b style="width:${n/7*100}%"></b></div></div>
   <div class="weeks"><div class="wtrack" style="transform:translateX(${-w*50}%)">${[0,1].map(k=>`<div class="week">${DAYS.map((d,j)=>this.vPill(k*7+j)).join('')}</div>`).join('')}</div></div>
-  <div class="wnav"><span class="wnl"><span class="wdots"><i class="${w===0?'on':''}"></i><i class="${w===1?'on':''}"></i></span>${n?`<button class="wclr" data-a="clrwk">${ic('trash')}Woche leeren</button>`:''}</span><button class="wnext" data-a="wk" data-v="${1-w}">${w===0?`Nächste Woche · KW ${KW(1)}${ic('right')}`:`${ic('left')}Diese Woche · KW ${KW(0)}`}</button></div>
+  <div class="wnav"><span class="wnl"><span class="wdots"><i class="${w===0?'on':''}"></i><i class="${w===1?'on':''}"></i></span>${n||Array.from({length:7},(_,j)=>s.extra[w*7+j]).some(x=>x&&(x.b||x.d))?`<button class="wclr" data-a="clrwk">${ic('trash')}Woche leeren</button>`:''}</span><button class="wnext" data-a="wk" data-v="${1-w}">${w===0?`Nächste Woche · KW ${KW(1)}${ic('right')}`:`${ic('left')}Diese Woche · KW ${KW(0)}`}</button></div>
   <div class="wlist">${Array.from({length:7},(_,j)=>w*7+j).map(i=>{const id=s.plan[i],r=RM[id];return `<button class="wl ${s.sel===i?'on':''} ${i===TODAY?'today':''}" data-a="day" data-i="${i}"><span class="wl-d"><b>${ab(i)}</b>${dt(i)}</span>${r?`<span class="wl-p">${plate(r,40)}</span><span class="wl-n">${r.n}</span>`:id===OUT?`<span class="wl-p o">${ic('out')}</span><span class="wl-n m">Auswärts</span>`:`<span class="wl-p e">${ic('plus')}</span><span class="wl-n m">Noch frei</span>`}</button>`}).join('')}</div>
   ${this.vPanel(s.sel)}
   </div></div>`};
@@ -2982,6 +3118,8 @@ Phone.prototype.vSettings=function(){const s=this.s,pf=s.prof,q=x=>String(x||'')
    <div class="top-row between"><button class="iconbtn" data-a="go" data-v="plan" aria-label="Zurück">${ic('left')}</button></div>
    <div class="pf-head rv"><button class="pf-av ${pf.photo?'has':''}" data-a="pfphoto" aria-label="${pf.photo?'Profilfoto ändern':'Profilfoto hinzufügen'}">${pf.photo?`<img src="${pf.photo}" alt="">`:ic('users')}<i>${ic('cam')}</i></button>
     <div><div class="eb">Dein Profil</div><h1 class="ap-h1" id="pfh">${pf.name?`Hi ${q(pf.name)}.`:'Hallo.'}</h1><p class="pf-sub">Schön, dass du da bist.</p></div></div>
+   <h2 class="ap-h2 rv">Sportart. <span>Wofür trainierst du?</span></h2>
+   ${opt(PF_DISC,pf.disc,'pfdisc','fit rv')}
    <h2 class="ap-h2 rv">Sportliche Ambition. <span>Wie trainierst du?</span></h2>
    ${opt(PF_SPORT,pf.sport,'pfsport','fit rv')}
    <h2 class="ap-h2 rv">Ernährungsziel. <span>Was ist dir wichtig?</span></h2>
@@ -3086,6 +3224,13 @@ function aiMissing(r,have){return r.i.filter(([n,q])=>q&&!PANTRY.test(n)&&!have.
 const AI_EX=[['rice','Ich habe Reis zuhause – schlag mir ein Gericht vor'],['week','Wochenvorschlag: 1× Fisch, 1× Fleisch, Rest Bowls']];
 /* Echte KI: im Claude-Artifact über die Fähigkeit „sample“ (läuft über das Claude-Konto des Nutzers). Sonst Demo. */
 document.addEventListener('dblclick',e=>e.preventDefault(),{passive:false});
+/* V127: nirgends zoomen, markieren oder Bilder ziehen (Eingabefelder bleiben bedienbar) */
+['gesturestart','gesturechange','gestureend'].forEach(t=>document.addEventListener(t,e=>e.preventDefault(),{passive:false}));
+document.addEventListener('touchmove',e=>{if(e.touches&&e.touches.length>1)e.preventDefault()},{passive:false});
+const isField=t=>t&&t.closest&&t.closest('input,textarea,select,[contenteditable]');
+document.addEventListener('selectstart',e=>{if(!isField(e.target))e.preventDefault()});
+document.addEventListener('dragstart',e=>{if(!isField(e.target))e.preventDefault()});
+document.addEventListener('contextmenu',e=>{if(!isField(e.target))e.preventDefault()});
 let AI=null;
 /* KI über den eigenen kleinen Server (installierte App): Adresse + Passwort liegen nur auf diesem Gerät */
 const KI_KEY='essensplan-ki';let KI=null;try{KI=JSON.parse(localStorage.getItem(KI_KEY)||'null')}catch(e){}
@@ -3235,6 +3380,8 @@ Phone.prototype.vSheet=function(){const s=this.s;if(!s.sheet)return '';
     <div style="display:flex;gap:8px;margin-top:14px">${KI?`<button class="sbtn" data-a="kioff">Trennen</button>`:''}<button class="gbtn" style="background:linear-gradient(100deg,#0F7C4E,#004D2E 58%,#006039);box-shadow:0 14px 26px -12px rgba(0,77,46,.75)" data-a="kisave" ${s.kiBusy?'disabled':''}>${ic('check')}${s.kiBusy?'Prüfe …':'Verbinden'}</button></div>`}
   if(s.sheet==='fimp')c=this.vFimp();
   if(s.sheet==='fstd')c=this.vFstd();
+  if(s.sheet==='fdisc')c=this.vFdisc();
+  if(s.sheet==='fgoal')c=this.vFgoal();
   if(s.sheet==='fxday')c=this.vFxday();
   if(s.sheet==='extra')c=this.vExtra();
   if(s.sheet==='cook')c=this.vCook();
@@ -3256,7 +3403,7 @@ Phone.prototype.dictate=function(key){const SR=window.SpeechRecognition||window.
   rec.onend=()=>{self.rec=null;const b=btn();if(b)b.classList.remove('on');if(err&&err!=='no-speech'&&err!=='aborted')fb(err==='not-allowed'||err==='service-not-allowed'?'Mikrofon nicht freigegeben – bitte das Mikrofon auf der Tastatur nutzen':'Spracherkennung nicht erreichbar – bitte das Mikrofon auf der Tastatur nutzen')};
   try{rec.start()}catch(e){fb('Hier bitte das Mikrofon auf der Tastatur nutzen');return}
   this.rec=rec;haptic();const b=btn();if(b)b.classList.add('on')};
-Phone.prototype.input=function(e){const k=e.target.dataset.k;if(k==='aiq'){this.s.aiQ=e.target.value;return}if(k==='cookq'){this.s.cookQ=e.target.value;return}if(k==='exq'){this.s.exQ=e.target.value;return}if(k==='kiurl'){this.s.kiU=e.target.value;return}if(k==='kipw'){this.s.kiP=e.target.value;return}if(k==='kivoice'){this.s.kiV=e.target.value;return}if(k==='pname'){const v=e.target.value.trim().slice(0,24);this.s.prof.name=v;const h=this.scr.querySelector('#pfh');if(h)h.textContent=v?`Hi ${v}.`:'Hallo.';clearTimeout(this.saveT);this.saveT=setTimeout(()=>this.save(),400);return}if(k==='stockq'){this.s.stockQ=e.target.value;return}if(k==='shopq'){this.s.shopQ=e.target.value;this.render()}if(k==='recq'){this.s.recQ=e.target.value;this.render()}};
+Phone.prototype.input=function(e){const k=e.target.dataset.k;if(k==='aiq'){this.s.aiQ=e.target.value;return}if(k==='cookq'){this.s.cookQ=e.target.value;return}if(k==='exq'){this.s.exQ=e.target.value;return}if(k==='kiurl'){this.s.kiU=e.target.value;return}if(k==='kipw'){this.s.kiP=e.target.value;return}if(k==='kivoice'){this.s.kiV=e.target.value;return}if(k==='fgt'){this.s.fgT=e.target.value;return}if(k==='fgd'){this.s.fgD=e.target.value;return}if(k==='pname'){const v=e.target.value.trim().slice(0,24);this.s.prof.name=v;const h=this.scr.querySelector('#pfh');if(h)h.textContent=v?`Hi ${v}.`:'Hallo.';clearTimeout(this.saveT);this.saveT=setTimeout(()=>this.save(),400);return}if(k==='stockq'){this.s.stockQ=e.target.value;return}if(k==='shopq'){this.s.shopQ=e.target.value;this.render()}if(k==='recq'){this.s.recQ=e.target.value;this.render()}};
 Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();return}
   if(this.s.ipop&&!e.target.closest('.ipop')){this.s.ipop=null;this.render();return}
   const t=e.target.closest('[data-a]');if(!t||!this.scr.contains(t))return;const s=this.s,a=t.dataset.a,v=t.dataset.v;
@@ -3291,9 +3438,9 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
         if(f){const top=pool.slice().sort((a,b)=>f(b)-f(a)).slice(0,6);r=top[Math.floor(Math.random()*top.length)];fitted++}else r=pool[Math.floor(Math.random()*pool.length)];
         s.plan[i]=r.id;used.add(r.id);filled++}
       s.edit=false;this.render();this.toast(filled?`${filled} freie Tage ${fitted?'passend zum Training':'zufällig'} gefüllt`:'Die Woche ist schon voll',filled?'Rückgängig':null,'undo');break}
-   case 'clrwk':{const w=s.wk||0;this.prevPlan=Object.assign({},s.plan);let k=0;for(let i=w*7;i<w*7+7;i++)if(s.plan[i]!==undefined){delete s.plan[i];k++}
+   case 'clrwk':{const w=s.wk||0;this.prevPlan=Object.assign({},s.plan);this.prevPlanX={p:this.prevPlan,e:JSON.stringify(s.extra)};let k=0;for(let i=w*7;i<w*7+7;i++){if(s.plan[i]!==undefined){delete s.plan[i];k++}if(s.extra[i]){delete s.extra[i];k++}}
       s.edit=false;s.pick=-1;haptic();this.render();this.toast(`KW ${KW(w)} geleert`,'Rückgängig','undo');break}
-   case 'undo':if(this.prevPlan){s.plan=this.prevPlan;this.prevPlan=null;if(s.fitAI&&s.fitAI.swDone)s.fitAI.swDone=false;this.render();this.toast('Rückgängig gemacht')}break;
+   case 'undo':if(this.prevPlan){const X=this.prevPlanX;if(X&&X.p===this.prevPlan)s.extra=JSON.parse(X.e);this.prevPlanX=null;s.plan=this.prevPlan;this.prevPlan=null;if(s.fitAI&&s.fitAI.swDone)s.fitAI.swDone=false;this.render();this.toast('Rückgängig gemacht')}break;
    case 'fav':{const id=t.dataset.id;s.favs.has(id)?s.favs.delete(id):s.favs.add(id);this.render();break}
    case 'stepok':{if(this.speaking&&this.sayCtl){haptic();this.sayCtl.jump(+t.dataset.k);break}const id=s.did,k=+t.dataset.k,d=s.done[id]=s.done[id]||[];const i=d.indexOf(k);const all=i<0&&d.length+1===RM[id].st.length;if(i<0){d.push(k);all?hapticSuccess():haptic()}else d.splice(i,1);t.classList.toggle('ok',i<0);this.save();
       if(all)setTimeout(()=>this.cooked(),150);break}
@@ -3347,6 +3494,15 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
    case 'fclr':delete s.train[s.fsel];haptic();this.render();break;
    case 'fwk':s.fwk=+v;this.render();break;
    case 'fitai':this.fitAnalyze();break;
+   case 'fclr':{const k=+v;this.prevTrain=JSON.stringify([s.train,s.tx]);for(let i=k*7;i<k*7+7;i++)delete s.train[i];haptic();this.render();this.toast(`Training KW ${KW(k)} geleert`,'Rückgängig','fundo');break}
+   case 'faitog':s.faiC=!s.faiC;haptic();this.render();break;
+   case 'fdisc':s.sheet='fdisc';haptic();this.render();break;
+   case 'pfdisc':s.prof.disc=s.prof.disc===v?'':v;haptic();this.render();break;
+   case 'fgoal':{const i=+v,G=s.prof.goals||[],g=G[i];if(!g&&G.length>=3){this.toast('Höchstens drei Saisonziele');break}s.fgI=g?i:-1;s.fgT=g?g.t:'';s.fgD=g?g.d:'';s.sheet='fgoal';haptic();this.render();break}
+   case 'fgsave':{const t=String(s.fgT||'').trim().slice(0,60),d=s.fgD||'';if(!t){this.toast('Bitte einen Titel eingeben');break}if(!/^\d{4}-\d{2}-\d{2}$/.test(d)||idxOf(d)<TODAY){this.toast('Bitte ein Datum in der Zukunft wählen');break}
+      const G=s.prof.goals=(s.prof.goals||[]).slice();if(s.fgI>=0&&G[s.fgI])G[s.fgI]={t,d};else if(G.length<3)G.push({t,d});G.sort((a,b)=>a.d<b.d?-1:1);s.sheet=null;hapticSuccess();this.render();break}
+   case 'fgdel':{const G=s.prof.goals||[];if(s.fgI>=0&&G[s.fgI]){this.prevGoals=JSON.stringify(G);G.splice(s.fgI,1)}s.sheet=null;haptic();this.render();this.toast('Saisonziel entfernt','Rückgängig','fgundo');break}
+   case 'fgundo':if(this.prevGoals){s.prof.goals=JSON.parse(this.prevGoals);this.prevGoals=null;this.render()}break;
    case 'fitswap':{const A=s.fitAI;if(!A||!((A.sw||[]).length||(A.ex||[]).length))break;this.prevFit=JSON.stringify([s.plan,s.extra]);let n=0;
       (A.sw||[]).forEach(x=>{if(x.id===null){delete s.plan[x.d];n++}else if(RM[x.id]){s.plan[x.d]=x.id;n++}});
       (A.ex||[]).forEach(x=>{if(RM[x.id]){(s.extra[x.d]=s.extra[x.d]||{})[x.m]=x.id;n++}});
@@ -3371,7 +3527,7 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
    case 'fmday':s.fsel=+t.dataset.i;haptic();this.render();break;
    case 'fstd':s.fimp=null;if(!Array.isArray(s.fstd))s.fstd=Array(7).fill(null);s.fstdD=s.fstdD||0;s.sheet='fstd';haptic();this.render();break;
    case 'fstdday':s.fstdD=+t.dataset.i;haptic();this.render();break;
-   case 'fstdfrom':{const a=fWeekOf(s,+v);if(!fWkN(a))break;this.prevStd=JSON.stringify(s.fstd);s.fstd=a;hapticSuccess();this.render();this.toast(`${+v<0?'Letzte':'Diese'} Woche als Standardwoche übernommen`,'Rückgängig','fstdundo');break}
+   case 'fstdfrom':{const w=+v,a=fWeekOf(s,w),L=w<0?'Letzte':w?'Nächste':'Diese';if(!fWkN(a)){haptic();this.toast(`${L} Woche (KW ${KW(w)}) hat noch kein Training`);break}this.prevStd=JSON.stringify(s.fstd);s.fstd=a;hapticSuccess();this.render();this.toast(`${L} Woche als Standardwoche übernommen`,'Rückgängig','fstdundo');break}
    case 'fstdclear':this.prevStd=JSON.stringify(s.fstd);s.fstd=Array(7).fill(null);haptic();this.render();this.toast('Standardwoche geleert','Rückgängig','fstdundo');break;
    case 'fstdundo':if(this.prevStd){s.fstd=JSON.parse(this.prevStd);this.prevStd=null;this.render()}break;
    case 'fstdapply':if(Array.isArray(s.fstd)&&fWkN(s.fstd))this.fitFillWeek(s.fstd.map(fPlain),'Standardwoche',+v);break;
