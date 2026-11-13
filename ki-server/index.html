@@ -39,6 +39,7 @@ const cors = origin =&gt; ({
   &#x27;Access-Control-Allow-Methods&#x27;: &#x27;GET, POST, OPTIONS&#x27;,
   &#x27;Access-Control-Allow-Headers&#x27;: &#x27;Authorization, Content-Type&#x27;,
   &#x27;Access-Control-Max-Age&#x27;: &#x27;86400&#x27;,
+  &#x27;Access-Control-Expose-Headers&#x27;: &#x27;X-Voice&#x27;,
   &#x27;Vary&#x27;: &#x27;Origin&#x27;,
 });
 const json = (obj, status, origin) =&gt;
@@ -90,8 +91,9 @@ export default {
       const text = body.tts.trim().slice(0, MAX_VORLESEN);
       if (!text) return json({ error: &#x27;Kein Text.&#x27; }, 400, origin);
       let a;
+      const voice = typeof body.voice === &#x27;string&#x27; &amp;&amp; /^[A-Za-z0-9]{10,40}$/.test(body.voice) ? body.voice : env.ELEVENLABS_VOICE_ID || STIMME; // die Stimme aus der App hat Vorrang
       try {
-        a = await fetch(&#x27;https://api.elevenlabs.io/v1/text-to-speech/&#x27; + encodeURIComponent(typeof body.voice === &#x27;string&#x27; &amp;&amp; /^[A-Za-z0-9]{10,40}$/.test(body.voice) ? body.voice : env.ELEVENLABS_VOICE_ID || STIMME) + &#x27;?output_format=mp3_44100_128&#x27;, {
+        a = await fetch(&#x27;https://api.elevenlabs.io/v1/text-to-speech/&#x27; + encodeURIComponent(voice) + &#x27;?output_format=mp3_44100_128&#x27;, {
           method: &#x27;POST&#x27;,
           headers: { &#x27;Content-Type&#x27;: &#x27;application/json&#x27;, &#x27;xi-api-key&#x27;: env.ELEVENLABS_API_KEY },
           body: JSON.stringify({ text, model_id: STIMME_MODELL, language_code: &#x27;de&#x27;, voice_settings: { stability: 0.5, similarity_boost: 0.8, style: 0.15, use_speaker_boost: true } }),
@@ -104,7 +106,7 @@ export default {
         const m = d &amp;&amp; d.detail &amp;&amp; (d.detail.message || d.detail.status || d.detail);
         return json({ error: typeof m === &#x27;string&#x27; ? m : &#x27;Fehler beim Sprachdienst (&#x27; + a.status + &#x27;).&#x27; }, a.status === 401 ? 502 : a.status === 429 ? 429 : 502, origin);
       }
-      return new Response(a.body, { status: 200, headers: { &#x27;Content-Type&#x27;: &#x27;audio/mpeg&#x27;, ...cors(origin) } });
+      return new Response(a.body, { status: 200, headers: { &#x27;Content-Type&#x27;: &#x27;audio/mpeg&#x27;, &#x27;X-Voice&#x27;: voice, ...cors(origin) } });
     }
     const prompt = typeof body.prompt === &#x27;string&#x27; ? body.prompt : &#x27;&#x27;;
     const images = Array.isArray(body.images) ? body.images.filter(x =&gt; typeof x === &#x27;string&#x27;).slice(0, MAX_IMAGES) : [];

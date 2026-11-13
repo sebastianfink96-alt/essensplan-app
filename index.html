@@ -1543,6 +1543,11 @@ img,svg{-webkit-user-drag:none}
 .vs-o>i .ic{width:16px;height:16px;color:#86868B}
 .vs-o.on{box-shadow:0 0 0 2px rgba(var(--a-glow),.55),0 12px 24px -20px rgba(60,40,60,.5)}
 .vs-o.on .vs-i{background:var(--a-deep,var(--a-grad));color:#fff}
+
+/* V132 */
+.fx-rose{color:#006039!important}
+.vs-dbg{margin:10px 0 0;font-size:12px;line-height:1.4;color:#86868B}
+.vs-dbg b{color:#1D1D1F;font-weight:600}.vs-dbg.warn b{color:#B3261E}
 </style>
 
 <div class="page">
@@ -2107,7 +2112,7 @@ Phone.prototype.reset=function(init){
   if(this.opts.persist){const d=data.load();if(d){ /* gespeicherten Stand übernehmen; Plan-Daten in Tages-Indizes umrechnen, Vergangenes fällt weg */
       s.plan={};Object.entries(d.plan||{}).forEach(([iso,id])=>{const i=idxOf(iso);if(i>=0&&i<NDAYS&&(RM[id]||id===OUT))s.plan[i]=id});
       if(Array.isArray(d.shop))s.shop=d.shop;if(Array.isArray(d.favs))s.favs=new Set(d.favs);
-      if(d.persons)s.persons=d.persons;if(d.done)s.done=d.done;if(d.learn)s.learn=d.learn;
+      if(d.persons)s.persons=d.persons;if(d.done&&d.doneD===isoOf(TODAY))s.done=Object.fromEntries(Object.entries(d.done).filter(([id])=>isTodayDish(s,id)));if(d.learn)s.learn=d.learn;
       if(d.extra){s.extra={};Object.entries(d.extra).forEach(([iso,v])=>{const i=idxOf(iso);if(i>=0&&i<NDAYS&&v)s.extra[i]=v})}
       if(d.train||d.tx){s.train={};s.tx={}; /* Training außerhalb der zwei Wochen (Vorwoche, spätere Wochen aus dem Trainingsplan) bleibt in tx erhalten */
         Object.entries(Object.assign({},d.tx||{},d.train||{})).forEach(([iso,v])=>{if(!v)return;const i=idxOf(iso);if(i>=0&&i<NDAYS)s.train[i]=v;else if(i>=-7)s.tx[iso]=v})}
@@ -2117,7 +2122,7 @@ Phone.prototype.reset=function(init){
   this.s=s;this.lastScreen=null;this.render();
 };
 Phone.prototype.save=function(){if(!this.opts.persist)return;const s=this.s;const plan={};Object.keys(s.plan).forEach(i=>plan[isoOf(+i)]=s.plan[i]);
-  data.save({plan,shop:s.shop,favs:[...s.favs],persons:s.persons,done:s.done,learn:s.learn,stock:s.stock,
+  data.save({plan,shop:s.shop,favs:[...s.favs],persons:s.persons,done:s.done,doneD:isoOf(TODAY),learn:s.learn,stock:s.stock,
     extra:Object.fromEntries(Object.entries(s.extra).map(([i,v])=>[isoOf(+i),v])),
     train:Object.fromEntries(Object.entries(s.train).map(([i,v])=>[isoOf(+i),v])),tx:s.tx,fstd:s.fstd,prof:s.prof,fitSeen:s.fitSeen,voice:s.voice,fitAI:s.fitAI&&s.fitAI.res?s.fitAI:null,faiC:!!s.faiC})};
 Phone.prototype.list=function(){const s=this.s;return R.filter(r=>(s.cat==='all'||r.c.includes(s.cat))&&(!s.en||enOf(r)===s.en))};
@@ -2405,7 +2410,8 @@ Frage: ${q}`,{modelTier:'default'});const txt=String(res&&res.text!==undefined?r
 Phone.prototype.vVoice=function(){const cur=KI&&KI.voice||STD_VOICE,known=Object.keys(vNames).length>0;
   return `<h3>Vorlese-Stimme</h3><p>Antippen wählt die Stimme und spielt eine Probe.</p>
    <div class="vsel">${VOICES.map(([id,n,d])=>`<button class="vs-o ${cur===id?'on':''}" data-a="vprobe" data-v="${id}" aria-pressed="${cur===id}"><span class="vs-i">${ic(cur===id?'check':'vol')}</span><span class="vs-t"><b>${esc(vNames[id]||n)}</b><small>${vNames[id]?'Name laut ElevenLabs':d}</small></span><i>${ic('play')}</i></button>`).join('')}</div>
-   ${known?'':'<p class="fnote" style="margin-top:10px">Die echten Namen zeigt die App, sobald der neue Worker-Code eingefügt ist.</p>'}
+   ${kiUsed==='alt'?`<p class="vs-dbg warn"><b>Dein Worker ist noch der alte Code</b> – er ignoriert die gewählte Stimme. Bitte den neuen Code bei Cloudflare einfügen.</p>`:kiUsed?`<p class="vs-dbg">Der Server hat zuletzt mit <b>${esc(vName(kiUsed))}</b> gesprochen (${esc(kiUsed)}).</p>`:''}
+   ${known||kiUsed?'':'<p class="fnote" style="margin-top:10px">Die echten Namen zeigt die App, sobald der neue Worker-Code eingefügt ist.</p>'}
    <button class="gbtn" style="width:100%;margin-top:14px" data-a="closesheet">${ic('check')}Fertig</button>`};
 Phone.prototype.vFco=function(){const s=this.s,c=s.fco||{step:'idle'};
   const head=`<div class="ai-head"><span class="ai-orb ${c.step==='think'?'live':''}"><span class="orb-c"><i></i><i></i><i></i><i></i></span><span class="orb-g"></span></span><div><h3 style="margin:0">Trainings-Coach</h3><p class="ai-sub">Saison, Training & Ernährung</p></div></div>`;
@@ -2942,7 +2948,9 @@ Phone.prototype.planDish=function(d,id){const s=this.s;s.plan[d]=id;let txt=dn(d
 /* Kleiner Knopf „2×“ (Kalender-Symbol): Gericht sofort für diesen Tag UND den Folgetag eintragen. Am Sonntag deaktiviert. */
 function twiceBtn(d){const last=d===NDAYS-1;
   return `<button class="twice" data-a="twice" ${last?'disabled':''} title="${last?'Kein Folgetag mehr planbar':'2× kochen: auch für den Folgetag'}" aria-label="2× kochen – auch für den Folgetag">${ic('twice')}</button>`}
-Phone.prototype.back=function(){this.stopSpeak();const s=this.s;s.screen=s.from||'plan';this.render();this.restoreScroll()};
+/* V132: Abhaken bleibt nur beim Gericht von heute (Hauptgericht, Frühstück oder Abendessen); sonst beim Verlassen zurücksetzen */
+const isTodayDish=(s,id)=>s.plan[TODAY]===id||Object.values(s.extra[TODAY]||{}).includes(id);
+Phone.prototype.back=function(){this.stopSpeak();const s=this.s;if(s.screen==='detail'&&s.did&&!isTodayDish(s,s.did))delete s.done[s.did];s.screen=s.from||'plan';this.render();this.restoreScroll()};
 /* Zurück aus der Detailansicht: wieder an die Stelle springen, an der das Gericht angetippt wurde */
 Phone.prototype.restoreScroll=function(){const s=this.s;if(this.backFrom!==s.screen||!this.backTop)return;const v=this.scr.querySelector('.view');if(!v)return;
   v.querySelectorAll('.rv').forEach(e=>e.classList.add('in'));v.scrollTop=this.backTop;requestAnimationFrame(()=>{v.scrollTop=this.backTop})};
@@ -3183,21 +3191,22 @@ Phone.prototype.speak=function(){const s=this.s,r=RM[s.did],sy=window.speechSynt
   const upd=()=>{const el=self.scr.querySelector('.rz-act');if(el)el.innerHTML=self.sayBtns()};
   const end=()=>{self.speaking=false;self.paused=false;self.sayCtl=null;self.sayK=null;self.render()};
   const lead=i=>i===k0?(plain?'':i===0?`${r.n}. Zuerst: `:'Weiter geht\'s: '):i===n-1?'Und zum Schluss: ':['Dann: ','Danach: ','Als Nächstes: '][(i-k0-1)%3];
-  const txt=i=>lead(i)+sayText(r.st[i]);
+  const BYE=['Viel Vergnügen!','Lass es dir schmecken!','Bon Appétit!'];let bi=0;try{bi=+localStorage.getItem('essensplan-bye')||0;localStorage.setItem('essensplan-bye',String((bi+1)%3))}catch(e){}
+  const txt=i=>i>=n?BYE[bi%3]:lead(i)+sayText(r.st[i]);
   /* Audio-Element schon beim Antippen „aufwecken“, sonst blockiert iOS das spätere Abspielen */
   let aud=null;if(useKi()){aud=this.aud||(this.aud=new Audio());aud.onended=aud.onerror=null;try{aud.src=SIL;const pr=aud.play();if(pr&&pr.catch)pr.catch(()=>{})}catch(e){}}
   const halt=()=>{g++;try{if(sy)sy.cancel()}catch(e){}if(aud){aud.onended=aud.onerror=null;try{aud.pause()}catch(e){}}};
   const pre={},get=i=>{const t=txt(i);return pre[t]||(pre[t]=kiSay(t))};
   const live=mg=>self.speaking&&!self.paused&&g===mg;
   const dev=()=>{if(!canDev){end();return}const mg=g;
-    const u=new SpeechSynthesisUtterance(txt(k));if(voice){u.voice=voice;u.lang=voice.lang}else u.lang='de-DE';u.rate=1;u.pitch=1;u.onend=()=>{if(!live(mg))return;k++;setTimeout(()=>{if(live(mg))next()},1800)};u.onerror=()=>{if(live(mg))end()};sy.speak(u)};
+    const u=new SpeechSynthesisUtterance(txt(k));if(voice){u.voice=voice;u.lang=voice.lang}else u.lang='de-DE';u.rate=1;u.pitch=1;u.onend=()=>{if(!live(mg))return;k++;setTimeout(()=>{if(live(mg))next()},k===n?900:1800)};u.onerror=()=>{if(live(mg))end()};sy.speak(u)};
   const fall=e=>{self.noTts=true;self.toast(e&&e.status===429?'Stimmen-Kontingent aufgebraucht – ich lese mit der Gerätestimme':'Natürliche Stimme nicht erreichbar – ich lese mit der Gerätestimme');dev()};
-  const next=()=>{if(!self.speaking||self.paused||self.s.screen!=='detail')return;if(k>=n){end();return}
+  const next=()=>{if(!self.speaking||self.paused||self.s.screen!=='detail')return;if(k>n){end();return}
     mark(true);if(!useKi()||!aud){dev();return}
     const my=k,mg=g,ok=()=>live(mg)&&k===my;get(my).then(b=>{if(!ok())return;const url=URL.createObjectURL(b);
       aud.onended=()=>{URL.revokeObjectURL(url);if(!ok())return;k++;setTimeout(()=>{if(live(mg))next()},900)};aud.onerror=()=>{if(ok())fall()};
       aud.src=url;const pr=aud.play();if(pr&&pr.catch)pr.catch(()=>{if(ok())fall()});
-      if(my+1<n)get(my+1).catch(()=>{})}).catch(e=>{if(ok())fall(e)})};
+      if(my+1<=n)get(my+1).catch(()=>{})}).catch(e=>{if(ok())fall(e)})};
   /* Pause hält an; Weiter liest den markierten Schritt von vorn; Schritt antippen = diesen (nochmal) vorlesen */
   this.sayCtl={halt,pause(){halt();self.paused=true;if(k>=n)k=n-1;upd()},resume(){halt();self.paused=false;k0=k;plain=true;upd();next()},jump(i){halt();self.paused=false;k=i;k0=i;plain=true;upd();next()}};
   this.render();next()};
@@ -3339,14 +3348,15 @@ const SIL='data:audio/wav;base64,UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAIA+AAACABA
 /* V126: Standard-Stimme „Mrs. Sophie – Friendly & professional“ (ElevenLabs) */
 /* V131: Auswahl aus zwei ElevenLabs-Stimmen. Die Namen sind Sebastians Zuordnung; der Worker (ab V131) liefert die echten Namen von ElevenLabs nach (vNames) */
 const VOICES=[['h8PCn0HukMaFj1sJwcjY','Mrs. Sophie','Freundlich & professionell'],['R24r0IV80Iw9eyByq1ps','Elena','Junge Erzählerstimme']];
-const STD_VOICE=VOICES[0][0];let vNames={};
+const STD_VOICE=VOICES[0][0];let vNames={},kiUsed='';
+try{caches.delete('essensplan-stimme-v1')}catch(e){}
 const vName=id=>vNames[id]||(VOICES.find(v=>v[0]===id)||[0,'eigene Stimme'])[1];
 async function kiVoiceNames(){if(!KI)return;try{const r=await fetch(KI.url+(KI.url.includes('?')?'&':'?')+'voices='+VOICES.map(v=>v[0]).join(','),{headers:{'Authorization':'Bearer '+KI.pw}});const j=await r.json().catch(()=>({}));if(j&&j.names)Object.assign(vNames,j.names)}catch(e){}}
 async function kiSay(text){let h=5381;for(let i=0;i<text.length;i++)h=((h<<5)+h+text.charCodeAt(i))>>>0;const key='https://stimme.essensplan.invalid/'+(KI.voice||STD_VOICE)+'/'+h.toString(36)+'-'+text.length;let c=null;
-  try{c=await caches.open('essensplan-stimme-v1');const hit=await c.match(key);if(hit)return await hit.blob()}catch(e){}
+  try{c=await caches.open('essensplan-stimme-v2');const hit=await c.match(key);if(hit)return await hit.blob()}catch(e){}
   const r=await fetch(KI.url,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+KI.pw},body:JSON.stringify({tts:text,voice:KI.voice||STD_VOICE})});
   if(!r.ok)throw Object.assign(new Error((await r.json().catch(()=>({}))).error||('Fehler '+r.status)),{status:r.status});
-  const b=await r.blob();try{if(c)await c.put(key,new Response(b,{headers:{'Content-Type':'audio/mpeg'}}))}catch(e){}return b}
+  kiUsed=r.headers.get('X-Voice')||'alt';const b=await r.blob();try{if(c)await c.put(key,new Response(b,{headers:{'Content-Type':'audio/mpeg'}}))}catch(e){}return b}
 /* Beim Start nachsehen, ob der Server inzwischen eine Stimme hat */
 if(KI)kiTest(KI).then(err=>{if(!err)try{localStorage.setItem(KI_KEY,JSON.stringify(KI))}catch(e){}});
 const aiReady=(async()=>{if(window.EP_APP&&!hasClaude()){if(KI)AI=kiRemote(KI);return}
@@ -3639,7 +3649,7 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
    case 'nextvoice':if(KI&&KI.tts&&!this.noTts){s.sheet='voice';haptic();this.render();kiVoiceNames().then(()=>{if(s.sheet==='voice')this.render()});break}
    /* fallthrough nicht nötig: Gerätestimmen weiter unten */
    case 'vprobe':{if(KI&&KI.tts&&!this.noTts){if(v){KI.voice=v===STD_VOICE?'':v;try{localStorage.setItem(KI_KEY,JSON.stringify(KI))}catch(e){}hapticSuccess();this.render()}const a=this.aud||(this.aud=new Audio());a.onended=a.onerror=null;try{a.src=SIL;const pr=a.play();if(pr&&pr.catch)pr.catch(()=>{})}catch(e){}
-        kiSay('So klinge ich beim Vorlesen deiner Rezepte.').then(b=>{a.src=URL.createObjectURL(b);a.play().catch(()=>{})}).catch(e=>this.toast(e&&e.message?String(e.message).slice(0,90):'Stimme nicht erreichbar'));break}
+        kiSay('So klinge ich beim Vorlesen deiner Rezepte.').then(b=>{a.src=URL.createObjectURL(b);a.play().catch(()=>{});if(s.sheet==='voice')this.render()}).catch(e=>this.toast(e&&e.message?String(e.message).slice(0,90):'Stimme nicht erreichbar'));break}
       const vs=deVoices();if(!vs.length){this.toast('Hier sind keine deutschen Stimmen verfügbar');break}
       const cur=pickVoice(s.voice),ix=vs.indexOf(cur);const nv=vs[(ix+1)%vs.length];s.voice=nv.name;this.render();
       try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance('So klinge ich beim Vorlesen deiner Rezepte.');u.voice=nv;u.lang=nv.lang;speechSynthesis.speak(u)}catch(err){}break}
