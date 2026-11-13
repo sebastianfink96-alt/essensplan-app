@@ -1493,6 +1493,16 @@ img,svg{-webkit-user-drag:none}
 .ftl-k i{width:17px;height:17px;border-radius:50%;background:#1D1D1F;color:#fff;font-size:10.5px;font-weight:700;font-style:normal;display:grid;place-items:center}
 .fx-gi b{font-size:17px;font-weight:700}
 .ftl-r{margin-top:14px}
+
+/* V128: Profilfoto antippen = ca. dreifach groß, nochmal = zurück; Kamera-Knopf = Foto wechseln */
+.pf-head{flex-wrap:wrap}
+.pf-av{transition:width .45s cubic-bezier(.22,.8,.24,1),height .45s cubic-bezier(.22,.8,.24,1),min-width .45s cubic-bezier(.22,.8,.24,1),max-width .45s cubic-bezier(.22,.8,.24,1),min-height .45s cubic-bezier(.22,.8,.24,1),max-height .45s cubic-bezier(.22,.8,.24,1),margin .45s cubic-bezier(.22,.8,.24,1);cursor:pointer}
+.pf-head.big .pf-av{width:294px;height:294px;min-width:294px;max-width:294px;min-height:294px;max-height:294px;margin:4px auto 6px;box-shadow:0 0 0 6px #fff,0 30px 50px -24px rgba(var(--a-glow),.8)}
+.pf-head.big>div:not(.pf-av){flex-basis:100%}
+.pf-cam{position:absolute;right:-2px;bottom:-2px;width:30px;height:30px;border:0;padding:0;border-radius:50%;display:grid;place-items:center;background:var(--a-deep,var(--a-grad));color:#fff;box-shadow:0 0 0 3px #fff;transition:right .45s,bottom .45s,width .3s,height .3s}
+.pf-cam .ic{width:15px;height:15px;stroke:#fff;stroke-width:2}
+.pf-head.big .pf-cam{right:22px;bottom:22px;width:44px;height:44px}
+.pf-head.big .pf-cam .ic{width:20px;height:20px}
 </style>
 
 <div class="page">
@@ -3116,7 +3126,7 @@ Phone.prototype.vSettings=function(){const s=this.s,pf=s.prof,q=x=>String(x||'')
   const opt=(L,cur,act,cls)=>`<div class="pf-opts ${cls}">${L.map(([k,t,sub,icn])=>`<button class="pf-o ${cur===k?'on':''}" data-a="${act}" data-v="${k}" aria-pressed="${cur===k}"><span class="pf-oi">${ic(icn)}</span><b>${t}</b><small>${sub}</small><i>${ic('check')}</i></button>`).join('')}</div>`;
   return `<div class="view setv"><div class="z">
    <div class="top-row between"><button class="iconbtn" data-a="go" data-v="plan" aria-label="Zurück">${ic('left')}</button></div>
-   <div class="pf-head rv"><button class="pf-av ${pf.photo?'has':''}" data-a="pfphoto" aria-label="${pf.photo?'Profilfoto ändern':'Profilfoto hinzufügen'}">${pf.photo?`<img src="${pf.photo}" alt="">`:ic('users')}<i>${ic('cam')}</i></button>
+   <div class="pf-head rv ${pf.photo&&s.pfBig?'big':''}"><div class="pf-av ${pf.photo?'has':''}" role="button" data-a="${pf.photo?'pfzoom':'pfphoto'}" aria-label="${pf.photo?'Profilfoto vergrößern':'Profilfoto hinzufügen'}">${pf.photo?`<img src="${pf.photo}" alt="">`:ic('users')}<button class="pf-cam" data-a="pfphoto" aria-label="${pf.photo?'Profilfoto ändern':'Profilfoto hinzufügen'}">${ic('cam')}</button></div>
     <div><div class="eb">Dein Profil</div><h1 class="ap-h1" id="pfh">${pf.name?`Hi ${q(pf.name)}.`:'Hallo.'}</h1><p class="pf-sub">Schön, dass du da bist.</p></div></div>
    <h2 class="ap-h2 rv">Sportart. <span>Wofür trainierst du?</span></h2>
    ${opt(PF_DISC,pf.disc,'pfdisc','fit rv')}
@@ -3518,6 +3528,7 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
         KI=cf;try{localStorage.setItem(KI_KEY,JSON.stringify(KI))}catch(e){}AI=kiRemote(KI);s.kiP='';s.sheet=null;hapticSuccess();this.render();this.toast('KI verbunden')});break}
    case 'pfsport':s.prof.sport=s.prof.sport===v?'':v;haptic();this.render();break;
    case 'pfgoal':s.prof.goal=s.prof.goal===v?'':v;haptic();this.render();break;
+   case 'pfzoom':{s.pfBig=!s.pfBig;haptic();const h=this.scr.querySelector('.pf-head');if(h)h.classList.toggle('big',s.pfBig);break}
    case 'pfnophoto':s.prof.photo='';this.render();break;
    case 'pfphoto':{const inp=document.createElement('input');inp.type='file';inp.accept='image/*';
       inp.onchange=async()=>{const f=inp.files&&inp.files[0];if(!f)return;try{const b=await shrink(f,360);s.prof.photo='data:image/jpeg;base64,'+await blobB64(b);hapticSuccess();this.render()}catch(e){this.toast('Das Foto konnte nicht geladen werden')}};inp.click();break}
