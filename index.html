@@ -1649,6 +1649,10 @@ img,svg{-webkit-user-drag:none}
 .shopv .tile{background:var(--sh1)}.shopv .tile:nth-child(3n+2){background:var(--sh2)}.shopv .tile:nth-child(3n){background:var(--sh3)}
 .shopv .tiles.pan .tile{background:var(--shp)!important;color:var(--shpc)!important}
 .rhero .rh-tx i{color:var(--shpc)!important}
+
+/* V152: Monogramm für eigene Sportart */
+.pf-oi .mono,.fx-i .mono{font-style:normal;font-weight:700;font-size:19px;line-height:1;letter-spacing:-.02em}
+.pgai-t b{font-size:15.5px!important}
 </style>
 
 <div class="page">
@@ -2482,13 +2486,14 @@ Object.assign(P,{f_tri:'<circle cx="5.8" cy="14.6" r="3.3"/><circle cx="12" cy="
 const PF_DISC=[['rad','Rennrad','Straße & Pässe','f_bike'],['lauf','Laufen','Straße & Trail','f_run'],['schwimm','Schwimmen','Becken & Freiwasser','f_swim'],['tri','Triathlet','Swim · Bike · Run','f_tri'],['kraft','Kraftsportler','Gewichte & Kraft','f_kraft'],['yoga','Yoga','Beweglichkeit & Ruhe','f_mob'],['ballett','Ballett','Tanz & Haltung','f_ballett'],['crossfit','Crossfit','Funktionell & intensiv','f_crossfit']];
 /* V148: Ballsportarten als Gruppe (Antippen klappt die Auswahl auf) und eigene Sportart mit KI-Tipps */
 const PF_BALL=[['tennis','Tennis','','f_tennis'],['padel','Padel-Tennis','','f_padel'],['fussball','Fußball','','f_fussball']];
-const discInfo=pf=>pf.disc==='eigen'&&pf.discX?['eigen',pf.discX,'','f_eigen']:PF_DISC.concat(PF_BALL).find(x=>x[0]===pf.disc)||null;
-const DCOL={rad:FA.bike,lauf:FA.run,schwimm:FA.swim,tri:FA.swim,kraft:FA.kraft,yoga:'#E5484D',ballett:FA.ballett,crossfit:'#F0702E',ball:FA.tennis,tennis:FA.tennis,padel:'#1FA79A',fussball:'#2E8B4E',eigen:'#6E6E80'},DGRAD={tri:'linear-gradient(135deg,#2F9BE6,#FF6A55 55%,#F5A623)'};
-const discOpts=(cur,cls='',open=false,pf={})=>{const tile=(k,t,icn,on,act='pfdisc',small='')=>`<button class="pf-o ${on?'on':''}" style="--c:${DCOL[k]}${DGRAD[k]?';--g:'+DGRAD[k]:''}" data-a="${act}" data-v="${k}" aria-pressed="${on}"><span class="pf-oi">${ic(icn)}</span><b>${t}</b>${small?`<small>${small}</small>`:''}<i>${ic('check')}</i></button>`;
+const discInfo=pf=>pf.disc==='eigen'&&pf.discX?['eigen',pf.discX,'','mono']:PF_DISC.concat(PF_BALL).find(x=>x[0]===pf.disc)||null;
+const DCOL={rad:FA.bike,lauf:FA.run,schwimm:FA.swim,tri:FA.swim,kraft:FA.kraft,yoga:'#E5484D',ballett:FA.ballett,crossfit:'#F0702E',ball:FA.tennis,tennis:FA.tennis,padel:'#1FA79A',fussball:'#2E8B4E',eigen:'#2F7F8F'},DGRAD={tri:'linear-gradient(135deg,#2F9BE6,#FF6A55 55%,#F5A623)'};
+const dIc=(icn,t)=>icn==='mono'?`<em class="mono">${esc(String(t||'?').trim().charAt(0).toUpperCase())}</em>`:ic(icn);
+const discOpts=(cur,cls='',open=false,pf={})=>{const tile=(k,t,icn,on,act='pfdisc',small='')=>`<button class="pf-o ${on?'on':''}" style="--c:${DCOL[k]}${DGRAD[k]?';--g:'+DGRAD[k]:''}" data-a="${act}" data-v="${k}" aria-pressed="${on}"><span class="pf-oi">${dIc(icn,t)}</span><b>${t}</b>${small?`<small>${small}</small>`:''}<i>${ic('check')}</i></button>`;
   const ballOn=PF_BALL.some(x=>x[0]===cur),bo=open||ballOn,eo=cur==='eigen';
   return `<div class="pf-opts c3 fit disc ${cls}">${PF_DISC.map(([k,t,sub,icn])=>tile(k,t,icn,cur===k)).join('')}
    ${tile('ball','Ballsport\u00adarten','f_ball',ballOn,'discball',ballOn?PF_BALL.find(x=>x[0]===cur)[1]:'')}
-   ${tile('eigen',eo&&pf.discX?esc(pf.discX):'Nicht dabei?','f_eigen',eo,'discown',eo&&pf.discX?'Deine Sportart':'Selbst eintragen')}</div>
+   ${tile('eigen',eo&&pf.discX?esc(pf.discX):'Nicht dabei?',eo&&pf.discX?'mono':'f_eigen',eo,'discown',eo&&pf.discX?'Antippen zum Ändern':'Selbst eintragen')}</div>
    ${bo?`<div class="pf-opts c3 fit disc sub ${cls}">${PF_BALL.map(([k,t,sub,icn])=>tile(k,t,icn,cur===k)).join('')}</div>`:''}`};
 const PH=[['g','Grundlage','#7DAFE3','Ruhig und lang – Ausdauer aufbauen'],['a','Aufbau','#2E9E6B','Mehr Umfang, erste harte Einheiten'],['s','Spezifisch','#F0A03A','Wettkampfnah trainieren'],['t','Tapering','#E0688C','Weniger Umfang, frisch werden']];
 const phOf=k=>PH.find(x=>x[0]===k);
@@ -2506,7 +2511,7 @@ const wkTxt=n=>{const w=Math.round(n/7);return n<10?`${n} ${n===1?'Tag':'Tage'}`
 Phone.prototype.vFprof=function(){const s=this.s,pf=s.prof,FG=fGoals(s),D=discInfo(pf),A=PF_SPORT.find(x=>x[0]===pf.sport),G=pf.goals||[];
   const lvl=L=>`<div class="pf-opts c3 fit fx-lv">${L.map(([k,t,sub,icn])=>`<button class="pf-o ${pf.sport===k?'on':''}" data-a="pfsport" data-v="${k}" aria-pressed="${pf.sport===k}"><span class="pf-oi">${ic(icn)}</span><b>${k==='hobby'?'Hobby':t}</b><small>${sub}</small><i>${ic('check')}</i></button>`).join('')}</div>`;
   return `<h2 class="ap-h2 fx-h rv">Für was <span>trainierst du?</span></h2>
-   <div class="fx-row rv"><button class="fx-f ${D?'on':''}" data-a="fdisc" ${D?`style="--c:${DCOL[D[0]]}${DGRAD[D[0]]?';--g:'+DGRAD[D[0]]:''}"`:''}>${D?`<span class="fx-i">${ic(D[3])}</span><span><b>${esc(D[1])}</b></span>`:`<span class="fx-i">${ic('plus')}</span><span><b>Sportart wählen</b></span>`}${ic('down','cv')}</button>
+   <div class="fx-row rv"><button class="fx-f ${D?'on':''}" data-a="fdisc" ${D?`style="--c:${DCOL[D[0]]}${DGRAD[D[0]]?';--g:'+DGRAD[D[0]]:''}"`:''}>${D?`<span class="fx-i">${dIc(D[3],D[1])}</span><span><b>${esc(D[1])}</b></span>`:`<span class="fx-i">${ic('plus')}</span><span><b>Sportart wählen</b></span>`}${ic('down','cv')}</button>
 </div>`};
 Phone.prototype.vFgoals=function(){const s=this.s,pf=s.prof,FG=fGoals(s),G=pf.goals||[];
   return `<h2 class="ap-h2 fx-h rv" style="margin-top:34px">Saisonziele. <span class="fx-rose">Bis zu vier.</span></h2>
@@ -2573,7 +2578,7 @@ Phone.prototype.vFco=function(){const s=this.s,c=s.fco||{step:'idle'};
    <p class="ai-note">${AI?'Antworten von Claude.':'Hier ohne Internet-KI: Antworten aus deinem Saisonplan und deiner Woche.'}</p>`};
 Phone.prototype.vDiscOwn=function(){const s=this.s,pf=s.prof,busy=s.discBusy;
   return `<div class="own rv"><div class="ai-in"><input data-k="discx" maxlength="40" enterkeyhint="done" placeholder="Deine Sportart, z. B. Klettern" value="${esc(s.discQ!==undefined?s.discQ:pf.discX||'').replace(/"/g,'&quot;')}" aria-label="Eigene Sportart"><button class="ai-mic" data-a="discsave" aria-label="Übernehmen" ${busy?'disabled':''}>${ic('check')}</button></div>
-   ${busy?`<div class="own-tip"><div class="ai-dots"><i></i><i></i><i></i></div></div>`:pf.disc==='eigen'&&pf.discTip?`<div class="own-tip"><b>${ic('spark')}Tipps für ${esc(pf.discX)}</b><p>${esc(pf.discTip).replace(/\n+/g,'<br>')}</p></div>`:''}</div>`};
+</div>`};
 /* KI-Tipps (eigene Sportart und persönliche Ziele); ohne KI: allgemeine Hinweise */
 function tipOffline(kind,t){const l=t.toLowerCase();
   if(kind==='disc')return `${t} ist eingetragen. Ich richte Analyse und Ernährung danach aus: An intensiven Tagen mehr Kohlenhydrate, nach dem Training 20–30 g Eiweiß, an Ruhetagen leichter essen. Plane neben ${t} 1–2 Einheiten Kraft und Mobilität ein, damit du verletzungsfrei bleibst.`;
@@ -2592,11 +2597,11 @@ Phone.prototype.vPgoals=function(){const s=this.s,pf=s.prof,P=pf.pgoals||[],sig=
   return `<h2 class="ap-h2 fx-h rv" style="margin-top:30px">Persönliche Ziele. <span>Dein Weg.</span></h2>
    <div class="pg-list rv">${P.map((g,i)=>`<div class="pg"><div class="pg-h"><span class="fx-gi">${ic('trophy')}</span><b>${esc(g.t)}</b><button class="pg-x" data-a="pgdel" data-v="${i}" aria-label="Ziel entfernen">${ic('x')}</button></div></div>`).join('')}</div>
    ${P.length<5?`<div class="ai-in pg-in rv"><input data-k="pgq" maxlength="80" enterkeyhint="done" placeholder="z. B. Spagat schaffen, am Berg schneller werden" value="${esc(s.pgQ||'').replace(/"/g,'&quot;')}" aria-label="Persönliches Ziel"><button class="ai-mic" data-a="pgadd" aria-label="Ziel hinzufügen">${ic('plus')}</button></div>`:''}
-   ${P.length?`<div class="pgai rv ${open?'open':''}"><button class="pgai-h" data-a="pgai" aria-expanded="${!!open}"><span class="ai-orb ${s.pgBusy?'live':''}"><span class="orb-c"><i></i><i></i><i></i><i></i></span><span class="orb-g"></span></span><span class="pgai-t"><b>KI-Auswertung</b><small>Tipps, um deine Ziele zu erreichen</small></span>${ic('down','fai-cv')}</button>
+   ${P.length?`<div class="pgai rv ${open?'open':''}"><button class="pgai-h" data-a="pgai" aria-expanded="${!!open}"><span class="ai-orb ${s.pgBusy?'live':''}"><span class="orb-c"><i></i><i></i><i></i><i></i></span><span class="orb-g"></span></span><span class="pgai-t"><b>Tipps, um deine Ziele zu erreichen</b></span>${ic('down','fai-cv')}</button>
      ${s.pgBusy?`<div class="ai-dots"><i></i><i></i><i></i></div>`:open?`<div class="pgai-x" data-a="pgai">${esc(pf.pgTip).replace(/\n\s*\n/g,'<br><br>').replace(/\n/g,'<br><br>')}</div>`:''}</div>`:''}`};
 Phone.prototype.vFdisc=function(){const s=this.s,pf=s.prof,G='background:linear-gradient(100deg,#3B7D57,#1F4A33 58%,#2A6545);box-shadow:0 14px 26px -12px rgba(31,74,51,.75)';
   const opt=(L,cur,act)=>`<div class="pf-opts c3 fit">${L.map(([k,t,sub,icn])=>`<button class="pf-o ${cur===k?'on':''}" data-a="${act}" data-v="${k}" aria-pressed="${cur===k}"><span class="pf-oi">${ic(icn)}</span><b>${k==='hobby'?'Hobby':t}</b><small>${sub}</small><i>${ic('check')}</i></button>`).join('')}</div>`;
-  return `<h3>Für was trainierst du?</h3><p>Danach richten sich Analyse und Saisonplan.</p>${discOpts(pf.disc,'',s.discBall,pf)}${s.discOwn||pf.disc==='eigen'?this.vDiscOwn():''}
+  return `<h3>Für was trainierst du?</h3><p>Danach richten sich Analyse und Saisonplan.</p>${discOpts(pf.disc,'',s.discBall,pf)}${s.discOwn?this.vDiscOwn():''}
    <div class="lbl" style="margin:16px 0 8px">Ambition</div>${opt(PF_SPORT,pf.sport,'pfsport')}
    <button class="gbtn" style="width:100%;margin-top:14px;${G}" data-a="closesheet">${ic('check')}Fertig</button>`};
 Phone.prototype.vFgoal=function(){const s=this.s,G='background:linear-gradient(100deg,#3B7D57,#1F4A33 58%,#2A6545);box-shadow:0 14px 26px -12px rgba(31,74,51,.75)',ed=s.fgI>=0;
@@ -3396,7 +3401,7 @@ Phone.prototype.vSettings=function(){const s=this.s,pf=s.prof,q=x=>String(x||'')
    <div class="pf-head rv ${pf.photo&&s.pfBig?'big':''}"><div class="pf-av ${pf.photo?'has':''}" role="button" data-a="${pf.photo?'pfzoom':'pfphoto'}" aria-label="${pf.photo?'Profilfoto vergrößern':'Profilfoto hinzufügen'}">${pf.photo?`<img src="${pf.photo}" alt="">`:ic('users')}<button class="pf-cam" data-a="pfphoto" aria-label="${pf.photo?'Profilfoto ändern':'Profilfoto hinzufügen'}">${ic('cam')}</button></div>
     <div><div class="eb">Dein Profil</div><h1 class="ap-h1" id="pfh">${pf.name?`Hi ${q(pf.name)}.`:'Hallo.'}</h1><p class="pf-sub">Schön, dass du da bist.</p></div></div>
    <h2 class="ap-h2 rv">Sportart. <span>Wofür trainierst du?</span></h2>
-   ${discOpts(pf.disc,'rv',s.discBall,pf)}${s.discOwn||pf.disc==='eigen'?this.vDiscOwn():''}
+   ${discOpts(pf.disc,'rv',s.discBall,pf)}${s.discOwn?this.vDiscOwn():''}
    <h2 class="ap-h2 rv">Sportliche Ambition. <span>Wie trainierst du?</span></h2>
    ${opt(PF_SPORT,pf.sport,'pfsport','fit rv')}
    <h2 class="ap-h2 rv">Deine App. <span>Deine Farben.</span></h2>
@@ -3791,10 +3796,9 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
    case 'fdisc':s.sheet='fdisc';haptic();this.render();break;
    case 'pfdisc':s.prof.disc=s.prof.disc===v?'':v;if(!PF_BALL.some(x=>x[0]===v))s.discBall=false;s.discOwn=false;haptic();this.render();break;
    case 'discball':s.discBall=!s.discBall&&!PF_BALL.some(x=>x[0]===s.prof.disc)?true:!s.discBall;s.discOwn=false;haptic();this.render();break;
-   case 'discown':s.discOwn=!(s.discOwn||s.prof.disc==='eigen');if(!s.discOwn&&s.prof.disc==='eigen')s.prof.disc='';s.discQ=undefined;s.discBall=false;haptic();this.render();break;
+   case 'discown':s.discOwn=!s.discOwn;s.discQ=undefined;s.discBall=false;haptic();this.render();break;
    case 'discsave':{const t=String(s.discQ!==undefined?s.discQ:s.prof.discX||'').trim().slice(0,40);if(!t){this.toast('Bitte eine Sportart eingeben');break}
-      const pf=s.prof;pf.disc='eigen';pf.discX=t;pf.discTip='';s.discQ=undefined;s.discBusy=true;s.discOwn=true;hapticSuccess();this.render();
-      this.aiTip('disc',t).then(x=>{s.discBusy=false;if(pf.discX===t)pf.discTip=x;this.render()});break}
+      const pf=s.prof;pf.disc='eigen';pf.discX=t;pf.discTip='';s.discQ=undefined;s.discOwn=false;hapticSuccess();this.render();break}
    case 'pgadd':{const t=String(s.pgQ||'').trim().slice(0,80);if(!t){this.toast('Bitte ein Ziel eingeben');break}
       const P=s.prof.pgoals=s.prof.pgoals||[];if(P.length>=5){this.toast('Höchstens fünf persönliche Ziele');break}
       P.push({t});s.pgQ='';s.pgOpen=false;hapticSuccess();this.render();break}
