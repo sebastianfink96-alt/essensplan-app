@@ -1625,6 +1625,17 @@ img,svg{-webkit-user-drag:none}
 .lko-rot .lko-sw{background:linear-gradient(135deg,#C2607A,#93375A 55%,#6E2444)}
 .lko-blau .lko-sw{background:linear-gradient(135deg,#7FA6DE,#4D78C0 55%,#2F558F)}
 .lko.on{box-shadow:0 0 0 2px var(--a-blue),0 14px 28px -20px rgba(var(--a-glow),.8)}
+
+/* V150: KI-Auswertung der persönlichen Ziele, auf Tipp aufklappen */
+.pgai{margin-top:12px;background:#fff;border-radius:24px;padding:12px 14px;box-shadow:0 0 0 1.5px rgba(var(--a-glow),.16),0 22px 40px -26px rgba(var(--a-glow),.45)}
+.pgai-h{width:100%;border:0;background:none;padding:0;display:flex;align-items:center;gap:12px;text-align:left;color:#1D1D1F}
+.pgai-h .ai-orb{width:40px;height:40px;flex:none}
+.pgai-t{display:flex;flex-direction:column;flex:1;min-width:0}
+.pgai-t b{font-size:16px;font-weight:500}.pgai-t small{font-size:12.5px;color:#86868B}
+.pgai .fai-cv{transform:none}.pgai.open .fai-cv{transform:rotate(180deg)}
+.pgai-x{margin-top:12px;padding-top:12px;border-top:1px solid rgba(0,0,0,.06);font-size:15px;line-height:1.5;color:#1D1D1F;cursor:pointer}
+.pgai .ai-dots{margin:12px 0 4px}
+.pg-list .pg{padding:8px 12px}
 </style>
 
 <div class="page">
@@ -2227,7 +2238,7 @@ Phone.prototype.reset=function(init){
       if(d.extra){s.extra={};Object.entries(d.extra).forEach(([iso,v])=>{const i=idxOf(iso);if(i>=0&&i<NDAYS&&v)s.extra[i]=v})}
       if(d.train||d.tx){s.train={};s.tx={}; /* Training außerhalb der zwei Wochen (Vorwoche, spätere Wochen aus dem Trainingsplan) bleibt in tx erhalten */
         Object.entries(Object.assign({},d.tx||{},d.train||{})).forEach(([iso,v])=>{if(!v)return;const i=idxOf(iso);if(i>=0&&i<NDAYS)s.train[i]=v;else if(i>=-7)s.tx[iso]=v})}
-      if(d.prof&&typeof d.prof==='object')s.prof=Object.assign(s.prof,d.prof);(s.prof.pgoals||[]).forEach(g=>{if(g.busy){g.busy=false;if(!g.tip)g.tip=tipOffline('goal',g.t)}});
+      if(d.prof&&typeof d.prof==='object')s.prof=Object.assign(s.prof,d.prof);
       if(Array.isArray(d.fstd))s.fstd=Array.from({length:7},(_,j)=>d.fstd[j]||null);
       if(d.fitSeen)s.fitSeen=true;if(d.voice)s.voice=d.voice;if(d.fitAI&&d.fitAI.res)s.fitAI=d.fitAI;if(d.faiC)s.faiC=true;}}
   this.s=s;this.lastScreen=null;this.render();
@@ -2558,16 +2569,18 @@ function tipOffline(kind,t){const l=t.toLowerCase();
   if(/schnell|zeit|pace|tempo|marathon|km/.test(l))return 'Plane pro Woche eine Tempo- oder Intervalleinheit, eine lange ruhige Einheit und sonst locker. Steigere den Umfang höchstens um 10 % pro Woche. Teste alle 4 Wochen dieselbe Strecke, um den Fortschritt zu sehen.';
   if(/kraft|muskel|klimmz|liegest|kniebeu|gewicht heben/.test(l))return 'Trainiere die Übung 2–3× pro Woche mit wenigen Wiederholungen und steigere Gewicht oder Wiederholungen schrittweise. Schlaf und 1,6–2 g Eiweiß pro kg Körpergewicht täglich helfen beim Aufbau.';
   return 'Teile das Ziel in kleine Etappen auf und trainiere 2–3× pro Woche gezielt dafür. Halte Fortschritte alle 2 Wochen fest und plane ausreichend Erholung ein. Iss rund ums Training genug Kohlenhydrate und Eiweiß.'}
-Phone.prototype.aiTip=async function(kind,t){await aiWait();if(!AI)return tipOffline(kind,t);
-  try{const res=await AI(`Du bist Trainings- und Ernährungscoach in einer deutschen Fitness- und Essensplan-App. ${kind==='disc'?`Die Person betreibt die Sportart „${t}“. Erkenne die Sportart und gib 3 kurze, konkrete Tipps zu Training und passender Ernährung.`:`Persönliches Ziel der Person: „${t}“. Gib 3 kurze, konkrete Tipps, wie sie das Ziel erreicht (Training, Häufigkeit, Ernährung, Fortschritt messen).`}
+const tipOff=(kind,t)=>kind==='goal'?t.split('; ').map(x=>x+': '+tipOffline('goal',x)).join('\n\n'):tipOffline(kind,t);
+Phone.prototype.aiTip=async function(kind,t){await aiWait();if(!AI)return tipOff(kind,t);
+  try{const res=await AI(`Du bist Trainings- und Ernährungscoach in einer deutschen Fitness- und Essensplan-App. ${kind==='disc'?`Die Person betreibt die Sportart „${t}“. Erkenne die Sportart und gib 3 kurze, konkrete Tipps zu Training und passender Ernährung.`:`Persönliche Ziele der Person: „${t}“. Gib zu jedem Ziel 2–3 kurze, konkrete Tipps, wie sie es erreicht (Training, Häufigkeit, Ernährung, Fortschritt messen). Beginne je Ziel mit dem Ziel und einem Doppelpunkt, eine Zeile pro Ziel.`}
 Profil: ${pfText(this.s)||'keine Angaben'}.
-Antworte auf Deutsch in Du-Form, höchstens 5 Sätze, ohne Markdown, ohne Aufzählungszeichen.`,{modelTier:'default'});
-    const x=String(res&&res.text!==undefined?res.text:res||'').trim();return x||tipOffline(kind,t)}catch(e){AI=e&&e.code==='not_granted'?null:AI;return tipOffline(kind,t)}};
-Phone.prototype.vPgoals=function(){const s=this.s,P=s.prof.pgoals||[];
-  return `<h2 class="ap-h2 fx-h rv" style="margin-top:30px">Persönliche Ziele. <span>Ohne Datum.</span></h2>
-   <div class="pg-list rv">${P.map((g,i)=>`<div class="pg"><div class="pg-h" data-a="pgtog" data-v="${i}" role="button"><span class="fx-gi">${ic('trophy')}</span><b>${esc(g.t)}</b><button class="pg-x" data-a="pgdel" data-v="${i}" aria-label="Ziel entfernen">${ic('x')}</button></div>
-     ${g.busy?`<div class="pg-tip"><div class="ai-dots"><i></i><i></i><i></i></div></div>`:g.tip&&!g.c?`<div class="pg-tip" data-a="pgtog" data-v="${i}"><small>${ic('spark')}So erreichst du es</small><p>${esc(g.tip).replace(/\n+/g,'<br>')}</p></div>`:''}</div>`).join('')}</div>
-   ${P.length<5?`<div class="ai-in pg-in rv"><input data-k="pgq" maxlength="80" enterkeyhint="done" placeholder="z. B. Spagat schaffen, am Berg schneller werden" value="${esc(s.pgQ||'').replace(/"/g,'&quot;')}" aria-label="Persönliches Ziel"><button class="ai-mic" data-a="pgadd" aria-label="Ziel hinzufügen">${ic('plus')}</button></div>`:''}`};
+Antworte auf Deutsch in Du-Form, ${kind==='disc'?'höchstens 5 Sätze':'je Ziel höchstens 3 Sätze'}, ohne Markdown, ohne Aufzählungszeichen.`,{modelTier:'default'});
+    const x=String(res&&res.text!==undefined?res.text:res||'').trim();return x||tipOff(kind,t)}catch(e){AI=e&&e.code==='not_granted'?null:AI;return tipOff(kind,t)}};
+Phone.prototype.vPgoals=function(){const s=this.s,pf=s.prof,P=pf.pgoals||[],sig=P.map(g=>g.t).join('|'),fresh=pf.pgTip&&pf.pgSig===sig,open=s.pgOpen&&fresh;
+  return `<h2 class="ap-h2 fx-h rv" style="margin-top:30px">Persönliche Ziele. <span>Dein Weg.</span></h2>
+   <div class="pg-list rv">${P.map((g,i)=>`<div class="pg"><div class="pg-h"><span class="fx-gi">${ic('trophy')}</span><b>${esc(g.t)}</b><button class="pg-x" data-a="pgdel" data-v="${i}" aria-label="Ziel entfernen">${ic('x')}</button></div></div>`).join('')}</div>
+   ${P.length<5?`<div class="ai-in pg-in rv"><input data-k="pgq" maxlength="80" enterkeyhint="done" placeholder="z. B. Spagat schaffen, am Berg schneller werden" value="${esc(s.pgQ||'').replace(/"/g,'&quot;')}" aria-label="Persönliches Ziel"><button class="ai-mic" data-a="pgadd" aria-label="Ziel hinzufügen">${ic('plus')}</button></div>`:''}
+   ${P.length?`<div class="pgai rv ${open?'open':''}"><button class="pgai-h" data-a="pgai" aria-expanded="${!!open}"><span class="ai-orb ${s.pgBusy?'live':''}"><span class="orb-c"><i></i><i></i><i></i><i></i></span><span class="orb-g"></span></span><span class="pgai-t"><b>KI-Auswertung</b><small>Tipps, um deine Ziele zu erreichen</small></span>${ic('down','fai-cv')}</button>
+     ${s.pgBusy?`<div class="ai-dots"><i></i><i></i><i></i></div>`:open?`<div class="pgai-x" data-a="pgai">${esc(pf.pgTip).replace(/\n\s*\n/g,'<br><br>').replace(/\n/g,'<br><br>')}</div>`:''}</div>`:''}`};
 Phone.prototype.vFdisc=function(){const s=this.s,pf=s.prof,G='background:linear-gradient(100deg,#3B7D57,#1F4A33 58%,#2A6545);box-shadow:0 14px 26px -12px rgba(31,74,51,.75)';
   const opt=(L,cur,act)=>`<div class="pf-opts c3 fit">${L.map(([k,t,sub,icn])=>`<button class="pf-o ${cur===k?'on':''}" data-a="${act}" data-v="${k}" aria-pressed="${cur===k}"><span class="pf-oi">${ic(icn)}</span><b>${k==='hobby'?'Hobby':t}</b><small>${sub}</small><i>${ic('check')}</i></button>`).join('')}</div>`;
   return `<h3>Für was trainierst du?</h3><p>Danach richten sich Analyse und Saisonplan.</p>${discOpts(pf.disc,'',s.discBall,pf)}${s.discOwn||pf.disc==='eigen'?this.vDiscOwn():''}
@@ -3770,11 +3783,12 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
       this.aiTip('disc',t).then(x=>{s.discBusy=false;if(pf.discX===t)pf.discTip=x;this.render()});break}
    case 'pgadd':{const t=String(s.pgQ||'').trim().slice(0,80);if(!t){this.toast('Bitte ein Ziel eingeben');break}
       const P=s.prof.pgoals=s.prof.pgoals||[];if(P.length>=5){this.toast('Höchstens fünf persönliche Ziele');break}
-      const g={t,tip:'',busy:true};P.push(g);s.pgQ='';hapticSuccess();this.render();
-      this.aiTip('goal',t).then(x=>{g.busy=false;g.tip=x;this.render()});break}
+      P.push({t});s.pgQ='';s.pgOpen=false;hapticSuccess();this.render();break}
    case 'pgdel':{const P=s.prof.pgoals||[],i=+v;if(!P[i])break;this.prevPg=JSON.stringify(P);P.splice(i,1);haptic();this.render();this.toast('Ziel entfernt','Rückgängig','pgundo');break}
    case 'pgundo':if(this.prevPg){s.prof.pgoals=JSON.parse(this.prevPg);this.prevPg=null;this.render()}break;
-   case 'pgtog':{const g=(s.prof.pgoals||[])[+v];if(g&&g.tip){g.c=!g.c;haptic();this.render()}break}
+   case 'pgai':{const pf=s.prof,P=pf.pgoals||[],sig=P.map(g=>g.t).join('|');if(!P.length||s.pgBusy)break;haptic();
+      if(pf.pgTip&&pf.pgSig===sig){s.pgOpen=!s.pgOpen;this.render();break}
+      s.pgBusy=true;s.pgOpen=true;this.render();this.aiTip('goal',P.map(g=>g.t).join('; ')).then(x=>{s.pgBusy=false;pf.pgTip=x;pf.pgSig=sig;this.render()});break}
    case 'fgoal':{const i=+v,G=s.prof.goals||[],g=G[i];if(!g&&G.length>=4){this.toast('Höchstens vier Saisonziele');break}s.fgI=g?i:-1;s.fgT=g?g.t:'';s.fgD=g?g.d:'';s.sheet='fgoal';haptic();this.render();break}
    case 'fgsave':{const t=String(s.fgT||'').trim().slice(0,60),d=s.fgD||'';if(!t){this.toast('Bitte einen Titel eingeben');break}if(!/^\d{4}-\d{2}-\d{2}$/.test(d)||idxOf(d)<TODAY){this.toast('Bitte ein Datum in der Zukunft wählen');break}
       const G=s.prof.goals=(s.prof.goals||[]).slice();if(s.fgI>=0&&G[s.fgI])G[s.fgI]={t,d};else if(G.length<4)G.push({t,d});G.sort((a,b)=>a.d<b.d?-1:1);s.sheet=null;hapticSuccess();this.render();break}
