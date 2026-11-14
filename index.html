@@ -1579,6 +1579,27 @@ img,svg{-webkit-user-drag:none}
 .mn-hp .stage::before{box-shadow:0 calc(var(--s)*-.02) calc(var(--s)*.07) rgba(60,45,30,.16)}
 .cface .stage::before,.wi .stage::before{display:none}
 
+
+/* V148: Ballsportarten-Untermenü, eigene Sportart, persönliche Ziele */
+.pf-opts.disc.sub{margin-top:8px;padding:8px;border-radius:24px;background:rgba(139,195,74,.12)}
+.pf-opts.disc .pf-o small{font-size:11px!important}
+.own{margin-top:10px}
+.own-tip,.pg-tip{margin-top:10px;padding:13px 15px;border-radius:18px;background:rgba(0,96,57,.07)}
+.own-tip b,.pg-tip small{display:flex;align-items:center;gap:6px;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:#006039;font-weight:600}
+.own-tip b .ic,.pg-tip small .ic{width:13px;height:13px}
+.own-tip p,.pg-tip p{margin:6px 0 0;font-size:14.5px;line-height:1.45;color:#1D1D1F}
+.pg-list{display:flex;flex-direction:column;gap:8px}
+.pg{background:#fff;border-radius:20px;padding:10px 12px;box-shadow:0 0 0 1px rgba(0,0,0,.05),0 14px 28px -22px rgba(0,77,46,.55)}
+.pg-h{display:flex;align-items:center;gap:12px;cursor:pointer}
+.pg-h b{flex:1;min-width:0;font-size:15.5px;font-weight:600;letter-spacing:-.015em}
+.pg-x{border:0;background:none;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;color:#A1A1A6;flex:none}
+.pg-x .ic{width:15px;height:15px}
+.pg-tip{margin-top:8px;cursor:pointer}
+.pg-in{margin-top:10px}
+
+.own .ai-mic,.pg-in .ai-mic{background:linear-gradient(135deg,#0F7C4E,#004D2E 60%,#006039)}
+.own .ai-mic .ic,.pg-in .ai-mic .ic{stroke:#fff!important;color:#fff!important}
+.pf-opts.disc .pf-o b{hyphens:manual;-webkit-hyphens:manual}
 </style>
 
 <div class="page">
@@ -1660,7 +1681,7 @@ f_bike:'<circle cx="5.6" cy="16.4" r="3.9"/><circle cx="18.4" cy="16.4" r="3.9"/
 f_run:'<path d="M3 17.5v-1.2c0-1 .6-1.9 1.5-2.3L8 12.5l2-4.5 2.6 1.6L15 13l4.2 1.4c1.1.4 1.8 1.4 1.8 2.5v.6z"/><path d="M11 12.5l1.8-.9M12.4 14.2l1.8-.9"/>',
 f_tennis:'<circle cx="12" cy="12" r="8.2"/><path d="M5.8 6.8c3.2 2.6 3.2 7.8 0 10.4M18.2 6.8c-3.2 2.6-3.2 7.8 0 10.4"/>',
 f_swim:'<circle cx="16.8" cy="7.6" r="1.9"/><path d="M4.5 13.2l5.2-3.6 3.2 2.6 3.6 1"/><path d="M3 17.6c1.5 0 1.5-1.2 3-1.2s1.5 1.2 3 1.2 1.5-1.2 3-1.2 1.5 1.2 3 1.2 1.5-1.2 3-1.2 1.5 1.2 3 1.2"/>',
-f_kraft:'<path d="M3.5 9.5v5M6.5 7v10M17.5 7v10M20.5 9.5v5M6.5 12h11"/>',
+f_crossfit:'<path d="M9 7.5a3 3 0 0 1 6 0"/><path d="M8.2 9.5h7.6l1.4 3.2a5.6 5.6 0 0 1-5.2 7.8 5.6 5.6 0 0 1-5.2-7.8z"/>',f_padel:'<ellipse cx="10" cy="9" rx="5.6" ry="6.2"/><path d="M13.4 14l5.6 6.2"/><circle cx="8.4" cy="7.6" r=".5"/><circle cx="11.4" cy="7.6" r=".5"/><circle cx="9.9" cy="10.4" r=".5"/><circle cx="18.6" cy="5.6" r="1.6"/>',f_fussball:'<circle cx="12" cy="12" r="8.4"/><path d="M12 8.2l3 2.2-1.1 3.6h-3.8L9 10.4zM12 3.6v4.6M15 10.4l4.7-1.6M13.9 14l2.7 3.9M10.1 14l-2.7 3.9M9 10.4L4.3 8.8"/>',f_ball:'<circle cx="9" cy="14" r="5.6"/><path d="M3.4 14h11.2M9 8.4c-1.8 1.6-1.8 9.6 0 11.2M9 8.4c1.8 1.6 1.8 9.6 0 11.2"/><circle cx="17.2" cy="7.2" r="3.6"/><path d="M14.4 5.1c1.7.6 2.6 2.4 2 4.2M20 9.3c-1.7-.6-2.6-2.4-2-4.2"/>',f_eigen:'<circle cx="12" cy="12" r="8.4"/><path d="M9.6 9.6a2.4 2.4 0 1 1 3.4 2.2c-.6.3-1 .9-1 1.6v.6M12 16.6v.4"/>',f_kraft:'<path d="M3.5 9.5v5M6.5 7v10M17.5 7v10M20.5 9.5v5M6.5 12h11"/>',
 f_ballett:'<circle cx="12" cy="4.3" r="1.8"/><path d="M12 6.4v5M12 8c-2.3-.5-3.7-2.1-4.3-4.3M12 8c2.3-.5 3.7-2.1 4.3-4.3M6.2 12.4c2-1 3.8-1.4 5.8-1.4s3.8.4 5.8 1.4c-1.9.7-3.8 1-5.8 1s-3.9-.3-5.8-1zM11.3 13.4l-.5 7.3M10.8 20.7h1.6M12.8 13.4l4 5.6"/>',f_mob:'<circle cx="12" cy="5" r="1.9"/><path d="M12 8.2v5.3M12 9.8l-5 3.4M12 9.8l5 3.4M4.5 19c2.5-2.6 5-3.6 7.5-5.5 2.5 1.9 5 2.9 7.5 5.5M8.5 19h7"/>',
 heart:'<path d="M12 20.3s-7.5-4.5-7.5-10.3A4.2 4.2 0 0 1 12 7.4a4.2 4.2 0 0 1 7.5 2.6c0 5.8-7.5 10.3-7.5 10.3z"/>',
   sliders:'<path d="M4 7h9M17 7h3M4 12h3M11 12h9M4 17h11M19 17h1"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="17" cy="17" r="2"/>',
@@ -2132,6 +2153,8 @@ function Phone(host,init,opts){
   this.scr.addEventListener('change',e=>{const t=e.target;if(!t.classList||!t.classList.contains('hap'))return;const v=t.dataset.v;
     if(t.dataset.act==='tog'){try{if(navigator.vibrate)navigator.vibrate(10)}catch(err){}const x=this.s.shop.find(y=>y.name===v);if(x){x.done=!x.done;this.render()}}else this.addItem(v)});
   this.scr.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.dataset.k==='shopq'){this.addItem(e.target.value.trim());}if(e.key==='Enter'&&e.target.dataset.k==='aiq'){e.preventDefault();this.aiAsk(e.target.value.trim())}
+    if(e.key==='Enter'&&e.target.dataset.k==='pgq'){e.preventDefault();this.click({target:this.scr.querySelector('[data-a="pgadd"]'),stopPropagation(){},preventDefault(){}})}
+    if(e.key==='Enter'&&e.target.dataset.k==='discx'){e.preventDefault();this.click({target:this.scr.querySelector('[data-a="discsave"]'),stopPropagation(){},preventDefault(){}})}
     if(e.key==='Enter'&&e.target.dataset.k==='fcq'){e.preventDefault();const q=e.target.value.trim();if(q)this.fcoAsk(q)}
     if(e.key==='Enter'&&e.target.dataset.k==='cookq'){e.preventDefault();const q=e.target.value.trim();if(q)this.cookAsk(q,{})}
     if(e.key==='Enter'&&e.target.dataset.k==='exq'){e.preventDefault();if(e.target.value.trim())this.setExtra(e.target.value)}
@@ -2179,7 +2202,7 @@ Phone.prototype.reset=function(init){
       if(d.extra){s.extra={};Object.entries(d.extra).forEach(([iso,v])=>{const i=idxOf(iso);if(i>=0&&i<NDAYS&&v)s.extra[i]=v})}
       if(d.train||d.tx){s.train={};s.tx={}; /* Training außerhalb der zwei Wochen (Vorwoche, spätere Wochen aus dem Trainingsplan) bleibt in tx erhalten */
         Object.entries(Object.assign({},d.tx||{},d.train||{})).forEach(([iso,v])=>{if(!v)return;const i=idxOf(iso);if(i>=0&&i<NDAYS)s.train[i]=v;else if(i>=-7)s.tx[iso]=v})}
-      if(d.prof&&typeof d.prof==='object')s.prof=Object.assign(s.prof,d.prof);
+      if(d.prof&&typeof d.prof==='object')s.prof=Object.assign(s.prof,d.prof);(s.prof.pgoals||[]).forEach(g=>{if(g.busy){g.busy=false;if(!g.tip)g.tip=tipOffline('goal',g.t)}});
       if(Array.isArray(d.fstd))s.fstd=Array.from({length:7},(_,j)=>d.fstd[j]||null);
       if(d.fitSeen)s.fitSeen=true;if(d.voice)s.voice=d.voice;if(d.fitAI&&d.fitAI.res)s.fitAI=d.fitAI;if(d.faiC)s.faiC=true;}}
   this.s=s;this.lastScreen=null;this.render();
@@ -2397,13 +2420,21 @@ Object.assign(P,{trophy:'<path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 5.5H5.2a
 /* Profil: Auswahl für sportliche Ambition und Ernährungsziel */
 const PF_SPORT=[['rookie','Rookie','Ich fange gerade an','f_run'],['hobby','Ambitionierter Hobbysportler','Regelmäßig, mit Zielen','f_bike'],['profi','Profi','Training nach Plan','trophy']];
 const PF_GOAL=[['abnehmen','Abnehmen','Leicht und sättigend','scale'],['ausgewogen','Ausgewogen','Von allem das Richtige','leaf'],['geniesser','Genießer','Hauptsache, es schmeckt','glass'],['hobbykoch','Hobbykoch','Gern auch aufwendiger','chef']];
-const pfText=s=>{const a=PF_SPORT.find(x=>x[0]===s.prof.sport),b=PF_GOAL.find(x=>x[0]===s.prof.goal),d=PF_DISC.find(x=>x[0]===s.prof.disc),G=fGoals(s),cur=seasonPlan(s).segs.find(g=>g.a<=TODAY&&TODAY<g.b);
-  return [d?'Sportart: '+d[1]:'',a?'Sportliche Ambition: '+a[1]:'',b?'Ernährungsziel: '+b[1]:'',G.length?'Saisonziele: '+G.map(g=>`${g.t} am ${isoLbl(g.d)}`).join(', '):'',cur?'Aktuelle Trainingsphase: '+phOf(cur.k)[1]+' ('+phOf(cur.k)[3]+')':''].filter(Boolean).join('. ')};
+const pfText=s=>{const a=PF_SPORT.find(x=>x[0]===s.prof.sport),b=PF_GOAL.find(x=>x[0]===s.prof.goal),d=discInfo(s.prof),G=fGoals(s),PG=(s.prof.pgoals||[]).map(x=>x.t),cur=seasonPlan(s).segs.find(g=>g.a<=TODAY&&TODAY<g.b);
+  return [d?'Sportart: '+d[1]:'',a?'Sportliche Ambition: '+a[1]:'',b?'Ernährungsziel: '+b[1]:'',G.length?'Saisonziele: '+G.map(g=>`${g.t} am ${isoLbl(g.d)}`).join(', '):'',PG.length?'Persönliche Ziele: '+PG.join(', '):'',cur?'Aktuelle Trainingsphase: '+phOf(cur.k)[1]+' ('+phOf(cur.k)[3]+')':''].filter(Boolean).join('. ')};
 /* V127: Sportart, Saisonziele (max. 3) und Saisonphasen */
 Object.assign(P,{f_tri:'<circle cx="5.8" cy="14.6" r="3.3"/><circle cx="12" cy="8.6" r="3.3"/><circle cx="18.2" cy="14.6" r="3.3"/>',flag:'<path d="M5.5 21V3.6"/><path d="M5.5 4.6c2.4-1.4 4.6-1.4 7 0s4.6 1.4 7 0v8.6c-2.4 1.4-4.6 1.4-7 0s-4.6-1.4-7 0"/>'});
-const PF_DISC=[['rad','Rennrad','Straße & Pässe','f_bike'],['lauf','Laufen','Straße & Trail','f_run'],['schwimm','Schwimmen','Becken & Freiwasser','f_swim'],['tri','Triathlet','Swim · Bike · Run','f_tri'],['kraft','Kraftsportler','Gewichte & Kraft','f_kraft'],['yoga','Yoga','Beweglichkeit & Ruhe','f_mob'],['ballett','Ballett','Tanz & Haltung','f_ballett']];
-const DCOL={rad:FA.bike,lauf:FA.run,schwimm:FA.swim,tri:FA.swim,kraft:FA.kraft,yoga:'#E5484D',ballett:FA.ballett},DGRAD={tri:'linear-gradient(135deg,#2F9BE6,#FF6A55 55%,#F5A623)'};
-const discOpts=(cur,cls='')=>`<div class="pf-opts c3 fit disc ${cls}">${PF_DISC.map(([k,t,sub,icn])=>`<button class="pf-o ${cur===k?'on':''}" style="--c:${DCOL[k]}${DGRAD[k]?';--g:'+DGRAD[k]:''}" data-a="pfdisc" data-v="${k}" aria-pressed="${cur===k}"><span class="pf-oi">${ic(icn)}</span><b>${t}</b><i>${ic('check')}</i></button>`).join('')}</div>`;
+const PF_DISC=[['rad','Rennrad','Straße & Pässe','f_bike'],['lauf','Laufen','Straße & Trail','f_run'],['schwimm','Schwimmen','Becken & Freiwasser','f_swim'],['tri','Triathlet','Swim · Bike · Run','f_tri'],['kraft','Kraftsportler','Gewichte & Kraft','f_kraft'],['yoga','Yoga','Beweglichkeit & Ruhe','f_mob'],['ballett','Ballett','Tanz & Haltung','f_ballett'],['crossfit','Crossfit','Funktionell & intensiv','f_crossfit']];
+/* V148: Ballsportarten als Gruppe (Antippen klappt die Auswahl auf) und eigene Sportart mit KI-Tipps */
+const PF_BALL=[['tennis','Tennis','','f_tennis'],['padel','Padel-Tennis','','f_padel'],['fussball','Fußball','','f_fussball']];
+const discInfo=pf=>pf.disc==='eigen'&&pf.discX?['eigen',pf.discX,'','f_eigen']:PF_DISC.concat(PF_BALL).find(x=>x[0]===pf.disc)||null;
+const DCOL={rad:FA.bike,lauf:FA.run,schwimm:FA.swim,tri:FA.swim,kraft:FA.kraft,yoga:'#E5484D',ballett:FA.ballett,crossfit:'#F0702E',ball:FA.tennis,tennis:FA.tennis,padel:'#1FA79A',fussball:'#2E8B4E',eigen:'#6E6E80'},DGRAD={tri:'linear-gradient(135deg,#2F9BE6,#FF6A55 55%,#F5A623)'};
+const discOpts=(cur,cls='',open=false,pf={})=>{const tile=(k,t,icn,on,act='pfdisc',small='')=>`<button class="pf-o ${on?'on':''}" style="--c:${DCOL[k]}${DGRAD[k]?';--g:'+DGRAD[k]:''}" data-a="${act}" data-v="${k}" aria-pressed="${on}"><span class="pf-oi">${ic(icn)}</span><b>${t}</b>${small?`<small>${small}</small>`:''}<i>${ic('check')}</i></button>`;
+  const ballOn=PF_BALL.some(x=>x[0]===cur),bo=open||ballOn,eo=cur==='eigen';
+  return `<div class="pf-opts c3 fit disc ${cls}">${PF_DISC.map(([k,t,sub,icn])=>tile(k,t,icn,cur===k)).join('')}
+   ${tile('ball','Ballsport\u00adarten','f_ball',ballOn,'discball',ballOn?PF_BALL.find(x=>x[0]===cur)[1]:'')}
+   ${tile('eigen',eo&&pf.discX?esc(pf.discX):'Nicht dabei?','f_eigen',eo,'discown',eo&&pf.discX?'Deine Sportart':'Selbst eintragen')}</div>
+   ${bo?`<div class="pf-opts c3 fit disc sub ${cls}">${PF_BALL.map(([k,t,sub,icn])=>tile(k,t,icn,cur===k)).join('')}</div>`:''}`};
 const PH=[['g','Grundlage','#7DAFE3','Ruhig und lang – Ausdauer aufbauen'],['a','Aufbau','#2E9E6B','Mehr Umfang, erste harte Einheiten'],['s','Spezifisch','#F0A03A','Wettkampfnah trainieren'],['t','Tapering','#E0688C','Weniger Umfang, frisch werden']];
 const phOf=k=>PH.find(x=>x[0]===k);
 const fGoals=s=>(s.prof.goals||[]).filter(g=>g&&g.d&&idxOf(g.d)>=TODAY).sort((a,b)=>a.d<b.d?-1:1);
@@ -2417,10 +2448,10 @@ function seasonPlan(s){const G=fGoals(s),segs=[];let st=TODAY;
   return {G,segs}}
 const wkTxt=n=>{const w=Math.round(n/7);return n<10?`${n} ${n===1?'Tag':'Tage'}`:`${w} ${w===1?'Woche':'Wochen'}`};
 /* Für was trainierst du? + Saisonziele (zwischen Plan und KI-Analyse) */
-Phone.prototype.vFprof=function(){const s=this.s,pf=s.prof,FG=fGoals(s),D=PF_DISC.find(x=>x[0]===pf.disc),A=PF_SPORT.find(x=>x[0]===pf.sport),G=pf.goals||[];
+Phone.prototype.vFprof=function(){const s=this.s,pf=s.prof,FG=fGoals(s),D=discInfo(pf),A=PF_SPORT.find(x=>x[0]===pf.sport),G=pf.goals||[];
   const lvl=L=>`<div class="pf-opts c3 fit fx-lv">${L.map(([k,t,sub,icn])=>`<button class="pf-o ${pf.sport===k?'on':''}" data-a="pfsport" data-v="${k}" aria-pressed="${pf.sport===k}"><span class="pf-oi">${ic(icn)}</span><b>${k==='hobby'?'Hobby':t}</b><small>${sub}</small><i>${ic('check')}</i></button>`).join('')}</div>`;
   return `<h2 class="ap-h2 fx-h rv">Für was <span>trainierst du?</span></h2>
-   <div class="fx-row rv"><button class="fx-f ${D?'on':''}" data-a="fdisc" ${D?`style="--c:${DCOL[D[0]]}${DGRAD[D[0]]?';--g:'+DGRAD[D[0]]:''}"`:''}>${D?`<span class="fx-i">${ic(D[3])}</span><span><b>${D[1]}</b></span>`:`<span class="fx-i">${ic('plus')}</span><span><b>Sportart wählen</b></span>`}${ic('down','cv')}</button>
+   <div class="fx-row rv"><button class="fx-f ${D?'on':''}" data-a="fdisc" ${D?`style="--c:${DCOL[D[0]]}${DGRAD[D[0]]?';--g:'+DGRAD[D[0]]:''}"`:''}>${D?`<span class="fx-i">${ic(D[3])}</span><span><b>${esc(D[1])}</b></span>`:`<span class="fx-i">${ic('plus')}</span><span><b>Sportart wählen</b></span>`}${ic('down','cv')}</button>
 </div>`};
 Phone.prototype.vFgoals=function(){const s=this.s,pf=s.prof,FG=fGoals(s),G=pf.goals||[];
   return `<h2 class="ap-h2 fx-h rv" style="margin-top:34px">Saisonziele. <span class="fx-rose">Bis zu vier.</span></h2>
@@ -2485,9 +2516,30 @@ Phone.prototype.vFco=function(){const s=this.s,c=s.fco||{step:'idle'};
    <div class="ai-ex"><div class="ai-chip two">${ic('spark')}<span>${FCO_EX.map(([q,l])=>`<button data-a="fcopre" data-q="${q}">${l}</button>`).join('')}</span></div></div>
    <div class="ai-in"><div class="ai-inw"><input data-k="fcq" enterkeyhint="send" placeholder="Frage tippen oder diktieren" value="${esc(s.fcQ||'').replace(/"/g,'&quot;')}" aria-label="Frage an den Trainings-Coach"><button class="ai-dic" data-a="dictate" data-k="fcq" aria-label="Diktieren">${ic('mic')}</button></div><button class="ai-mic" data-a="fcosend" aria-label="Senden">${ic('send')}</button></div>
    <p class="ai-note">${AI?'Antworten von Claude.':'Hier ohne Internet-KI: Antworten aus deinem Saisonplan und deiner Woche.'}</p>`};
+Phone.prototype.vDiscOwn=function(){const s=this.s,pf=s.prof,busy=s.discBusy;
+  return `<div class="own rv"><div class="ai-in"><input data-k="discx" maxlength="40" enterkeyhint="done" placeholder="Deine Sportart, z. B. Klettern" value="${esc(s.discQ!==undefined?s.discQ:pf.discX||'').replace(/"/g,'&quot;')}" aria-label="Eigene Sportart"><button class="ai-mic" data-a="discsave" aria-label="Übernehmen" ${busy?'disabled':''}>${ic('check')}</button></div>
+   ${busy?`<div class="own-tip"><div class="ai-dots"><i></i><i></i><i></i></div></div>`:pf.disc==='eigen'&&pf.discTip?`<div class="own-tip"><b>${ic('spark')}Tipps für ${esc(pf.discX)}</b><p>${esc(pf.discTip).replace(/\n+/g,'<br>')}</p></div>`:''}</div>`};
+/* KI-Tipps (eigene Sportart und persönliche Ziele); ohne KI: allgemeine Hinweise */
+function tipOffline(kind,t){const l=t.toLowerCase();
+  if(kind==='disc')return `${t} ist eingetragen. Ich richte Analyse und Ernährung danach aus: An intensiven Tagen mehr Kohlenhydrate, nach dem Training 20–30 g Eiweiß, an Ruhetagen leichter essen. Plane neben ${t} 1–2 Einheiten Kraft und Mobilität ein, damit du verletzungsfrei bleibst.`;
+  if(/spagat|dehn|beweglich|flexib/.test(l))return 'Dehne 4–5× pro Woche je 15–20 Minuten, immer aufgewärmt. Halte jede Position 30–60 Sekunden und gehe nur bis zu einem leichten Ziehen. Ergänze Kraft für Hüfte und Beine (z. B. Ausfallschritte), so wächst die Beweglichkeit schneller. Miss alle 2 Wochen den Abstand zum Boden.';
+  if(/berg|klettern|anstieg|höhenmeter|pass/.test(l))return 'Fahre 1–2× pro Woche gezielte Intervalle am Anstieg, z. B. 4–6 × 5 Minuten knapp unter der Schwelle mit 3 Minuten Pause. Eine lange, ruhige Ausfahrt mit vielen Höhenmetern pro Woche baut die Grundlage. Kraft für Beine und Rumpf hilft zusätzlich; ein etwas leichteres Wettkampfgewicht bringt am Berg am meisten.';
+  if(/schnell|zeit|pace|tempo|marathon|km/.test(l))return 'Plane pro Woche eine Tempo- oder Intervalleinheit, eine lange ruhige Einheit und sonst locker. Steigere den Umfang höchstens um 10 % pro Woche. Teste alle 4 Wochen dieselbe Strecke, um den Fortschritt zu sehen.';
+  if(/kraft|muskel|klimmz|liegest|kniebeu|gewicht heben/.test(l))return 'Trainiere die Übung 2–3× pro Woche mit wenigen Wiederholungen und steigere Gewicht oder Wiederholungen schrittweise. Schlaf und 1,6–2 g Eiweiß pro kg Körpergewicht täglich helfen beim Aufbau.';
+  return 'Teile das Ziel in kleine Etappen auf und trainiere 2–3× pro Woche gezielt dafür. Halte Fortschritte alle 2 Wochen fest und plane ausreichend Erholung ein. Iss rund ums Training genug Kohlenhydrate und Eiweiß.'}
+Phone.prototype.aiTip=async function(kind,t){await aiWait();if(!AI)return tipOffline(kind,t);
+  try{const res=await AI(`Du bist Trainings- und Ernährungscoach in einer deutschen Fitness- und Essensplan-App. ${kind==='disc'?`Die Person betreibt die Sportart „${t}“. Erkenne die Sportart und gib 3 kurze, konkrete Tipps zu Training und passender Ernährung.`:`Persönliches Ziel der Person: „${t}“. Gib 3 kurze, konkrete Tipps, wie sie das Ziel erreicht (Training, Häufigkeit, Ernährung, Fortschritt messen).`}
+Profil: ${pfText(this.s)||'keine Angaben'}.
+Antworte auf Deutsch in Du-Form, höchstens 5 Sätze, ohne Markdown, ohne Aufzählungszeichen.`,{modelTier:'default'});
+    const x=String(res&&res.text!==undefined?res.text:res||'').trim();return x||tipOffline(kind,t)}catch(e){AI=e&&e.code==='not_granted'?null:AI;return tipOffline(kind,t)}};
+Phone.prototype.vPgoals=function(){const s=this.s,P=s.prof.pgoals||[];
+  return `<h2 class="ap-h2 fx-h rv" style="margin-top:30px">Persönliche Ziele. <span>Ohne Datum.</span></h2>
+   <div class="pg-list rv">${P.map((g,i)=>`<div class="pg"><div class="pg-h" data-a="pgtog" data-v="${i}" role="button"><span class="fx-gi">${ic('trophy')}</span><b>${esc(g.t)}</b><button class="pg-x" data-a="pgdel" data-v="${i}" aria-label="Ziel entfernen">${ic('x')}</button></div>
+     ${g.busy?`<div class="pg-tip"><div class="ai-dots"><i></i><i></i><i></i></div></div>`:g.tip&&!g.c?`<div class="pg-tip" data-a="pgtog" data-v="${i}"><small>${ic('spark')}So erreichst du es</small><p>${esc(g.tip).replace(/\n+/g,'<br>')}</p></div>`:''}</div>`).join('')}</div>
+   ${P.length<5?`<div class="ai-in pg-in rv"><input data-k="pgq" maxlength="80" enterkeyhint="done" placeholder="z. B. Spagat schaffen, am Berg schneller werden" value="${esc(s.pgQ||'').replace(/"/g,'&quot;')}" aria-label="Persönliches Ziel"><button class="ai-mic" data-a="pgadd" aria-label="Ziel hinzufügen">${ic('plus')}</button></div>`:''}`};
 Phone.prototype.vFdisc=function(){const s=this.s,pf=s.prof,G='background:linear-gradient(100deg,#0F7C4E,#004D2E 58%,#006039);box-shadow:0 14px 26px -12px rgba(0,77,46,.75)';
   const opt=(L,cur,act)=>`<div class="pf-opts c3 fit">${L.map(([k,t,sub,icn])=>`<button class="pf-o ${cur===k?'on':''}" data-a="${act}" data-v="${k}" aria-pressed="${cur===k}"><span class="pf-oi">${ic(icn)}</span><b>${k==='hobby'?'Hobby':t}</b><small>${sub}</small><i>${ic('check')}</i></button>`).join('')}</div>`;
-  return `<h3>Für was trainierst du?</h3><p>Danach richten sich Analyse und Saisonplan.</p>${discOpts(pf.disc)}
+  return `<h3>Für was trainierst du?</h3><p>Danach richten sich Analyse und Saisonplan.</p>${discOpts(pf.disc,'',s.discBall,pf)}${s.discOwn||pf.disc==='eigen'?this.vDiscOwn():''}
    <div class="lbl" style="margin:16px 0 8px">Ambition</div>${opt(PF_SPORT,pf.sport,'pfsport')}
    <button class="gbtn" style="width:100%;margin-top:14px;${G}" data-a="closesheet">${ic('check')}Fertig</button>`};
 Phone.prototype.vFgoal=function(){const s=this.s,G='background:linear-gradient(100deg,#0F7C4E,#004D2E 58%,#006039);box-shadow:0 14px 26px -12px rgba(0,77,46,.75)',ed=s.fgI>=0;
@@ -2624,6 +2676,7 @@ Phone.prototype.vFit=function(){const s=this.s;
    <button class="ai-again" data-a="fitfill">Freie Tage passend zum Training planen</button>`}
   </div>
   ${this.vFgoals()}
+  ${this.vPgoals()}
   ${this.vSeason()}
   </div></div>`};
 /* Fenster „Training eintragen“: 1 Aktivität, 2 Intensität */
@@ -3286,7 +3339,7 @@ Phone.prototype.vSettings=function(){const s=this.s,pf=s.prof,q=x=>String(x||'')
    <div class="pf-head rv ${pf.photo&&s.pfBig?'big':''}"><div class="pf-av ${pf.photo?'has':''}" role="button" data-a="${pf.photo?'pfzoom':'pfphoto'}" aria-label="${pf.photo?'Profilfoto vergrößern':'Profilfoto hinzufügen'}">${pf.photo?`<img src="${pf.photo}" alt="">`:ic('users')}<button class="pf-cam" data-a="pfphoto" aria-label="${pf.photo?'Profilfoto ändern':'Profilfoto hinzufügen'}">${ic('cam')}</button></div>
     <div><div class="eb">Dein Profil</div><h1 class="ap-h1" id="pfh">${pf.name?`Hi ${q(pf.name)}.`:'Hallo.'}</h1><p class="pf-sub">Schön, dass du da bist.</p></div></div>
    <h2 class="ap-h2 rv">Sportart. <span>Wofür trainierst du?</span></h2>
-   ${discOpts(pf.disc,'rv')}
+   ${discOpts(pf.disc,'rv',s.discBall,pf)}${s.discOwn||pf.disc==='eigen'?this.vDiscOwn():''}
    <h2 class="ap-h2 rv">Sportliche Ambition. <span>Wie trainierst du?</span></h2>
    ${opt(PF_SPORT,pf.sport,'pfsport','fit rv')}
    <h2 class="ap-h2 rv">Ernährungsziel. <span>Was ist dir wichtig?</span></h2>
@@ -3582,7 +3635,7 @@ Phone.prototype.dictate=function(key){const SR=window.SpeechRecognition||window.
   rec.onend=()=>{self.rec=null;const b=btn();if(b)b.classList.remove('on');if(err&&err!=='no-speech'&&err!=='aborted')fb(err==='not-allowed'||err==='service-not-allowed'?'Mikrofon nicht freigegeben – bitte das Mikrofon auf der Tastatur nutzen':'Spracherkennung nicht erreichbar – bitte das Mikrofon auf der Tastatur nutzen')};
   try{rec.start()}catch(e){fb('Hier bitte das Mikrofon auf der Tastatur nutzen');return}
   this.rec=rec;haptic();const b=btn();if(b)b.classList.add('on')};
-Phone.prototype.input=function(e){const k=e.target.dataset.k;if(k==='aiq'){this.s.aiQ=e.target.value;return}if(k==='cookq'){this.s.cookQ=e.target.value;return}if(k==='exq'){this.s.exQ=e.target.value;return}if(k==='kiurl'){this.s.kiU=e.target.value;return}if(k==='kipw'){this.s.kiP=e.target.value;return}if(k==='kivoice'){this.s.kiV=e.target.value;return}if(k==='fgt'){this.s.fgT=e.target.value;return}if(k==='fcq'){this.s.fcQ=e.target.value;return}if(k==='fgd'){this.s.fgD=e.target.value;return}if(k==='pname'){const v=e.target.value.trim().slice(0,24);this.s.prof.name=v;const h=this.scr.querySelector('#pfh');if(h)h.textContent=v?`Hi ${v}.`:'Hallo.';clearTimeout(this.saveT);this.saveT=setTimeout(()=>this.save(),400);return}if(k==='stockq'){this.s.stockQ=e.target.value;return}if(k==='shopq'){this.s.shopQ=e.target.value;this.render()}if(k==='recq'){this.s.recQ=e.target.value;this.render()}};
+Phone.prototype.input=function(e){const k=e.target.dataset.k;if(k==='aiq'){this.s.aiQ=e.target.value;return}if(k==='cookq'){this.s.cookQ=e.target.value;return}if(k==='exq'){this.s.exQ=e.target.value;return}if(k==='kiurl'){this.s.kiU=e.target.value;return}if(k==='kipw'){this.s.kiP=e.target.value;return}if(k==='kivoice'){this.s.kiV=e.target.value;return}if(k==='fgt'){this.s.fgT=e.target.value;return}if(k==='fcq'){this.s.fcQ=e.target.value;return}if(k==='discx'){this.s.discQ=e.target.value;return}if(k==='pgq'){this.s.pgQ=e.target.value;return}if(k==='fgd'){this.s.fgD=e.target.value;return}if(k==='pname'){const v=e.target.value.trim().slice(0,24);this.s.prof.name=v;const h=this.scr.querySelector('#pfh');if(h)h.textContent=v?`Hi ${v}.`:'Hallo.';clearTimeout(this.saveT);this.saveT=setTimeout(()=>this.save(),400);return}if(k==='stockq'){this.s.stockQ=e.target.value;return}if(k==='shopq'){this.s.shopQ=e.target.value;this.render()}if(k==='recq'){this.s.recQ=e.target.value;this.render()}};
 Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();return}
   if(this.s.ipop&&!e.target.closest('.ipop')){this.s.ipop=null;this.render();return}
   const t=e.target.closest('[data-a]');if(!t||!this.scr.contains(t))return;const s=this.s,a=t.dataset.a,v=t.dataset.v;
@@ -3676,7 +3729,19 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
    case 'fclr':{const k=+v;this.prevTrain=JSON.stringify([s.train,s.tx]);for(let i=k*7;i<k*7+7;i++)delete s.train[i];haptic();this.render();this.toast(`Training KW ${KW(k)} geleert`,'Rückgängig','fundo');break}
    case 'faitog':s.faiC=!s.faiC;haptic();this.render();break;
    case 'fdisc':s.sheet='fdisc';haptic();this.render();break;
-   case 'pfdisc':s.prof.disc=s.prof.disc===v?'':v;haptic();this.render();break;
+   case 'pfdisc':s.prof.disc=s.prof.disc===v?'':v;if(!PF_BALL.some(x=>x[0]===v))s.discBall=false;s.discOwn=false;haptic();this.render();break;
+   case 'discball':s.discBall=!s.discBall&&!PF_BALL.some(x=>x[0]===s.prof.disc)?true:!s.discBall;s.discOwn=false;haptic();this.render();break;
+   case 'discown':s.discOwn=!(s.discOwn||s.prof.disc==='eigen');if(!s.discOwn&&s.prof.disc==='eigen')s.prof.disc='';s.discQ=undefined;s.discBall=false;haptic();this.render();break;
+   case 'discsave':{const t=String(s.discQ!==undefined?s.discQ:s.prof.discX||'').trim().slice(0,40);if(!t){this.toast('Bitte eine Sportart eingeben');break}
+      const pf=s.prof;pf.disc='eigen';pf.discX=t;pf.discTip='';s.discQ=undefined;s.discBusy=true;s.discOwn=true;hapticSuccess();this.render();
+      this.aiTip('disc',t).then(x=>{s.discBusy=false;if(pf.discX===t)pf.discTip=x;this.render()});break}
+   case 'pgadd':{const t=String(s.pgQ||'').trim().slice(0,80);if(!t){this.toast('Bitte ein Ziel eingeben');break}
+      const P=s.prof.pgoals=s.prof.pgoals||[];if(P.length>=5){this.toast('Höchstens fünf persönliche Ziele');break}
+      const g={t,tip:'',busy:true};P.push(g);s.pgQ='';hapticSuccess();this.render();
+      this.aiTip('goal',t).then(x=>{g.busy=false;g.tip=x;this.render()});break}
+   case 'pgdel':{const P=s.prof.pgoals||[],i=+v;if(!P[i])break;this.prevPg=JSON.stringify(P);P.splice(i,1);haptic();this.render();this.toast('Ziel entfernt','Rückgängig','pgundo');break}
+   case 'pgundo':if(this.prevPg){s.prof.pgoals=JSON.parse(this.prevPg);this.prevPg=null;this.render()}break;
+   case 'pgtog':{const g=(s.prof.pgoals||[])[+v];if(g&&g.tip){g.c=!g.c;haptic();this.render()}break}
    case 'fgoal':{const i=+v,G=s.prof.goals||[],g=G[i];if(!g&&G.length>=4){this.toast('Höchstens vier Saisonziele');break}s.fgI=g?i:-1;s.fgT=g?g.t:'';s.fgD=g?g.d:'';s.sheet='fgoal';haptic();this.render();break}
    case 'fgsave':{const t=String(s.fgT||'').trim().slice(0,60),d=s.fgD||'';if(!t){this.toast('Bitte einen Titel eingeben');break}if(!/^\d{4}-\d{2}-\d{2}$/.test(d)||idxOf(d)<TODAY){this.toast('Bitte ein Datum in der Zukunft wählen');break}
       const G=s.prof.goals=(s.prof.goals||[]).slice();if(s.fgI>=0&&G[s.fgI])G[s.fgI]={t,d};else if(G.length<4)G.push({t,d});G.sort((a,b)=>a.d<b.d?-1:1);s.sheet=null;hapticSuccess();this.render();break}
