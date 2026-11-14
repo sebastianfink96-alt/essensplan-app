@@ -1659,6 +1659,9 @@ img,svg{-webkit-user-drag:none}
 .fx-is .fx-i{background:var(--g,var(--c))!important;color:#fff!important;box-shadow:0 0 0 2.5px #fff}
 .fx-is .fx-i+.fx-i{margin-left:-10px}
 .fx-f.on .fx-is+span b{white-space:normal;font-size:15px;line-height:1.25}
+
+/* V155: größere Tippfläche für „Leeren“ */
+.fclr{padding:10px 6px!important;margin:-10px -6px!important}
 </style>
 
 <div class="page">
@@ -2260,7 +2263,7 @@ Phone.prototype.reset=function(init){
       if(d.persons)s.persons=d.persons;if(d.done&&d.doneD===isoOf(TODAY))s.done=Object.fromEntries(Object.entries(d.done).filter(([id])=>isTodayDish(s,id)));if(d.learn)s.learn=d.learn;
       if(d.extra){s.extra={};Object.entries(d.extra).forEach(([iso,v])=>{const i=idxOf(iso);if(i>=0&&i<NDAYS&&v)s.extra[i]=v})}
       if(d.train||d.tx){s.train={};s.tx={}; /* Training außerhalb der zwei Wochen (Vorwoche, spätere Wochen aus dem Trainingsplan) bleibt in tx erhalten */
-        Object.entries(Object.assign({},d.tx||{},d.train||{})).forEach(([iso,v])=>{if(!v)return;const i=idxOf(iso);if(i>=0&&i<NDAYS)s.train[i]=v;else if(i>=-7)s.tx[iso]=v})}
+        Object.entries(Object.assign({},d.tx||{},d.train||{})).forEach(([iso,v])=>{if(!v)return;const i=idxOf(iso);if(i>=0&&i<NDAYS){if(d.train&&d.train[iso]===undefined&&d.tx&&d.tx[iso]&&Object.prototype.hasOwnProperty.call(d,'trainV')&&d.trainV>=155)return;s.train[i]=v}else if(i>=-7)s.tx[iso]=v})}
       if(d.prof&&typeof d.prof==='object')s.prof=Object.assign(s.prof,d.prof);
       if(Array.isArray(d.fstd))s.fstd=Array.from({length:7},(_,j)=>d.fstd[j]||null);
       if(d.fitSeen)s.fitSeen=true;if(d.voice)s.voice=d.voice;if(d.fitAI&&d.fitAI.res)s.fitAI=d.fitAI;if(d.faiC)s.faiC=true;}}
@@ -2269,7 +2272,7 @@ Phone.prototype.reset=function(init){
 Phone.prototype.save=function(){if(!this.opts.persist)return;const s=this.s;const plan={};Object.keys(s.plan).forEach(i=>plan[isoOf(+i)]=s.plan[i]);
   data.save({plan,shop:s.shop,favs:[...s.favs],persons:s.persons,done:s.done,doneD:isoOf(TODAY),learn:s.learn,stock:s.stock,
     extra:Object.fromEntries(Object.entries(s.extra).map(([i,v])=>[isoOf(+i),v])),
-    train:Object.fromEntries(Object.entries(s.train).map(([i,v])=>[isoOf(+i),v])),tx:s.tx,fstd:s.fstd,prof:s.prof,fitSeen:s.fitSeen,voice:s.voice,fitAI:s.fitAI&&s.fitAI.res?s.fitAI:null,faiC:!!s.faiC})};
+    train:Object.fromEntries(Object.entries(s.train).map(([i,v])=>[isoOf(+i),v])),tx:Object.fromEntries(Object.entries(s.tx).filter(([iso])=>{const i=idxOf(iso);return i<0||i>=NDAYS})),trainV:155,fstd:s.fstd,prof:s.prof,fitSeen:s.fitSeen,voice:s.voice,fitAI:s.fitAI&&s.fitAI.res?s.fitAI:null,faiC:!!s.faiC})};
 Phone.prototype.list=function(){const s=this.s;return R.filter(r=>(s.cat==='all'||r.c.includes(s.cat))&&(!s.en||enOf(r)===s.en))};
 Phone.prototype.toast=function(t,btn,act){const old=this.scr.querySelector('.toast');if(old)old.remove();const d=document.createElement('div');d.className='toast'+(btn?' act':'');d.innerHTML=`<span></span>${btn?`<button data-a="${act}">${btn}</button>`:''}`;d.firstChild.textContent=t;this.scr.appendChild(d);setTimeout(()=>d.remove(),btn?4600:2500)};
 Phone.prototype.backAfterPlan=function(d){if(wkOf(d)===0)return this.goPlanToday();const s=this.s;s.screen='plan';s.wk=1;s.sel=7;s.edit=false;s.pick=-1}; /* nächste Woche: dort bleiben (Montag) */
@@ -2726,7 +2729,7 @@ Phone.prototype.vFit=function(){const s=this.s;
   return `<div class="view fitv"><div class="fhead-bg"></div><div class="blob"><i></i><i></i><i></i><i></i></div><div class="z">
   <div class="phead"><div><div class="eb">KW ${KW(0)}–${KW(1)} · ${tot} ${tot===1?'Einheit':'Einheiten'} geplant</div><div class="h-title">Mein Fitnessbereich</div></div>
    <div class="hbtns"><button class="iconbtn" data-a="flip" data-v="plan" aria-label="Zurück zum Essensplan" title="Zum Essensplan">${ic('up')}</button></div></div>
-  ${[0,1].map(k=>{const n=Array.from({length:7},(_,j)=>fCount(s.train[k*7+j])).reduce((a,b)=>a+b,0);return `<div class="lbl fl${k?'':' w1'}">${k?'Nächste Woche':'Diese Woche'} · KW ${KW(k)}<span>${n} ${n===1?'Einheit':'Einheiten'}${n?`<button class="wclr fclr" data-a="fclr" data-v="${k}" aria-label="Training in KW ${KW(k)} löschen">${ic('trash')}Leeren</button>`:''}</span></div><div class="fweek">${Array.from({length:7},(_,j)=>pill(k*7+j)).join('')}</div>`}).join('')}
+  ${[0,1].map(k=>{const n=Array.from({length:7},(_,j)=>fCount(s.train[k*7+j])).reduce((a,b)=>a+b,0);return `<div class="lbl fl${k?'':' w1'}">${k?'Nächste Woche':'Diese Woche'} · KW ${KW(k)}<span>${n} ${n===1?'Einheit':'Einheiten'}${n?`<button class="wclr fclr" data-a="fwclr" data-v="${k}" aria-label="Training in KW ${KW(k)} löschen">${ic('trash')}Leeren</button>`:''}</span></div><div class="fweek">${Array.from({length:7},(_,j)=>pill(k*7+j)).join('')}</div>`}).join('')}
   ${(()=>{const W={};Object.keys(s.tx).forEach(iso=>{const i=idxOf(iso);if(i>=NDAYS)(W[Math.floor(i/7)]=W[Math.floor(i/7)]||{})[i]=iso});
     return Object.keys(W).map(Number).sort((a,b)=>a-b).map((k,x)=>{const n=Object.values(W[k]).reduce((a,iso)=>a+fCount(s.tx[iso]),0);
       return `${x?'':'<div class="lbl" style="margin-top:20px">Kommende Wochen · aus dem Trainingsplan</div>'}<div class="lbl fl">KW ${isoWeek(dayDate(k*7))}<span>${n} ${n===1?'Einheit':'Einheiten'}</span></div><div class="fweek">${Array.from({length:7},(_,j)=>{const i=k*7+j,iso=W[k][i],X=iso&&s.tx[iso];return `<button class="wd fd fx" ${X?`data-a="fxday" data-v="${iso}"`:'disabled'} aria-label="${isoLbl(isoOf(i))}: ${fText(X)}"><span class="a">${AB[j]}</span><span class="n">${String(dayDate(i).getDate()).padStart(2,'0')}</span>${X?`<span class="ind fr">${fring(X,36)}</span>`:'<span class="ind empty"></span>'}</button>`}).join('')}</div>`}).join('')})()}
@@ -3800,7 +3803,7 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
    case 'fclr':delete s.train[s.fsel];haptic();this.render();break;
    case 'fwk':s.fwk=+v;this.render();break;
    case 'fitai':this.fitAnalyze();break;
-   case 'fclr':{const k=+v;this.prevTrain=JSON.stringify([s.train,s.tx]);for(let i=k*7;i<k*7+7;i++)delete s.train[i];haptic();this.render();this.toast(`Training KW ${KW(k)} geleert`,'Rückgängig','fundo');break}
+   case 'fwclr':{const k=+v;this.prevTrain=JSON.stringify([s.train,s.tx]);for(let i=k*7;i<k*7+7;i++){delete s.train[i];delete s.tx[isoOf(i)]}haptic();this.render();this.toast(`Training KW ${KW(k)} geleert`,'Rückgängig','fundo');break}
    case 'faitog':s.faiC=!s.faiC;haptic();this.render();break;
    case 'fdisc':s.sheet='fdisc';haptic();this.render();break;
    case 'pfdisc':{const L=discsOf(s.prof),i=L.indexOf(v);if(i<0)L.push(v);else L.splice(i,1);s.prof.disc=L[0]||'';haptic();this.render();break}
