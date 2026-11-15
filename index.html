@@ -1662,6 +1662,31 @@ img,svg{-webkit-user-drag:none}
 
 /* V155: größere Tippfläche für „Leeren“ */
 .fclr{padding:10px 6px!important;margin:-10px -6px!important}
+
+/* V157: Trainingsplan im Detail */
+.wpl-t{width:100%;margin:10px 0 0;border:0;border-radius:16px;background:rgba(255,255,255,.72);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);padding:9px 12px;display:flex;align-items:center;gap:8px;color:#1F4A33;font-size:13.5px;font-weight:600;box-shadow:0 0 0 1px rgba(255,255,255,.6)}
+.wpl-t .ic{width:16px;height:16px}.wpl-t em{margin-left:auto;font-style:normal;font-weight:500;color:#5E7A69;font-size:12.5px}
+.wpl-t .cv{margin-left:0;transition:transform .25s}.wpl-t.on .cv{transform:rotate(180deg)}
+.wpl{margin-top:8px;background:#fff;border-radius:22px;padding:4px 10px;box-shadow:0 0 0 1px rgba(0,0,0,.05),0 18px 34px -24px rgba(31,74,51,.5)}
+.wpl-d{display:flex;align-items:flex-start;gap:10px;padding:9px 0}
+.wpl-d+.wpl-d{border-top:1px solid rgba(120,120,140,.12)}
+.wpl-d.past{opacity:.55}
+.wpl-l{flex:none;width:36px;display:flex;flex-direction:column;align-items:center;padding-top:3px}
+.wpl-l small{font-size:10.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#8A8FA3}
+.wpl-l b{font-size:19px;font-weight:500;color:#1D1D1F;line-height:1.15}
+.wpl-d.today .wpl-l small,.wpl-d.today .wpl-l b{color:#2A6545}
+.wpl-r{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.wpl-p{border:0;background:none;padding:4px 0;display:flex;align-items:center;gap:10px;text-align:left;width:100%}
+.wpl-p>span{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--c);color:#fff}
+.wpl-p>span .ic{width:18px;height:18px;stroke-width:1.8}
+.wpl-p>div{min-width:0;display:flex;flex-direction:column}
+.wpl-p b{font-size:14px;font-weight:600;letter-spacing:-.01em;color:#1D1D1F;line-height:1.25;overflow-wrap:anywhere}
+.wpl-p small{font-size:12px;color:#5C6176;margin-top:1px}
+.wpl-0{margin:9px 0 0;font-size:13px;color:#A1A1A6}
+.wpl-add{flex:none;margin-top:4px;width:30px;height:30px;border:0;border-radius:50%;display:grid;place-items:center;background:rgba(42,101,69,.1);color:#2A6545}
+.wpl-add .ic{width:15px;height:15px;stroke-width:2.2}
+.fpos-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;margin-top:8px}.fpos-row .ai-in{margin-top:0;min-width:0}.fpos-row input{width:100%;min-width:0}
+.fpos-lv{margin-top:10px}
 </style>
 
 <div class="page">
@@ -1743,7 +1768,7 @@ f_bike:'<circle cx="5.6" cy="16.4" r="3.9"/><circle cx="18.4" cy="16.4" r="3.9"/
 f_run:'<path d="M3 17.5v-1.2c0-1 .6-1.9 1.5-2.3L8 12.5l2-4.5 2.6 1.6L15 13l4.2 1.4c1.1.4 1.8 1.4 1.8 2.5v.6z"/><path d="M11 12.5l1.8-.9M12.4 14.2l1.8-.9"/>',
 f_tennis:'<circle cx="12" cy="12" r="8.2"/><path d="M5.8 6.8c3.2 2.6 3.2 7.8 0 10.4M18.2 6.8c-3.2 2.6-3.2 7.8 0 10.4"/>',
 f_swim:'<circle cx="16.8" cy="7.6" r="1.9"/><path d="M4.5 13.2l5.2-3.6 3.2 2.6 3.6 1"/><path d="M3 17.6c1.5 0 1.5-1.2 3-1.2s1.5 1.2 3 1.2 1.5-1.2 3-1.2 1.5 1.2 3 1.2 1.5-1.2 3-1.2 1.5 1.2 3 1.2"/>',
-f_crossfit:'<path d="M9 7.5a3 3 0 0 1 6 0"/><path d="M8.2 9.5h7.6l1.4 3.2a5.6 5.6 0 0 1-5.2 7.8 5.6 5.6 0 0 1-5.2-7.8z"/>',f_padel:'<ellipse cx="10" cy="9" rx="5.6" ry="6.2"/><path d="M13.4 14l5.6 6.2"/><circle cx="8.4" cy="7.6" r=".5"/><circle cx="11.4" cy="7.6" r=".5"/><circle cx="9.9" cy="10.4" r=".5"/><circle cx="18.6" cy="5.6" r="1.6"/>',f_fussball:'<circle cx="12" cy="12" r="8.4"/><path d="M12 8.2l3 2.2-1.1 3.6h-3.8L9 10.4zM12 3.6v4.6M15 10.4l4.7-1.6M13.9 14l2.7 3.9M10.1 14l-2.7 3.9M9 10.4L4.3 8.8"/>',f_ball:'<circle cx="9" cy="14" r="5.6"/><path d="M3.4 14h11.2M9 8.4c-1.8 1.6-1.8 9.6 0 11.2M9 8.4c1.8 1.6 1.8 9.6 0 11.2"/><circle cx="17.2" cy="7.2" r="3.6"/><path d="M14.4 5.1c1.7.6 2.6 2.4 2 4.2M20 9.3c-1.7-.6-2.6-2.4-2-4.2"/>',f_eigen:'<circle cx="12" cy="12" r="8.4"/><path d="M9.6 9.6a2.4 2.4 0 1 1 3.4 2.2c-.6.3-1 .9-1 1.6v.6M12 16.6v.4"/>',f_kraft:'<path d="M3.5 9.5v5M6.5 7v10M17.5 7v10M20.5 9.5v5M6.5 12h11"/>',
+f_crossfit:'<path d="M9 7.5a3 3 0 0 1 6 0"/><path d="M8.2 9.5h7.6l1.4 3.2a5.6 5.6 0 0 1-5.2 7.8 5.6 5.6 0 0 1-5.2-7.8z"/>',f_padel:'<ellipse cx="10" cy="9" rx="5.6" ry="6.2"/><path d="M13.4 14l5.6 6.2"/><circle cx="8.4" cy="7.6" r=".5"/><circle cx="11.4" cy="7.6" r=".5"/><circle cx="9.9" cy="10.4" r=".5"/><circle cx="18.6" cy="5.6" r="1.6"/>',f_fussball:'<circle cx="12" cy="12" r="8.4"/><path d="M12 8.2l3 2.2-1.1 3.6h-3.8L9 10.4zM12 3.6v4.6M15 10.4l4.7-1.6M13.9 14l2.7 3.9M10.1 14l-2.7 3.9M9 10.4L4.3 8.8"/>',f_ball:'<circle cx="9" cy="14" r="5.6"/><path d="M3.4 14h11.2M9 8.4c-1.8 1.6-1.8 9.6 0 11.2M9 8.4c1.8 1.6 1.8 9.6 0 11.2"/><circle cx="17.2" cy="7.2" r="3.6"/><path d="M14.4 5.1c1.7.6 2.6 2.4 2 4.2M20 9.3c-1.7-.6-2.6-2.4-2-4.2"/>',f_eigen:'<circle cx="12" cy="12" r="8.4"/><path d="M9.6 9.6a2.4 2.4 0 1 1 3.4 2.2c-.6.3-1 .9-1 1.6v.6M12 16.6v.4"/>',list:'<path d="M9 6.5h11M9 12h11M9 17.5h11"/><circle cx="4.6" cy="6.5" r="1.1"/><circle cx="4.6" cy="12" r="1.1"/><circle cx="4.6" cy="17.5" r="1.1"/>',f_kraft:'<path d="M3.5 9.5v5M6.5 7v10M17.5 7v10M20.5 9.5v5M6.5 12h11"/>',
 f_ballett:'<circle cx="12" cy="4.3" r="1.8"/><path d="M12 6.4v5M12 8c-2.3-.5-3.7-2.1-4.3-4.3M12 8c2.3-.5 3.7-2.1 4.3-4.3M6.2 12.4c2-1 3.8-1.4 5.8-1.4s3.8.4 5.8 1.4c-1.9.7-3.8 1-5.8 1s-3.9-.3-5.8-1zM11.3 13.4l-.5 7.3M10.8 20.7h1.6M12.8 13.4l4 5.6"/>',f_mob:'<circle cx="12" cy="5" r="1.9"/><path d="M12 8.2v5.3M12 9.8l-5 3.4M12 9.8l5 3.4M4.5 19c2.5-2.6 5-3.6 7.5-5.5 2.5 1.9 5 2.9 7.5 5.5M8.5 19h7"/>',
 heart:'<path d="M12 20.3s-7.5-4.5-7.5-10.3A4.2 4.2 0 0 1 12 7.4a4.2 4.2 0 0 1 7.5 2.6c0 5.8-7.5 10.3-7.5 10.3z"/>',
   sliders:'<path d="M4 7h9M17 7h3M4 12h3M11 12h9M4 17h11M19 17h1"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="17" cy="17" r="2"/>',
@@ -2722,6 +2747,23 @@ Phone.prototype.vFxday=function(){const s=this.s,T=s.tx[s.fxiso];const I=fInfo(T
   return `<h3>Training</h3><p>${isoLbl(s.fxiso||isoOf(0))} · aus dem Trainingsplan</p>${I.length?`<div class="fpl-d">${fInfoRows(I)}</div>`:`<p>${fText(T)}</p>`}
    <p class="fnote" style="margin-top:12px">Rückt automatisch in deinen Plan, sobald die Woche dran ist.</p>
    <div style="display:flex;gap:8px;margin-top:14px"><button class="sbtn" data-a="fxrm">Entfernen</button><button class="gbtn" style="background:linear-gradient(100deg,#3B7D57,#1F4A33 58%,#2A6545);box-shadow:0 14px 26px -12px rgba(31,74,51,.75)" data-a="closesheet">${ic('check')}Fertig</button></div>`};
+/* V157: Trainingsplan der Woche im Detail – auf Tipp aufklappen, alle 7 Tage auf einen Blick, je Tag Positionen + „+“ */
+const dayActs=T=>{if(!T)return [];const I=fInfo(T).map(x=>Object.assign({},x));fActs(T).forEach(({k,lv})=>{if(!I.some(x=>x.a===k))I.push({a:k,t:'',lv:k==='mob'?1:lv})});return I};
+Phone.prototype.vWplan=function(k){const s=this.s,open=(s.fwOpen||{})[k];
+  const n=Array.from({length:7},(_,j)=>dayActs(s.train[k*7+j]).length).reduce((a,b)=>a+b,0);
+  const head=`<button class="wpl-t ${open?'on':''}" data-a="fwplan" data-v="${k}" aria-expanded="${!!open}">${ic('list')}<span>${open?'Trainingsplan ausblenden':'Trainingsplan im Detail'}</span><em>${n} ${n===1?'Position':'Positionen'}</em>${ic('down','cv')}</button>`;
+  if(!open)return head;
+  return head+`<div class="wpl" data-a="fwplan" data-v="${k}">${Array.from({length:7},(_,j)=>{const i=k*7+j,A=dayActs(s.train[i]),dd=dayDate(i);
+    return `<div class="wpl-d ${i===TODAY?'today':''} ${i<TODAY?'past':''}"><div class="wpl-l"><small>${i===TODAY?'Heute':AB[j]}</small><b>${dd.getDate()}</b></div>
+     <div class="wpl-r">${A.length?A.map((x,jj)=>`<button class="wpl-p" data-a="fpos" data-i="${i}" data-j="${jj}"><span style="--c:${FA[x.a]}">${ic('f_'+x.a)}</span><div><b>${esc(x.t)||FAN[x.a]}</b><small>${[FAN[x.a],fDur(x.min),x.a==='mob'?'':LVN[x.lv]||'',x.tss?x.tss+' TSS':''].filter(Boolean).join(' · ')}</small></div></button>`).join(''):'<p class="wpl-0">Ruhetag</p>'}</div>
+     <button class="wpl-add" data-a="fposadd" data-i="${i}" aria-label="Position am ${DAYS[j]} hinzufügen">${ic('plus')}</button></div>`}).join('')}</div>`};
+Phone.prototype.vFpos=function(){const s=this.s,P=s.fpos||{},G='background:linear-gradient(100deg,#3B7D57,#1F4A33 58%,#2A6545);box-shadow:0 14px 26px -12px rgba(31,74,51,.75)',ed=P.j>=0,q=x=>esc(x==null?'':String(x)).replace(/"/g,'&quot;');
+  return `<h3>${ed?'Position bearbeiten':'Neue Position'}</h3><p>${dayLbl(P.i)}</p>
+   <div class="ftiles">${FACTS.map(([c,k,l])=>`<button class="ftile ${P.a===k?'on':''}" data-a="fposart" data-v="${k}" style="--c:${FA[k]}" aria-pressed="${P.a===k}"><span>${ic('f_'+k)}</span>${l}</button>`).join('')}</div>
+   <div class="ai-in" style="margin-top:12px"><input data-k="fpt" maxlength="60" placeholder="Titel, z. B. HIT 4x4' @105% FTP" value="${q(P.t)}" aria-label="Titel"></div>
+   <div class="fpos-row"><div class="ai-in"><input data-k="fpm" inputmode="numeric" maxlength="4" placeholder="Dauer (min)" value="${q(P.min||'')}" aria-label="Dauer in Minuten"></div><div class="ai-in"><input data-k="fpss" inputmode="numeric" maxlength="4" placeholder="TSS (optional)" value="${q(P.tss||'')}" aria-label="TSS"></div></div>
+   ${P.a==='mob'?'':`<div class="seg fpos-lv" role="group" aria-label="Intensität">${[1,2,3].map(l=>`<button class="${(P.lv||2)===l?'on':''}" data-a="fposlv" data-v="${l}">${LVN[l]}</button>`).join('')}</div>`}
+   <div style="display:flex;gap:8px;margin-top:14px">${ed?`<button class="sbtn" data-a="fposdel">Entfernen</button>`:''}<button class="gbtn" style="${G}" data-a="fpossave">${ic('check')}Speichern</button></div>`};
 Phone.prototype.vFit=function(){const s=this.s;
   const tot=Object.values(s.train).reduce((a,x)=>a+fCount(x),0);
   const pill=d=>{const X=s.train[d],has=X&&(X.s||X.k||X.m);return `<button class="wd fd ${d===TODAY?'today':''} ${s.sheet==='fday'&&s.fsel===d?'on':''} ${d<TODAY?'past':''}" data-a="fday" data-i="${d}" aria-label="${dayLbl(d)}: ${fText(X)}"><span class="a">${d===TODAY?'HEUTE':ab(d)}</span><span class="n">${String(dt(d)).padStart(2,'0')}</span>${has?`<span class="ind fr">${fring(X,36)}</span>`:`<span class="ind empty">${ic('plus')}</span>`}</button>`};
@@ -2729,7 +2771,7 @@ Phone.prototype.vFit=function(){const s=this.s;
   return `<div class="view fitv"><div class="fhead-bg"></div><div class="blob"><i></i><i></i><i></i><i></i></div><div class="z">
   <div class="phead"><div><div class="eb">KW ${KW(0)}–${KW(1)} · ${tot} ${tot===1?'Einheit':'Einheiten'} geplant</div><div class="h-title">Mein Fitnessbereich</div></div>
    <div class="hbtns"><button class="iconbtn" data-a="flip" data-v="plan" aria-label="Zurück zum Essensplan" title="Zum Essensplan">${ic('up')}</button></div></div>
-  ${[0,1].map(k=>{const n=Array.from({length:7},(_,j)=>fCount(s.train[k*7+j])).reduce((a,b)=>a+b,0);return `<div class="lbl fl${k?'':' w1'}">${k?'Nächste Woche':'Diese Woche'} · KW ${KW(k)}<span>${n} ${n===1?'Einheit':'Einheiten'}${n?`<button class="wclr fclr" data-a="fwclr" data-v="${k}" aria-label="Training in KW ${KW(k)} löschen">${ic('trash')}Leeren</button>`:''}</span></div><div class="fweek">${Array.from({length:7},(_,j)=>pill(k*7+j)).join('')}</div>`}).join('')}
+  ${[0,1].map(k=>{const n=Array.from({length:7},(_,j)=>fCount(s.train[k*7+j])).reduce((a,b)=>a+b,0);return `<div class="lbl fl${k?'':' w1'}">${k?'Nächste Woche':'Diese Woche'} · KW ${KW(k)}<span>${n} ${n===1?'Einheit':'Einheiten'}${n?`<button class="wclr fclr" data-a="fwclr" data-v="${k}" aria-label="Training in KW ${KW(k)} löschen">${ic('trash')}Leeren</button>`:''}</span></div><div class="fweek">${Array.from({length:7},(_,j)=>pill(k*7+j)).join('')}</div>${this.vWplan(k)}`}).join('')}
   ${(()=>{const W={};Object.keys(s.tx).forEach(iso=>{const i=idxOf(iso);if(i>=NDAYS)(W[Math.floor(i/7)]=W[Math.floor(i/7)]||{})[i]=iso});
     return Object.keys(W).map(Number).sort((a,b)=>a-b).map((k,x)=>{const n=Object.values(W[k]).reduce((a,iso)=>a+fCount(s.tx[iso]),0);
       return `${x?'':'<div class="lbl" style="margin-top:20px">Kommende Wochen · aus dem Trainingsplan</div>'}<div class="lbl fl">KW ${isoWeek(dayDate(k*7))}<span>${n} ${n===1?'Einheit':'Einheiten'}</span></div><div class="fweek">${Array.from({length:7},(_,j)=>{const i=k*7+j,iso=W[k][i],X=iso&&s.tx[iso];return `<button class="wd fd fx" ${X?`data-a="fxday" data-v="${iso}"`:'disabled'} aria-label="${isoLbl(isoOf(i))}: ${fText(X)}"><span class="a">${AB[j]}</span><span class="n">${String(dayDate(i).getDate()).padStart(2,'0')}</span>${X?`<span class="ind fr">${fring(X,36)}</span>`:'<span class="ind empty"></span>'}</button>`}).join('')}</div>`}).join('')})()}
@@ -3689,6 +3731,7 @@ Phone.prototype.vSheet=function(){const s=this.s;if(!s.sheet)return '';
   if(s.sheet==='fstd')c=this.vFstd();
   if(s.sheet==='fdisc')c=this.vFdisc();
   if(s.sheet==='fco')c=this.vFco();
+  if(s.sheet==='fpos')c=this.vFpos();
   if(s.sheet==='voice')c=this.vVoice();
   if(s.sheet==='fgoal')c=this.vFgoal();
   if(s.sheet==='fxday')c=this.vFxday();
@@ -3712,7 +3755,7 @@ Phone.prototype.dictate=function(key){const SR=window.SpeechRecognition||window.
   rec.onend=()=>{self.rec=null;const b=btn();if(b)b.classList.remove('on');if(err&&err!=='no-speech'&&err!=='aborted')fb(err==='not-allowed'||err==='service-not-allowed'?'Mikrofon nicht freigegeben – bitte das Mikrofon auf der Tastatur nutzen':'Spracherkennung nicht erreichbar – bitte das Mikrofon auf der Tastatur nutzen')};
   try{rec.start()}catch(e){fb('Hier bitte das Mikrofon auf der Tastatur nutzen');return}
   this.rec=rec;haptic();const b=btn();if(b)b.classList.add('on')};
-Phone.prototype.input=function(e){const k=e.target.dataset.k;if(k==='aiq'){this.s.aiQ=e.target.value;return}if(k==='cookq'){this.s.cookQ=e.target.value;return}if(k==='exq'){this.s.exQ=e.target.value;return}if(k==='kiurl'){this.s.kiU=e.target.value;return}if(k==='kipw'){this.s.kiP=e.target.value;return}if(k==='kivoice'){this.s.kiV=e.target.value;return}if(k==='fgt'){this.s.fgT=e.target.value;return}if(k==='fcq'){this.s.fcQ=e.target.value;return}if(k==='discx'){this.s.discQ=e.target.value;return}if(k==='pgq'){this.s.pgQ=e.target.value;return}if(k==='fgd'){this.s.fgD=e.target.value;return}if(k==='pname'){const v=e.target.value.trim().slice(0,24);this.s.prof.name=v;const h=this.scr.querySelector('#pfh');if(h)h.textContent=v?`Hi ${v}.`:'Hallo.';clearTimeout(this.saveT);this.saveT=setTimeout(()=>this.save(),400);return}if(k==='stockq'){this.s.stockQ=e.target.value;return}if(k==='shopq'){this.s.shopQ=e.target.value;this.render()}if(k==='recq'){this.s.recQ=e.target.value;this.render()}};
+Phone.prototype.input=function(e){const k=e.target.dataset.k;if(k==='aiq'){this.s.aiQ=e.target.value;return}if(k==='cookq'){this.s.cookQ=e.target.value;return}if(k==='exq'){this.s.exQ=e.target.value;return}if(k==='kiurl'){this.s.kiU=e.target.value;return}if(k==='kipw'){this.s.kiP=e.target.value;return}if(k==='kivoice'){this.s.kiV=e.target.value;return}if(k==='fgt'){this.s.fgT=e.target.value;return}if(k==='fcq'){this.s.fcQ=e.target.value;return}if(k==='discx'){this.s.discQ=e.target.value;return}if(k==='fpt'&&this.s.fpos){this.s.fpos.t=e.target.value;return}if(k==='fpm'&&this.s.fpos){this.s.fpos.min=e.target.value.replace(/\D/g,'');return}if(k==='fpss'&&this.s.fpos){this.s.fpos.tss=e.target.value.replace(/\D/g,'');return}if(k==='pgq'){this.s.pgQ=e.target.value;return}if(k==='fgd'){this.s.fgD=e.target.value;return}if(k==='pname'){const v=e.target.value.trim().slice(0,24);this.s.prof.name=v;const h=this.scr.querySelector('#pfh');if(h)h.textContent=v?`Hi ${v}.`:'Hallo.';clearTimeout(this.saveT);this.saveT=setTimeout(()=>this.save(),400);return}if(k==='stockq'){this.s.stockQ=e.target.value;return}if(k==='shopq'){this.s.shopQ=e.target.value;this.render()}if(k==='recq'){this.s.recQ=e.target.value;this.render()}};
 Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();return}
   if(this.s.ipop&&!e.target.closest('.ipop')){this.s.ipop=null;this.render();return}
   const t=e.target.closest('[data-a]');if(!t||!this.scr.contains(t))return;const s=this.s,a=t.dataset.a,v=t.dataset.v;
@@ -3806,6 +3849,14 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
    case 'fwclr':{const k=+v;this.prevTrain=JSON.stringify([s.train,s.tx]);for(let i=k*7;i<k*7+7;i++){delete s.train[i];delete s.tx[isoOf(i)]}haptic();this.render();this.toast(`Training KW ${KW(k)} geleert`,'Rückgängig','fundo');break}
    case 'faitog':s.faiC=!s.faiC;haptic();this.render();break;
    case 'fdisc':s.sheet='fdisc';haptic();this.render();break;
+   case 'fwplan':{const O=s.fwOpen=s.fwOpen||{};O[v]=!O[v];haptic();this.render();break}
+   case 'fposadd':s.fpos={i:+t.dataset.i,j:-1,a:'bike',t:'',min:'',lv:2,tss:''};s.sheet='fpos';haptic();this.render();break;
+   case 'fpos':{const i=+t.dataset.i,j=+t.dataset.j,x=dayActs(s.train[i])[j];if(!x)break;s.fpos={i,j,a:x.a,t:x.t||'',min:x.min||'',lv:x.lv||2,tss:x.tss||''};s.sheet='fpos';haptic();this.render();break}
+   case 'fposart':if(s.fpos){s.fpos.a=v;haptic();this.render()}break;
+   case 'fposlv':if(s.fpos){s.fpos.lv=+v;haptic();this.render()}break;
+   case 'fpossave':case 'fposdel':{const P=s.fpos;if(!P)break;const A=dayActs(s.train[P.i]);this.prevTrain=JSON.stringify([s.train,s.tx]);
+      if(a==='fposdel')A.splice(P.j,1);else{const x={a:P.a,t:String(P.t||'').trim(),min:+P.min||0,lv:P.a==='mob'?1:P.lv||2,tss:+P.tss||0};if(P.j>=0)A[P.j]=x;else A.push(x)}
+      if(A.length)s.train[P.i]=actsToT(A);else delete s.train[P.i];s.fpos=null;s.sheet=null;a==='fposdel'?haptic():hapticSuccess();this.render();this.toast(a==='fposdel'?'Position entfernt':'Gespeichert','Rückgängig','fundo');break}
    case 'pfdisc':{const L=discsOf(s.prof),i=L.indexOf(v);if(i<0)L.push(v);else L.splice(i,1);s.prof.disc=L[0]||'';haptic();this.render();break}
    case 'discball':s.discBall=!s.discBall;haptic();this.render();break;
    case 'discown':{const L=discsOf(s.prof),i=L.indexOf('eigen');if(i>=0&&!s.discOwn){L.splice(i,1);s.prof.disc=L[0]||''}else s.discOwn=!s.discOwn;s.discQ=undefined;haptic();this.render();break}
