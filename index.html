@@ -1988,6 +1988,14 @@ img,svg{-webkit-user-drag:none}
 .view.bpv{display:block!important;overflow-y:auto}.bpv>*{flex:none}.bp-n{margin-top:22px!important}.bp-t{margin-top:30px!important;line-height:1.1}.bp-ctl{margin-top:30px!important}
 
 .bp-t.rt-s{position:static!important;inset:auto!important;display:block!important;font-size:44px!important;font-weight:600!important;color:#A39A93!important}
+
+/* V182: Fitness-Lernen mit Fotos */
+.fl-hero{position:relative;margin:20px 0 4px;border-radius:24px;overflow:hidden;aspect-ratio:16/10;box-shadow:0 26px 40px -28px rgba(0,40,20,.6)}
+.fl-hero img{width:100%;height:100%;object-fit:cover;display:block}
+.fl-hero span{position:absolute;left:14px;bottom:12px;font-size:12px;font-weight:600;letter-spacing:.06em;color:#fff;text-shadow:0 1px 8px rgba(0,0,0,.5)}
+.lrnf .ls.half .ls-im{aspect-ratio:1}
+.lrnf .ls b{color:#1D1D1F}
+.lrnf .ls-f em{color:#006039!important}.lrnf .ls-bar i{background:#006039!important}
 </style>
 
 <div class="page">
@@ -3292,6 +3300,14 @@ Phone.prototype.vFroutine=function(){const s=this.s,r=ROUT()[s.rt&&s.rt.id];if(!
 Phone.prototype.rtTick=function(){clearInterval(this.rtT);const self=this;this.rtT=setInterval(()=>{const s=self.s,R=s.rt;if(!R||!R.run||s.screen!=='froutine'){clearInterval(self.rtT);return}
   const r=ROUT()[R.id];R.left--;if(R.left<=0){R.i++;haptic();if(R.i>=r.ex.length){R.run=false;hapticSuccess();self.render();clearInterval(self.rtT);return}R.left=r.ex[R.i][2];self.render();return}
   const el=self.scr.querySelector('.rt-s'),arc=self.scr.querySelector('.rt-arc');if(el)el.textContent=`${Math.floor(R.left/60)}:${String(R.left%60).padStart(2,'0')}`;if(arc){const C=2*Math.PI*48;arc.setAttribute('stroke-dasharray',`${(C*(1-R.left/r.ex[R.i][2])).toFixed(1)} ${C.toFixed(1)}`)}},1000)};
+const IMG_FL_TOUR='img/img_fl_tour-bf3ae03e.webp';
+const IMG_FL_SIGN='img/img_fl_sign-d1e92f6c.webp';
+const IMG_FL_STELV='img/img_fl_stelv-57d9279c.webp';
+const IMG_FL_STELV2='img/img_fl_stelv2-65213dad.webp';
+const IMG_FL_RIDE='img/img_fl_ride-b68cadad.webp';
+const IMG_FL_KIT='img/img_fl_kit-2eb6df09.webp';
+const IMG_FL_PORT='img/img_fl_port-d3a8427b.webp';
+const IMG_FL_SIT='img/img_fl_sit-4a988d2b.webp';
 const FDECKS=[
  {id:'fphase',t:'Trainingsphasen',e:'📈',c:['#D7EDE1','#8FC5A6'],sub:'Grundlage, Aufbau, Spezifisch, Tapering',cards:[
   ['🧱','Grundlage','Viel ruhiges Training in Zone 2. Dein Körper baut Mitochondrien und Kapillaren auf – das Fundament für alles Weitere.','80 % deiner Zeit locker, auch wenn es sich „zu leicht“ anfühlt.'],
@@ -3313,6 +3329,18 @@ const FDECKS=[
   ['🧘','Aktive Erholung','Lockeres Rollen oder Mobility fördert die Durchblutung.','Siehe Tab „Mobility“.'],
   ['📉','Leichte Wochen','Alle 3–4 Wochen Umfang um 30–40 % senken.','']]},
 ];
+FDECKS.push(
+ {id:'fberg',t:'Bergfahren',e:'⛰️',c:['#E7EFE9','#9DBFA9'],sub:'Gleichmäßig nach oben',cards:[
+  ['⛰️','Einteilen statt Überpacen','Die ersten 10 Minuten am Pass fühlen sich leicht an – genau da verlieren die meisten. Fahre bewusst 5–10 % unter deinem Ziel-Tempo los.','Watt oder Puls statt Gefühl: Gefühl lügt am Anfang.'],
+  ['🔄','Trittfrequenz','70–85 U/min schonen die Muskeln auf langen Anstiegen. Lieber einen leichteren Gang als „drücken“.','Kompakte Kurbel und 32er/34er-Ritzel sind keine Schande.'],
+  ['🧍','Sitzen oder stehen?','Sitzend ist effizienter. Kurz aus dem Sattel gehen entlastet Rücken und Po – etwa in jeder Kehre.',''],
+  ['🍬','Verpflegung am Berg','Vor dem Anstieg essen, oben ist es zu spät. 60–90 g Kohlenhydrate pro Stunde.','Gel 10 Minuten vor dem steilsten Stück.'],
+  ['🌬️','Abfahrt','Blick weit voraus, vor der Kurve bremsen, außen-innen-außen. Kurvenäußeres Pedal unten, Gewicht darauf.','Vor langen Abfahrten Windweste anziehen.']]},
+ {id:'fkit',t:'Material & Ausrüstung',e:'🚴',c:['#FFF4CC','#F5D24A'],sub:'Wie die Profis',cards:[
+  ['🎯','Sitzposition zuerst','Ein gutes Bikefitting bringt mehr als jedes leichte Laufrad – und schützt Knie und Rücken.',''],
+  ['🛞','Reifendruck','Breitere Reifen (28–32 mm) mit weniger Druck rollen auf echten Straßen schneller und komfortabler.','Faustregel 28 mm: ca. 5–5,5 bar bei 75 kg.'],
+  ['👕','Kleidung','Eng anliegend spart Watt. Bei Bergtouren immer Weste oder Armlinge mitnehmen.',''],
+  ['⚡','Leistungsmesser','Watt sind die ehrlichste Größe fürs Training – unabhängig von Wind, Hitze und Tagesform.','']]});
 FDECKS.forEach(d=>DECK[d.id]=d);
 /* V178: Lernen im Fitnessbereich im Stil des Lerncenters (Story-Kacheln). Bilder: eigene Illustrationen bzw. Gerichtsfotos der App */
 const svgUrl=x=>'data:image/svg+xml;utf8,'+encodeURIComponent(x);
@@ -3322,10 +3350,12 @@ const ILL={
  frec:()=>svgUrl(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180"><defs><linearGradient id="n" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2B3A6B"/><stop offset="1" stop-color="#6E7FB8"/></linearGradient></defs><rect width="320" height="180" fill="url(#n)"/><circle cx="230" cy="62" r="34" fill="#F5E6B8"/><circle cx="246" cy="52" r="32" fill="#2F3F72"/>${[[40,40],[80,22],[120,58],[170,30],[290,110],[60,120],[280,30]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="2.2" fill="#fff" opacity=".8"/>`).join('')}<path d="M20 150 q40 -26 90 -14 t110 0 t100 -6 V180 H20Z" fill="#fff" opacity=".18"/></svg>`),
  fmobk:()=>svgUrl(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180"><rect width="320" height="180" fill="#E9F3EC"/></svg>`),
 };
-const FSTORY={fphase:['Die Saison richtig planen.','Grundlage, Aufbau, Spezifisch, Tapering – wann welche Einheit Sinn macht.',ILL.fphase],
- fzone:['Wie hart ist hart?','FTP und Trainingszonen einfach erklärt.',ILL.fzone],
- ffuel:['Richtig tanken.','Vor, während und nach dem Training essen.',null,'b04'],
- frec:['Stärker in der Pause.','Schlaf, aktive Erholung und leichte Wochen.',ILL.frec]};
+const FSTORY={fphase:['Die Saison richtig planen.','Grundlage, Aufbau, Spezifisch, Tapering – wann welche Einheit Sinn macht.',()=>IMG_FL_STELV],
+ fberg:['Der Weg nach oben.','Pässe wie Tourmalet und Stilfser Joch richtig einteilen.',()=>IMG_FL_SIGN],
+ fzone:['Wie hart ist hart?','FTP und Trainingszonen einfach erklärt.',()=>IMG_FL_RIDE],
+ frec:['Stärker in der Pause.','Schlaf, aktive Erholung und leichte Wochen.',()=>IMG_FL_SIT],
+ ffuel:['Richtig tanken.','Vor, während und nach dem Training essen – wie die Profis.',()=>IMG_FL_PORT],
+ fkit:['Material, das zählt.','Sitzposition, Reifendruck, Kleidung.',()=>IMG_FL_KIT]};
 Phone.prototype.vFlearn=function(){const s=this.s,L=s.learn||{};const pr=d=>Math.min(d.cards.length,L[d.id]||0);
   const tot=FDECKS.reduce((a,d)=>a+d.cards.length,0),seen=FDECKS.reduce((a,d)=>a+pr(d),0);
   const nxt=FDECKS.find(d=>pr(d)>0&&pr(d)<d.cards.length)||FDECKS.find(d=>pr(d)===0)||FDECKS[0];
@@ -3334,11 +3364,12 @@ Phone.prototype.vFlearn=function(){const s=this.s,L=s.learn||{};const pr=d=>Math
      <span class="ls-tx"><small>${d.t}</small><b>${S[0]}</b>${ty==='half'?'':`<span class="ls-s">${S[1]}</span>`}
      <span class="ls-f"><em>${v>=n?'Wiederholen':v?'Weiter':'Starten'}${ic('right')}</em><span>${n} Lektionen${v&&v<n?` · ${v}/${n}`:v>=n?' · fertig':''}</span></span>
      ${v?`<span class="ls-bar"><i style="width:${v/n*100}%"></i></span>`:''}</span></button>`};
-  const LAY=[['fphase','big'],['fzone','half'],['frec','half'],['ffuel','big']];
+  const LAY=[['fphase','big'],['fberg','half'],['fzone','half'],['ffuel','big'],['frec','half'],['fkit','half']];
   return `<div class="view ftv lrnf"><div class="z">
    <div class="top-row between"><span></span><button class="iconbtn" data-a="tab" data-v="plan" aria-label="Zur Ernährung">${ic('up')}</button></div>
    <div class="eb">Lerncenter · ${seen}/${tot} Lektionen</div>
    <h1 class="ap-h1">Besser trainieren beginnt mit Verständnis.</h1>
+   <div class="fl-hero rv"><img src="${IMG_FL_TOUR}" alt="" decoding="async"><span>Col du Tourmalet · 2.115 m</span></div>
    <p class="ap-sub">Kurze Lektionen zu Trainingsphasen, Zonen, Ernährung und Erholung. Öffnen und Karte für Karte weiterwischen.</p>
    <div class="lstories">${LAY.map(([id,ty])=>DECK[id]?story(DECK[id],ty):'').join('')}</div>
   </div></div>`};
