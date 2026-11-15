@@ -1782,6 +1782,18 @@ img,svg{-webkit-user-drag:none}
 .planv .dish .nm.xl{font-size:17px!important}
 .planv .dish .nm.xs{margin-top:8px!important}
 .planv .dish .nm.l.xs{font-size:18px!important}.planv .dish .nm.xl.xs{font-size:16px!important}
+
+/* V172: Rad – Teller größer und leicht über dem Bogen, Titel immer zweizeilig, Energiedichte-Symbol auf Rot */
+.wi .stage img,.dish .stage img{transform:translateY(-3%) scale(var(--fit,1))}
+.look-salbei .planv .wheel-wrap{margin-bottom:-26px}
+.look-salbei .planv .wcap{padding-top:30px}
+.wcap .nm.l,.wcap .nm.l{font-size:18px}.wcap .nm.xl{font-size:16px}
+.wcap .nm{min-height:2.4em;height:2.4em;display:-webkit-box!important;align-content:center}
+.planv .dish .nm{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
+.look-salbei .planv .dish .en,.look-salbei .planv .wcap .en{background:#fff!important;box-shadow:0 2px 8px -3px rgba(0,0,0,.35)}
+.look-salbei .planv .dish .en.low .ic,.look-salbei .planv .wcap .en.low .ic{color:var(--en-low)!important}
+.look-salbei .planv .dish .en.mid .ic,.look-salbei .planv .wcap .en.mid .ic{color:#C9821D!important}
+.look-salbei .planv .dish .en.high .ic,.look-salbei .planv .wcap .en.high .ic{color:var(--en-high)!important}
 </style>
 
 <div class="page">
@@ -3143,17 +3155,25 @@ Phone.prototype.setCat=function(v){const s=this.s;if(s.cat===v)return;s.cat=v;s.
   const oa=pn.querySelector(':scope>.acts'),na=np.querySelector(':scope>.acts');if(oa&&na)oa.replaceWith(na);
   const ch=pn.querySelector(`.hs .chip[data-v="${v}"]`),hs=ch&&ch.parentNode;
   if(hs){const l=ch.offsetLeft-hs.offsetLeft,r=l+ch.offsetWidth,pad=40;let x=hs.scrollLeft;if(l-pad<x)x=l-pad;else if(r+pad>x+hs.clientWidth)x=r+pad-hs.clientWidth;hs.scrollTo({left:Math.max(0,x),behavior:'smooth'})}
-  this.initPicker();this.dockOrb()};
+  this.initPicker();this.dockOrb();this.scr.querySelectorAll('.wi .stage img,.dish .stage img').forEach(plateFit)};
+/* V172: Teller füllen ihr Feld einheitlich – sichtbare Fläche (Alpha) je Bild einmal messen, dann hochskalieren */
+const PLATE_FIT={};
+function plateFit(img){const src=img.currentSrc||img.src;if(!src)return;const apply=f=>{img.style.setProperty('--fit',f)};
+  if(PLATE_FIT[src]!==undefined){apply(PLATE_FIT[src]);return}
+  const go=()=>{try{const N=96,c=document.createElement('canvas');c.width=c.height=N;const g=c.getContext('2d',{willReadFrequently:true});g.drawImage(img,0,0,N,N);
+    const d=g.getImageData(0,0,N,N).data;let x0=N,y0=N,x1=-1,y1=-1;for(let y=0;y<N;y++)for(let x=0;x<N;x++)if(d[(y*N+x)*4+3]>40){if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y}
+    const w=Math.max(x1-x0+1,y1-y0+1);const f=x1<0?1:Math.min(1.35,Math.max(1,N/w*.98));PLATE_FIT[src]=f.toFixed(3);apply(PLATE_FIT[src])}catch(e){PLATE_FIT[src]=1}};
+  if(img.complete&&img.naturalWidth)go();else img.addEventListener('load',go,{once:true})}
 Phone.prototype.initPicker=function(){const s=this.s,self=this;const w=this.scr.querySelector('.wheel-wrap');if(!w)return;
   const items=[...w.querySelectorAll('.wi')],n=items.length,L=this.list(),cap=this.scr.querySelector('.wcap'),dw=this.scr.querySelector('.wcard .dots');
   const STEP=0.62;let D=0,R=0; /* Tellergröße, Radradius, Winkel pro Gericht (rad) */
   /* Größe aus dem tatsächlichen Platz (bei Größenänderung neu). Teller passt vollständig hinein (8 px Luft oben, 6 px unten)
      und liegt wie in der „Geplant“-Ansicht vor dem weißen Bogen. Nachbar-Teller werden am unteren Rand abgeschnitten. */
-  const size=()=>{const Wd=w.clientWidth,Hd=w.clientHeight;const nd=Math.round(Math.min(Wd*.6,Hd-14));if(!nd||nd===D)return false;D=nd;R=D*1.55;
-    items.forEach(el=>{const st=el.firstElementChild;st.style.setProperty('--s',D+'px');el.style.width=el.style.height=D+'px';el.style.top='0';el.style.margin=Math.max(8,Math.round((Hd-D)*.32))+'px 0 0 '+(-D/2)+'px'});return true};
+  const size=()=>{const Wd=w.clientWidth,Hd=w.clientHeight;const nd=Math.round(Math.min(Wd*.66,Hd+10));if(!nd||nd===D)return false;D=nd;R=D*1.55;
+    items.forEach(el=>{const st=el.firstElementChild;st.style.setProperty('--s',D+'px');el.style.width=el.style.height=D+'px';el.style.top='0';el.style.margin='6px 0 0 '+(-D/2)+'px'});return true};
   size();if(this.wheelRO)this.wheelRO.disconnect();this.wheelRO=new ResizeObserver(()=>{if(w.isConnected&&size())draw()});this.wheelRO.observe(w);
   let pos=s.pick,last=-1,anim=0;
-  const capFor=i=>{const x=L[i];cap.innerHTML=`<div class="nm">${x.n}</div><div class="meta"><span>${ic('clock')}${x.m} Min</span><span>${ic('flame')}${x.k} kcal</span>${enBadge(x,false)}<button class="info sm${s.en?' on':''}" data-a="sheet" data-v="energy" aria-label="Energiedichte erklärt und filtern">${ic('info')}</button></div>`};
+  const capFor=i=>{const x=L[i];cap.innerHTML=`<div class="nm${x.n.length>34?' xl':x.n.length>24?' l':''}">${x.n}</div><div class="meta"><span>${ic('clock')}${x.m} Min</span><span>${ic('flame')}${x.k} kcal</span>${enBadge(x,false)}<button class="info sm${s.en?' on':''}" data-a="sheet" data-v="energy" aria-label="Energiedichte erklärt und filtern">${ic('info')}</button></div>`};
   const dotsFor=idx=>{const m=Math.min(5,n),st=Math.max(0,Math.min(idx-2,n-m));let h='';for(let k=st;k<st+m;k++){const edge=(k===st&&st>0)||(k===st+m-1&&st+m<n);h+=`<i class="${k===idx?'on':''}${edge?' sm':''}"></i>`}dw.innerHTML=h};
   const draw=()=>{for(let k=0;k<n;k++){const d=k-pos,el=items[k];if(Math.abs(d)>2.6){if(el.style.visibility!=='hidden')el.style.visibility='hidden';continue}
       el.style.visibility='';const a=d*STEP,x=R*Math.sin(a),y=R*(1-Math.cos(a)),ad=Math.min(Math.abs(d),2),sc=1-ad*.24;
