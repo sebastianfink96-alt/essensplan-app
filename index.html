@@ -3362,7 +3362,7 @@ Phone.prototype.vFlearn=function(){const s=this.s,L=s.learn||{};const pr=d=>Math
      <span class="ls-tx"><small>${d.t}</small><b>${S[0]}</b>${ty==='half'?'':`<span class="ls-s">${S[1]}</span>`}
      <span class="ls-f"><em>${v>=n?'Wiederholen':v?'Weiter':'Starten'}${ic('right')}</em><span>${n} Lektionen${v&&v<n?` · ${v}/${n}`:v>=n?' · fertig':''}</span></span>
      ${v?`<span class="ls-bar"><i style="width:${v/n*100}%"></i></span>`:''}</span></button>`};
-  const LAY=[['fphase','half'],['fberg','half'],['fzone','half'],['ffuel','half'],['frec','half'],['fkit','half']];
+  const LAY=[['fphase','row'],['fberg','half'],['fzone','half'],['ffuel','big'],['frec','half'],['fkit','half']];
   return `<div class="view ftv lrnf"><div class="z">
    <div class="top-row between"><span></span><button class="iconbtn" data-a="tab" data-v="plan" aria-label="Zur Ernährung">${ic('up')}</button></div>
    <div class="eb">Lerncenter · ${seen}/${tot} Lektionen</div>
