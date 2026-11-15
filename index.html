@@ -1797,6 +1797,22 @@ img,svg{-webkit-user-drag:none}
 
 /* V173: roter Bogen links unten durchscheinend – Tuch sichtbar */
 .look-salbei .planv .dish::after{-webkit-mask-image:linear-gradient(90deg,rgba(0,0,0,.6) 0%,rgba(0,0,0,.82) 30%,#000 55%);mask-image:linear-gradient(90deg,rgba(0,0,0,.6) 0%,rgba(0,0,0,.82) 30%,#000 55%)}
+
+/* V174: Rad – Teller etwas kleiner; unten nicht mehr abgeschnitten (nur seitlich beschneiden), liegt über dem roten Bogen */
+.look-salbei .planv .wheel-wrap{overflow:visible!important;clip-path:inset(-40px 0 -60px 0);z-index:3!important;margin-bottom:-18px!important}
+.look-salbei .planv .wcard::after{z-index:1}
+.look-salbei .planv .wcap{z-index:4!important;padding-top:24px!important}
+
+/* V175: Frühstück/Abendessen als Foto im Kreis (weißer Rand), Textzeile weg (Salbei/Mauve); schmalerer Bogen; Rezeptseite mit Farbverlauf oben */
+.planv .dish>.xm.ph,.planv .wcard>.xm.ph{padding:0!important;overflow:visible;background:#fff!important;box-shadow:0 0 0 3px #fff,0 8px 18px -8px rgba(0,0,0,.4)!important}
+.xm.ph .xph{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block;transform:scale(1.12)}
+.planv .dish>.xm.ph{width:48px!important;height:48px!important;min-width:48px!important}
+.xm.ph>i{position:absolute;right:-4px;top:-4px}
+.look-salbei .planv .dish .xline{display:none!important}
+.look-salbei .planv .dish::after{height:30%!important}
+.look-salbei .planv .dish .nm{margin-top:4px!important}
+.look-mauve .view.det.rz{background:linear-gradient(180deg,rgba(147,55,90,.42) 0,rgba(147,55,90,.2) 120px,rgba(147,55,90,.06) 230px,rgba(147,55,90,0) 320px),#FAF8F5!important}
+.phone.full.look-mauve .scr:has(.view.det)::before{background:none!important}
 </style>
 
 <div class="page">
@@ -3119,7 +3135,7 @@ const xName=v=>RM[v]?RM[v].n:v;
 /* Auswahl-Liste je Mahlzeit: Favoriten zuerst */
 const xList=(s,k)=>{const L=RX.filter(r=>r.meal===k);return L.filter(r=>s.favs.has(r.id)).concat(L.filter(r=>!s.favs.has(r.id)))};
 Phone.prototype.vXm=function(i){const X=this.s.extra[i]||{};
-  return ['b','d'].map(k=>{const v=X[k];return `<button class="xm ${k} ${v?'set':''}" data-a="extra" data-v="${k}" aria-label="${XM[k][0]}${v?': '+xName(v).replace(/"/g,'&quot;'):' hinzufügen'}">${ic(XM[k][1])}<i>${ic(v?'check':'plus')}</i></button>`}).join('')};
+  return ['b','d'].map(k=>{const v=X[k],r=v&&RM[v],ph=r&&r.img;return `<button class="xm ${k} ${v?'set':''} ${ph?'ph':''}" data-a="extra" data-v="${k}" aria-label="${XM[k][0]}${v?': '+xName(v).replace(/"/g,'&quot;'):' hinzufügen'}">${ph?`<img class="xph" src="${r.img}" alt="">`:ic(XM[k][1])}<i>${ic(v?'check':'plus')}</i></button>`}).join('')};
 /* Gewähltes Frühstück/Abendessen als ruhige Textzeile unter dem Hauptgericht */
 Phone.prototype.vXline=function(i){const X=this.s.extra[i]||{};const a=['b','d'].filter(k=>X[k]);if(!a.length)return '';
   return `<div class="xline">${a.map(k=>`<button data-a="extra" data-v="${k}">${ic(XM[k][1])}<span>${xName(X[k]).replace(/</g,'&lt;')}</span></button>`).join('<i></i>')}</div>`};
@@ -3172,8 +3188,8 @@ Phone.prototype.initPicker=function(){const s=this.s,self=this;const w=this.scr.
   const STEP=0.62;let D=0,R=0; /* Tellergröße, Radradius, Winkel pro Gericht (rad) */
   /* Größe aus dem tatsächlichen Platz (bei Größenänderung neu). Teller passt vollständig hinein (8 px Luft oben, 6 px unten)
      und liegt wie in der „Geplant“-Ansicht vor dem weißen Bogen. Nachbar-Teller werden am unteren Rand abgeschnitten. */
-  const size=()=>{const Wd=w.clientWidth,Hd=w.clientHeight;const nd=Math.round(Math.min(Wd*.66,Hd+10));if(!nd||nd===D)return false;D=nd;R=D*1.55;
-    items.forEach(el=>{const st=el.firstElementChild;st.style.setProperty('--s',D+'px');el.style.width=el.style.height=D+'px';el.style.top='0';el.style.margin='6px 0 0 '+(-D/2)+'px'});return true};
+  const size=()=>{const Wd=w.clientWidth,Hd=w.clientHeight;const nd=Math.round(Math.min(Wd*.55,Hd-22));if(!nd||nd===D)return false;D=nd;R=D*1.55;
+    items.forEach(el=>{const st=el.firstElementChild;st.style.setProperty('--s',D+'px');el.style.width=el.style.height=D+'px';el.style.top='0';el.style.margin='16px 0 0 '+(-D/2)+'px'});return true};
   size();if(this.wheelRO)this.wheelRO.disconnect();this.wheelRO=new ResizeObserver(()=>{if(w.isConnected&&size())draw()});this.wheelRO.observe(w);
   let pos=s.pick,last=-1,anim=0;
   const capFor=i=>{const x=L[i];cap.innerHTML=`<div class="nm${x.n.length>34?' xl':x.n.length>24?' l':''}">${x.n}</div><div class="meta"><span>${ic('clock')}${x.m} Min</span><span>${ic('flame')}${x.k} kcal</span>${enBadge(x,false)}<button class="info sm${s.en?' on':''}" data-a="sheet" data-v="energy" aria-label="Energiedichte erklärt und filtern">${ic('info')}</button></div>`};
