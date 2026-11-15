@@ -1687,6 +1687,16 @@ img,svg{-webkit-user-drag:none}
 .wpl-add .ic{width:15px;height:15px;stroke-width:2.2}
 .fpos-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px;margin-top:8px}.fpos-row .ai-in{margin-top:0;min-width:0}.fpos-row input{width:100%;min-width:0}
 .fpos-lv{margin-top:10px}
+
+/* V158: Positionen als eigene Karten, Ziehen & Ablegen */
+.wpl-r{gap:6px!important}
+.wpl-p{background:#F4F5F8!important;border-radius:14px!important;padding:8px 10px!important;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.wpl-d{padding:10px 0!important;border-radius:16px;transition:background .15s}
+.wpl-d.drop{background:rgba(42,101,69,.08)}
+.wpl-src{opacity:.35}
+.wpl-ghost{position:fixed;z-index:9999;pointer-events:none;margin:0;box-shadow:0 18px 36px -12px rgba(31,74,51,.45)!important;background:#fff!important}
+.wpl-ins{display:block;height:3px;border-radius:2px;background:#2A6545;margin:-1px 4px}
+.wpl-0{margin:8px 0 0!important}
 </style>
 
 <div class="page">
@@ -2754,9 +2764,29 @@ Phone.prototype.vWplan=function(k){const s=this.s,open=(s.fwOpen||{})[k];
   const head=`<button class="wpl-t ${open?'on':''}" data-a="fwplan" data-v="${k}" aria-expanded="${!!open}">${ic('list')}<span>${open?'Trainingsplan ausblenden':'Trainingsplan im Detail'}</span><em>${n} ${n===1?'Position':'Positionen'}</em>${ic('down','cv')}</button>`;
   if(!open)return head;
   return head+`<div class="wpl" data-a="fwplan" data-v="${k}">${Array.from({length:7},(_,j)=>{const i=k*7+j,A=dayActs(s.train[i]),dd=dayDate(i);
-    return `<div class="wpl-d ${i===TODAY?'today':''} ${i<TODAY?'past':''}"><div class="wpl-l"><small>${i===TODAY?'Heute':AB[j]}</small><b>${dd.getDate()}</b></div>
+    return `<div class="wpl-d ${i===TODAY?'today':''} ${i<TODAY?'past':''}" data-i="${i}"><div class="wpl-l"><small>${i===TODAY?'Heute':AB[j]}</small><b>${dd.getDate()}</b></div>
      <div class="wpl-r">${A.length?A.map((x,jj)=>`<button class="wpl-p" data-a="fpos" data-i="${i}" data-j="${jj}"><span style="--c:${FA[x.a]}">${ic('f_'+x.a)}</span><div><b>${esc(x.t)||FAN[x.a]}</b><small>${[FAN[x.a],fDur(x.min),x.a==='mob'?'':LVN[x.lv]||'',x.tss?x.tss+' TSS':''].filter(Boolean).join(' · ')}</small></div></button>`).join(''):'<p class="wpl-0">Ruhetag</p>'}</div>
      <button class="wpl-add" data-a="fposadd" data-i="${i}" aria-label="Position am ${DAYS[j]} hinzufügen">${ic('plus')}</button></div>`}).join('')}</div>`};
+/* V158: Position halten (0,3 s) und auf einen anderen Tag oder an eine andere Stelle ziehen */
+Phone.prototype.dragPos=function(e,el){const self=this,x0=e.clientX,y0=e.clientY,i0=+el.dataset.i,j0=+el.dataset.j;let lifted=false,ghost=null,tgt=null,ins=-1,dx=0,dy=0;
+  const list=el.closest('.wpl');
+  const timer=setTimeout(()=>{lifted=true;haptic();self.suppressClick=true;const r=el.getBoundingClientRect();ghost=el.cloneNode(true);ghost.classList.add('wpl-ghost');
+    Object.assign(ghost.style,{left:r.left+'px',top:r.top+'px',width:r.width+'px'});document.body.appendChild(ghost);el.classList.add('wpl-src')},300);
+  const clear=()=>{list.querySelectorAll('.wpl-d.drop').forEach(x=>x.classList.remove('drop'));list.querySelectorAll('.wpl-ins').forEach(x=>x.remove())};
+  const move=ev=>{dx=ev.clientX-x0;dy=ev.clientY-y0;if(!lifted){if(Math.hypot(dx,dy)>8)clearTimeout(timer);return}ev.preventDefault();
+    ghost.style.transform=`translate(${dx}px,${dy}px) scale(1.03)`;ghost.style.visibility='hidden';const u=document.elementFromPoint(ev.clientX,ev.clientY);ghost.style.visibility='';
+    const d=u&&u.closest('.wpl-d');clear();tgt=null;ins=-1;if(!d||!list.contains(d))return;tgt=+d.dataset.i;d.classList.add('drop');
+    const ps=[...d.querySelectorAll('.wpl-p')];ins=ps.length;for(let k=0;k<ps.length;k++){const b=ps[k].getBoundingClientRect();if(ev.clientY<b.top+b.height/2){ins=k;break}}
+    const bar=document.createElement('i');bar.className='wpl-ins';const R=d.querySelector('.wpl-r');if(ps[ins])R.insertBefore(bar,ps[ins]);else R.appendChild(bar)};
+  const noScroll=ev=>{if(lifted)ev.preventDefault()};
+  const up=()=>{clearTimeout(timer);removeEventListener('pointermove',move);removeEventListener('pointerup',up);removeEventListener('pointercancel',up);removeEventListener('touchmove',noScroll);
+    if(!lifted)return;setTimeout(()=>self.suppressClick=false,80);if(ghost)ghost.remove();el.classList.remove('wpl-src');clear();
+    if(tgt===null||isNaN(tgt))return;const s=self.s,A=dayActs(s.train[i0]),x=A[j0];if(!x)return;
+    self.prevTrain=JSON.stringify([s.train,s.tx]);A.splice(j0,1);
+    if(tgt===i0){A.splice(ins>j0?ins-1:ins,0,x);s.train[i0]=actsToT(A)}
+    else{const B=dayActs(s.train[tgt]);B.splice(Math.min(ins,B.length),0,x);if(A.length)s.train[i0]=actsToT(A);else delete s.train[i0];s.train[tgt]=actsToT(B)}
+    hapticSuccess();self.render();self.toast(tgt===i0?'Reihenfolge geändert':`Nach ${dn(tgt)} verschoben`,'Rückgängig','fundo')};
+  addEventListener('pointermove',move,{passive:false});addEventListener('pointerup',up);addEventListener('pointercancel',up);addEventListener('touchmove',noScroll,{passive:false})};
 Phone.prototype.vFpos=function(){const s=this.s,P=s.fpos||{},G='background:linear-gradient(100deg,#3B7D57,#1F4A33 58%,#2A6545);box-shadow:0 14px 26px -12px rgba(31,74,51,.75)',ed=P.j>=0,q=x=>esc(x==null?'':String(x)).replace(/"/g,'&quot;');
   return `<h3>${ed?'Position bearbeiten':'Neue Position'}</h3><p>${dayLbl(P.i)}</p>
    <div class="ftiles">${FACTS.map(([c,k,l])=>`<button class="ftile ${P.a===k?'on':''}" data-a="fposart" data-v="${k}" style="--c:${FA[k]}" aria-pressed="${P.a===k}"><span>${ic('f_'+k)}</span>${l}</button>`).join('')}</div>
@@ -3095,6 +3125,7 @@ Phone.prototype.dragSheet=function(e,sh){if(sh.scrollTop>0)return;const self=thi
     if(dy>110||v>.6){self.closeSheet()}else{sh.style.transition='transform .28s cubic-bezier(.2,.8,.2,1)';sh.style.transform=''}};
   addEventListener('pointermove',move,{passive:false});addEventListener('pointerup',up);addEventListener('pointercancel',up)};
 Phone.prototype.pdown=function(e){
+  const wp=e.target.closest('.wpl-p');if(wp&&this.s.screen==='fit')return this.dragPos(e,wp);
   const ft=e.target.closest('.ftile');if(ft&&['fday','fimp','fstd'].includes(this.s.sheet))return this.holdTile(e,ft);
   const sh=e.target.closest('.sheet');if(sh)return this.dragSheet(e,sh);
   const wd=e.target.closest('.wd');
