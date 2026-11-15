@@ -1872,6 +1872,17 @@ img,svg{-webkit-user-drag:none}
 .rt-nx{text-align:center;margin-top:16px;font-size:13.5px;color:#86868B}.rt-nx b{color:#1D1D1F}
 .rt-done{text-align:center;margin-top:60px}.rt-done span{font-size:70px}.rt-done p{color:#6E6E73}
 .rt-done .gbtn{background:linear-gradient(100deg,#3B7D57,#1F4A33 58%,#006039)!important;margin-top:16px}
+
+/* V177: Nachbar-Teller im Rad kaum transparent; Energiedichte ohne weiße Fläche; Tagesteller etwas kleiner; Frühstück/Abend-Foto in weißem Kreis wie leerer Knopf */
+.look-salbei .planv .dish .en,.look-salbei .planv .wcap .en{background:transparent!important;box-shadow:none!important;padding:2px 3px!important}
+.look-salbei .planv .dish .en .ic,.look-salbei .planv .wcap .en .ic{width:17px!important;height:17px!important}
+.look-salbei .planv .dish .en.low .ic,.look-salbei .planv .wcap .en.low .ic{color:#B9F2D3!important}
+.look-salbei .planv .dish .en.mid .ic,.look-salbei .planv .wcap .en.mid .ic{color:#FFD889!important}
+.look-salbei .planv .dish .en.high .ic,.look-salbei .planv .wcap .en.high .ic{color:#FFB8AE!important}
+.planv .dish .halo .stage{transform:scale(.92)}
+.planv .dish>.xm.ph,.planv .wcard>.xm.ph{width:46px!important;height:46px!important;min-width:46px!important;padding:4px!important;background:#fff!important;box-shadow:0 8px 18px -8px rgba(0,0,0,.35)!important}
+.xm.ph .xph{transform:scale(1.08)}
+.planv .wcard>.xm.ph{width:40px!important;height:40px!important;min-width:40px!important;padding:3px!important}
 </style>
 
 <div class="page">
@@ -3386,7 +3397,7 @@ Phone.prototype.initPicker=function(){const s=this.s,self=this;const w=this.scr.
   const dotsFor=idx=>{const m=Math.min(5,n),st=Math.max(0,Math.min(idx-2,n-m));let h='';for(let k=st;k<st+m;k++){const edge=(k===st&&st>0)||(k===st+m-1&&st+m<n);h+=`<i class="${k===idx?'on':''}${edge?' sm':''}"></i>`}dw.innerHTML=h};
   const draw=()=>{for(let k=0;k<n;k++){const d=k-pos,el=items[k];if(Math.abs(d)>2.6){if(el.style.visibility!=='hidden')el.style.visibility='hidden';continue}
       el.style.visibility='';const a=d*STEP,x=R*Math.sin(a),y=R*(1-Math.cos(a)),ad=Math.min(Math.abs(d),2),sc=1-ad*.24;
-      el.style.transform=`translate3d(${x}px,${y}px,0) rotate(${a}rad) scale(${sc})`;el.style.opacity=String(1-ad*.22);el.style.zIndex=String(10-Math.round(ad*3))}
+      el.style.transform=`translate3d(${x}px,${y}px,0) rotate(${a}rad) scale(${sc})`;el.style.opacity=String(1-ad*.06);el.style.zIndex=String(10-Math.round(ad*3))}
     const idx=Math.max(0,Math.min(n-1,Math.round(pos)));if(idx!==last){last=idx;s.pick=idx;capFor(idx);dotsFor(idx)}};
   const springTo=(t)=>{cancelAnimationFrame(anim);const p0=pos,dt=t-p0,T=Math.min(620,280+Math.abs(dt)*120),t0=performance.now();
     const step=now=>{const k=Math.min(1,(now-t0)/T),e=1-Math.pow(1-k,3)*(1-k*.2);pos=p0+dt*(k>=1?1:e);draw();if(k<1)anim=requestAnimationFrame(step);else{pos=t;draw()}};anim=requestAnimationFrame(step)};
