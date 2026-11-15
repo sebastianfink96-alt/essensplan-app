@@ -1762,14 +1762,12 @@ img,svg{-webkit-user-drag:none}
 
 .look-mauve .fitv>.z>.lbl.fl,.look-mauve .fitv>.z>.lbl.fl span,.look-mauve .fitv>.z>.lbl.fl .fclr{color:rgba(255,255,255,.9)!important}
 
-/* V167: Mauve – Gericht-Kachel im Essensplan rot wie „Empfehlung des Tages“ */
-.look-mauve .planv .dish{background:radial-gradient(70% 60% at 100% 30%,rgba(255,255,255,.22),rgba(255,255,255,0) 62%),radial-gradient(60% 60% at 0% 100%,rgba(255,170,150,.3),rgba(255,255,255,0) 70%),linear-gradient(135deg,#C2607A 0%,#93375A 55%,#6E2444 100%)!important;border-color:transparent!important;box-shadow:0 26px 44px -26px rgba(110,36,68,.85)!important;color:#fff}
-.look-mauve .planv .dish::after{display:none!important}
-.look-mauve .planv .dish .nm{color:#fff!important}
-.look-mauve .planv .dish .meta,.look-mauve .planv .dish .meta span,.look-mauve .planv .dish .meta .ic,.look-mauve .planv .dish .info,.look-mauve .planv .dish .xline,.look-mauve .planv .dish .xline button{color:rgba(255,255,255,.88)!important}
-.look-mauve .planv .dish .xline button .ic{color:#fff!important}
-.look-mauve .planv .dish .sb{color:rgba(255,255,255,.85)!important}
-.look-mauve .planv .dish .outc{background:rgba(255,255,255,.18)!important;color:#fff!important}
+/* V168: Salbei/Mauve – nur der untere Bogen der Gericht-Kachel in Akzentfarbe (Mauve rot, Salbei grün), Name/Werte weiß */
+.look-salbei .planv .dish{background:#F8F2EF!important;border-color:#EEE2DD!important}
+.look-salbei .planv .dish::after{display:block!important;background:var(--a-deep)!important;height:38%!important;box-shadow:0 -8px 24px -14px rgba(0,0,0,.25)}
+.look-salbei .planv .dish .nm{color:#fff!important}
+.look-salbei .planv .dish .meta,.look-salbei .planv .dish .meta span,.look-salbei .planv .dish .meta .ic,.look-salbei .planv .dish .info,.look-salbei .planv .dish .xline,.look-salbei .planv .dish .xline button{color:rgba(255,255,255,.9)!important}
+.look-salbei .planv .dish .xline button .ic{color:#fff!important}
 </style>
 
 <div class="page">
