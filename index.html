@@ -1721,20 +1721,25 @@ img,svg{-webkit-user-drag:none}
 .lko-mauve .lko-sw{background:linear-gradient(135deg,#EFE7DD 0%,#D9C8BB 40%,#93375A 100%)}
 .look-opts{grid-template-columns:repeat(3,1fr)!important}
 
-/* V162: Mauve-Look ohne Farbverläufe – flacher Creme-Kopf, rote Überzeile, ruhige Gericht-Kachel; Fitnessbereich ohne grünen Verlauf */
-.look-mauve .view.planv{background:#F4EFE9!important}
+/* V163: Mauve-Look – flaches, leicht rosiges Beige ohne jeden Verlauf; Fitnessbereich mit knalligem Rolex-Grün oben (fest, ohne Verlauf) */
+.phone.look-mauve{--a-bg:#F3EBE7}
+.look-mauve .scr{background:#F3EBE7}
+.look-mauve .view.planv,.look-mauve .recv,.look-mauve .shopv,.look-mauve .lrnv,.look-mauve .fitv,.look-mauve .setv{background:#F3EBE7!important}
+.phone.full.look-mauve .scr::before{background:#F3EBE7!important}
+.phone.full.look-mauve .scr:has(.fitv)::before{background:#006039!important}
+.phone.full.look-mauve .scr:has(.tabbar)::after{background:linear-gradient(rgba(243,235,231,0),#F3EBE7 40%)!important}
 .look-mauve .planv .phead .eb{color:#93375A!important}
-.look-mauve .planv .wcard,.look-mauve .planv .dish{background:#F7F2EC!important;border-color:#EFE6DC!important;box-shadow:0 12px 26px -22px rgba(110,36,68,.35)!important}
+.look-mauve .planv .wcard,.look-mauve .planv .dish{background:#F8F2EF!important;border-color:#EEE2DD!important;box-shadow:0 12px 26px -22px rgba(110,36,68,.35)!important}
 .look-mauve .planv .wcard::after,.look-mauve .planv .dish::after{background:#fff!important}
-.look-mauve .fhead-bg{background:#F4EFE9!important}
-.look-mauve .fitv{background:#F4EFE9}
-.look-mauve .fitv .phead .eb{color:#2A6545!important}
-.look-mauve .fitv .phead .h-title{color:#1D1D1F!important}
-.look-mauve .fitv .hbtns .iconbtn{background:#fff!important;color:#1D1D1F!important;box-shadow:0 0 0 1px rgba(0,0,0,.06)!important}
+.look-mauve .fhead-bg{display:none}
+.look-mauve .fitv .phead{position:relative;z-index:0;margin-bottom:26px}
+.look-mauve .fitv .phead::before{content:'';position:absolute;left:-40px;right:-40px;top:-400px;bottom:-14px;background:#006039;border-radius:0 0 30px 30px;z-index:-1}
+.look-mauve .fitv .phead .eb{color:rgba(255,255,255,.85)!important}
+.look-mauve .fitv .phead .h-title{color:#fff!important}
+.look-mauve .fitv .hbtns .iconbtn{background:rgba(255,255,255,.18)!important;color:#fff!important;box-shadow:none!important}
 .look-mauve .fitv>.z>.lbl.fl,.look-mauve .fitv>.z>.lbl.fl span{color:#8A8FA3!important}
-.look-mauve .fitv>.z>.lbl.fl .fclr{color:#2A6545!important}
+.look-mauve .fitv>.z>.lbl.fl .fclr{color:#006039!important}
 .look-mauve .wpl-t{background:#fff!important}
-.look-mauve .recv,.look-mauve .shopv,.look-mauve .lrnv{background:#F4EFE9!important}
 </style>
 
 <div class="page">
