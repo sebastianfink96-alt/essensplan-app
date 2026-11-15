@@ -1697,6 +1697,20 @@ img,svg{-webkit-user-drag:none}
 .wpl-ghost{position:fixed;z-index:9999;pointer-events:none;margin:0;box-shadow:0 18px 36px -12px rgba(31,74,51,.45)!important;background:#fff!important}
 .wpl-ins{display:block;height:3px;border-radius:2px;background:#2A6545;margin:-1px 4px}
 .wpl-0{margin:8px 0 0!important}
+
+/* V159: vierte Farbe „Salbei“ – Creme-Kopf, Salbei-Akzente, Mauve für Beschriftungen */
+.phone.look-salbei{--a-blue:#6E8B6C;--a-violet:#8AA588;--a-pink:#7C987A;--a-eyebrow:#9A5A6A;
+  --a-grad:linear-gradient(100deg,#A9BFA6 0%,#7E9A7C 58%,#8FAA8C 100%);--a-glow:126,154,124;--a-today:#E6EEE3;--a-ring:#B9CBB6;
+  --b1:#D6E2D3;--b2:#E8DED4;--b3:#CBD9C8;--b4:#EFE6DC;--a-deep:linear-gradient(135deg,#AFC4AC 0%,#839E81 55%,#5F7C5E 100%);--hd:236,229,220;
+  --sh1:#8AA588;--sh2:#7E9A7C;--sh3:#95AF93;--shp:#F1EBE3;--shpc:#6F5A4E}
+.look-salbei .planv .phead .eb{color:#7A6E64!important}
+.look-salbei .planv .phead .h-title{color:#1D1D1F!important}
+.look-salbei .planv .hbtns .iconbtn{background:rgba(255,255,255,.75)!important;color:#3D3A36!important}
+.look-salbei .planv .prog .bar{background:rgba(110,139,108,.22)!important}.look-salbei .planv .prog .bar b{background:#7E9A7C!important}
+.look-salbei .planv .wclr,.look-salbei .planv .wnext{color:#5F5850!important}
+.lko-salbei .lko-sw{background:linear-gradient(135deg,#EFE7DD 0%,#A9BFA6 50%,#A0606F 100%)}
+.look-opts{grid-template-columns:repeat(4,1fr)!important;gap:7px!important}
+.lko{padding:11px 8px!important}.lko b{font-size:13px!important}
 </style>
 
 <div class="page">
@@ -2314,7 +2328,7 @@ Phone.prototype.backAfterPlan=function(d){if(wkOf(d)===0)return this.goPlanToday
 Phone.prototype.goPlanToday=function(){const s=this.s;s.screen='plan';s.sel=TODAY;s.wk=0;s.edit=false;s.pick=-1};
 
 Phone.prototype.render=function(){
-  if(this.ph){const L=lookOf(this.s);this.ph.classList.toggle('look-blau',L==='blau');this.ph.classList.toggle('look-coral',L==='coral')}
+  if(this.ph){const L=lookOf(this.s);this.ph.classList.toggle('look-blau',L==='blau');this.ph.classList.toggle('look-coral',L==='coral');this.ph.classList.toggle('look-salbei',L==='salbei')}
   const s=this.s, v=this.scr.querySelector('.view');
   const keep=(v&&this.lastScreen===s.screen)?v.scrollTop:0;const fresh=this.lastScreen!==s.screen;
   const focus=document.activeElement&&this.scr.contains(document.activeElement)?document.activeElement.dataset.k:null;
@@ -2522,7 +2536,7 @@ const PF_GOAL=[['abnehmen','Abnehmen','Leicht und sättigend','scale'],['ausgewo
 const NAMES_M=new Set('alexander,andreas,anton,armin,axel,benedikt,benjamin,bernd,bernhard,christian,christoph,clemens,daniel,david,dennis,dominik,elias,emil,erik,erwin,fabian,felix,ferdinand,florian,franz,friedrich,georg,gerald,gerhard,gregor,günther,hannes,harald,heinz,helmut,herbert,hubert,jakob,jan,jannik,johann,johannes,jonas,josef,julian,jürgen,kai,karl,klaus,kevin,konstantin,kurt,lars,leon,leonard,lorenz,luca,lukas,manfred,manuel,marc,marcel,mario,markus,martin,matthias,max,maximilian,michael,moritz,niklas,nico,nikolaus,noah,norbert,oliver,oskar,patrick,paul,peter,philipp,rafael,rainer,ralf,raphael,reinhard,richard,robert,roland,roman,rudolf,samuel,sebastian,simon,stefan,stephan,sven,theo,thomas,tim,timo,tobias,ulrich,valentin,vincent,walter,werner,wolfgang,jonathan,leo,ben,finn,luis,louis,henry,anton,elijah,mathias,andre,andré,rene,rené,dieter,uwe,gerd,horst,jörg,holger,dirk,frank,jens,mike,marco,sascha,andrea_m'.split(','));
 const NAMES_W_EXC=new Set(['luca','nico','noah','andrea_m','elijah','sascha','rene','rené','andre','andré','mike','timo','theo','leo','kai','jonas','elias','mattia']);
 const nameLook=n=>{const f=String(n||'').trim().split(/\s+/)[0].toLowerCase();if(!f)return 'rot';return NAMES_M.has(f)?'blau':'rot'};
-const lookOf=s=>{const l=s.prof&&s.prof.look;return l==='lila'?'coral':['blau','rot','coral'].includes(l)?l:nameLook(s.prof&&s.prof.name)};
+const lookOf=s=>{const l=s.prof&&s.prof.look;return l==='lila'?'coral':['blau','rot','coral','salbei'].includes(l)?l:nameLook(s.prof&&s.prof.name)};
 const pfText=s=>{const a=PF_SPORT.find(x=>x[0]===s.prof.sport),b=PF_GOAL.find(x=>x[0]===s.prof.goal),d=discAll(s.prof),G=fGoals(s),PG=(s.prof.pgoals||[]).map(x=>x.t),cur=seasonPlan(s).segs.find(g=>g.a<=TODAY&&TODAY<g.b);
   return [d.length?(d.length>1?'Sportarten: ':'Sportart: ')+d.map(x=>x[1]).join(', '):'',a?'Sportliche Ambition: '+a[1]:'',b?'Ernährungsziel: '+b[1]:'',G.length?'Saisonziele: '+G.map(g=>`${g.t} am ${isoLbl(g.d)}`).join(', '):'',PG.length?'Persönliche Ziele: '+PG.join(', '):'',cur?'Aktuelle Trainingsphase: '+phOf(cur.k)[1]+' ('+phOf(cur.k)[3]+')':''].filter(Boolean).join('. ')};
 /* V127: Sportart, Saisonziele (max. 3) und Saisonphasen */
@@ -3491,7 +3505,7 @@ Phone.prototype.vSettings=function(){const s=this.s,pf=s.prof,q=x=>String(x||'')
    ${opt(PF_SPORT,pf.sport,'pfsport','fit rv')}
    <h2 class="ap-h2 rv">Deine App. <span>Deine Farben.</span></h2>
    <p class="pf-note look-sub rv">Gestalte deinen Look.</p>
-   <div class="look-opts rv">${(()=>{const cur=lookOf(s);return [['rot','Rot'],['blau','Blau'],['coral','Coral']].map(([k,t])=>`<button class="lko ${cur===k?'on':''} lko-${k}" data-a="pflook" data-v="${k}" aria-pressed="${cur===k}"><span class="lko-sw"></span><b>${t}</b></button>`).join('')})()}</div>
+   <div class="look-opts rv">${(()=>{const cur=lookOf(s);return [['rot','Rot'],['blau','Blau'],['coral','Coral'],['salbei','Salbei']].map(([k,t])=>`<button class="lko ${cur===k?'on':''} lko-${k}" data-a="pflook" data-v="${k}" aria-pressed="${cur===k}"><span class="lko-sw"></span><b>${t}</b></button>`).join('')})()}</div>
    <h2 class="ap-h2 rv">Ernährungsziel. <span>Was ist dir wichtig?</span></h2>
    ${opt(PF_GOAL,pf.goal,'pfgoal','rv')}
    <p class="pf-note">Deine Angaben und dein Foto bleiben auf diesem Gerät. Die App richtet Vorschläge künftig danach aus.</p>
