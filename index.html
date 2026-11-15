@@ -3580,7 +3580,7 @@ Phone.prototype.vExtra=function(){const s=this.s,k=s.exK,i=s.sel,cur=(s.extra[i]
   const head=`<div class="ai-head"><span class="stk-ic" style="background:var(--x${k})">${ic(XM[k][1])}</span><div><h3 style="margin:0">${XM[k][0]}</h3><p class="ai-sub">${i===TODAY?'Heute · ':''}${dayLbl(i)}</p></div></div>`;
   if(cur&&!s.exEdit){const r=RM[cur];
     return head+`<div class="xsel">${r?plate(r,132):`<span class="xsel-t">${ic(XM[k][1])}</span>`}<b>${xName(cur).replace(/</g,'&lt;')}</b>${r?`<span>${ic('clock')}${r.m} Min · ${r.k} kcal · ${r.p} g Protein</span>`:''}</div>
-     <div class="acts" style="margin-top:16px">${r?`<button class="obtn" data-a="xwdet" data-id="${r.id}">${ic('book')}Rezept</button>`:''}<button class="gbtn" data-a="exedit">${ic('pencil')}Ändern</button></div>
+     <div class="acts" style="margin-top:16px">${r?`<button class="obtn" data-a="exedit">${ic('pencil')}Ändern</button><button class="gbtn" data-a="xwdet" data-id="${r.id}">${ic(i===TODAY?'chef':'book')}${i===TODAY?'Jetzt kochen':'Rezept ansehen'}</button>`:`<button class="gbtn" data-a="exedit">${ic('pencil')}Ändern</button>`}</div>
      <button class="ai-again" data-a="exset" data-v="">${XM[k][0]} entfernen</button>`}
   return `<div class="ai-head"><span class="stk-ic" style="background:var(--x${k})">${ic(XM[k][1])}</span><div><h3 style="margin:0">${XM[k][0]}</h3><p class="ai-sub">${i===TODAY?'Heute · ':''}${dayLbl(i)}</p></div></div>
    <div class="xw" data-n="${L.length}"><span class="xw-pad"></span>${L.map((r,n)=>`<button class="xw-i" data-a="xwi" data-v="${n}" aria-label="${r.n}">${plate(r,96)}</button>`).join('')}<span class="xw-pad"></span></div>
