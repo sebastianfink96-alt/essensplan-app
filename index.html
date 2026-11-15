@@ -1950,6 +1950,44 @@ img,svg{-webkit-user-drag:none}
 .mseg.ph4 button.on i{background:#fff!important;box-shadow:none!important}
 
 .xm.ph{overflow:visible!important}.xm.ph .xph{display:block;width:100%;height:100%;border-radius:50%;scale:1!important;background-color:#F3EEE9;background-size:128%;background-position:center;background-repeat:no-repeat}
+
+/* ===== V180: Bend-Look ===== */
+.pose.anim .pa{animation:pA 4s ease-in-out infinite}.pose.anim .pb{animation:pB 4s ease-in-out infinite}
+@keyframes pA{0%,40%{opacity:1}50%,90%{opacity:0}100%{opacity:1}}@keyframes pB{0%,40%{opacity:0}50%,90%{opacity:1}100%{opacity:0}}
+.mt .pose{width:84px!important;height:84px!important}
+.mh-col{background:#fff!important}
+.catv{background:#fff!important}
+.cat-top{display:flex;align-items:center;justify-content:space-between;margin:4px 0 22px}
+.cat-top b{font-size:24px;font-weight:600;letter-spacing:-.02em;color:#1D1D1F}.cat-top span{width:44px}
+.cat-top .iconbtn{background:#F5F4F2!important;color:#8A8580!important}
+.cat-lbl{font-size:15px;font-weight:600;letter-spacing:.02em;text-transform:uppercase;color:#A8A29C;margin:18px 0 12px}
+.cat-r{display:flex;align-items:center;gap:18px;width:100%;border:0;background:none;padding:8px 0;text-align:left;color:#1D1D1F}
+.cat-i{flex:none;width:84px;height:84px;border-radius:22px;background:#fff;display:grid;place-items:center;box-shadow:0 0 0 1px rgba(0,0,0,.04),0 10px 22px -12px rgba(0,0,0,.25)}
+.cat-i .pose{width:58px;height:58px}
+.cat-r b{display:block;font-size:20px;font-weight:600;letter-spacing:-.02em}
+.cat-r small{display:block;font-size:13px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:#A8A29C;margin-top:4px}
+.cat-r .cat-p{margin-left:auto;width:22px;height:22px;color:#006039}
+.cat-r.sm .cat-i{width:64px;height:64px;border-radius:18px}.cat-r.sm .cat-i .pose{width:46px;height:46px}.cat-r.sm b{font-size:17px}
+.bpv{background:#fff!important;padding:calc(var(--sat,0px) + 6px) 20px 40px!important}
+.bp-h{display:flex;align-items:center;justify-content:space-between;padding:8px 0 10px;border-bottom:1px solid #F0EEEB}
+.bp-h b{font-size:16px;font-weight:600;color:#1D1D1F}.bp-h span{width:32px}
+.bp-x{border:0;background:none;width:32px;height:32px;display:grid;place-items:center;color:#B5AFA9}.bp-x .ic{width:20px;height:20px}
+.bp-c{position:relative;width:min(300px,78vw);aspect-ratio:1;margin:26px auto 0}
+.bp-ring{position:absolute;inset:0;width:100%;height:100%}
+.bp-p{position:absolute;inset:6%;display:block}.bp-p .pose{width:100%;height:100%}
+.bp-n{display:flex;align-items:center;justify-content:center;gap:6px;margin:18px auto 0;border:0;background:none;font-size:20px;font-weight:600;color:#1D1D1F}
+.bp-n .ic{width:16px;height:16px;color:#B5AFA9}
+.bp-steps{margin:12px 6px 0}
+.bp-t{text-align:center;font-size:44px;font-weight:600;color:#A39A93;margin-top:24px;font-variant-numeric:tabular-nums}
+.bp-ctl{display:flex;justify-content:center;align-items:center;gap:26px;margin-top:26px}
+.bp-ctl button{width:58px;height:58px;border-radius:50%;border:0;background:#fff;display:grid;place-items:center;color:#2B2B2B;box-shadow:0 8px 20px -8px rgba(0,0,0,.25),0 0 0 1px rgba(0,0,0,.03)}
+.bp-ctl button.big{width:76px;height:76px}.bp-ctl .ic{width:24px;height:24px;stroke-width:2.4}.bp-ctl .big .ic{width:30px;height:30px}
+.bp-done{text-align:center;margin-top:40px}.bp-done .pose{width:200px;height:200px;margin:0 auto}.bp-done h1{font-size:32px;margin:16px 0 4px}.bp-done p{color:#86868B}
+.bp-done .gbtn{background:linear-gradient(100deg,#0F7C4E,#004D2E 58%,#006039)!important;margin-top:18px}
+
+.view.bpv{display:block!important;overflow-y:auto}.bpv>*{flex:none}.bp-n{margin-top:22px!important}.bp-t{margin-top:30px!important;line-height:1.1}.bp-ctl{margin-top:30px!important}
+
+.bp-t.rt-s{position:static!important;inset:auto!important;display:block!important;font-size:44px!important;font-weight:600!important;color:#A39A93!important}
 </style>
 
 <div class="page">
@@ -2031,7 +2069,7 @@ f_bike:'<circle cx="5.6" cy="16.4" r="3.9"/><circle cx="18.4" cy="16.4" r="3.9"/
 f_run:'<path d="M3 17.5v-1.2c0-1 .6-1.9 1.5-2.3L8 12.5l2-4.5 2.6 1.6L15 13l4.2 1.4c1.1.4 1.8 1.4 1.8 2.5v.6z"/><path d="M11 12.5l1.8-.9M12.4 14.2l1.8-.9"/>',
 f_tennis:'<circle cx="12" cy="12" r="8.2"/><path d="M5.8 6.8c3.2 2.6 3.2 7.8 0 10.4M18.2 6.8c-3.2 2.6-3.2 7.8 0 10.4"/>',
 f_swim:'<circle cx="16.8" cy="7.6" r="1.9"/><path d="M4.5 13.2l5.2-3.6 3.2 2.6 3.6 1"/><path d="M3 17.6c1.5 0 1.5-1.2 3-1.2s1.5 1.2 3 1.2 1.5-1.2 3-1.2 1.5 1.2 3 1.2 1.5-1.2 3-1.2 1.5 1.2 3 1.2"/>',
-f_crossfit:'<path d="M9 7.5a3 3 0 0 1 6 0"/><path d="M8.2 9.5h7.6l1.4 3.2a5.6 5.6 0 0 1-5.2 7.8 5.6 5.6 0 0 1-5.2-7.8z"/>',f_padel:'<ellipse cx="10" cy="9" rx="5.6" ry="6.2"/><path d="M13.4 14l5.6 6.2"/><circle cx="8.4" cy="7.6" r=".5"/><circle cx="11.4" cy="7.6" r=".5"/><circle cx="9.9" cy="10.4" r=".5"/><circle cx="18.6" cy="5.6" r="1.6"/>',f_fussball:'<circle cx="12" cy="12" r="8.4"/><path d="M12 8.2l3 2.2-1.1 3.6h-3.8L9 10.4zM12 3.6v4.6M15 10.4l4.7-1.6M13.9 14l2.7 3.9M10.1 14l-2.7 3.9M9 10.4L4.3 8.8"/>',f_ball:'<circle cx="9" cy="14" r="5.6"/><path d="M3.4 14h11.2M9 8.4c-1.8 1.6-1.8 9.6 0 11.2M9 8.4c1.8 1.6 1.8 9.6 0 11.2"/><circle cx="17.2" cy="7.2" r="3.6"/><path d="M14.4 5.1c1.7.6 2.6 2.4 2 4.2M20 9.3c-1.7-.6-2.6-2.4-2-4.2"/>',f_eigen:'<circle cx="12" cy="12" r="8.4"/><path d="M9.6 9.6a2.4 2.4 0 1 1 3.4 2.2c-.6.3-1 .9-1 1.6v.6M12 16.6v.4"/>',list:'<path d="M9 6.5h11M9 12h11M9 17.5h11"/><circle cx="4.6" cy="6.5" r="1.1"/><circle cx="4.6" cy="12" r="1.1"/><circle cx="4.6" cy="17.5" r="1.1"/>',copy:'<rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a1.5 1.5 0 0 0-1.5-1.5H6A1.5 1.5 0 0 0 4.5 6v8A1.5 1.5 0 0 0 6 15.5h2.5"/>',f_kraft:'<path d="M3.5 9.5v5M6.5 7v10M17.5 7v10M20.5 9.5v5M6.5 12h11"/>',
+f_crossfit:'<path d="M9 7.5a3 3 0 0 1 6 0"/><path d="M8.2 9.5h7.6l1.4 3.2a5.6 5.6 0 0 1-5.2 7.8 5.6 5.6 0 0 1-5.2-7.8z"/>',f_padel:'<ellipse cx="10" cy="9" rx="5.6" ry="6.2"/><path d="M13.4 14l5.6 6.2"/><circle cx="8.4" cy="7.6" r=".5"/><circle cx="11.4" cy="7.6" r=".5"/><circle cx="9.9" cy="10.4" r=".5"/><circle cx="18.6" cy="5.6" r="1.6"/>',f_fussball:'<circle cx="12" cy="12" r="8.4"/><path d="M12 8.2l3 2.2-1.1 3.6h-3.8L9 10.4zM12 3.6v4.6M15 10.4l4.7-1.6M13.9 14l2.7 3.9M10.1 14l-2.7 3.9M9 10.4L4.3 8.8"/>',f_ball:'<circle cx="9" cy="14" r="5.6"/><path d="M3.4 14h11.2M9 8.4c-1.8 1.6-1.8 9.6 0 11.2M9 8.4c1.8 1.6 1.8 9.6 0 11.2"/><circle cx="17.2" cy="7.2" r="3.6"/><path d="M14.4 5.1c1.7.6 2.6 2.4 2 4.2M20 9.3c-1.7-.6-2.6-2.4-2-4.2"/>',f_eigen:'<circle cx="12" cy="12" r="8.4"/><path d="M9.6 9.6a2.4 2.4 0 1 1 3.4 2.2c-.6.3-1 .9-1 1.6v.6M12 16.6v.4"/>',list:'<path d="M9 6.5h11M9 12h11M9 17.5h11"/><circle cx="4.6" cy="6.5" r="1.1"/><circle cx="4.6" cy="12" r="1.1"/><circle cx="4.6" cy="17.5" r="1.1"/>',copy:'<rect x="8.5" y="8.5" width="11" height="11" rx="2.5"/><path d="M15.5 8.5V6a1.5 1.5 0 0 0-1.5-1.5H6A1.5 1.5 0 0 0 4.5 6v8A1.5 1.5 0 0 0 6 15.5h2.5"/>',back2:'<path d="M11 7 6 12l5 5M18 7l-5 5 5 5"/>',fwd2:'<path d="M13 7l5 5-5 5M6 7l5 5-5 5"/>',f_kraft:'<path d="M3.5 9.5v5M6.5 7v10M17.5 7v10M20.5 9.5v5M6.5 12h11"/>',
 f_ballett:'<circle cx="12" cy="4.3" r="1.8"/><path d="M12 6.4v5M12 8c-2.3-.5-3.7-2.1-4.3-4.3M12 8c2.3-.5 3.7-2.1 4.3-4.3M6.2 12.4c2-1 3.8-1.4 5.8-1.4s3.8.4 5.8 1.4c-1.9.7-3.8 1-5.8 1s-3.9-.3-5.8-1zM11.3 13.4l-.5 7.3M10.8 20.7h1.6M12.8 13.4l4 5.6"/>',f_mob:'<circle cx="12" cy="5" r="1.9"/><path d="M12 8.2v5.3M12 9.8l-5 3.4M12 9.8l5 3.4M4.5 19c2.5-2.6 5-3.6 7.5-5.5 2.5 1.9 5 2.9 7.5 5.5M8.5 19h7"/>',
 heart:'<path d="M12 20.3s-7.5-4.5-7.5-10.3A4.2 4.2 0 0 1 12 7.4a4.2 4.2 0 0 1 7.5 2.6c0 5.8-7.5 10.3-7.5 10.3z"/>',
   sliders:'<path d="M4 7h9M17 7h3M4 12h3M11 12h9M4 17h11M19 17h1"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="17" cy="17" r="2"/>',
@@ -2513,7 +2551,7 @@ function Phone(host,init,opts){
   this.scr.addEventListener('contextmenu',e=>{if(e.target.closest('.wd'))e.preventDefault()});
   /* Senkrecht wischen dreht zwischen Essensplan und Fitnessbereich (Touch-Ereignisse: laufen auch, wenn der Browser selbst scrollt) */
   let vs=null;const self=this;
-  this.scr.addEventListener('touchstart',e=>{const s=self.s;if(e.touches.length!==1||s.sheet||s.ipop||!['plan','fit'].includes(s.screen)||self.busy||e.target.closest('.tabbar,.orb,.sheet,.ipop,.toast')){vs=null;return}
+  this.scr.addEventListener('touchstart',e=>{const s=self.s;if(e.touches.length!==1||s.sheet||s.ipop||!pairOf(s.screen)||self.busy||e.target.closest('.tabbar,.orb,.sheet,.ipop,.toast')){vs=null;return}
     const tt=e.touches[0],v=self.scr.querySelector('.view');if(!v){vs=null;return}
     vs={x:tt.clientX,y:tt.clientY,t:performance.now(),top:v.scrollTop<=0,bot:v.scrollTop+v.clientHeight>=v.scrollHeight-2,tg:e.target};
     /* direkt am berührten Element lauschen: es wird beim Aufbau des Würfels aus der Seite genommen, bekommt die Touch-Ereignisse aber weiter */
@@ -2521,7 +2559,7 @@ function Phone(host,init,opts){
   /* Finger zieht den Würfel mit: ab 8 px senkrechter Bewegung übernimmt die Drehung, Loslassen dreht fertig (ab ca. 28 % oder mit Schwung) oder federt zurück */
   const vmove=e=>{if(!vs)return;const tt=e.touches[0],dx=tt.clientX-vs.x,dy=tt.clientY-vs.y;
     if(!vs.c){if(self.dragLift||self.busy){vs=null;return}if(Math.hypot(dx,dy)<8*self.k)return;
-      const to=self.s.screen==='plan'&&dy<0&&vs.bot?'fit':self.s.screen==='fit'&&dy>0&&vs.top?'plan':null;
+      const sc=self.s.screen,to=NUT_T.includes(sc)&&dy<0&&vs.bot?pairOf(sc):FIT_T.includes(sc)&&dy>0&&vs.top?pairOf(sc):null;
       if(!to||Math.abs(dy)<Math.abs(dx)*1.6){vs=null;return}
       const c=self.cubeStart(to);if(!c){vs=null;return}vs.c=c;vs.y0=tt.clientY;vs.h=[];haptic()}
     if(e.cancelable)e.preventDefault();const c=vs.c,d=(tt.clientY-vs.y0)*(c.up?-1:1);c.setP(d/(c.H*self.k*.8));
@@ -2532,8 +2570,8 @@ function Phone(host,init,opts){
     const rest=commit?1-p:p;o.c.finish(commit,.55+.55*rest,true)};
   function vendOk(e){vend(e,false)}function vendNo(e){vend(e,true)}
   let wheelT=0;this.scr.addEventListener('wheel',e=>{const s=self.s;if(s.sheet||!['plan','fit'].includes(s.screen)||performance.now()-wheelT<900)return;const v=self.scr.querySelector('.view');if(!v)return;
-    if(s.screen==='plan'&&e.deltaY>30&&v.scrollTop+v.clientHeight>=v.scrollHeight-2){wheelT=performance.now();self.flip('fit')}
-    else if(s.screen==='fit'&&e.deltaY<-30&&v.scrollTop<=0){wheelT=performance.now();self.flip('plan')}},{passive:true});
+    if(NUT_T.includes(s.screen)&&e.deltaY>30&&v.scrollTop+v.clientHeight>=v.scrollHeight-2){wheelT=performance.now();self.flip(pairOf(s.screen))}
+    else if(FIT_T.includes(s.screen)&&e.deltaY<-30&&v.scrollTop<=0){wheelT=performance.now();self.flip(pairOf(s.screen))}},{passive:true});
   if(this.opts.full)this.greet(); /* Wisch-Vorschau nur noch einmal: als letzter Schritt nach dem Intro */
   if(this.opts.full){this.ph.classList.add('full');this.k=1;return} /* Vollbild-App: kein Rahmen, keine Skalierung */
   const fit=()=>{const k=host.clientWidth/410;this.k=k;this.ph.style.transform=`scale(${k})`;host.style.height=(864*k)+'px'};
@@ -2582,6 +2620,7 @@ Phone.prototype.render=function(){
   else if(s.screen==='fmob')body=this.vFmob();
   else if(s.screen==='flearn')body=this.vFlearn();
   else if(s.screen==='froutine')body=this.vFroutine();
+  else if(s.screen==='fcat')body=this.vFcat();
   else if(s.screen==='deck')body=this.vDeck();
   else if(s.screen==='shop')body=this.vShop();
   else if(s.screen==='detail')body=this.vDetail();
@@ -3054,7 +3093,7 @@ Phone.prototype.vFpos=function(){const s=this.s,P=s.fpos||{},G='background:linea
    <div style="display:flex;gap:8px;margin-top:14px">${ed?`<button class="sbtn" data-a="fposdel">Entfernen</button>`:''}<button class="gbtn" style="${G}" data-a="fpossave">${ic('check')}Speichern</button></div>`};
 
 /* ===== V176: Fitness-Tabs – Plan · Training · Mobility · Lernen ===== */
-const FIT_SCREENS=['fit','ftrain','fmob','flearn','froutine'];
+const FIT_SCREENS=['fit','ftrain','fmob','flearn','froutine','fcat'];
 const isFitScr=sc=>FIT_SCREENS.includes(sc);
 /* Einheiten-Bibliothek je Phase; iv = [[Minuten, % FTP], …] */
 const rp=(n,a)=>Array.from({length:n},()=>a).flat();
@@ -3140,18 +3179,23 @@ const POSE={
  kniebeuge:{h:[44,34],s:[46,46],p:[58,66],a:[[[36,52],[26,52]],[[38,54],[28,54]]],l:[[[42,72],[44,88]],[[46,74],[48,88]]]},
  waden:{h:[50,18],s:[50,30],p:[50,54],a:[[[45,42],[44,54]],[[55,42],[56,54]]],l:[[[48,69],[49,82]],[[52,69],[53,82]]],t:1},
 };
-const PCOL=['#C9E3D3','#E8DDB8','#D6E4EE','#E9D3D8','#D8D3EA','#CFE7DC','#F0E0CC'];
-function poseSVG(k,bg,big){const P=POSE[k]||POSE.stand,ln=(a,b,c,w)=>`<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" stroke="${c}" stroke-width="${w}" stroke-linecap="round"/>`;
-  const dark='#244A37',back='#5E8B72',W=7;let g='';
-  const limb=(from,seg,c)=>{let o='',p=from;seg.forEach(q=>{o+=ln(p,q,c,W);p=q});return o};
-  g+=limb(P.p,P.l[1],back)+limb(P.s,P.a[1],back);
-  const tor=P.b?`<path d="M${P.s[0]} ${P.s[1]} Q ${P.b[0]} ${P.b[1]} ${P.p[0]} ${P.p[1]}" fill="none" stroke="${dark}" stroke-width="10" stroke-linecap="round"/>`:ln(P.s,P.p,dark,10);
-  g+=tor+limb(P.p,P.l[0],dark)+limb(P.s,P.a[0],dark)+`<circle cx="${P.h[0]}" cy="${P.h[1]}" r="6.2" fill="${dark}"/>`;
-  const mat=`<rect x="6" y="88" width="88" height="5" rx="2.5" fill="#2F5E46" opacity=".55"/>`,wall=P.w?`<rect x="${P.w===1?60:56}" y="8" width="5" height="82" rx="2" fill="#2F5E46" opacity=".35"/>`:'';
-  return `<svg class="pose${big?' big':''}" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="50" fill="${bg||'#C9E3D3'}"/><g clip-path="circle(50% at 50% 50%)">${mat}${wall}${g}</g></svg>`}
+const PCOL=['#7E2F3E','#F7B79A','#86B49A','#6F9A9C','#8E3B32','#F1CF77','#E8DDB8'];
+/* Figur im Bend-Look: Haut, Top, Hose; Matte dunkel. Zweite Pose für die Bewegung (Animation) */
+const PALT={katze:'vier',vier:'katze',kobra:'sphinx',birddog:'vier',kniebeuge:'stand',waden:'stand',kreis:'hoch',kinn:'stand',knie:'baby',bruecke:'knie',deadbug:'knie',superman:'kobra'};
+function poseG(P){const ln=(a,b,c,w)=>`<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" stroke="${c}" stroke-width="${w}" stroke-linecap="round"/>`;
+  const skin='#C98A5E',skinB='#A86E48',top='#F2D27A',legs='#C7C25A',legsB='#A7A245',hair='#2B1C16';
+  const limb=(from,seg,c,w)=>{let o='',p=from;seg.forEach(q=>{o+=ln(p,q,c,w);p=q});return o};
+  let g=limb(P.p,P.l[1],legsB,9)+limb(P.s,P.a[1],skinB,6);
+  g+=P.b?`<path d="M${P.s[0]} ${P.s[1]} Q ${P.b[0]} ${P.b[1]} ${P.p[0]} ${P.p[1]}" fill="none" stroke="${top}" stroke-width="12" stroke-linecap="round"/>`:ln(P.s,P.p,top,12);
+  g+=ln(P.p,[P.p[0]+(P.s[0]-P.p[0])*.25,P.p[1]+(P.s[1]-P.p[1])*.25],legs,12);
+  g+=limb(P.p,P.l[0],legs,9)+limb(P.s,P.a[0],skin,6);
+  g+=`<circle cx="${P.h[0]}" cy="${P.h[1]}" r="6.4" fill="${skin}"/><path d="M${P.h[0]-6} ${P.h[1]-1} a6.4 6.4 0 0 1 12.4 -2 q-6 -2 -12.4 2z" fill="${hair}"/>`;return g}
+function poseSVG(k,bg,big,anim){const P=POSE[k]||POSE.stand,A=anim&&PALT[k]&&POSE[PALT[k]];
+  const mat=`<rect x="4" y="88" width="92" height="6" rx="2" fill="#2E2F4F" opacity=".85"/>`,wall=P.w?`<rect x="${P.w===1?60:56}" y="6" width="5" height="84" rx="2" fill="#000" opacity=".12"/>`:'';
+  return `<svg class="pose${big?' big':''}${A?' anim':''}" viewBox="0 0 100 100" aria-hidden="true"><defs><clipPath id="cp${k}"><circle cx="50" cy="50" r="50"/></clipPath></defs><circle cx="50" cy="50" r="50" fill="${bg||'#86B49A'}"/><g clip-path="url(#cp${k})">${mat}${wall}<g class="pa">${poseG(P)}</g>${A?`<g class="pb">${poseG(A)}</g>`:''}</g></svg>`}
 /* Übung: [Name, Pose, Sekunden, [Anleitung …]] */
 const STR=[
- {id:'ruecken',n:'Unterer Rücken',sub:'Entlasten nach langem Sitzen und Fahren',pose:'kind',c:'#C9E3D3',ex:[
+ {id:'ruecken',n:'Unterer Rücken',sub:'Entlasten nach langem Sitzen und Fahren',pose:'kind',c:'#86B49A',ex:[
   ['Katze-Kuh','katze',90,['Beginne im Vierfüßlerstand, Hände unter den Schultern, Knie unter der Hüfte.','Einatmen: Bauch sinken lassen, Brust und Blick heben.','Ausatmen: Rücken rund machen, Kinn zur Brust.']],
   ['Kindhaltung','kind',90,['Knie hüftbreit, Gesäß Richtung Fersen.','Arme lang nach vorne, Stirn ablegen.','Atme bewusst in den unteren Rücken.']],
   ['Knie zur Brust','knie',60,['Rückenlage, beide Knie zur Brust ziehen.','Leicht hin und her schaukeln.']],
@@ -3161,7 +3205,7 @@ const STR=[
   ['Kobra','kobra',60,['Hände neben der Brust, Hüfte am Boden.','Mit dem Ausatmen Oberkörper behutsam aufrichten.']],
   ['Glückliches Baby','baby',60,['Rückenlage, Füße von außen greifen.','Knie Richtung Achseln ziehen, Kreuzbein bleibt am Boden.']],
   ['Kindhaltung zum Abschluss','kind',60,['Noch einmal ruhig ablegen und nachspüren.']]]},
- {id:'nacken',n:'Nacken',sub:'Gegen Verspannung in der Aeroposition',pose:'nacken',c:'#E8DDB8',ex:[
+ {id:'nacken',n:'Nacken',sub:'Gegen Verspannung in der Aeroposition',pose:'nacken',c:'#F1CF77',ex:[
   ['Kinn einziehen','kinn',60,['Aufrecht stehen oder sitzen.','Kinn waagrecht nach hinten schieben – „Doppelkinn“.','2 Sekunden halten, lösen, wiederholen.']],
   ['Seitneigung links','nacken',60,['Ohr Richtung linke Schulter sinken lassen.','Rechte Schulter bewusst tief halten.']],
   ['Seitneigung rechts','nacken',60,['Ohr Richtung rechte Schulter.']],
@@ -3172,7 +3216,7 @@ const STR=[
   ['Brustöffner an der Tür','tuer',60,['Unterarm in den Türrahmen, Oberkörper sanft wegdrehen.']],
   ['Kopfnicken','kinn',60,['Kleine, langsame Ja-Bewegungen.']],
   ['Atmen und lösen','atmen',60,['Im Schneidersitz, Schultern fallen lassen, 4 Sek. ein, 6 Sek. aus.']]]},
- {id:'haltung',n:'Aufrechte Haltung',sub:'Brust öffnen, Schultern zurück',pose:'hoch',c:'#D6E4EE',ex:[
+ {id:'haltung',n:'Aufrechte Haltung',sub:'Brust öffnen, Schultern zurück',pose:'hoch',c:'#6F9A9C',ex:[
   ['Brustöffner an der Tür','tuer',90,['Unterarm auf Schulterhöhe in den Türrahmen.','Mit dem Oberkörper sanft wegdrehen, bis die Brust zieht.','Nach der Hälfte Seite wechseln.']],
   ['Wandengel','hoch',90,['Rücken und Hinterkopf an die Wand.','Arme im „W“ an der Wand nach oben schieben und zurück.']],
   ['Katze-Kuh','katze',60,['Im Vierfüßler langsam mit dem Atem.']],
@@ -3182,7 +3226,7 @@ const STR=[
   ['Armkreisen','kreis',60,['Große Kreise, nach 30 Sekunden Richtung wechseln.']],
   ['Arme lang nach oben','hoch',60,['Fingerspitzen zur Decke, Rippen bleiben unten.']],
   ['Aufrecht stehen und atmen','stand',60,['Scheitel nach oben, Schultern weich, ruhig atmen.']]]},
- {id:'spagat',n:'Spagat',sub:'Schritt für Schritt tiefer',pose:'spagat',c:'#E9D3D8',ex:[
+ {id:'spagat',n:'Spagat',sub:'Schritt für Schritt tiefer',pose:'spagat',c:'#F7B79A',ex:[
   ['Tiefer Ausfallschritt links','ausfall',75,['Linker Fuß vorne, rechtes Knie am Boden.','Hüfte nach vorn sinken lassen, Oberkörper aufrecht.']],
   ['Tiefer Ausfallschritt rechts','ausfall',75,['Rechter Fuß vorne.']],
   ['Halber Spagat links','halb',75,['Hüfte zurück, linkes Bein gestreckt, Zehen zu dir.','Mit geradem Rücken nach vorn neigen.']],
@@ -3193,19 +3237,19 @@ const STR=[
   ['Spagat-Versuch','spagat',75,['Mit Blöcken unter den Händen nur so tief, wie es angenehm ist.']]]},
 ];
 const SPEC={
- rad:[{id:'kcore',n:'Core für Radfahrer',sub:'Stabiler Rumpf, mehr Druck aufs Pedal',pose:'plank',c:'#CFE7DC',ex:[
+ rad:[{id:'kcore',n:'Core für Radfahrer',sub:'Stabiler Rumpf, mehr Druck aufs Pedal',pose:'plank',c:'#8E3B32',ex:[
    ['Unterarmstütz','plank',45,['Unterarme unter den Schultern, Körper eine Linie.','Bauch und Po fest, ruhig atmen.']],['Seitstütz links','seitstuetz',30,['Auf dem linken Unterarm, Hüfte hoch.']],['Seitstütz rechts','seitstuetz',30,['Auf dem rechten Unterarm.']],
    ['Dead Bug','deadbug',45,['Rückenlage, Arme und Beine im 90°-Winkel.','Arm und gegenüberliegendes Bein langsam strecken, Rücken bleibt am Boden.']],['Glute Bridge','bruecke',45,['Becken heben, Po anspannen, oben kurz halten.']],
    ['Bird Dog','birddog',45,['Vierfüßler, Arm und Bein gegengleich strecken.']],['Superman','superman',30,['Bauchlage, Arme und Beine leicht abheben.']]]},
-  {id:'kbein',n:'Beinkraft fürs Rad',sub:'Mehr Watt am Berg',pose:'kniebeuge',c:'#E8DDB8',ex:[
+  {id:'kbein',n:'Beinkraft fürs Rad',sub:'Mehr Watt am Berg',pose:'kniebeuge',c:'#7E2F3E',ex:[
    ['Kniebeugen','kniebeuge',45,['Füße hüftbreit, Gesäß nach hinten, Knie über den Zehen.']],['Ausfallschritte','ausfall',60,['Abwechselnd, hinteres Knie fast zum Boden.']],
    ['Einbeinige Brücke links','bruecke',30,['Ein Bein gestreckt, Becken waagrecht.']],['Einbeinige Brücke rechts','bruecke',30,['Andere Seite.']],['Wadenheben','waden',45,['Langsam auf die Zehenspitzen und zurück.']],['Tiefe Hocke halten','hocke',45,['Fersen am Boden, aufrecht.']]]}],
- lauf:[{id:'klauf',n:'Laufkraft',sub:'Waden, Füße, Hüfte',pose:'ausfall',c:'#D6E4EE',ex:[
+ lauf:[{id:'klauf',n:'Laufkraft',sub:'Waden, Füße, Hüfte',pose:'ausfall',c:'#6F9A9C',ex:[
    ['Wadenheben','waden',45,['Auf einer Stufe, langsam hoch und tief.']],['Ausfallschritte','ausfall',60,['Knie über dem Fuß.']],['Einbeinige Brücke links','bruecke',30,['Becken waagrecht.']],['Einbeinige Brücke rechts','bruecke',30,['Andere Seite.']],['Seitstütz','seitstuetz',40,['Je Seite 20 Sekunden.']],['Kniebeugen','kniebeuge',45,['Kontrolliert.']]]}],
- schwimm:[{id:'kswim',n:'Schulter & Rumpf',sub:'Für einen langen Zug',pose:'hoch',c:'#D6E4EE',ex:[['Wandengel','hoch',45,['Arme an der Wand hoch und runter.']],['Superman','superman',40,['Arme lang vorne.']],['Unterarmstütz','plank',45,['Körper eine Linie.']],['Bird Dog','birddog',45,['Gegengleich strecken.']]]}],
- ballett:[{id:'kballett',n:'Kraft für Ballett',sub:'Stabile Mitte, starke Füße',pose:'waden',c:'#E9D3D8',ex:[['Relevés','waden',45,['Auf die Zehenspitzen, Fersen zusammen.']],['Glute Bridge','bruecke',45,['Po fest.']],['Seitstütz','seitstuetz',40,['Je Seite 20 Sekunden.']],['Dead Bug','deadbug',45,['Rücken bleibt am Boden.']]]}],
- ball:[{id:'kball',n:'Sprung & Rotation',sub:'Für Tennis, Padel, Fußball',pose:'ausfall',c:'#F0E0CC',ex:[['Seitliche Ausfallschritte','ausfall',45,['Abwechselnd links und rechts.']],['Kniebeugen','kniebeuge',45,['Explosiv hoch.']],['Seitstütz','seitstuetz',40,['Je Seite.']],['Wadenheben','waden',40,['Schnell und federnd.']]]}],
- allg:[{id:'kallg',n:'Core-Grundlagen',sub:'Für jede Sportart',pose:'plank',c:'#CFE7DC',ex:[['Unterarmstütz','plank',45,['Körper eine Linie.']],['Dead Bug','deadbug',45,['Rücken flach.']],['Glute Bridge','bruecke',45,['Po anspannen.']],['Bird Dog','birddog',45,['Gegengleich strecken.']]]}],
+ schwimm:[{id:'kswim',n:'Schulter & Rumpf',sub:'Für einen langen Zug',pose:'hoch',c:'#6F9A9C',ex:[['Wandengel','hoch',45,['Arme an der Wand hoch und runter.']],['Superman','superman',40,['Arme lang vorne.']],['Unterarmstütz','plank',45,['Körper eine Linie.']],['Bird Dog','birddog',45,['Gegengleich strecken.']]]}],
+ ballett:[{id:'kballett',n:'Kraft für Ballett',sub:'Stabile Mitte, starke Füße',pose:'waden',c:'#F7B79A',ex:[['Relevés','waden',45,['Auf die Zehenspitzen, Fersen zusammen.']],['Glute Bridge','bruecke',45,['Po fest.']],['Seitstütz','seitstuetz',40,['Je Seite 20 Sekunden.']],['Dead Bug','deadbug',45,['Rücken bleibt am Boden.']]]}],
+ ball:[{id:'kball',n:'Sprung & Rotation',sub:'Für Tennis, Padel, Fußball',pose:'ausfall',c:'#F1CF77',ex:[['Seitliche Ausfallschritte','ausfall',45,['Abwechselnd links und rechts.']],['Kniebeugen','kniebeuge',45,['Explosiv hoch.']],['Seitstütz','seitstuetz',40,['Je Seite.']],['Wadenheben','waden',40,['Schnell und federnd.']]]}],
+ allg:[{id:'kallg',n:'Core-Grundlagen',sub:'Für jede Sportart',pose:'plank',c:'#8E3B32',ex:[['Unterarmstütz','plank',45,['Körper eine Linie.']],['Dead Bug','deadbug',45,['Rücken flach.']],['Glute Bridge','bruecke',45,['Po anspannen.']],['Bird Dog','birddog',45,['Gegengleich strecken.']]]}],
 };
 const specFor=pf=>{const D=discsOf(pf);let L=[];D.forEach(k=>{const g=k==='tri'?['rad','lauf','schwimm']:PF_BALL.some(x=>x[0]===k)?['ball']:[k];g.forEach(x=>(SPEC[x]||[]).forEach(r=>{if(!L.includes(r))L.push(r)}))});return L.length?L:SPEC.allg};
 const ROUT=()=>Object.fromEntries(STR.concat(...Object.values(SPEC)).map(r=>[r.id,r]));
@@ -3219,25 +3263,35 @@ Phone.prototype.vFmob=function(){const s=this.s,D=discAll(s.prof),SP=specFor(s.p
    <button class="mh" data-a="frt" data-v="${hero.id}"><span class="mh-col">${col}</span><span class="mh-tx"><small>Heute empfohlen · Dehnen</small><b>${hero.n}</b><span>${rMin(hero)} Minuten · ${hero.ex.length} Übungen</span></span><i>${ic('play')}Start</i></button>
    <h2 class="ap-h2 ft-h">Dehnen. <span>10 Minuten je Bereich.</span></h2>
    <p class="mob-why"><b>Beweglichkeit:</b> löst Verspannungen, verbessert Haltung und Bewegungsumfang.</p>
-   <div class="mob-g">${STR.map(r=>`<button class="mt rv" data-a="frt" data-v="${r.id}">${poseSVG(r.pose,r.c)}<b>${r.n}</b><small>${rMin(r)} Min · Dehnen</small></button>`).join('')}</div>
+   <div class="mob-g">${STR.map(r=>`<button class="mt rv" data-a="fcat" data-v="${r.id}">${poseSVG(r.pose,r.c)}<b>${r.n}</b><small>${rMin(r)} Min · Dehnen</small></button>`).join('')}</div>
    <h2 class="ap-h2 ft-h">Kraft. <span>${D.length?'Für '+esc(D.map(x=>x[1]).join(', ')):'Für deine Sportart'}.</span></h2>
    <p class="mob-why"><b>Krafttraining:</b> macht dich leistungsfähiger – z. B. ein stabiler Rumpf für mehr Druck aufs Pedal und weniger Rückenschmerzen.</p>
    <div class="mob-r">${SP.map(r=>`<button class="mk rv" data-a="frt" data-v="${r.id}">${poseSVG(r.pose,r.c)}<span><em>Kraft</em><b>${r.n}</b><small>${rMin(r)} Min · ${r.sub}</small></span></button>`).join('')}</div>
    ${D.length?'':`<button class="ai-again" data-a="fdisc">Sportart wählen für passende Kraftübungen</button>`}
   </div></div>`};
 /* Player im Bend-Stil: große Illustration oben, Name, Anleitung als Zeitleiste, Timer + Steuerung */
+/* Bereichsseite wie Bend: Routine + Einzelübungen als Liste mit Icon-Kacheln */
+Phone.prototype.vFcat=function(){const s=this.s,r=ROUT()[s.fcat];if(!r)return '<div class="view ftv"></div>';
+  return `<div class="view ftv catv"><div class="z">
+   <div class="cat-top"><button class="iconbtn" data-a="fcatback" aria-label="Zurück">${ic('x')}</button><b>${r.n}</b><span></span></div>
+   <div class="cat-lbl">${STR.includes(r)?'Flexibilität':'Kraft'}</div>
+   <button class="cat-r" data-a="frt" data-v="${r.id}"><span class="cat-i">${poseSVG(r.pose,r.c)}</span><span><b>${r.n} · Routine</b><small>${rMin(r)} Minuten · ${r.ex.length} Übungen</small></span>${ic('play','cat-p')}</button>
+   <div class="cat-lbl">Übungen</div>
+   ${r.ex.map((x,i)=>`<button class="cat-r sm" data-a="frtat" data-v="${r.id}" data-i="${i}"><span class="cat-i">${poseSVG(x[1],PCOL[i%PCOL.length])}</span><span><b>${x[0]}</b><small>${x[2]>=60?Math.round(x[2]/60*10)/10+' Minuten':x[2]+' Sekunden'}</small></span></button>`).join('')}
+  </div></div>`};
 Phone.prototype.vFroutine=function(){const s=this.s,r=ROUT()[s.rt&&s.rt.id];if(!r)return '<div class="view ftv"></div>';const R=s.rt,done=R.i>=r.ex.length,x=r.ex[Math.min(R.i,r.ex.length-1)];
-  const left=done?0:R.left,frac=done?1:1-left/x[2],isK=!STR.includes(r);
-  if(done)return `<div class="view ftv rtv"><div class="z"><div class="top-row"><button class="iconbtn" data-a="frtback" aria-label="Schließen">${ic('x')}</button></div>
-   <div class="rt-done">${poseSVG(r.pose,r.c,true)}<h1 class="ap-h1">Geschafft.</h1><p>${rMin(r)} Minuten ${isK?'Kraft':'Dehnen'} – ${r.n}.</p><button class="gbtn" data-a="frtback">${ic('check')}Fertig</button></div></div></div>`;
-  return `<div class="view ftv rtv"><div class="rt-top" style="--bg:${r.c}"><button class="iconbtn rt-x" data-a="frtback" aria-label="Schließen">${ic('x')}</button><span class="rt-c">${R.i+1} / ${r.ex.length} · ${isK?'Kraft':'Dehnen'}</span>${poseSVG(x[1],'rgba(255,255,255,.35)',true)}<i class="rt-bar" style="width:${(frac*100).toFixed(1)}%"></i></div>
-   <div class="z"><h1 class="rt-n">${x[0]}</h1><div class="rt-lbl">Anleitung</div>
-   <ol class="rt-steps">${x[3].map(t=>`<li>${t}</li>`).join('')}</ol>
-   <div class="rt-nx">${r.ex[R.i+1]?`Als Nächstes: <b>${r.ex[R.i+1][0]}</b>`:'Letzte Übung'}</div></div>
-   <div class="rt-ctl"><button class="sbtn" data-a="frtprev" aria-label="Vorige Übung">${ic('left')}</button><button class="gbtn rt-play" data-a="frtplay">${ic(R.run?'pause':'play')}<span class="rt-s">${Math.floor(left/60)}:${String(left%60).padStart(2,'0')}</span></button><button class="sbtn" data-a="frtnext" aria-label="Nächste Übung">${ic('right')}</button></div></div>`};
+  const left=done?0:R.left,frac=done?1:1-left/x[2],isK=!STR.includes(r),C=2*Math.PI*48,col=PCOL[R.i%PCOL.length];
+  const head=`<div class="bp-h"><button class="bp-x" data-a="frtback" aria-label="Schließen">${ic('x')}</button><b>${done?r.n:`${R.i+1} von ${r.ex.length}`}</b><span></span></div>`;
+  if(done)return `<div class="view bpv">${head}<div class="bp-done">${poseSVG(r.pose,r.c,true)}<h1>Geschafft.</h1><p>${rMin(r)} Minuten ${isK?'Kraft':'Dehnen'} – ${r.n}.</p><button class="gbtn" data-a="frtback">${ic('check')}Fertig</button></div></div>`;
+  return `<div class="view bpv">${head}
+   <div class="bp-c"><svg class="bp-ring" viewBox="0 0 100 100"><circle cx="50" cy="50" r="48" fill="none" stroke="#EDEBE8" stroke-width="2.2"/><circle class="rt-arc" cx="50" cy="50" r="48" fill="none" stroke="#A39A93" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="${(C*frac).toFixed(1)} ${C.toFixed(1)}" transform="rotate(-90 50 50)"/></svg><span class="bp-p">${poseSVG(x[1],col,true,true)}</span></div>
+   <button class="bp-n" data-a="frtinfo">${x[0]} ${ic('info')}</button>
+   ${s.rtInfo?`<ol class="rt-steps bp-steps">${x[3].map(t=>`<li>${t}</li>`).join('')}</ol>`:''}
+   <div class="bp-t rt-s">${Math.floor(left/60)}:${String(left%60).padStart(2,'0')}</div>
+   <div class="bp-ctl"><button data-a="frtprev" aria-label="Vorige Übung">${ic('back2')}</button><button class="big" data-a="frtplay" aria-label="${R.run?'Pause':'Start'}">${ic(R.run?'pause':'play')}</button><button data-a="frtnext" aria-label="Nächste Übung">${ic('fwd2')}</button></div></div>`};
 Phone.prototype.rtTick=function(){clearInterval(this.rtT);const self=this;this.rtT=setInterval(()=>{const s=self.s,R=s.rt;if(!R||!R.run||s.screen!=='froutine'){clearInterval(self.rtT);return}
   const r=ROUT()[R.id];R.left--;if(R.left<=0){R.i++;haptic();if(R.i>=r.ex.length){R.run=false;hapticSuccess();self.render();clearInterval(self.rtT);return}R.left=r.ex[R.i][2];self.render();return}
-  const el=self.scr.querySelector('.rt-s'),bar=self.scr.querySelector('.rt-bar');if(el)el.textContent=`${Math.floor(R.left/60)}:${String(R.left%60).padStart(2,'0')}`;if(bar)bar.style.width=((1-R.left/r.ex[R.i][2])*100).toFixed(1)+'%'},1000)};
+  const el=self.scr.querySelector('.rt-s'),arc=self.scr.querySelector('.rt-arc');if(el)el.textContent=`${Math.floor(R.left/60)}:${String(R.left%60).padStart(2,'0')}`;if(arc){const C=2*Math.PI*48;arc.setAttribute('stroke-dasharray',`${(C*(1-R.left/r.ex[R.i][2])).toFixed(1)} ${C.toFixed(1)}`)}},1000)};
 const FDECKS=[
  {id:'fphase',t:'Trainingsphasen',e:'📈',c:['#D7EDE1','#8FC5A6'],sub:'Grundlage, Aufbau, Spezifisch, Tapering',cards:[
   ['🧱','Grundlage','Viel ruhiges Training in Zone 2. Dein Körper baut Mitochondrien und Kapillaren auf – das Fundament für alles Weitere.','80 % deiner Zeit locker, auch wenn es sich „zu leicht“ anfühlt.'],
@@ -3366,13 +3420,17 @@ Phone.prototype.swipeHint=function(){const s=this.s,scr=this.scr,self=this;if(th
     run(0,1,1050,()=>{fg.classList.remove('on');tm=setTimeout(()=>run(1,0,1000,()=>{const k=c;c=null;k.finish(false,.05);end()}),320)})},380)};
 /* Würfel aufbauen: alte Seite vorn, neue Seite oben/unten. Liefert eine Steuerung: setP(0…1) stellt die Drehung direkt ein (Finger zieht),
    finish(übernehmen, Dauer) dreht fertig oder federt zurück */
-Phone.prototype.cubeStart=function(to){const s=this.s,self=this;if(this.busy||s.sheet||s.screen===to||!['plan','fit'].includes(to))return null;
-  const old=this.scr.querySelector('.view');if(!old)return null;const from=s.screen,up=to==='fit',H=this.scr.clientHeight;s.ipop=null;
+/* V180: Jeder Ernährungs-Tab hat ein Gegenstück im Sport (Plan↔Plan, Rezepte↔Training, Einkauf↔Mobility, Lernen↔Lernen) */
+const NUT_T=['plan','recipes','shop','learn'],FIT_T=['fit','ftrain','fmob','flearn'];
+const pairOf=sc=>{let i=NUT_T.indexOf(sc);if(i>=0)return FIT_T[i];i=FIT_T.indexOf(sc);return i>=0?NUT_T[i]:null};
+const flipOK=to=>NUT_T.includes(to)||FIT_T.includes(to);
+Phone.prototype.cubeStart=function(to){const s=this.s,self=this;if(this.busy||s.sheet||s.screen===to||!flipOK(to))return null;
+  const old=this.scr.querySelector('.view');if(!old)return null;const from=s.screen,up=FIT_T.includes(to),H=this.scr.clientHeight;s.ipop=null;
   this.busy=true;const oldTop=old.scrollTop;
   const cube=document.createElement('div');cube.className='cube';const inn=document.createElement('div');inn.className='cube-in';cube.appendChild(inn);
   const face=(node,deg)=>{const f=document.createElement('div');f.className='cface live';f.style.transform=`rotateX(${deg}deg) translateZ(${H/2}px)`;const c=node.cloneNode(true);c.querySelectorAll('.wi').forEach(x=>{if(x.style.visibility==='hidden')x.remove()});f.appendChild(c);inn.appendChild(f);return [f,c]};
   const [f1,c1]=face(old,0);
-  if(to==='fit'){s.screen='fit';s.fitSeen=true}else{s.screen='plan';s.edit=false}
+  s.screen=to;if(to==='fit')s.fitSeen=true;if(to==='plan')s.edit=false;
   this.render();const nv=this.scr.querySelector('.view');
   const [f2]=face(nv,up?-90:90);
   const tb=this.scr.querySelector('.vdots')||this.scr.querySelector('.tabbar');this.scr.insertBefore(cube,tb);c1.scrollTop=oldTop;nv.style.visibility='hidden';
@@ -3386,8 +3444,8 @@ Phone.prototype.cubeStart=function(to){const s=this.s,self=this;if(this.busy||s.
         else{const v=self.scr.querySelector('.view');if(v){v.style.visibility='';v.classList.add('flipin')}}
         cube.remove();self.busy=false},dur*1000+40)}}};
 /* Wie ein großer Würfel zwischen Essensplan und Fitnessbereich drehen */
-Phone.prototype.flip=function(to,dur){const s=this.s;if(this.busy||s.sheet||s.screen===to||!['plan','fit'].includes(to))return;
-  if(window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches){if(to==='fit'){s.screen='fit';s.fitSeen=true}else{s.screen='plan';s.edit=false}s.ipop=null;this.render();return}
+Phone.prototype.flip=function(to,dur){const s=this.s;if(this.busy||s.sheet||s.screen===to||!flipOK(to))return;
+  if(window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches){s.screen=to;if(to==='plan')s.edit=false;s.ipop=null;this.render();return}
   const c=this.cubeStart(to);if(!c)return;haptic();c.finish(true,dur||.62)};
 /* Auswertung: Training der Woche gegen den Essensplan */
 function fitSig(s,w){let x='';for(let i=w*7;i<w*7+7;i++)x+=JSON.stringify(s.train[i]||0)+(s.plan[i]||'-')+'|';return x}
@@ -4389,8 +4447,12 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
    case 'fwoadd':{const w=WORK.find(x=>x.id===s.fwoId);if(!w)break;const d=s.fwoD!=null?s.fwoD:TODAY,A=dayActs(s.train[d]);this.prevTrain=JSON.stringify([s.train,s.tx]);
       A.push({a:w.a,t:w.n,min:w.min,lv:w.lv,tss:w.tss});s.train[d]=actsToT(A);s.sheet=null;hapticSuccess();this.render();this.toast(`${w.n} → ${dn(d)}`,'Rückgängig','fundo');break}
    case 'fwocopy':{const w=WORK.find(x=>x.id===s.fwoId);if(!w)break;const txt=`${w.n} (${fDur(w.min)}, ${w.tss} TSS)\n${woText(w)}`;try{navigator.clipboard.writeText(txt).then(()=>this.toast('Intervalle kopiert'),()=>this.toast('Kopieren nicht möglich'))}catch(e){this.toast('Kopieren nicht möglich')}break}
-   case 'frt':s.rt={id:v,i:0,left:ROUT()[v].ex[0][2],run:false};s.screen='froutine';haptic();this.render();break;
-   case 'frtback':clearInterval(this.rtT);s.rt=null;s.screen='fmob';this.render();break;
+   case 'frt':s.rt={id:v,i:0,left:ROUT()[v].ex[0][2],run:true};setTimeout(()=>this.rtTick(),0);s.screen='froutine';haptic();this.render();break;
+   case 'frtback':clearInterval(this.rtT);s.rt=null;s.rtInfo=false;s.screen=s.fcat?'fcat':'fmob';this.render();break;
+   case 'fcat':s.fcat=v;s.screen='fcat';haptic();this.render();break;
+   case 'fcatback':s.fcat=null;s.screen='fmob';this.render();break;
+   case 'frtat':{const r=ROUT()[v],i=+t.dataset.i;s.rt={id:v,i,left:r.ex[i][2],run:false};s.screen='froutine';haptic();this.render();break}
+   case 'frtinfo':s.rtInfo=!s.rtInfo;haptic();this.render();break;
    case 'frtplay':{const R=s.rt;if(!R)break;R.run=!R.run;haptic();this.render();if(R.run)this.rtTick();break}
    case 'frtnext':case 'frtprev':{const R=s.rt,r=R&&ROUT()[R.id];if(!r)break;R.i=Math.max(0,Math.min(r.ex.length,R.i+(a==='frtnext'?1:-1)));if(R.i<r.ex.length)R.left=r.ex[R.i][2];else R.run=false;haptic();this.render();break}
    case 'fwplan':{const O=s.fwOpen=s.fwOpen||{};O[v]=!O[v];haptic();this.render();break}
