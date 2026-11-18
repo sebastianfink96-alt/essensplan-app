@@ -26,7 +26,8 @@ const ALLOWED_ORIGINS = [&#x27;https://sebastianfink96-alt.github.io&#x27;];
    Beide mit niedrigem Aufwand (&quot;effort: low&quot;) und knapper Antwortlänge. Wer überall das Günstigste will, setzt MODEL_FOTO auf &#x27;claude-haiku-5-5&#x27;. */
 const MODEL_TEXT = &#x27;claude-haiku-5-5&#x27;;
 const MODEL_FOTO = &#x27;claude-sonnet-5-5&#x27;;
-const MAX_TOKENS = 6000;
+const MAX_TOKENS = 2500; // Antworten der Analyse bleiben deutlich darunter; verhindert Ausreißer
+const MAX_PROMPT = 12000; // Zeichen je Anfrage (Text); längere Eingaben werden abgelehnt
 /* Vorlesen: warme Frauenstimme „Sarah“, günstiges Modell (halber Preis je Zeichen gegenüber dem größten Modell). */
 const STIMME = &#x27;EXAVITQu4vr4xnSDxMaL&#x27;; // „Sarah“ – Standardstimme, auch im kostenlosen ElevenLabs-Tarif nutzbar
 const STIMME_MODELL = &#x27;eleven_turbo_v2_5&#x27;;
@@ -111,6 +112,14 @@ export default {
     const prompt = typeof body.prompt === &#x27;string&#x27; ? body.prompt : &#x27;&#x27;;
     const images = Array.isArray(body.images) ? body.images.filter(x =&gt; typeof x === &#x27;string&#x27;).slice(0, MAX_IMAGES) : [];
     if (!prompt) return json({ error: &#x27;Kein Text.&#x27; }, 400, origin);
+    if (prompt.length &gt; MAX_PROMPT) return json({ error: &#x27;Anfrage zu lang.&#x27; }, 413, origin);
+    /* Optionales Tageslimit je Passwort: in Cloudflare unter „Bindings“ einen KV-Namespace mit dem Namen LIMITS verbinden (Variable TAGESLIMIT, z. B. 60) */
+    if (env.LIMITS) {
+      const day = new Date().toISOString().slice(0, 10), key = &#x27;q:&#x27; + day;
+      const n = parseInt((await env.LIMITS.get(key)) || &#x27;0&#x27;, 10), max = parseInt(env.TAGESLIMIT || &#x27;200&#x27;, 10);
+      if (n &gt;= max) return json({ error: &#x27;Tageslimit erreicht.&#x27; }, 429, origin);
+      await env.LIMITS.put(key, String(n + 1), { expirationTtl: 172800 });
+    }
 
     const content = [
       ...images.map(data =&gt; ({ type: &#x27;image&#x27;, source: { type: &#x27;base64&#x27;, media_type: &#x27;image/jpeg&#x27;, data } })),
