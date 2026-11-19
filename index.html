@@ -2078,6 +2078,73 @@ img,svg{-webkit-user-drag:none}
 .wd.fd .ind.fr svg{border-radius:50%}
 .wd.fd .dnk{right:-5px!important;bottom:-5px!important;width:22px!important;height:22px!important;background:#2E9E6B!important;box-shadow:0 0 0 2.5px #fff,0 3px 8px -2px rgba(0,0,0,.4)!important;z-index:3}
 .wd.fd .dnk .ic{width:13px!important;height:13px!important}
+
+/* V189: Mobility-Player mit Fotos – A/B-Überblendung, großer Timer, 7 s Pause, Stoppen/Überspringen */
+.view.mpv{display:block!important;overflow-y:auto;background:#F2EFF7!important;padding:calc(var(--sat,0px) + 4px) 18px 40px!important}
+.mp-h{display:flex;align-items:center;justify-content:space-between;padding:6px 0 10px}
+.mp-h b{font-size:13px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:#4A4458}
+.mp-h span{min-width:36px;text-align:right;font-size:13px;font-weight:600;color:#8E86A0;font-variant-numeric:tabular-nums}
+.mp-x{width:36px;height:36px;border-radius:50%;border:0;background:rgba(255,255,255,.75);display:grid;place-items:center;color:#4A4458;box-shadow:0 2px 8px -4px rgba(60,40,90,.3)}.mp-x .ic{width:16px;height:16px}
+.mp-seg{display:flex;gap:4px;margin:2px 0 6px}
+.mp-seg i{flex:1;height:4px;border-radius:2px;background:#E1DCEA;overflow:hidden;position:relative}
+.mp-seg i.d{background:#0F7C4E}.mp-seg i b{position:absolute;left:0;top:0;bottom:0;background:#0F7C4E;border-radius:2px;transition:width 1s linear}
+.mp-stw{position:relative;margin:0 -18px}
+.mp-st{position:relative;width:100%;aspect-ratio:4/3;overflow:hidden}
+.mp-st.sv{display:grid;place-items:center}.mp-st.sv .pose{width:72%;height:auto;aspect-ratio:1;box-shadow:none;background:none}
+.mp-im{position:absolute;inset:0;animation:mpBr 8s ease-in-out infinite;animation-delay:var(--el)}
+.mp-im.mir{transform:scaleX(-1)}.mp-im.mir{animation-name:mpBrM}
+.mp-im img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.mp-st.flow .mp-im img.b{animation:mpFlow 8s ease-in-out infinite;animation-delay:var(--el)}
+.mp-st.hold .mp-im img.b{animation:mpHold 4.8s ease-in-out forwards;animation-delay:var(--el)}
+.mp-st.rest .mp-im img.b{opacity:0}.mp-st.rest .mp-im{animation:none}
+.mp-st.pz .mp-im,.mp-st.pz .mp-im img{animation-play-state:paused!important}
+@keyframes mpFlow{0%,42%{opacity:0}50%,92%{opacity:1}100%{opacity:0}}
+@keyframes mpHold{0%,72%{opacity:0}100%{opacity:1}}
+@keyframes mpBr{0%,100%{transform:scale(1)}50%{transform:scale(1.025)}}
+@keyframes mpBrM{0%,100%{transform:scaleX(-1) scale(1)}50%{transform:scaleX(-1) scale(1.025)}}
+.mp-ph{position:absolute;left:50%;bottom:10px;transform:translateX(-50%);white-space:nowrap;padding:7px 14px;border-radius:999px;background:rgba(255,255,255,.82);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);font-size:13px;font-weight:600;color:#2E2A38;box-shadow:0 6px 16px -10px rgba(60,40,90,.5)}
+.mp-ph.pop{animation:mpPop .45s ease}@keyframes mpPop{0%{transform:translateX(-50%) scale(.92);opacity:.4}100%{transform:translateX(-50%) scale(1);opacity:1}}
+.mp-side{position:absolute;left:18px;top:8px;padding:5px 11px;border-radius:999px;background:#fff;font-size:12px;font-weight:700;color:#0F7C4E;letter-spacing:.02em}
+.mp-next{position:absolute;right:18px;top:8px;padding:5px 11px;border-radius:999px;background:#7A62D6;color:#fff;font-size:12px;font-weight:700}
+.mp-ti{text-align:center;margin-top:6px}
+.mp-ti small{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#0F7C4E}.is-rest .mp-ti small{color:#7A62D6}
+.mp-ti h1{font-size:25px;font-weight:700;letter-spacing:-.03em;color:#1D1B22;margin:3px 0 0;line-height:1.15}
+.mp-hint{margin:6px auto 0;max-width:320px;font-size:14.5px;line-height:1.4;color:#6B6478;min-height:2.8em}
+.mp-tm{position:relative;width:200px;height:200px;margin:8px auto 0}
+.mp-tm::before{content:'';position:absolute;inset:22px;border-radius:50%;background:#fff;box-shadow:0 18px 40px -18px rgba(60,40,110,.45),inset 0 0 0 1px rgba(0,0,0,.02)}
+.mp-tm svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.mp-tr{fill:none;stroke:#E4DFEC;stroke-width:12}
+.mp-tp{fill:none;stroke-width:12;stroke-linecap:round;transform:rotate(-90deg);transform-origin:100px 100px;transition:stroke-dashoffset 1s linear}
+.mp-dot{transform-origin:100px 100px;transition:transform 1s linear}.mp-dot circle{fill:#fff;stroke:#0B7A4B;stroke-width:4;filter:drop-shadow(0 2px 6px rgba(11,122,75,.6))}
+.is-rest .mp-dot circle{stroke:#7A62D6;filter:drop-shadow(0 2px 6px rgba(122,98,214,.6))}
+.mp-tx{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.mp-s{font-size:52px;font-weight:600;letter-spacing:-.045em;color:#1D1B22;font-variant-numeric:tabular-nums;line-height:1}
+.mp-tx small{margin-top:6px;font-size:12px;color:#8E86A0;font-weight:500}
+.mp-tm.end .mp-s{color:#0B7A4B;animation:mpBeat 1s ease infinite}.is-rest .mp-tm.end .mp-s{color:#7A62D6}
+@keyframes mpBeat{0%{transform:scale(1)}20%{transform:scale(1.12)}60%{transform:scale(1)}}
+.mp-ctl{display:flex;justify-content:center;align-items:flex-start;gap:30px;margin-top:16px}
+.mp-ctl button{border:0;background:none;padding:0;display:flex;flex-direction:column;align-items:center;gap:6px;color:#4A4458;width:80px}
+.mp-ctl button span{width:56px;height:56px;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:0 8px 20px -12px rgba(60,40,110,.5)}
+.mp-ctl button small{font-size:12px;font-weight:600;color:#6B6478}
+.mp-ctl .ic{width:22px;height:22px;stroke-width:2.4}
+.mp-ctl button[data-a="frtstop"] .ic{fill:currentColor;stroke:none;width:22px;height:22px;color:#C2455E}
+.mp-ctl button.big{width:auto}.mp-ctl button.big span{width:76px;height:76px;background:linear-gradient(135deg,#1F9A63,#065E39);color:#fff;box-shadow:0 16px 30px -14px rgba(6,94,57,.8)}
+.is-rest .mp-ctl button.big span{background:linear-gradient(135deg,#9C86EC,#6A50CF);box-shadow:0 16px 30px -14px rgba(106,80,207,.8)}
+.mp-ctl button.big .ic{width:30px;height:30px}
+.mp-card{margin-top:22px;background:#fff;border-radius:22px;padding:16px 16px 14px;box-shadow:0 10px 30px -22px rgba(60,40,110,.5)}
+.mp-card>b{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#8E86A0}
+.mp-card ol{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:9px}
+.mp-card li{display:flex;gap:10px;font-size:15px;line-height:1.4;color:#2E2A38}
+.mp-card li i{flex:none;width:22px;height:22px;border-radius:50%;background:#E5F2EA;color:#0F7C4E;font-style:normal;font-size:12px;font-weight:700;display:grid;place-items:center;margin-top:1px}
+.mp-card p{margin:12px 0 0;font-size:13px;color:#8E86A0}.mp-card p b{color:#2E2A38}
+.mp-done{text-align:center;padding-top:70px}
+.mp-dc{width:132px;height:132px;margin:0 auto;border-radius:50%;background:linear-gradient(135deg,#6BD39B,#0B7A4B);display:grid;place-items:center;box-shadow:0 24px 50px -20px rgba(11,122,75,.7);animation:mpPop2 .6s cubic-bezier(.2,1.4,.4,1)}
+.mp-dc i{color:#fff}.mp-dc .ic{width:58px;height:58px;stroke-width:3}
+@keyframes mpPop2{0%{transform:scale(.4);opacity:0}100%{transform:scale(1);opacity:1}}
+.mp-done h1{font-size:34px;letter-spacing:-.04em;margin:26px 0 6px;color:#1D1B22}.mp-done p{color:#6B6478;font-size:16px;margin:0 0 26px}
+.mp-done .gbtn{background:linear-gradient(100deg,#0F7C4E,#004D2E 58%,#006039)!important;width:100%}
+.cat-i.ph{overflow:hidden;background:#F2EFF7!important}.cat-i.ph img{width:100%;height:100%;object-fit:cover;transform-origin:center}
+@media (prefers-reduced-motion:reduce){.mp-im,.mp-im img,.mp-ph.pop,.mp-s{animation:none!important}.mp-st.hold .mp-im img.b{opacity:1}}
 </style>
 
 <div class="page">
@@ -3408,23 +3475,60 @@ const fSec=t=>`${Math.floor(t/60)}:${String(t%60).padStart(2,'0')}`;
 Phone.prototype.vFcat=function(){const s=this.s,r=ROUT()[s.fcat];if(!r)return '<div class="view ftv"></div>';const tot=r.ex.reduce((a,x)=>a+x[2],0);
   return `<div class="view ftv catv"><div class="z">
    <div class="cat-top"><button class="iconbtn" data-a="fcatback" aria-label="Zurück">${ic('left')}</button><span><small>${STR.includes(r)?'Dehnen':'Kraft'} · ${r.ex.length} Übungen · ${fSec(tot)} Min</small><b>${r.n}</b></span></div>
-   <div class="cat-l">${r.ex.map((x,i)=>`<div class="cat-r"><button class="cat-i" data-a="frtat" data-v="${r.id}" data-i="${i}" aria-label="${x[0]} ansehen">${poseSVG(x[1],0,0,0,x[4]&&x[4].m)}</button><button class="cat-n" data-a="frtat" data-v="${r.id}" data-i="${i}"><b>${x[0]}</b><small>${(MOVE[x[1]]||[0,0,x[3][0]])[2]}</small></button>
+   <div class="cat-l">${r.ex.map((x,i)=>`<div class="cat-r"><button class="cat-i${MOBPH[x[1]]?' ph':''}" data-a="frtat" data-v="${r.id}" data-i="${i}" aria-label="${x[0]} ansehen">${MOBPH[x[1]]?`<img src="${MOBPH[x[1]][1]}" alt="" style="transform:${x[4]&&x[4].m?'scaleX(-1) ':''}scale(1.3)">`:poseSVG(x[1],0,0,0,x[4]&&x[4].m)}</button><button class="cat-n" data-a="frtat" data-v="${r.id}" data-i="${i}"><b>${x[0]}</b><small>${(MOVE[x[1]]||[0,0,x[3][0]])[2]}</small></button>
      <span class="cat-t"><button data-a="fexadj" data-v="${r.id}" data-i="${i}" data-d="-15" aria-label="Kürzer">${ic('minus')}</button><em>${fSec(x[2])}</em><button data-a="fexadj" data-v="${r.id}" data-i="${i}" data-d="15" aria-label="Länger">${ic('plus')}</button></span></div>`).join('')}</div>
   </div><div class="cat-go"><button class="gbtn" data-a="frt" data-v="${r.id}">${ic('play')}Starten · ${Math.round(tot/60)} Min</button></div></div>`};
-Phone.prototype.vFroutine=function(){const s=this.s,r=ROUT()[s.rt&&s.rt.id];if(!r)return '<div class="view ftv"></div>';const R=s.rt,done=R.i>=r.ex.length,x=r.ex[Math.min(R.i,r.ex.length-1)];
-  const left=done?0:R.left,frac=done?1:1-left/x[2],isK=!STR.includes(r),C=2*Math.PI*48,M=MOVE[x[1]];
-  const head=`<div class="bp-h"><button class="bp-x" data-a="frtback" aria-label="Schließen">${ic('x')}</button><b>${done?r.n:`Übung ${R.i+1} / ${r.ex.length}`}</b><span></span></div>`;
-  if(done)return `<div class="view bpv">${head}<div class="bp-done">${poseSVG(r.pose,0,true)}<h1>Geschafft.</h1><p>${rMin(r)} Minuten ${isK?'Kraft':'Dehnen'} – ${r.n}.</p><button class="gbtn" data-a="frtback">${ic('check')}Fertig</button></div></div>`;
-  return `<div class="view bpv">${head}
-   <div class="bp-c">${poseSVG(x[1],0,true,true,x[4]&&x[4].m)}${M?`<span class="bp-ph" data-p="2">${M[2]}</span><i class="bp-mv">${ic('play')}Bewegung</i>`:''}</div>
-   <svg class="bp-bar" viewBox="0 0 301.6 4" preserveAspectRatio="none"><path d="M0 2H301.6" stroke="#E4E9E5" stroke-width="4"/><path class="rt-arc" d="M0 2H301.6" stroke="#006039" stroke-width="4" stroke-dasharray="${(C*frac).toFixed(1)} ${C.toFixed(1)}"/></svg>
-   <div class="bp-row"><h1 class="bp-n">${x[0]}</h1><b class="bp-t rt-s">${fSec(left)}</b></div>
-   <ol class="bp-st">${x[3].map((t,i)=>`<li><i>${i+1}</i>${t}</li>`).join('')}</ol>
-   <div class="bp-nx">${r.ex[R.i+1]?`Danach: <b>${r.ex[R.i+1][0]}</b>`:'Letzte Übung'}</div>
-   <div class="bp-ctl"><button data-a="frtprev" aria-label="Vorige Übung">${ic('back2')}</button><button class="big" data-a="frtplay" aria-label="${R.run?'Pause':'Start'}">${ic(R.run?'pause':'play')}</button><button data-a="frtnext" aria-label="Nächste Übung">${ic('fwd2')}</button></div></div>`};
+const IMG_MOB_KATZE_A='img/img_mob_katze_a-fd75ff7a.webp';
+const IMG_MOB_KATZE_B='img/img_mob_katze_b-1315b4fc.webp';
+const IMG_MOB_HUND_A='img/img_mob_hund_a-5f66cefa.webp';
+const IMG_MOB_HUND_B='img/img_mob_hund_b-bee848c7.webp';
+const IMG_MOB_AUSFALLHOCH_A='img/img_mob_ausfallhoch_a-d60444a2.webp';
+const IMG_MOB_AUSFALLHOCH_B='img/img_mob_ausfallhoch_b-27ae1b1c.webp';
+const IMG_MOB_HALB_A='img/img_mob_halb_a-cb3cef8e.webp';
+const IMG_MOB_HALB_B='img/img_mob_halb_b-aa8d1a14.webp';
+const IMG_MOB_SCHMETTVOR_A='img/img_mob_schmettvor_a-d1d4e2da.webp';
+const IMG_MOB_SCHMETTVOR_B='img/img_mob_schmettvor_b-01c0a5c7.webp';
+const IMG_MOB_KNIE_A='img/img_mob_knie_a-bf0a87fd.webp';
+const IMG_MOB_KNIE_B='img/img_mob_knie_b-b6a4028a.webp';
+const IMG_MOB_DREH_A='img/img_mob_dreh_a-47e9aa7c.webp';
+const IMG_MOB_DREH_B='img/img_mob_dreh_b-513787df.webp';
+/* V189: Foto-Übungen – A = Start, B = Endhaltung; flow = im Atemrhythmus wechseln, hold = einnehmen und halten */
+const MOBPH={katze:[IMG_MOB_KATZE_A,IMG_MOB_KATZE_B,'flow'],hund:[IMG_MOB_HUND_A,IMG_MOB_HUND_B,'hold'],ausfallhoch:[IMG_MOB_AUSFALLHOCH_A,IMG_MOB_AUSFALLHOCH_B,'hold'],halb:[IMG_MOB_HALB_A,IMG_MOB_HALB_B,'hold'],schmettvor:[IMG_MOB_SCHMETTVOR_A,IMG_MOB_SCHMETTVOR_B,'hold'],knie:[IMG_MOB_KNIE_A,IMG_MOB_KNIE_B,'hold'],dreh:[IMG_MOB_DREH_A,IMG_MOB_DREH_B,'hold']};
+const MP_REST=7;
+const mpPhase=(x,el,rest)=>{if(rest)return 'Pause · locker ausschütteln';const P=MOBPH[x[1]];
+  if(P&&P[2]==='flow')return el%8<4?'Einatmen · Rücken durchhängen':'Ausatmen · Rücken rund';return el<4?'Position einnehmen':'Halten · ruhig atmen'};
+const mpHint=(x,el,rest)=>{const L=x[3];if(rest)return L[0];return L[Math.min(L.length-1,Math.floor(el/Math.max(1,x[2]/L.length)))]};
+const mpSide=n=>/ links$/.test(n)?'Linke Seite':/ rechts$/.test(n)?'Rechte Seite':'';
+Phone.prototype.vFroutine=function(){const s=this.s,r=ROUT()[s.rt&&s.rt.id];if(!r)return '<div class="view ftv"></div>';
+  const R=s.rt,n=r.ex.length,done=R.i>=n,isK=!STR.includes(r);
+  const head=`<div class="mp-h"><button class="mp-x" data-a="frtback" aria-label="Schließen">${ic('x')}</button><b>${r.n}</b><span>${done?'':`${R.i+1}/${n}`}</span></div>`;
+  if(done)return `<div class="view mpv">${head}<div class="mp-done"><div class="mp-dc"><i>${ic('check')}</i></div><h1>Geschafft.</h1><p>${rMin(r)} Minuten ${isK?'Kraft':'Dehnen'} · ${n} Übungen</p><button class="gbtn" data-a="frtback">${ic('check')}Fertig</button></div></div>`;
+  const x=r.ex[R.i],rest=!!R.rest,dur=rest?MP_REST:x[2],left=R.left,el=rest?0:x[2]-left,frac=Math.min(1,1-left/dur),ph=MOBPH[x[1]],mir=x[4]&&x[4].m,side=mpSide(x[0]),C=2*Math.PI*88;
+  const segs=r.ex.map((_,k)=>`<i class="${k<R.i?'d':''}${k===R.i?' c':''}">${k===R.i?`<b class="mp-sb" style="width:${rest?0:(frac*100).toFixed(1)}%"></b>`:''}</i>`).join('');
+  const stage=ph?`<div class="mp-st ${rest?'rest':ph[2]} ${R.run?'':'pz'}" style="--el:-${el}s"><div class="mp-im${mir?' mir':''}"><img src="${ph[0]}" alt=""><img class="b" src="${ph[1]}" alt=""></div></div>`
+    :`<div class="mp-st sv">${poseSVG(x[1],0,true,!rest,mir)}</div>`;
+  return `<div class="view mpv${rest?' is-rest':''}">${head}<div class="mp-seg">${segs}</div>
+   <div class="mp-stw">${stage}${side?`<span class="mp-side">${side}</span>`:''}<span class="mp-ph">${mpPhase(x,el,rest)}</span>${rest?`<span class="mp-next">Als Nächstes</span>`:''}</div>
+   <div class="mp-ti"><small>${rest?'Pause':`Übung ${R.i+1} von ${n}`}</small><h1>${x[0]}</h1><p class="mp-hint">${mpHint(x,el,rest)}</p></div>
+   <div class="mp-tm${left<=3?' end':''}"><svg viewBox="0 0 200 200" aria-hidden="true"><defs><linearGradient id="mpgA" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6BD39B"/><stop offset="1" stop-color="#0B7A4B"/></linearGradient><linearGradient id="mpgR" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#C6B6F5"/><stop offset="1" stop-color="#7A62D6"/></linearGradient></defs>
+     <circle class="mp-tr" cx="100" cy="100" r="88"/><circle class="mp-tp" cx="100" cy="100" r="88" stroke="url(#${rest?'mpgR':'mpgA'})" stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${(C*(1-frac)).toFixed(1)}"/>
+     <g class="mp-dot" style="transform:rotate(${(frac*360).toFixed(1)}deg)"><circle cx="100" cy="12" r="8"/></g></svg>
+     <div class="mp-tx"><b class="mp-s">${fSec(Math.max(0,left))}</b><small>${rest?'bis zur nächsten Übung':R.run?'verbleibend':'pausiert'}</small></div></div>
+   <div class="mp-ctl"><button data-a="frtstop"><span>${ic('stop')}</span><small>Stoppen</small></button><button class="big" data-a="frtplay" aria-label="${R.run?'Pause':'Weiter'}"><span>${ic(R.run?'pause':'play')}</span></button><button data-a="frtskip"><span>${ic('fwd2')}</span><small>${rest?'Jetzt starten':'Überspringen'}</small></button></div>
+   <div class="mp-card"><b>So geht's</b><ol>${x[3].map((t,k)=>`<li><i>${k+1}</i>${t}</li>`).join('')}</ol>${!rest&&r.ex[R.i+1]?`<p>Danach: <b>${r.ex[R.i+1][0]}</b></p>`:''}</div></div>`};
 Phone.prototype.rtTick=function(){clearInterval(this.rtT);const self=this;this.rtT=setInterval(()=>{const s=self.s,R=s.rt;if(!R||!R.run||s.screen!=='froutine'){clearInterval(self.rtT);return}
-  const r=ROUT()[R.id];R.left--;if(R.left<=0){R.i++;haptic();if(R.i>=r.ex.length){R.run=false;hapticSuccess();self.render();clearInterval(self.rtT);return}R.left=r.ex[R.i][2];self.render();return}
-  const el=self.scr.querySelector('.rt-s'),arc=self.scr.querySelector('.rt-arc');if(el)el.textContent=`${Math.floor(R.left/60)}:${String(R.left%60).padStart(2,'0')}`;if(arc){const C=2*Math.PI*48;arc.setAttribute('stroke-dasharray',`${(C*(1-R.left/r.ex[R.i][2])).toFixed(1)} ${C.toFixed(1)}`)}},1000)};
+  const r=ROUT()[R.id],n=r.ex.length;R.left--;
+  if(R.left<=0){if(R.rest){R.rest=false;R.left=r.ex[R.i][2];hapticSuccess();self.render();return}
+    if(R.i+1>=n){R.i=n;R.run=false;hapticSuccess();self.render();clearInterval(self.rtT);return}
+    R.i++;R.rest=true;R.left=MP_REST;haptic();self.render();return}
+  const x=r.ex[R.i],dur=R.rest?MP_REST:x[2],el=R.rest?0:x[2]-R.left,frac=Math.min(1,1-R.left/dur),C=2*Math.PI*88,q=c=>self.scr.querySelector(c);
+  const sEl=q('.mp-s');if(sEl)sEl.textContent=fSec(R.left);
+  const tp=q('.mp-tp');if(tp)tp.setAttribute('stroke-dashoffset',(C*(1-frac)).toFixed(1));
+  const dt=q('.mp-dot');if(dt)dt.style.transform=`rotate(${(frac*360).toFixed(1)}deg)`;
+  const sb=q('.mp-sb');if(sb&&!R.rest)sb.style.width=(frac*100).toFixed(1)+'%';
+  const pe=q('.mp-ph');if(pe){const t=mpPhase(x,el,R.rest);if(pe.textContent!==t){pe.textContent=t;pe.classList.remove('pop');void pe.offsetWidth;pe.classList.add('pop')}}
+  const he=q('.mp-hint');if(he){const t=mpHint(x,el,R.rest);if(he.textContent!==t)he.textContent=t}
+  const tm=q('.mp-tm');if(tm)tm.classList.toggle('end',R.left<=3);if(R.left<=3)haptic()},1000)};
 const IMG_FL_TOUR='img/img_fl_tour-bf3ae03e.webp';
 const IMG_FL_SIGN='img/img_fl_sign-d1e92f6c.webp';
 const IMG_FL_RIDE='img/img_fl_ride-b68cadad.webp';
@@ -4606,14 +4710,16 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
    case 'fwoadd':{const w=WORK.find(x=>x.id===s.fwoId);if(!w)break;const d=s.fwoD!=null?s.fwoD:TODAY,A=dayActs(s.train[d]);this.prevTrain=JSON.stringify([s.train,s.tx]);
       A.push({a:w.a,t:w.n,min:w.min,lv:w.lv,tss:w.tss});s.train[d]=actsToT(A);s.sheet=null;hapticSuccess();this.render();this.toast(`${w.n} → ${dn(d)}`,'Rückgängig','fundo');break}
    case 'fwocopy':{const w=WORK.find(x=>x.id===s.fwoId);if(!w)break;const txt=`${w.n} (${fDur(w.min)}, ${w.tss} TSS)\n${woText(w)}`;try{navigator.clipboard.writeText(txt).then(()=>this.toast('Intervalle kopiert'),()=>this.toast('Kopieren nicht möglich'))}catch(e){this.toast('Kopieren nicht möglich')}break}
-   case 'frt':s.rt={id:v,i:0,left:ROUT()[v].ex[0][2],run:true};setTimeout(()=>this.rtTick(),0);s.screen='froutine';haptic();this.render();break;
+   case 'frt':s.rt={id:v,i:0,left:ROUT()[v].ex[0][2],run:true,rest:false};setTimeout(()=>this.rtTick(),0);s.screen='froutine';haptic();this.render();break;
    case 'frtback':clearInterval(this.rtT);s.rt=null;s.rtInfo=false;s.screen=s.fcat?'fcat':'fmob';this.render();break;
    case 'fcat':s.fcat=v;s.screen='fcat';haptic();this.render();break;
    case 'fexadj':{const r=ROUT()[v],x=r&&r.ex[+t.dataset.i];if(!x)break;x[2]=Math.max(15,Math.min(180,x[2]+(+t.dataset.d)));haptic();this.render();break}
    case 'fcatback':s.fcat=null;s.screen='fmob';this.render();break;
-   case 'frtat':{const r=ROUT()[v],i=+t.dataset.i;s.rt={id:v,i,left:r.ex[i][2],run:false};s.screen='froutine';haptic();this.render();break}
+   case 'frtat':{const r=ROUT()[v],i=+t.dataset.i;s.rt={id:v,i,left:r.ex[i][2],run:false,rest:false};s.screen='froutine';haptic();this.render();break}
    case 'frtinfo':s.rtInfo=!s.rtInfo;haptic();this.render();break;
    case 'frtplay':{const R=s.rt;if(!R)break;R.run=!R.run;haptic();this.render();if(R.run)this.rtTick();break}
+   case 'frtskip':{const R=s.rt,r=R&&ROUT()[R.id];if(!r)break;if(R.rest){R.rest=false;R.left=r.ex[R.i][2]}else if(R.i+1>=r.ex.length){R.i=r.ex.length;R.run=false}else{R.i++;R.rest=true;R.left=MP_REST}haptic();this.render();if(R.run)this.rtTick();break}
+   case 'frtstop':clearInterval(this.rtT);s.rt=null;s.rtInfo=false;s.screen=s.fcat?'fcat':'fmob';haptic();this.render();this.toast('Einheit beendet');break;
    case 'frtnext':case 'frtprev':{const R=s.rt,r=R&&ROUT()[R.id];if(!r)break;R.i=Math.max(0,Math.min(r.ex.length,R.i+(a==='frtnext'?1:-1)));if(R.i<r.ex.length)R.left=r.ex[R.i][2];else R.run=false;haptic();this.render();break}
    case 'fwplan':{const O=s.fwOpen=s.fwOpen||{};O[v]=!O[v];haptic();this.render();break}
    case 'fmark':{const i=+t.dataset.i,j=+t.dataset.j,A=dayActs(s.train[i]),x=A[j];if(!x)break;const key=i+':'+j,now=Date.now(),dbl=this.lastMark&&this.lastMark.key===key&&now-this.lastMark.t<420;
