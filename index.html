@@ -2127,7 +2127,6 @@ img,svg{-webkit-user-drag:none}
 .mp-ctl button span{width:56px;height:56px;border-radius:50%;background:#fff;display:grid;place-items:center;box-shadow:0 8px 20px -12px rgba(60,40,110,.5)}
 .mp-ctl button small{font-size:12px;font-weight:600;color:#6B6478}
 .mp-ctl .ic{width:22px;height:22px;stroke-width:2.4}
-.mp-ctl button[data-a="frtstop"] .ic{fill:currentColor;stroke:none;width:22px;height:22px;color:#C2455E}
 .mp-ctl button.big{width:auto}.mp-ctl button.big span{width:76px;height:76px;background:linear-gradient(135deg,#1F9A63,#065E39);color:#fff;box-shadow:0 16px 30px -14px rgba(6,94,57,.8)}
 .is-rest .mp-ctl button.big span{background:linear-gradient(135deg,#9C86EC,#6A50CF);box-shadow:0 16px 30px -14px rgba(106,80,207,.8)}
 .mp-ctl button.big .ic{width:30px;height:30px}
@@ -2143,7 +2142,7 @@ img,svg{-webkit-user-drag:none}
 @keyframes mpPop2{0%{transform:scale(.4);opacity:0}100%{transform:scale(1);opacity:1}}
 .mp-done h1{font-size:34px;letter-spacing:-.04em;margin:26px 0 6px;color:#1D1B22}.mp-done p{color:#6B6478;font-size:16px;margin:0 0 26px}
 .mp-done .gbtn{background:linear-gradient(100deg,#0F7C4E,#004D2E 58%,#006039)!important;width:100%}
-.cat-i.ph{overflow:hidden;background:#F2EFF7!important}.cat-i.ph img{width:100%;height:100%;object-fit:cover;transform-origin:center}
+.cat-i.ph{overflow:hidden;background:#F2EFF7!important;width:96px!important;height:72px!important;border-radius:14px!important}.cat-i.ph img{width:100%;height:100%;object-fit:cover;display:block}
 @media (prefers-reduced-motion:reduce){.mp-im,.mp-im img,.mp-ph.pop,.mp-s{animation:none!important}.mp-st.hold .mp-im img.b{opacity:1}}
 </style>
 
@@ -3475,23 +3474,23 @@ const fSec=t=>`${Math.floor(t/60)}:${String(t%60).padStart(2,'0')}`;
 Phone.prototype.vFcat=function(){const s=this.s,r=ROUT()[s.fcat];if(!r)return '<div class="view ftv"></div>';const tot=r.ex.reduce((a,x)=>a+x[2],0);
   return `<div class="view ftv catv"><div class="z">
    <div class="cat-top"><button class="iconbtn" data-a="fcatback" aria-label="Zurück">${ic('left')}</button><span><small>${STR.includes(r)?'Dehnen':'Kraft'} · ${r.ex.length} Übungen · ${fSec(tot)} Min</small><b>${r.n}</b></span></div>
-   <div class="cat-l">${r.ex.map((x,i)=>`<div class="cat-r"><button class="cat-i${MOBPH[x[1]]?' ph':''}" data-a="frtat" data-v="${r.id}" data-i="${i}" aria-label="${x[0]} ansehen">${MOBPH[x[1]]?`<img src="${MOBPH[x[1]][1]}" alt="" style="transform:${x[4]&&x[4].m?'scaleX(-1) ':''}scale(1.3)">`:poseSVG(x[1],0,0,0,x[4]&&x[4].m)}</button><button class="cat-n" data-a="frtat" data-v="${r.id}" data-i="${i}"><b>${x[0]}</b><small>${(MOVE[x[1]]||[0,0,x[3][0]])[2]}</small></button>
+   <div class="cat-l">${r.ex.map((x,i)=>`<div class="cat-r"><button class="cat-i${MOBPH[x[1]]?' ph':''}" data-a="frtat" data-v="${r.id}" data-i="${i}" aria-label="${x[0]} ansehen">${MOBPH[x[1]]?`<img src="${MOBPH[x[1]][1]}" alt="" style="${x[4]&&x[4].m?'transform:scaleX(-1)':''}">`:poseSVG(x[1],0,0,0,x[4]&&x[4].m)}</button><button class="cat-n" data-a="frtat" data-v="${r.id}" data-i="${i}"><b>${x[0]}</b><small>${(MOVE[x[1]]||[0,0,x[3][0]])[2]}</small></button>
      <span class="cat-t"><button data-a="fexadj" data-v="${r.id}" data-i="${i}" data-d="-15" aria-label="Kürzer">${ic('minus')}</button><em>${fSec(x[2])}</em><button data-a="fexadj" data-v="${r.id}" data-i="${i}" data-d="15" aria-label="Länger">${ic('plus')}</button></span></div>`).join('')}</div>
   </div><div class="cat-go"><button class="gbtn" data-a="frt" data-v="${r.id}">${ic('play')}Starten · ${Math.round(tot/60)} Min</button></div></div>`};
-const IMG_MOB_KATZE_A='img/img_mob_katze_a-fd75ff7a.webp';
-const IMG_MOB_KATZE_B='img/img_mob_katze_b-1315b4fc.webp';
-const IMG_MOB_HUND_A='img/img_mob_hund_a-5f66cefa.webp';
-const IMG_MOB_HUND_B='img/img_mob_hund_b-bee848c7.webp';
-const IMG_MOB_AUSFALLHOCH_A='img/img_mob_ausfallhoch_a-d60444a2.webp';
-const IMG_MOB_AUSFALLHOCH_B='img/img_mob_ausfallhoch_b-27ae1b1c.webp';
-const IMG_MOB_HALB_A='img/img_mob_halb_a-cb3cef8e.webp';
-const IMG_MOB_HALB_B='img/img_mob_halb_b-aa8d1a14.webp';
-const IMG_MOB_SCHMETTVOR_A='img/img_mob_schmettvor_a-d1d4e2da.webp';
-const IMG_MOB_SCHMETTVOR_B='img/img_mob_schmettvor_b-01c0a5c7.webp';
-const IMG_MOB_KNIE_A='img/img_mob_knie_a-bf0a87fd.webp';
-const IMG_MOB_KNIE_B='img/img_mob_knie_b-b6a4028a.webp';
-const IMG_MOB_DREH_A='img/img_mob_dreh_a-47e9aa7c.webp';
-const IMG_MOB_DREH_B='img/img_mob_dreh_b-513787df.webp';
+const IMG_MOB_KATZE_A='img/img_mob_katze_a-c5130b4b.webp';
+const IMG_MOB_KATZE_B='img/img_mob_katze_b-5a7e92bf.webp';
+const IMG_MOB_HUND_A='img/img_mob_hund_a-4d571d85.webp';
+const IMG_MOB_HUND_B='img/img_mob_hund_b-feacd971.webp';
+const IMG_MOB_AUSFALLHOCH_A='img/img_mob_ausfallhoch_a-656f57d2.webp';
+const IMG_MOB_AUSFALLHOCH_B='img/img_mob_ausfallhoch_b-d08f0a22.webp';
+const IMG_MOB_HALB_A='img/img_mob_halb_a-1f9e9159.webp';
+const IMG_MOB_HALB_B='img/img_mob_halb_b-60c18d9b.webp';
+const IMG_MOB_SCHMETTVOR_A='img/img_mob_schmettvor_a-c958d54e.webp';
+const IMG_MOB_SCHMETTVOR_B='img/img_mob_schmettvor_b-6f80a1db.webp';
+const IMG_MOB_KNIE_A='img/img_mob_knie_a-dc5f84ff.webp';
+const IMG_MOB_KNIE_B='img/img_mob_knie_b-c4d97793.webp';
+const IMG_MOB_DREH_A='img/img_mob_dreh_a-15479de5.webp';
+const IMG_MOB_DREH_B='img/img_mob_dreh_b-baeecf39.webp';
 /* V189: Foto-Übungen – A = Start, B = Endhaltung; flow = im Atemrhythmus wechseln, hold = einnehmen und halten */
 const MOBPH={katze:[IMG_MOB_KATZE_A,IMG_MOB_KATZE_B,'flow'],hund:[IMG_MOB_HUND_A,IMG_MOB_HUND_B,'hold'],ausfallhoch:[IMG_MOB_AUSFALLHOCH_A,IMG_MOB_AUSFALLHOCH_B,'hold'],halb:[IMG_MOB_HALB_A,IMG_MOB_HALB_B,'hold'],schmettvor:[IMG_MOB_SCHMETTVOR_A,IMG_MOB_SCHMETTVOR_B,'hold'],knie:[IMG_MOB_KNIE_A,IMG_MOB_KNIE_B,'hold'],dreh:[IMG_MOB_DREH_A,IMG_MOB_DREH_B,'hold']};
 const MP_REST=7;
@@ -3514,7 +3513,7 @@ Phone.prototype.vFroutine=function(){const s=this.s,r=ROUT()[s.rt&&s.rt.id];if(!
      <circle class="mp-tr" cx="100" cy="100" r="88"/><circle class="mp-tp" cx="100" cy="100" r="88" stroke="url(#${rest?'mpgR':'mpgA'})" stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${(C*(1-frac)).toFixed(1)}"/>
      <g class="mp-dot" style="transform:rotate(${(frac*360).toFixed(1)}deg)"><circle cx="100" cy="12" r="8"/></g></svg>
      <div class="mp-tx"><b class="mp-s">${fSec(Math.max(0,left))}</b><small>${rest?'bis zur nächsten Übung':R.run?'verbleibend':'pausiert'}</small></div></div>
-   <div class="mp-ctl"><button data-a="frtstop"><span>${ic('stop')}</span><small>Stoppen</small></button><button class="big" data-a="frtplay" aria-label="${R.run?'Pause':'Weiter'}"><span>${ic(R.run?'pause':'play')}</span></button><button data-a="frtskip"><span>${ic('fwd2')}</span><small>${rest?'Jetzt starten':'Überspringen'}</small></button></div>
+   <div class="mp-ctl"><button data-a="frtprev"><span>${ic('back2')}</span><small>Zurück</small></button><button class="big" data-a="frtplay" aria-label="${R.run?'Pause':'Weiter'}"><span>${ic(R.run?'pause':'play')}</span></button><button data-a="frtskip"><span>${ic('fwd2')}</span><small>${rest?'Jetzt starten':'Überspringen'}</small></button></div>
    <div class="mp-card"><b>So geht's</b><ol>${x[3].map((t,k)=>`<li><i>${k+1}</i>${t}</li>`).join('')}</ol>${!rest&&r.ex[R.i+1]?`<p>Danach: <b>${r.ex[R.i+1][0]}</b></p>`:''}</div></div>`};
 Phone.prototype.rtTick=function(){clearInterval(this.rtT);const self=this;this.rtT=setInterval(()=>{const s=self.s,R=s.rt;if(!R||!R.run||s.screen!=='froutine'){clearInterval(self.rtT);return}
   const r=ROUT()[R.id],n=r.ex.length;R.left--;
@@ -4720,7 +4719,7 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
    case 'frtplay':{const R=s.rt;if(!R)break;R.run=!R.run;haptic();this.render();if(R.run)this.rtTick();break}
    case 'frtskip':{const R=s.rt,r=R&&ROUT()[R.id];if(!r)break;if(R.rest){R.rest=false;R.left=r.ex[R.i][2]}else if(R.i+1>=r.ex.length){R.i=r.ex.length;R.run=false}else{R.i++;R.rest=true;R.left=MP_REST}haptic();this.render();if(R.run)this.rtTick();break}
    case 'frtstop':clearInterval(this.rtT);s.rt=null;s.rtInfo=false;s.screen=s.fcat?'fcat':'fmob';haptic();this.render();this.toast('Einheit beendet');break;
-   case 'frtnext':case 'frtprev':{const R=s.rt,r=R&&ROUT()[R.id];if(!r)break;R.i=Math.max(0,Math.min(r.ex.length,R.i+(a==='frtnext'?1:-1)));if(R.i<r.ex.length)R.left=r.ex[R.i][2];else R.run=false;haptic();this.render();break}
+   case 'frtnext':case 'frtprev':{const R=s.rt,r=R&&ROUT()[R.id];if(!r)break;if(a==='frtprev'&&R.rest){R.rest=false}else R.i=Math.max(0,Math.min(r.ex.length,R.i+(a==='frtnext'?1:-1)));R.rest=false;if(R.i<r.ex.length)R.left=r.ex[R.i][2];else R.run=false;haptic();this.render();if(R.run)this.rtTick();break}
    case 'fwplan':{const O=s.fwOpen=s.fwOpen||{};O[v]=!O[v];haptic();this.render();break}
    case 'fmark':{const i=+t.dataset.i,j=+t.dataset.j,A=dayActs(s.train[i]),x=A[j];if(!x)break;const key=i+':'+j,now=Date.now(),dbl=this.lastMark&&this.lastMark.key===key&&now-this.lastMark.t<420;
       this.prevTrain=JSON.stringify([s.train,s.tx]);
