@@ -2151,6 +2151,12 @@ img,svg{-webkit-user-drag:none}
 .cat-go::before{content:'';position:absolute;left:-16px;right:-16px;top:-46px;bottom:calc(-1 * (var(--sab,0px) + 16px));background:linear-gradient(180deg,rgba(247,248,246,0) 0,rgba(247,248,246,.92) 42px,#F7F8F6 100%);pointer-events:none;z-index:-1}
 .cat-r{transition:opacity .12s linear,transform .12s linear,filter .12s linear;will-change:opacity,transform;animation:catIn .5s cubic-bezier(.2,.8,.2,1) both}
 @keyframes catIn{0%{opacity:0;transform:translateY(18px) scale(.97)}100%{opacity:1;transform:none}}
+
+/* V191: Titelbilder der Dehn-Blöcke (ganze Figur) in Übersicht und Empfehlung */
+.mt.cv{padding:0 0 13px!important;overflow:hidden}
+.mt .mt-i{display:block;width:100%;aspect-ratio:1;object-fit:cover;margin:0 0 8px;background:#F2EFF7}
+.mh-col.cv{padding:0!important;display:block;background:#F2EFF7!important}
+.mh-col.cv img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}
 </style>
 
 <div class="page">
@@ -3441,9 +3447,9 @@ const STR=[
   ['Aufrecht stehen und atmen','stand',60,['Scheitel nach oben, Schultern weich, ruhig atmen.']]]},
  {id:'spagat',n:'Spagat',sub:'Schritt für Schritt tiefer',pose:'spagat',c:'#F7B79A',ex:[
   ['Tiefer Ausfallschritt links','ausfall',75,['Linker Fuß vorne, rechtes Knie am Boden.','Hüfte nach vorn sinken lassen, Oberkörper aufrecht.']],
-  ['Tiefer Ausfallschritt rechts','ausfall',75,['Rechter Fuß vorne.']],
+  ['Tiefer Ausfallschritt rechts','ausfall',75,['Rechter Fuß vorne.'],{m:1}],
   ['Halber Spagat links','halb',75,['Hüfte zurück, linkes Bein gestreckt, Zehen zu dir.','Mit geradem Rücken nach vorn neigen.']],
-  ['Halber Spagat rechts','halb',75,['Rechtes Bein gestreckt.']],
+  ['Halber Spagat rechts','halb',75,['Rechtes Bein gestreckt.'],{m:1}],
   ['Grätsche sitzend','graetsche',90,['Beine weit, Knie zeigen nach oben.','Mit langem Rücken nach vorn wandern.']],
   ['Schmetterling','schmetterling',60,['Fußsohlen zusammen, Knie sinken lassen.']],
   ['Frosch','frosch',75,['Knie weit auseinander, Hüfte langsam nach hinten.']],
@@ -3473,10 +3479,10 @@ Phone.prototype.vFmob=function(){const s=this.s,D=discAll(s.prof),SP=specFor(s.p
    <div class="top-row between"><span></span><button class="iconbtn" data-a="tab" data-v="plan" aria-label="Zur Ernährung">${ic('up')}</button></div>
    <div class="eb">Mobility · Dehnen & Kraft</div>
    <h1 class="ap-h1">Beweglich. <span>Und stark.</span></h1>
-   <button class="mh" data-a="frt" data-v="${hero.id}"><span class="mh-col">${col}</span><span class="mh-tx"><small>Heute empfohlen · Dehnen</small><b>${hero.n}</b><span>${rMin(hero)} Minuten · ${hero.ex.length} Übungen</span></span><i>${ic('play')}Start</i></button>
+   <button class="mh" data-a="frt" data-v="${hero.id}"><span class="mh-col${MOBCOV[hero.id]?' cv':''}">${MOBCOV[hero.id]?`<img src="${MOBCOV[hero.id]}" alt="">`:col}</span><span class="mh-tx"><small>Heute empfohlen · Dehnen</small><b>${hero.n}</b><span>${rMin(hero)} Minuten · ${hero.ex.length} Übungen</span></span><i>${ic('play')}Start</i></button>
    <h2 class="ap-h2 ft-h">Dehnen. <span>10 Minuten je Bereich.</span></h2>
    <p class="mob-why"><b>Beweglichkeit:</b> löst Verspannungen, verbessert Haltung und Bewegungsumfang.</p>
-   <div class="mob-g">${STR.map(r=>`<button class="mt rv" data-a="fcat" data-v="${r.id}">${poseSVG(r.pose,r.c)}<b>${r.n}</b><small>${rMin(r)} Min · Dehnen</small></button>`).join('')}</div>
+   <div class="mob-g">${STR.map(r=>`<button class="mt rv${MOBCOV[r.id]?' cv':''}" data-a="fcat" data-v="${r.id}">${MOBCOV[r.id]?`<img class="mt-i" src="${MOBCOV[r.id]}" alt="">`:poseSVG(r.pose,r.c)}<b>${r.n}</b><small>${rMin(r)} Min · Dehnen</small></button>`).join('')}</div>
    <h2 class="ap-h2 ft-h">Kraft. <span>${D.length?'Für '+esc(D.map(x=>x[1]).join(', ')):'Für deine Sportart'}.</span></h2>
    <p class="mob-why"><b>Krafttraining:</b> macht dich leistungsfähiger – z. B. ein stabiler Rumpf für mehr Druck aufs Pedal und weniger Rückenschmerzen.</p>
    <div class="mob-r">${SP.map(r=>`<button class="mk rv" data-a="frt" data-v="${r.id}">${poseSVG(r.pose,r.c)}<span><em>Kraft</em><b>${r.n}</b><small>${rMin(r)} Min · ${r.sub}</small></span></button>`).join('')}</div>
@@ -3505,8 +3511,22 @@ const IMG_MOB_KNIE_A='img/img_mob_knie_a-dc5f84ff.webp';
 const IMG_MOB_KNIE_B='img/img_mob_knie_b-c4d97793.webp';
 const IMG_MOB_DREH_A='img/img_mob_dreh_a-15479de5.webp';
 const IMG_MOB_DREH_B='img/img_mob_dreh_b-baeecf39.webp';
+const IMG_MOB_AUSFALL_A='img/img_mob_ausfall_a-57176d31.webp';
+const IMG_MOB_AUSFALL_B='img/img_mob_ausfall_b-f745d752.webp';
+const IMG_MOB_GRAETSCHE_A='img/img_mob_graetsche_a-f688492e.webp';
+const IMG_MOB_GRAETSCHE_B='img/img_mob_graetsche_b-42a8d71b.webp';
+const IMG_MOB_FROSCH_A='img/img_mob_frosch_a-939d8f4b.webp';
+const IMG_MOB_FROSCH_B='img/img_mob_frosch_b-e1a1756d.webp';
+const IMG_MOB_SPAGAT_A='img/img_mob_spagat_a-9d05af65.webp';
+const IMG_MOB_SPAGAT_B='img/img_mob_spagat_b-7655583f.webp';
+const IMG_COV_RUECKEN='img/img_cov_ruecken-8e4de621.webp';
+const IMG_COV_NACKEN='img/img_cov_nacken-bec58874.webp';
+const IMG_COV_HALTUNG='img/img_cov_haltung-3ebabeed.webp';
+const IMG_COV_SPAGAT='img/img_cov_spagat-c41ff2b0.webp';
+const MOBCOV={ruecken:IMG_COV_RUECKEN,nacken:IMG_COV_NACKEN,haltung:IMG_COV_HALTUNG,spagat:IMG_COV_SPAGAT};
 /* V189: Foto-Übungen – A = Start, B = Endhaltung; flow = im Atemrhythmus wechseln, hold = einnehmen und halten */
 const MOBPH={katze:[IMG_MOB_KATZE_A,IMG_MOB_KATZE_B,'flow'],hund:[IMG_MOB_HUND_A,IMG_MOB_HUND_B,'hold'],ausfallhoch:[IMG_MOB_AUSFALLHOCH_A,IMG_MOB_AUSFALLHOCH_B,'hold'],halb:[IMG_MOB_HALB_A,IMG_MOB_HALB_B,'hold'],schmettvor:[IMG_MOB_SCHMETTVOR_A,IMG_MOB_SCHMETTVOR_B,'hold'],knie:[IMG_MOB_KNIE_A,IMG_MOB_KNIE_B,'hold'],dreh:[IMG_MOB_DREH_A,IMG_MOB_DREH_B,'hold']};
+MOBPH.ausfall=[IMG_MOB_AUSFALL_A,IMG_MOB_AUSFALL_B,'hold'];MOBPH.graetsche=[IMG_MOB_GRAETSCHE_A,IMG_MOB_GRAETSCHE_B,'hold'];MOBPH.frosch=[IMG_MOB_FROSCH_A,IMG_MOB_FROSCH_B,'hold'];MOBPH.spagat=[IMG_MOB_SPAGAT_A,IMG_MOB_SPAGAT_B,'hold'];MOBPH.schmetterling=MOBPH.schmettvor;
 const MP_REST=7;
 const mpPhase=(x,el,rest)=>{if(rest)return 'Pause · locker ausschütteln';const P=MOBPH[x[1]];
   if(P&&P[2]==='flow')return el%8<4?'Einatmen · Rücken durchhängen':'Ausatmen · Rücken rund';return el<4?'Position einnehmen':'Halten · ruhig atmen'};
