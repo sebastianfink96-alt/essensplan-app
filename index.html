@@ -2147,8 +2147,8 @@ img,svg{-webkit-user-drag:none}
 
 /* V190: Starten bleibt unten stehen, die Übungen laufen weich darunter durch (Verlauf + Ein-/Ausblenden), am Ende der Liste liegt die letzte Karte frei darüber */
 .catv{padding-bottom:0!important}
-.cat-go{position:sticky!important;left:auto!important;right:auto!important;bottom:calc(var(--sab,0px) + 104px)!important;margin:14px 0 calc(var(--sab,0px) + 104px)!important}
-.cat-go::before{content:'';position:absolute;left:-16px;right:-16px;top:-46px;bottom:calc(-1 * (var(--sab,0px) + 110px));background:linear-gradient(180deg,rgba(247,248,246,0) 0,rgba(247,248,246,.92) 42px,#F7F8F6 100%);pointer-events:none;z-index:-1}
+.cat-go{position:sticky!important;left:auto!important;right:auto!important;bottom:calc(var(--sab,0px) + 16px)!important;margin:14px 0 calc(var(--sab,0px) + 16px)!important}
+.cat-go::before{content:'';position:absolute;left:-16px;right:-16px;top:-46px;bottom:calc(-1 * (var(--sab,0px) + 16px));background:linear-gradient(180deg,rgba(247,248,246,0) 0,rgba(247,248,246,.92) 42px,#F7F8F6 100%);pointer-events:none;z-index:-1}
 .cat-r{transition:opacity .12s linear,transform .12s linear,filter .12s linear;will-change:opacity,transform;animation:catIn .5s cubic-bezier(.2,.8,.2,1) both}
 @keyframes catIn{0%{opacity:0;transform:translateY(18px) scale(.97)}100%{opacity:1;transform:none}}
 </style>
