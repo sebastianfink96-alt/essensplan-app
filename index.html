@@ -2157,6 +2157,11 @@ img,svg{-webkit-user-drag:none}
 .mt .mt-i{display:block;width:100%;aspect-ratio:1;object-fit:cover;margin:0 0 8px;background:#F2EFF7}
 .mh-col.cv{padding:0!important;display:block;background:#F2EFF7!important}
 .mh-col.cv img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover}
+
+/* V192: Kraft-Block mit Foto-Titelbild */
+.mk.cv{padding:0 0 16px!important;overflow:hidden}
+.mk.cv>span{padding:0 16px}
+.mk .mk-i{flex:none;width:100%;aspect-ratio:4/3;object-fit:cover;background:#F2EFF7;display:block}
 </style>
 
 <div class="page">
@@ -3457,7 +3462,7 @@ const STR=[
 ];
 const SPEC={
  rad:[{id:'kcore',n:'Core für Radfahrer',sub:'Stabiler Rumpf, mehr Druck aufs Pedal',pose:'plank',c:'#8E3B32',ex:[
-   ['Unterarmstütz','plank',45,['Unterarme unter den Schultern, Körper eine Linie.','Bauch und Po fest, ruhig atmen.']],['Seitstütz links','seitstuetz',30,['Auf dem linken Unterarm, Hüfte hoch.']],['Seitstütz rechts','seitstuetz',30,['Auf dem rechten Unterarm.']],
+   ['Unterarmstütz','plank',45,['Unterarme unter den Schultern, Körper eine Linie.','Bauch und Po fest, ruhig atmen.']],['Seitstütz links','seitstuetz',30,['Auf dem linken Unterarm, Hüfte hoch.']],['Seitstütz rechts','seitstuetz',30,['Auf dem rechten Unterarm.'],{m:1}],
    ['Dead Bug','deadbug',45,['Rückenlage, Arme und Beine im 90°-Winkel.','Arm und gegenüberliegendes Bein langsam strecken, Rücken bleibt am Boden.']],['Glute Bridge','bruecke',45,['Becken heben, Po anspannen, oben kurz halten.']],
    ['Bird Dog','birddog',45,['Vierfüßler, Arm und Bein gegengleich strecken.']],['Superman','superman',30,['Bauchlage, Arme und Beine leicht abheben.']]]},
   {id:'kbein',n:'Beinkraft fürs Rad',sub:'Mehr Watt am Berg',pose:'kniebeuge',c:'#7E2F3E',ex:[
@@ -3485,7 +3490,7 @@ Phone.prototype.vFmob=function(){const s=this.s,D=discAll(s.prof),SP=specFor(s.p
    <div class="mob-g">${STR.map(r=>`<button class="mt rv${MOBCOV[r.id]?' cv':''}" data-a="fcat" data-v="${r.id}">${MOBCOV[r.id]?`<img class="mt-i" src="${MOBCOV[r.id]}" alt="">`:poseSVG(r.pose,r.c)}<b>${r.n}</b><small>${rMin(r)} Min · Dehnen</small></button>`).join('')}</div>
    <h2 class="ap-h2 ft-h">Kraft. <span>${D.length?'Für '+esc(D.map(x=>x[1]).join(', ')):'Für deine Sportart'}.</span></h2>
    <p class="mob-why"><b>Krafttraining:</b> macht dich leistungsfähiger – z. B. ein stabiler Rumpf für mehr Druck aufs Pedal und weniger Rückenschmerzen.</p>
-   <div class="mob-r">${SP.map(r=>`<button class="mk rv" data-a="frt" data-v="${r.id}">${poseSVG(r.pose,r.c)}<span><em>Kraft</em><b>${r.n}</b><small>${rMin(r)} Min · ${r.sub}</small></span></button>`).join('')}</div>
+   <div class="mob-r">${SP.map(r=>`<button class="mk rv${MOBCOV[r.id]?' cv':''}" data-a="frt" data-v="${r.id}">${MOBCOV[r.id]?`<img class="mk-i" src="${MOBCOV[r.id]}" alt="">`:poseSVG(r.pose,r.c)}<span><em>Kraft</em><b>${r.n}</b><small>${rMin(r)} Min · ${r.sub}</small></span></button>`).join('')}</div>
    ${D.length?'':`<button class="ai-again" data-a="fdisc">Sportart wählen für passende Kraftübungen</button>`}
   </div></div>`};
 /* Player im Bend-Stil: große Illustration oben, Name, Anleitung als Zeitleiste, Timer + Steuerung */
@@ -3523,13 +3528,27 @@ const IMG_COV_RUECKEN='img/img_cov_ruecken-8e4de621.webp';
 const IMG_COV_NACKEN='img/img_cov_nacken-bec58874.webp';
 const IMG_COV_HALTUNG='img/img_cov_haltung-3ebabeed.webp';
 const IMG_COV_SPAGAT='img/img_cov_spagat-c41ff2b0.webp';
-const MOBCOV={ruecken:IMG_COV_RUECKEN,nacken:IMG_COV_NACKEN,haltung:IMG_COV_HALTUNG,spagat:IMG_COV_SPAGAT};
+const IMG_MOB_PLANK_A='img/img_mob_plank_a-9a48a74a.webp';
+const IMG_MOB_PLANK_B='img/img_mob_plank_b-31bd0f81.webp';
+const IMG_MOB_SEITSTUETZ_A='img/img_mob_seitstuetz_a-edfbf1df.webp';
+const IMG_MOB_SEITSTUETZ_B='img/img_mob_seitstuetz_b-01aeb985.webp';
+const IMG_MOB_DEADBUG_A='img/img_mob_deadbug_a-dcc37423.webp';
+const IMG_MOB_DEADBUG_B='img/img_mob_deadbug_b-d937e1bb.webp';
+const IMG_MOB_BRUECKE_A='img/img_mob_bruecke_a-10026b24.webp';
+const IMG_MOB_BRUECKE_B='img/img_mob_bruecke_b-68d91f5c.webp';
+const IMG_MOB_BIRDDOG_B='img/img_mob_birddog_b-354f061f.webp';
+const IMG_MOB_SUPERMAN_A='img/img_mob_superman_a-8bcf55de.webp';
+const IMG_MOB_SUPERMAN_B='img/img_mob_superman_b-c57a7ce2.webp';
+const IMG_COV_KCORE='img/img_cov_kcore-a0b80259.webp';
+const MOBCOV={ruecken:IMG_COV_RUECKEN,nacken:IMG_COV_NACKEN,haltung:IMG_COV_HALTUNG,spagat:IMG_COV_SPAGAT,kcore:IMG_COV_KCORE};
 /* V189: Foto-Übungen – A = Start, B = Endhaltung; flow = im Atemrhythmus wechseln, hold = einnehmen und halten */
 const MOBPH={katze:[IMG_MOB_KATZE_A,IMG_MOB_KATZE_B,'flow'],hund:[IMG_MOB_HUND_A,IMG_MOB_HUND_B,'hold'],ausfallhoch:[IMG_MOB_AUSFALLHOCH_A,IMG_MOB_AUSFALLHOCH_B,'hold'],halb:[IMG_MOB_HALB_A,IMG_MOB_HALB_B,'hold'],schmettvor:[IMG_MOB_SCHMETTVOR_A,IMG_MOB_SCHMETTVOR_B,'hold'],knie:[IMG_MOB_KNIE_A,IMG_MOB_KNIE_B,'hold'],dreh:[IMG_MOB_DREH_A,IMG_MOB_DREH_B,'hold']};
 MOBPH.ausfall=[IMG_MOB_AUSFALL_A,IMG_MOB_AUSFALL_B,'hold'];MOBPH.graetsche=[IMG_MOB_GRAETSCHE_A,IMG_MOB_GRAETSCHE_B,'hold'];MOBPH.frosch=[IMG_MOB_FROSCH_A,IMG_MOB_FROSCH_B,'hold'];MOBPH.spagat=[IMG_MOB_SPAGAT_A,IMG_MOB_SPAGAT_B,'hold'];MOBPH.schmetterling=MOBPH.schmettvor;
+MOBPH.plank=[IMG_MOB_PLANK_A,IMG_MOB_PLANK_B,'hold'];MOBPH.seitstuetz=[IMG_MOB_SEITSTUETZ_A,IMG_MOB_SEITSTUETZ_B,'hold'];MOBPH.deadbug=[IMG_MOB_DEADBUG_A,IMG_MOB_DEADBUG_B,'flow'];MOBPH.bruecke=[IMG_MOB_BRUECKE_A,IMG_MOB_BRUECKE_B,'flow'];MOBPH.birddog=[IMG_MOB_BIRDDOG_B,IMG_MOB_BIRDDOG_B,'hold'];MOBPH.superman=[IMG_MOB_SUPERMAN_A,IMG_MOB_SUPERMAN_B,'hold'];
+const MPFLOW={katze:['Einatmen · Rücken durchhängen','Ausatmen · Rücken rund'],deadbug:['Ausgangsposition','Arm und Bein strecken'],bruecke:['Becken senken','Becken heben'],katzeDefault:['Einatmen','Ausatmen']};
 const MP_REST=7;
 const mpPhase=(x,el,rest)=>{if(rest)return 'Pause · locker ausschütteln';const P=MOBPH[x[1]];
-  if(P&&P[2]==='flow')return el%8<4?'Einatmen · Rücken durchhängen':'Ausatmen · Rücken rund';return el<4?'Position einnehmen':'Halten · ruhig atmen'};
+  if(P&&P[2]==='flow'){const F=MPFLOW[x[1]]||MPFLOW.katzeDefault;return el%8<4?F[0]:F[1]}return el<4?'Position einnehmen':'Halten · ruhig atmen'};
 const mpHint=(x,el,rest)=>{const L=x[3];if(rest)return L[0];return L[Math.min(L.length-1,Math.floor(el/Math.max(1,x[2]/L.length)))]};
 const mpSide=n=>/ links$/.test(n)?'Linke Seite':/ rechts$/.test(n)?'Rechte Seite':'';
 Phone.prototype.vFroutine=function(){const s=this.s,r=ROUT()[s.rt&&s.rt.id];if(!r)return '<div class="view ftv"></div>';
