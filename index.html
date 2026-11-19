@@ -1861,6 +1861,17 @@ img,svg{-webkit-user-drag:none}
 .phf-i .ic{width:19px;height:19px}
 .phf b{display:block;font-size:15px;font-weight:650;color:#6E2444}
 .phf small{display:block;margin-top:3px;font-size:13.5px;line-height:1.42;color:#6B4B57}
+.phs-sw.many{overflow-x:auto;scrollbar-width:none;margin-left:-4px;margin-right:-4px}
+.phs-sw.many::-webkit-scrollbar{display:none}
+.phs-sw.many button{flex:none;padding:9px 13px}
+.phs-sw button em.mono{font-style:normal;font-weight:700;font-size:14px}
+.phc-se{display:inline-flex;align-items:center;gap:6px;margin-top:14px;padding:6px 11px 6px 9px;border-radius:999px;background:#fff;color:var(--sc);font-size:13px;font-weight:650;box-shadow:0 0 0 1px color-mix(in srgb,var(--sc) 25%,transparent)}
+.phc-se .ic{width:16px;height:16px}
+.phf.se{margin-top:14px;background:linear-gradient(160deg,color-mix(in srgb,var(--sc) 10%,#fff),color-mix(in srgb,var(--sc) 18%,#fff));box-shadow:0 0 0 1px color-mix(in srgb,var(--sc) 18%,transparent)}
+.phf.se .phf-i{color:var(--sc)}
+.phf.se b{color:color-mix(in srgb,var(--sc) 70%,#000)}
+.phf.se small{color:color-mix(in srgb,var(--sc) 35%,#3A3A3C)}
+.phw-i em.mono{font-style:normal;font-weight:700;font-size:14px}
 .fthero b{color:#fff!important}
 .fthero+.wo-list{margin-top:10px}
 .phw-d em{overflow-wrap:normal!important}
@@ -3359,7 +3370,6 @@ Object.assign(P,{
  ph_music:'<path d="M9.4 17.6V5.8l9.6-2.2v11.8"/><circle cx="7" cy="17.6" r="2.4"/><circle cx="16.6" cy="15.4" r="2.4"/>',
  ph_bal:'<path d="M12 4v16M6 20h12"/><path d="M4.6 8.4h14.8"/><path d="m4.6 8.4-2.2 5a2.6 2.6 0 0 0 4.4 0zM19.4 8.4l-2.2 5a2.6 2.6 0 0 0 4.4 0z"/>'});
 /* Wochentag: [Sportart, Stufe 0–3 (0 = Ruhe), Kurztext]; 'z' = Ziel/Auftritt */
-const PHS_SP=[['rad','Rennrad','f_bike'],['tri','Triathlon','f_tri'],['ballett','Ballett','f_ballett']];
 const PHS={
  rad:{
   g:{c:'Das Fundament legen.',d:'Viele ruhige Stunden im Sattel machen Herz, Kreislauf und Muskeln effizienter. Die Intensität bleibt niedrig, der Umfang wächst langsam.',
@@ -3424,15 +3434,136 @@ const PHS={
    w:[['ballett',1,'kurz'],['ballett',2,'General­probe'],['mob',1,'Mobility'],['ballett',1,'kurz'],['rest',0,'Ruhe'],['z',3,'Auftritt'],['rest',0,'Ruhe']],
    f:'Am Aufführungstag 2–3 Stunden vorher eine leichte, kohlenhydratreiche Mahlzeit. Kleine Snacks für die Pausen bereithalten.',
    t:[['Aufwärmen wie immer.','Bei deiner gewohnten Routine bleiben – keine neuen Übungen vor dem Auftritt.'],['Kräfte sparen.','Bei Proben nicht jedes Mal mit voller Kraft tanzen, Markieren ist erlaubt.'],['Lampenfieber nutzen.','Nervosität ist Energie. Langes, ruhiges Ausatmen hilft vor dem Auftritt.']]}}};
-const phsSports=pf=>{const D=discsOf(pf);return PHS_SP.filter(x=>D.includes(x[0]))};
-const phsSport=s=>{const L=phsSports(s.prof);return (L.find(x=>x[0]===s.ftSp)||L[0]||PHS_SP[0])};
-Phone.prototype.vPhase=function(ph,cur){const s=this.s,SP=phsSport(s),L=phsSports(s.prof),C=PHS[SP[0]][ph],P0=phOf(ph),n=PH.indexOf(P0)+1,isCur=cur&&cur.k===ph;
+/* V194: Laufen, Schwimmen und eine allgemeine Version für alle übrigen Sportarten ('sp' = eigene Sportart) */
+Object.assign(P,{
+ ph_snow:'<path d="M12 3v18M4.2 7.5l15.6 9M4.2 16.5l15.6-9"/><path d="m9.6 4.6 2.4 2 2.4-2M9.6 19.4l2.4-2 2.4 2"/>',
+ ph_sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.5 5.5l1.7 1.7M16.8 16.8l1.7 1.7M5.5 18.5l1.7-1.7M16.8 7.2l1.7-1.7"/>',
+ ph_sprout:'<path d="M12 21v-9"/><path d="M12 12c0-4 2.6-6.6 7-6.6 0 4.4-2.6 6.6-7 6.6z"/><path d="M12 14.6c0-3.2-2.2-5.4-6-5.4 0 3.6 2.2 5.4 6 5.4z"/>',
+ ph_fall:'<path d="M12 3.2c3.6 2.6 6 6 6 9.6a6 6 0 0 1-12 0c0-3.6 2.4-7 6-9.6z"/><path d="M12 21v-9.6M12 15l-2.6-2.4M12 12.8l2.6-2.4"/>'});
+Object.assign(PHS,{
+ lauf:{
+  g:{c:'Locker laufen, viel laufen.',d:'Viele ruhige Kilometer im Gesprächstempo. Herz und Muskeln – und vor allem Sehnen und Knochen – gewöhnen sich an die Belastung.',
+   z:[['ph_heart','Aerobe Basis','Schneller laufen bei gleichem Puls.'],['ph_shield','Robustheit','Sehnen, Bänder und Knochen stärken.'],['f_run','Laufökonomie','Lockerer, effizienter Laufstil.'],['clock','Regelmäßigkeit','4–5 Läufe pro Woche zur Routine machen.']],
+   w:[['rest',0,'Ruhe'],['run',1,'45′'],['kraft',1,'Kraft'],['run',1,'Steige­rungen'],['rest',0,'Ruhe'],['run',1,'40′'],['run',1,'1:30 h']],
+   f:'Vor längeren Läufen Kohlenhydrate, sonst ausgewogen. Die letzte größere Mahlzeit 2–3 Stunden vor dem Lauf – dann bleibt der Magen ruhig.',
+   t:[['Langsam ist richtig.','Im Grundlagentempo kannst du ganze Sätze sprechen – auch wenn es sich zu langsam anfühlt.'],['Kilometer behutsam steigern.','Pro Woche höchstens 10 % mehr: Sehnen passen sich langsamer an als die Ausdauer.'],['Kraft und Lauf-ABC.','Zweimal pro Woche 15 Minuten Kraft und Koordination machen dich stabiler.']]},
+  a:{c:'Tempo dazuholen.',d:'Jetzt kommen Tempodauerläufe und Intervalle dazu. Der lange Lauf bleibt das Herzstück der Woche.',
+   z:[['ph_bolt','Schwellentempo','Länger schnell laufen, ohne zu übersäuern.'],['ph_trend','Tempohärte','Zügige Kilometer gut wegstecken.'],['f_run','Lauftechnik','Auch bei Tempo sauber bleiben.'],['refresh','Erholung','Zwischen harten Läufen regenerieren.']],
+   w:[['rest',0,'Ruhe'],['run',3,'Inter­valle'],['run',1,'45′'],['run',2,'Tempo­lauf'],['kraft',1,'Kraft'],['run',1,'40′'],['run',1,'1:45 h']],
+   f:'Vor Intervallen leicht und kohlenhydratreich essen. Nach harten Läufen innerhalb einer Stunde Eiweiß und Kohlenhydrate.',
+   t:[['Zwei harte Tage reichen.','Mehr Qualitätseinheiten erhöhen vor allem das Verletzungsrisiko.'],['Ein- und Auslaufen.','15 Minuten locker vor und nach den Intervallen gehören immer dazu.'],['Schuhe wechseln.','Zwei Paar Laufschuhe im Wechsel entlasten Füße und Sehnen.']]},
+  s:{c:'Im Zieltempo zu Hause.',d:'Die Einheiten richten sich nach deinem Lauf: Abschnitte im Zieltempo, ähnlicher Untergrund und Verpflegung unterwegs.',
+   z:[['ph_target','Wettkampftempo','Dein Zieltempo fühlt sich vertraut an.'],['ph_bolt','Endspurt','Reserven für die letzten Kilometer.'],['leaf','Verpflegung','Gels und Getränke beim Laufen testen.'],['ph_shield','Generalprobe','Schuhe, Kleidung und Ablauf testen.']],
+   w:[['rest',0,'Ruhe'],['run',3,'Inter­valle'],['run',1,'40′'],['run',2,'Ziel­tempo'],['rest',0,'Ruhe'],['run',1,'30′'],['run',2,'Lang mit Tempo']],
+   f:'Lange Läufe wie im Wettkampf verpflegen: ab 60–75 Minuten 30–60 g Kohlenhydrate pro Stunde. Am Renntag nur Bewährtes.',
+   t:[['Zieltempo üben.','Abschnitte genau im geplanten Wettkampftempo laufen – mit der Uhr, nicht nach Gefühl.'],['Strecke kennen.','Höhenprofil und Untergrund ähnlich trainieren, zum Beispiel Hügel oder Trail.'],['Nichts Neues am Renntag.','Schuhe, Socken und Frühstück vorher bei langen Läufen testen.']]},
+  t:{c:'Frisch an die Startlinie.',d:'Der Umfang sinkt deutlich, kurze schnelle Abschnitte halten die Beine wach. Jetzt zählen Erholung und ein klarer Plan.',
+   z:[['refresh','Erholung','Müde Beine erholen sich.'],['ph_bolt','Spritzigkeit','Kurze Steigerungen halten die Spannung.'],['ph_target','Rennplan','Anfangstempo und Verpflegung festlegen.'],['leaf','Speicher füllen','Kohlenhydrate in den letzten Tagen.']],
+   w:[['rest',0,'Ruhe'],['run',2,'Steige­rungen'],['run',1,'30′'],['rest',0,'Ruhe'],['run',1,'20′'],['z',3,'Rennen'],['rest',0,'Ruhe']],
+   f:'Die letzten 2–3 Tage kohlenhydratbetont essen, etwas weniger Ballaststoffe und Fett. Viel trinken und nichts Unbekanntes probieren.',
+   t:[['Nicht zu schnell starten.','Der häufigste Fehler: Die ersten Kilometer bewusst kontrolliert laufen.'],['Nichts nachholen.','Fehlende Kilometer jetzt nicht mehr aufholen.'],['Am Vorabend packen.','Startnummer, Schuhe, Gels und Kleidung bereitlegen.']]}},
+ schwimm:{
+  g:{c:'Gefühl fürs Wasser.',d:'Technik und ruhige Ausdauer stehen im Vordergrund. Wer effizient schwimmt, braucht für das gleiche Tempo viel weniger Kraft.',
+   z:[['f_swim','Wasserlage','Flach und stabil im Wasser liegen.'],['ph_heart','Aerobe Basis','Lange Strecken ohne Pause.'],['ph_bal','Atmung','Ruhig und beidseitig atmen.'],['ph_shield','Schultern','Schulter und Rumpf stabilisieren.']],
+   w:[['swim',1,'Technik'],['kraft',1,'Kraft'],['swim',1,'locker'],['rest',0,'Ruhe'],['swim',1,'Technik'],['swim',1,'lang'],['rest',0,'Ruhe']],
+   f:'Schwimmen macht hungrig: Nach dem Training zügig eine Mahlzeit mit Kohlenhydraten und Eiweiß. Morgens vor dem Becken reicht ein kleiner Snack.',
+   t:[['Technik vor Metern.','Kurze Übungsserien mit Pausen bringen mehr als lange Bahnen ohne Fokus.'],['Beidseitig atmen.','Alle drei Züge atmen – das macht deinen Zug gleichmäßiger.'],['Schultern schützen.','Ein paar Übungen mit dem Gummiband vor jedem Schwimmen.']]},
+  a:{c:'Tempo im Wasser.',d:'Intervalle mit festem Abgang und kurzen Pausen steigern dein Dauertempo. Pullbuoy und Paddles bauen gezielt Zugkraft auf.',
+   z:[['ph_bolt','Schwellentempo','Schnellere 100 m über lange Serien.'],['ph_trend','Zugkraft','Mehr Vortrieb pro Zug.'],['clock','Abgangszeiten','Mit Uhr und festen Pausen trainieren.'],['refresh','Erholung','Schultern zwischen harten Tagen entlasten.']],
+   w:[['swim',3,'Inter­valle'],['kraft',1,'Kraft'],['swim',1,'Technik'],['rest',0,'Ruhe'],['swim',2,'Tempo'],['swim',1,'lang'],['rest',0,'Ruhe']],
+   f:'Vor harten Serien ein kohlenhydratreicher Snack. Nach dem Training Eiweiß für Schultern und Rücken.',
+   t:[['Mit Abgangszeiten schwimmen.','Feste Startzeiten, zum Beispiel alle 1:50 Minuten, machen Tempo und Pause messbar.'],['Paddles dosiert.','Paddles stärken, belasten aber die Schultern – nur kurz einsetzen.'],['Wenden üben.','Saubere Wenden sparen auf jeder Bahn Zeit.']]},
+  s:{c:'Schwimmen wie im Wettkampf.',d:'Strecken im Wettkampftempo, Starts und Wenden – oder im Freiwasser Orientieren und Schwimmen im Pulk.',
+   z:[['ph_target','Wettkampftempo','Dein Zieltempo über die ganze Strecke.'],['ph_bolt','Start','Schnell wegkommen nach dem Startsignal.'],['f_swim','Freiwasser','Orientieren und Neopren-Gefühl.'],['ph_shield','Generalprobe','Aufwärmen, Ablauf und Material testen.']],
+   w:[['swim',3,'Inter­valle'],['kraft',1,'Kraft'],['swim',2,'Starts'],['rest',0,'Ruhe'],['swim',3,'Ziel­tempo'],['swim',2,'Frei­wasser'],['rest',0,'Ruhe']],
+   f:'Vor Wettkampfsimulationen leicht essen, mit 2–3 Stunden Abstand. Viel trinken – auch im Wasser schwitzt du.',
+   t:[['Orientieren üben.','Alle 6–8 Züge kurz nach vorn schauen, ohne aus dem Rhythmus zu kommen.'],['Starts trainieren.','Startsprung oder Wasserstart mehrmals pro Woche üben.'],['Tempo einteilen.','Die erste Bahn kontrolliert – zu schnell gestartet kostet am Ende viel.']]},
+  t:{c:'Locker ins Wasser.',d:'Weniger Meter, kurze schnelle Abschnitte. Das Wassergefühl bleibt, die Müdigkeit verschwindet.',
+   z:[['refresh','Erholung','Schultern und Rücken entlasten.'],['ph_bolt','Spritzigkeit','Kurze Sprints halten das Gefühl.'],['ph_target','Rennplan','Start, Tempo und Wenden durchdenken.'],['leaf','Energie','Gut essen und viel trinken.']],
+   w:[['swim',1,'kurz'],['rest',0,'Ruhe'],['swim',2,'Sprints'],['rest',0,'Ruhe'],['swim',1,'kurz'],['z',3,'Wett­kampf'],['rest',0,'Ruhe']],
+   f:'Die letzten Tage kohlenhydratbetont und leicht verdaulich essen. Am Wettkampftag 2–3 Stunden vorher frühstücken.',
+   t:[['Wassergefühl halten.','Kurze Einheiten reichen – ganz pausieren macht eher steif.'],['Ablauf festlegen.','Einschwimmen, Startposition und Tempo vorher planen.'],['Ruhig bleiben.','Nervosität vor dem Start ist normal – langes Ausatmen hilft.']]}},
+ allg:{
+  g:{c:'Die Basis legen.',d:'Regelmäßiges Training mit überwiegend lockerer bis mittlerer Belastung. Technik, Grundausdauer und allgemeine Kraft bilden das Fundament für alles Weitere.',
+   z:[['ph_heart','Grundausdauer','Länger durchhalten, schneller erholen.'],['ph_shield','Belastbarkeit','Muskeln, Sehnen und Gelenke stärken.'],['ph_target','Technik','Saubere Bewegungen als Basis.'],['clock','Routine','Feste Trainingstage einplanen.']],
+   w:[['sp',1,'Technik'],['kraft',1,'Kraft'],['sp',2,'Training'],['rest',0,'Ruhe'],['sp',1,'locker'],['run',1,'Cardio'],['rest',0,'Ruhe']],
+   f:'Ausgewogen und regelmäßig essen, nicht hungrig ins Training gehen. Eiweiß über den Tag verteilt unterstützt die Muskeln.',
+   t:[['Regelmäßigkeit schlägt Härte.','Drei bis vier Einheiten pro Woche bringen mehr als eine sehr harte.'],['Technik zuerst.','Saubere Bewegungen jetzt lernen – später fehlt dafür die Zeit.'],['Allgemeine Kraft.','Zwei kurze Krafteinheiten schützen in jeder Sportart vor Verletzungen.']]},
+  a:{c:'Intensität steigern.',d:'Belastung und Anspruch steigen. Jetzt kommen gezielte harte Reize dazu, die für deine Sportart besonders wichtig sind.',
+   z:[['ph_bolt','Schnellkraft','Explosiver und schneller werden.'],['ph_trend','Leistung','Höhere Intensität länger halten.'],['ph_heart','Ausdauer','Auch unter Belastung konstant bleiben.'],['refresh','Erholung','Harte und lockere Tage im Wechsel.']],
+   w:[['sp',2,'Training'],['kraft',3,'Kraft'],['sp',1,'Technik'],['rest',0,'Ruhe'],['sp',3,'Intensiv'],['run',1,'Cardio'],['rest',0,'Ruhe']],
+   f:'An harten Tagen mehr Kohlenhydrate, nach dem Training 20–30 g Eiweiß.',
+   t:[['Hart und locker im Wechsel.','Nach jedem harten Tag folgt ein leichter oder freier Tag.'],['Fortschritt notieren.','Kurz festhalten, was du geschafft hast – so siehst du deine Entwicklung.'],['Ruhewoche einplanen.','Jede 3.–4. Woche etwas weniger – dann setzt sich die Form.']]},
+  s:{c:'Bereit für dein Ziel.',d:'Das Training wird deinem Ziel immer ähnlicher – ob Wettkampf, Turnier, Prüfung oder Event. Du übst Abläufe unter echten Bedingungen.',
+   z:[['ph_target','Zielform','Das Wichtigste deiner Sportart sitzt.'],['ph_bolt','Spitzenleistung','Volle Intensität, wenn es zählt.'],['ph_shield','Generalprobe','Ablauf, Material und Essen testen.'],['spark','Mentale Stärke','Ruhig und fokussiert unter Druck.']],
+   w:[['sp',2,'Training'],['kraft',1,'Kraft'],['sp',3,'Intensiv'],['rest',0,'Ruhe'],['sp',2,'Technik'],['sp',3,'Probe'],['rest',0,'Ruhe']],
+   f:'Teste, was du vor und während deines Ziels isst und trinkst. Am großen Tag nur Bewährtes.',
+   t:[['Unter echten Bedingungen üben.','Zur gleichen Uhrzeit und mit dem Material deines Ziel-Tages trainieren.'],['Qualität vor Menge.','Lieber kurz und hochwertig als lang und müde.'],['Kopf trainieren.','Den Ablauf deines Ziel-Tages vorher genau durchgehen.']]},
+  t:{c:'Frisch zum Höhepunkt.',d:'Weniger Umfang, kurze intensive Reize bleiben. Jetzt sammelst du Energie für den Tag, auf den du hintrainiert hast.',
+   z:[['refresh','Erholung','Ermüdung abbauen.'],['ph_bolt','Spritzigkeit','Kurze, schnelle Reize.'],['ph_target','Plan','Ablauf und Ziel festlegen.'],['leaf','Energie','Gut essen, viel trinken.']],
+   w:[['sp',1,'kurz'],['rest',0,'Ruhe'],['sp',2,'Akti­vierung'],['rest',0,'Ruhe'],['sp',1,'kurz'],['z',3,'Ziel'],['rest',0,'Ruhe']],
+   f:'Die letzten 2–3 Tage kohlenhydratbetont essen, etwas weniger Ballaststoffe und Fett. Viel trinken und nichts Unbekanntes probieren.',
+   t:[['Nichts Neues mehr.','Keine neuen Übungen und kein neues Material.'],['Schlaf zuerst.','Die Nächte vor dem Ziel sind wichtiger als jedes Training.'],['Vorfreude zulassen.','Du hast die Arbeit gemacht – jetzt darfst du sie zeigen.']]}}});
+/* Jahreszeiten: Winter Nov–Feb, Frühling Mär–Mai, Sommer Jun–Aug, Herbst Sep–Okt */
+const SEASONS={w:['Winter','ph_snow','#3D7FB8'],f:['Frühling','ph_sprout','#3E9B5C'],s:['Sommer','ph_sun','#E3982B'],h:['Herbst','ph_fall','#C0662F']};
+const seasonOf=i=>{const m=dayDate(i).getMonth();return m>=10||m<=1?'w':m<=4?'f':m<=7?'s':'h'};
+const PHS_SEAS={
+ rad:{w:'Im Winter fährst du drinnen auf der Rolle oder dem Smart-Trainer. Die Einheiten dauern meist eine Stunde, höchstens 1,5 – ohne Ampeln, Abfahrten und Pausen ist das so wirksam wie eine deutlich längere Fahrt draußen.',
+  f:'Zurück auf die Straße: Die ersten Ausfahrten locker halten, der Körper muss sich wieder an Sitzposition und Wind gewöhnen. Lange Einheiten sind wieder möglich.',
+  s:'Lange Tage, Pässe und Gruppenausfahrten. Bei Hitze früh starten, 0,5–1 l pro Stunde trinken und Salz ersetzen.',
+  h:'Die Saison klingt aus: 1–2 Wochen Pause tun Körper und Kopf gut. Bei Nässe und Dunkelheit mit Licht und gut sichtbar fahren.'},
+ lauf:{w:'Im Winter läufst du oft im Dunkeln: Licht, Reflektoren und Kleidung im Zwiebellook. Bei Glätte oder für genaue Intervalle aufs Laufband ausweichen.',
+  f:'Angenehme Temperaturen und viele Volksläufe – ideal, um die Form zu testen.',
+  s:'Bei Hitze früh morgens oder abends laufen, das Tempo an die Temperatur anpassen und unterwegs trinken.',
+  h:'Beste Laufbedingungen. Nach der Wettkampfsaison 1–2 Wochen ruhiger, dann neue Grundlage.'},
+ schwimm:{w:'Im Winter nur im Hallenbad: die perfekte Zeit für Technik und Wenden. Freiwasser erst wieder ab etwa 16 °C Wassertemperatur.',
+  f:'Erste Freiwasser-Einheiten im Neopren – nur in Begleitung und bei passender Wassertemperatur.',
+  s:'Freiwasser-Saison: Orientieren, Pulk und Neopren üben. Nie allein schwimmen und eine Boje mitnehmen.',
+  h:'Zurück ins Becken – gute Zeit, um gezielt an Technik und Schwächen zu arbeiten.'},
+ tri:{w:'Winter heißt: Rad drinnen (eine Stunde, höchstens 1,5), Schwimmen im Hallenbad, Laufen draußen. Die Rolle eignet sich perfekt für strukturierte Einheiten mit kurzem Koppellauf danach.',
+  f:'Zurück auf die Straße und erste Freiwasser-Tests im Neopren. Koppeleinheiten werden wichtiger.',
+  s:'Wettkampfsaison: Freiwasser, Hitze und lange Koppeltage. Viel trinken und Salz ersetzen.',
+  h:'Saisonende: erst Pause, dann Technik im Wasser und eine neue Laufgrundlage.'},
+ ballett:{w:'Oft Aufführungszeit, etwa mit Weihnachtsvorstellungen. Besonders gründlich aufwärmen – kalte Säle machen die Muskeln steif.',
+  f:'Viele Schulen proben jetzt für Sommeraufführungen und Prüfungen – Kraft und Ausdauer rechtzeitig aufbauen.',
+  s:'Sommerkurse und Workshops bringen neue Impulse. Bei Hitze viel trinken.',
+  h:'Neues Schuljahr, neue Klassen: guter Zeitpunkt für neue Technik-Ziele.'},
+ allg:{w:'Im Winter findet viel drinnen statt. Nutze die Zeit für Kraft, Technik und Beweglichkeit; Einheiten eher kürzer und konzentriert.',
+  f:'Mehr Licht, mehr Energie: Umfang und Intensität können jetzt steigen.',
+  s:'Bei Hitze früh oder spät trainieren und viel trinken.',
+  h:'Guter Zeitpunkt für einen Neustart: nach einer kurzen Pause die Basis für das nächste Jahr legen.'}};
+/* Winter-Varianten: Rad drinnen, Einheiten 1–1,5 h */
+const PHS_WIN={
+ rad:{g:{c:'Grundlage auf der Rolle.',d:'Im Winter fährst du vor allem drinnen. Die Einheiten sind kürzer, aber konzentrierter – dazu kommen Kraft und Ausgleichssport für die Grundlage.',
+   w:[['rest',0,'Ruhe'],['bike',1,'1:00 h'],['kraft',1,'Kraft'],['bike',1,'Drills'],['rest',0,'Ruhe'],['bike',1,'1:30 h'],['run',1,'Laufen']],
+   t:[['Kürzer, aber konsequent.','Drinnen zählt jede Minute – eine Stunde auf der Rolle ersetzt eine deutlich längere Fahrt draußen.'],['Für Kühlung sorgen.','Ventilator und Handtuch: Ohne Fahrtwind steigt die Körpertemperatur schnell.'],['Abwechslung einbauen.','Laufen, Langlauf oder Wandern am Wochenende halten Grundlage und Kopf frisch.']]},
+  a:{d:'Auf der Rolle lassen sich Intervalle besonders genau fahren. Sweet Spot und Schwelle passen perfekt in 60–75 Minuten.',
+   w:[['rest',0,'Ruhe'],['bike',2,'Sweet Spot'],['kraft',1,'Kraft'],['bike',3,'Schwel­le'],['rest',0,'Ruhe'],['bike',2,'1:30 h'],['run',1,'Laufen']]},
+  s:{d:'Liegt dein Ziel früh im Jahr, trainierst du auch diese Phase drinnen: kurze, harte Einheiten und Rennsimulationen am Smart-Trainer.',
+   w:[['rest',0,'Ruhe'],['bike',3,'VO₂max'],['bike',1,'45′'],['bike',3,'Berg'],['rest',0,'Ruhe'],['bike',2,'1:30 h'],['bike',1,'1:00 h']]},
+  t:{w:[['rest',0,'Ruhe'],['bike',2,'3×1′'],['bike',1,'45′'],['rest',0,'Ruhe'],['bike',2,'Opener'],['z',3,'Rennen'],['rest',0,'Ruhe']]}},
+ tri:{g:{w:[['swim',1,'Technik'],['bike',1,'1:00 h'],['run',1,'45′'],['swim',1,'locker'],['rest',0,'Ruhe'],['bike',1,'1:30 h'],['run',1,'1:00 h']]},
+  a:{w:[['swim',2,'Inter­valle'],['bike',2,'Sweet Spot'],['run',1,'locker'],['swim',1,'Technik'],['rest',0,'Ruhe'],['bike',2,'Rolle + Lauf'],['run',1,'lang']]},
+  s:{w:[['swim',2,'Becken­tempo'],['bike',3,'Renn­tempo'],['run',1,'locker'],['run',3,'Inter­valle'],['rest',0,'Ruhe'],['tri',2,'Rolle + Lauf'],['swim',1,'locker']]}},
+ schwimm:{s:{w:[['swim',3,'Inter­valle'],['kraft',1,'Kraft'],['swim',2,'Starts'],['rest',0,'Ruhe'],['swim',3,'Ziel­tempo'],['swim',2,'Wenden'],['rest',0,'Ruhe']]}}};
+const PHS_SP=[['rad','Rennrad','f_bike'],['lauf','Laufen','f_run'],['schwimm','Schwimmen','f_swim'],['tri','Triathlon','f_tri'],['ballett','Ballett','f_ballett']];
+const PHS_NM={kraft:'Kraftsport'};
+/* Einträge [Schlüssel, Name, Symbol, Inhalt, Farbe] – jede gewählte Sportart; ohne eigene Texte = allgemeine Version */
+const phsSports=pf=>discAll(pf).map(x=>{const own=PHS_SP.find(y=>y[0]===x[0]);return own?[own[0],own[1],own[2],own[0],DCOL[x[0]]]:[x[0],PHS_NM[x[0]]||x[1],x[3],'allg',DCOL[x[0]]||'#2F7F8F']});
+const phsSport=s=>{const L=phsSports(s.prof);return L.find(x=>x[0]===s.ftSp)||L[0]||['rad','Rennrad','f_bike','rad',FA.bike]};
+const phsDay=(s,ph,cur)=>{const {segs}=seasonPlan(s);if(cur&&cur.k===ph)return TODAY;const g=segs.find(x=>x.k===ph);return g?g.a:TODAY};
+const phsData=(s,ph,cur)=>{const SP=phsSport(s),se=seasonOf(phsDay(s,ph,cur)),base=PHS[SP[3]][ph],win=se==='w'&&PHS_WIN[SP[3]]&&PHS_WIN[SP[3]][ph];return {SP,se,C:Object.assign({},base,win||{}),indoor:se==='w'&&['rad','tri'].includes(SP[3])}};
+/* Einheiten je Sportart; im Winter keine Radeinheiten über 1,5 h */
+const phsWork=(s,ph,cur)=>{const {SP,indoor}=phsData(s,ph,cur),k=SP[3];if(!['rad','tri','lauf'].includes(k))return [];
+  return WORK.filter(w=>w.ph===ph&&(k==='lauf'?w.a==='run':true)&&!(indoor&&w.a==='bike'&&w.min>90))};
+Phone.prototype.vPhase=function(ph,cur){const s=this.s,{SP,se,C,indoor}=phsData(s,ph,cur),L=phsSports(s.prof),P0=phOf(ph),n=PH.indexOf(P0)+1,isCur=cur&&cur.k===ph,SE=SEASONS[se];
   const wk=isCur?[Math.floor((TODAY-cur.a)/7)+1,Math.max(1,Math.ceil((cur.b-cur.a)/7))]:null;
-  const day=([a,lv,t],j)=>{const col=a==='rest'?'#C7C7CC':a==='z'?'#006039':a==='tri'?FA.swim:FA[a];
-    return `<div class="phw-d ${a==='rest'?'rest':''}"><small>${['Mo','Di','Mi','Do','Fr','Sa','So'][j]}</small><span class="phw-i" style="--c:${col};--o:${lv?[0,.35,.65,1][lv]:0}">${a==='rest'?'':ic(a==='z'?'flag':a==='tri'?'f_tri':'f_'+a)}</span><em>${t}</em></div>`};
-  return `${L.length>1?`<div class="phs-sw">${L.map(([k,t,icn])=>`<button class="${k===SP[0]?'on':''}" data-a="ftsp" data-v="${k}">${ic(icn)}${t}</button>`).join('')}</div>`:''}
-   <div class="phc rv" style="--pc:${P0[2]}"><div class="phc-eb">${isCur?'Deine aktuelle Trainingsphase':'Phase '+n+' von 4'} · ${SP[1]}</div>
+  const day=([a,lv,t],j)=>{const col=a==='rest'?'#C7C7CC':a==='z'?'#006039':a==='sp'?SP[4]:a==='tri'?FA.swim:FA[a],icn=a==='z'?'flag':a==='sp'?SP[2]:a==='tri'?'f_tri':'f_'+a;
+    return `<div class="phw-d ${a==='rest'?'rest':''}"><small>${['Mo','Di','Mi','Do','Fr','Sa','So'][j]}</small><span class="phw-i" style="--c:${col};--o:${lv?[0,.35,.65,1][lv]:0}">${a==='rest'?'':a==='sp'?dIc(icn,SP[1]):ic(icn)}</span><em>${t}</em></div>`};
+  return `${L.length>1?`<div class="phs-sw ${L.length>3?'many':''}">${L.map(([k,t,icn])=>`<button class="${k===SP[0]?'on':''}" data-a="ftsp" data-v="${k}">${dIc(icn,t)}${esc(t)}</button>`).join('')}</div>`:''}
+   <div class="phc rv" style="--pc:${P0[2]}"><div class="phc-eb">${isCur?'Deine aktuelle Trainingsphase':'Phase '+n+' von 4'} · ${esc(SP[1])}</div>
     <h3>${n}. ${P0[1]}</h3><b class="phc-cl">${C.c}</b><p>${C.d}</p>
+    <span class="phc-se" style="--sc:${SE[2]}">${ic(SE[1])}${SE[0]}${indoor?' · Rad drinnen':''}</span>
     ${wk?`<div class="phc-pr"><span>Phasenfortschritt</span><span>Woche ${Math.min(wk[0],wk[1])} von ${wk[1]}</span></div><div class="phc-bar"><i style="width:${Math.min(100,Math.round(Math.min(wk[0],wk[1])/wk[1]*100))}%"></i></div>`:''}</div>
    <h4 class="phs-h">Was du in dieser Phase erreichst</h4>
    <div class="phz">${C.z.map(([icn,t,d])=>`<div class="phz-t">${ic(icn)}<b>${t}</b><small>${d}</small></div>`).join('')}</div>
@@ -3441,19 +3572,20 @@ Phone.prototype.vPhase=function(ph,cur){const s=this.s,SP=phsSport(s),L=phsSport
    <div class="phw-k"><span><i style="--o:.35"></i>locker</span><span><i style="--o:.65"></i>mittel</span><span><i style="--o:1"></i>hart</span><span class="r"><i></i>Ruhe</span></div>
    <h4 class="phs-h">3 Tipps für diese Phase</h4>
    <div class="pht">${C.t.map(([t,d])=>`<div class="pht-r"><span class="pht-c">${ic('check')}</span><span><b>${t}</b><small>${d}</small></span></div>`).join('')}</div>
+   <div class="phf se" style="--sc:${SE[2]}"><span class="phf-i">${ic(SE[1])}</span><span><b>Im ${SE[0]}</b><small>${PHS_SEAS[SP[3]][se]}</small></span></div>
    <div class="phf"><span class="phf-i">${ic('leaf')}</span><span><b>Essen in dieser Phase</b><small>${C.f}</small></span></div>`};
 Phone.prototype.vFtrain=function(){const s=this.s,{segs}=seasonPlan(s),cur=segs.find(g=>g.a<=TODAY&&TODAY<g.b),ph=s.ftPh||(cur?cur.k:'g');
-  const L=WORK.filter(w=>w.ph===ph),hero=L[0],P=phOf(ph);
+  const L=phsWork(s,ph,cur),hero=L[0],P=phOf(ph),SP=phsSport(s),hasW=['rad','tri','lauf'].includes(SP[3]);
   const row=w=>`<button class="wo rv" data-a="fwo" data-v="${w.id}"><span class="wo-i" style="--c:${FA[w.a]}">${ic('f_'+w.a)}</span><span class="wo-t"><b>${w.n}</b><small>${fDur(w.min)} · ${LVN[w.lv]} · ${w.tss} TSS</small>${woBars(w)}</span>${ic('right','cv')}</button>`;
   return `<div class="view ftv"><div class="z">
    <div class="top-row between"><span></span><button class="iconbtn" data-a="tab" data-v="plan" aria-label="Zur Ernährung">${ic('up')}</button></div>
-   <div class="eb">${phsSport(s)[0]==='ballett'?'Ballett':WORK.length+' Einheiten'}${cur?' · aktuell '+phOf(cur.k)[1]:''}</div>
+   <div class="eb">${esc(SP[1])}${cur?' · aktuell '+phOf(cur.k)[1]:''}</div>
    <h1 class="ap-h1">Training. <span>Für jede Phase.</span></h1>
-   <div class="mseg ph4">${PH.map(([k,t,c])=>`<button class="${ph===k?'on':''}" style="--pc:${c}" data-a="ftph" data-v="${k}"><i></i><b>${t}</b>${phsSport(s)[0]==='ballett'?'':`<small>${WORK.filter(w=>w.ph===k).length}</small>`}</button>`).join('')}</div>
+   <div class="mseg ph4">${PH.map(([k,t,c])=>{const m=hasW?phsWork(s,k,cur).length:0;return `<button class="${ph===k?'on':''}" style="--pc:${c}" data-a="ftph" data-v="${k}"><i></i><b>${t}</b>${m?`<small>${m}</small>`:''}</button>`}).join('')}</div>
    ${this.vPhase(ph,cur)}
-   ${phsSport(s)[0]==='ballett'?'':`<h2 class="ap-h2 ft-h">Einheiten. <span>Passend zur Phase.</span></h2>
+   ${hero?`<h2 class="ap-h2 ft-h">Einheiten. <span>Passend zur Phase.</span></h2>
    <button class="fthero" data-a="fwo" data-v="${hero.id}"><span class="rh-tx"><small>${cur&&cur.k===ph?'Empfehlung für deine Phase':P[1]}</small><b>${hero.n}</b><span class="fth-m">${fDur(hero.min)} · ${hero.tss} TSS</span>${woBars(hero)}<i>Ansehen${ic('right')}</i></span></button>
-   <div class="wo-list">${L.slice(1).map(row).join('')}</div>`}
+   <div class="wo-list">${L.slice(1).map(row).join('')}</div>`:''}
   </div></div>`};
 Phone.prototype.vFwo=function(){const s=this.s,w=WORK.find(x=>x.id===s.fwoId);if(!w)return '';const d=s.fwoD!=null?s.fwoD:TODAY;
   const G='background:linear-gradient(100deg,#3B7D57,#1F4A33 58%,#006039);box-shadow:0 14px 26px -12px rgba(0,77,46,.75)';
