@@ -3699,7 +3699,7 @@ const POSE={
  kniebeuge:{h:[44,34],s:[46,46],p:[58,66],a:[[[36,52],[26,52]],[[38,54],[28,54]]],l:[[[42,72],[44,88]],[[46,74],[48,88]]]},
  waden:{h:[50,18],s:[50,30],p:[50,54],a:[[[45,42],[44,54]],[[55,42],[56,54]]],l:[[[48,69],[49,82]],[[52,69],[53,82]]],t:1},
 };
-POSE.diag=POSE.nacken;
+POSE.diag=POSE.nacken;POSE.schulterkreis=POSE.kreis;POSE.wblatt=POSE.hoch;
 const PCOL=['#7E2F3E','#F7B79A','#86B49A','#6F9A9C','#8E3B32','#F1CF77','#E8DDB8'];
 /* Figur im Bend-Look: Haut, Top, Hose; Matte dunkel. Zweite Pose für die Bewegung (Animation) */
 /* V185: zusätzliche Haltungen */
@@ -3773,11 +3773,11 @@ const STR=[
   ['Seitneigung rechts','nacken',60,['Ohr Richtung rechte Schulter.'],{m:1}],
   ['Diagonale Dehnung links','diag',60,['Nase Richtung linke Achsel, Hand leicht auf den Hinterkopf.']],
   ['Diagonale Dehnung rechts','diag',60,['Nase Richtung rechte Achsel.'],{m:1}],
-  ['Schulterkreisen','kreis',60,['Große, langsame Kreise nach hinten.']],
-  ['Schulterblätter zusammen','hoch',60,['Arme im „W“, Schulterblätter nach hinten unten ziehen.']],
+  ['Schulterkreisen','schulterkreis',60,['Große, langsame Kreise nach hinten.']],
+  ['Schulterblätter zusammen','wblatt',60,['Arme im „W“, Schulterblätter nach hinten unten ziehen.']],
   ['Brustöffner an der Tür','tuer',60,['Unterarm in den Türrahmen, Oberkörper sanft wegdrehen.']],
   ['Kopfnicken','kinn',60,['Kleine, langsame Ja-Bewegungen.']],
-  ['Atmen und lösen','atmen',60,['Im Schneidersitz, Schultern fallen lassen, 4 Sek. ein, 6 Sek. aus.']]]},
+  ['Atmen und lösen','atmen',60,['Aufrecht stehen, Schultern fallen lassen, 4 Sek. ein, 6 Sek. aus.']]]},
  {id:'haltung',n:'Aufrechte Haltung',sub:'Brust öffnen, Schultern zurück',pose:'hoch',c:'#6F9A9C',ex:[
   ['Brustöffner an der Tür','tuer',90,['Unterarm auf Schulterhöhe in den Türrahmen.','Mit dem Oberkörper sanft wegdrehen, bis die Brust zieht.','Nach der Hälfte Seite wechseln.']],
   ['Wandengel','hoch',90,['Rücken und Hinterkopf an die Wand.','Arme im „W“ an der Wand nach oben schieben und zurück.']],
@@ -3886,7 +3886,15 @@ const IMG_MOB_NACKEN_A='img/img_mob_nacken_a-111c51c2.webp';
 const IMG_MOB_NACKEN_B='img/img_mob_nacken_b-700dd300.webp';
 const IMG_MOB_DIAG_A='img/img_mob_diag_a-5763c861.webp';
 const IMG_MOB_DIAG_B='img/img_mob_diag_b-34adb817.webp';
-const MOBPH={katze:[IMG_MOB_KATZE_A,IMG_MOB_KATZE_B,'flow'],hund:[IMG_MOB_HUND_A,IMG_MOB_HUND_B,'hold'],ausfallhoch:[IMG_MOB_AUSFALLHOCH_A,IMG_MOB_AUSFALLHOCH_B,'hold'],halb:[IMG_MOB_HALB_A,IMG_MOB_HALB_B,'hold'],schmettvor:[IMG_MOB_SCHMETTVOR_A,IMG_MOB_SCHMETTVOR_B,'hold'],knie:[IMG_MOB_KNIE_A,IMG_MOB_KNIE_B,'hold'],dreh:[IMG_MOB_DREH_A,IMG_MOB_DREH_B,'hold'],kinn:[IMG_MOB_KINN_A,IMG_MOB_KINN_B,'flow'],nacken:[IMG_MOB_NACKEN_A,IMG_MOB_NACKEN_B,'hold'],diag:[IMG_MOB_DIAG_A,IMG_MOB_DIAG_B,'hold']};
+const IMG_MOB_SCHULTERKREIS_A='img/img_mob_schulterkreis_a-54ff3f0d.webp';
+const IMG_MOB_SCHULTERKREIS_B='img/img_mob_schulterkreis_b-4bf4ccfd.webp';
+const IMG_MOB_WBLATT_A='img/img_mob_wblatt_a-fe85a47a.webp';
+const IMG_MOB_WBLATT_B='img/img_mob_wblatt_b-fc2702af.webp';
+const IMG_MOB_TUER_A='img/img_mob_tuer_a-52cd28ca.webp';
+const IMG_MOB_TUER_B='img/img_mob_tuer_b-57421918.webp';
+const IMG_MOB_ATMEN_A='img/img_mob_atmen_a-bc75dfe3.webp';
+const IMG_MOB_ATMEN_B='img/img_mob_atmen_b-a86cd99b.webp';
+const MOBPH={katze:[IMG_MOB_KATZE_A,IMG_MOB_KATZE_B,'flow'],hund:[IMG_MOB_HUND_A,IMG_MOB_HUND_B,'hold'],ausfallhoch:[IMG_MOB_AUSFALLHOCH_A,IMG_MOB_AUSFALLHOCH_B,'hold'],halb:[IMG_MOB_HALB_A,IMG_MOB_HALB_B,'hold'],schmettvor:[IMG_MOB_SCHMETTVOR_A,IMG_MOB_SCHMETTVOR_B,'hold'],knie:[IMG_MOB_KNIE_A,IMG_MOB_KNIE_B,'hold'],dreh:[IMG_MOB_DREH_A,IMG_MOB_DREH_B,'hold'],kinn:[IMG_MOB_KINN_A,IMG_MOB_KINN_B,'flow'],nacken:[IMG_MOB_NACKEN_A,IMG_MOB_NACKEN_B,'hold'],diag:[IMG_MOB_DIAG_A,IMG_MOB_DIAG_B,'hold'],schulterkreis:[IMG_MOB_SCHULTERKREIS_A,IMG_MOB_SCHULTERKREIS_B,'flow'],wblatt:[IMG_MOB_WBLATT_A,IMG_MOB_WBLATT_B,'flow'],tuer:[IMG_MOB_TUER_A,IMG_MOB_TUER_B,'hold'],atmen:[IMG_MOB_ATMEN_A,IMG_MOB_ATMEN_B,'flow']};
 MOBPH.ausfall=[IMG_MOB_AUSFALL_A,IMG_MOB_AUSFALL_B,'hold'];MOBPH.graetsche=[IMG_MOB_GRAETSCHE_A,IMG_MOB_GRAETSCHE_B,'hold'];MOBPH.frosch=[IMG_MOB_FROSCH_A,IMG_MOB_FROSCH_B,'hold'];MOBPH.spagat=[IMG_MOB_SPAGAT_A,IMG_MOB_SPAGAT_B,'hold'];MOBPH.schmetterling=MOBPH.schmettvor;
 MOBPH.plank=[IMG_MOB_PLANK_A,IMG_MOB_PLANK_B,'hold'];MOBPH.seitstuetz=[IMG_MOB_SEITSTUETZ_A,IMG_MOB_SEITSTUETZ_B,'hold'];MOBPH.deadbug=[IMG_MOB_DEADBUG_A,IMG_MOB_DEADBUG_B,'flow'];MOBPH.bruecke=[IMG_MOB_BRUECKE_A,IMG_MOB_BRUECKE_B,'flow'];MOBPH.birddog=[IMG_MOB_BIRDDOG_B,IMG_MOB_BIRDDOG_B,'hold'];MOBPH.superman=[IMG_MOB_SUPERMAN_A,IMG_MOB_SUPERMAN_B,'hold'];
 const MPFLOW={katze:['Einatmen · Rücken durchhängen','Ausatmen · Rücken rund'],deadbug:['Ausgangsposition','Arm und Bein strecken'],bruecke:['Becken senken','Becken heben'],katzeDefault:['Einatmen','Ausatmen']};
