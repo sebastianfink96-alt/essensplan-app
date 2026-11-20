@@ -774,7 +774,7 @@ html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
 @keyframes icbFing{0%,8%{opacity:0;transform:translateY(0) scale(1.3)}14%{opacity:1;transform:translateY(0) scale(1)}40%{opacity:1;transform:translateY(-110px) scale(1)}48%,54%{opacity:0;transform:translateY(-110px) scale(1.2)}60%{opacity:1;transform:translateY(-110px) scale(1)}86%{opacity:1;transform:translateY(0) scale(1)}94%,100%{opacity:0;transform:translateY(0) scale(1.2)}}
 @media (prefers-reduced-motion:reduce){.icb,.ill-cube .fing{animation:none}.icb{transform:translateZ(-118px) rotateX(35deg)}}
 /* V107: Begrüßung beim Start + Namensfeld im Intro und unten in den Einstellungen */
-.hello{position:absolute;inset:0;z-index:200;display:grid;place-items:center;grid-template-rows:40% 1fr;text-align:center;padding:0 28px;border-radius:inherit;overflow:hidden;
+.hello{position:absolute;inset:0;z-index:200;display:grid;place-items:center;grid-template-rows:47% 1fr;text-align:center;padding:0 28px;border-radius:inherit;overflow:hidden;
   background:linear-gradient(160deg,rgba(120,52,72,.2),rgba(60,30,50,.16));-webkit-backdrop-filter:blur(1.5px);backdrop-filter:blur(1.5px);animation:helloIn .4s ease both;transition:opacity .5s ease}
 .hello.out{opacity:0;pointer-events:none}
 .hello h2{margin:0;font-family:-apple-system,"SF Pro Display","Helvetica Neue",system-ui,sans-serif;font-weight:200;font-size:60px;line-height:1.02;letter-spacing:-.025em;color:#fff;text-shadow:0 2px 16px rgba(50,15,35,.45),0 18px 40px rgba(40,10,30,.3);white-space:nowrap}
@@ -2026,11 +2026,17 @@ img,svg{-webkit-user-drag:none}
 /* Bowl-Baukasten */
 .bx-st{display:grid;place-items:center;margin:18px 0 6px}
 .bxs{width:300px;height:300px;overflow:visible}
+.bxs .bxp{transform-box:fill-box;transform-origin:center}
+.bxp.nw{animation:bxDrop .6s cubic-bezier(.2,.9,.3,1.15) both}
+@keyframes bxDrop{0%{opacity:0;transform:translateY(-34px) scale(1.3)}60%{opacity:1}100%{opacity:1;transform:none}}
+.bxb{transform-origin:150px 150px}
+.bxb.nw{animation:bxPour .9s cubic-bezier(.2,.8,.2,1) both}
+@keyframes bxPour{0%{opacity:0;transform:scale(.25) rotate(-40deg)}100%{opacity:1;transform:none}}
+.bxd.nw{animation:bxFade .8s ease both}@keyframes bxFade{0%{opacity:0}100%{opacity:1}}
 .bxw.nw{animation:bxIn .5s cubic-bezier(.2,.9,.3,1.25) both}
 .bxs .bxw:first-child.nw{transform-origin:150px 150px}
 @keyframes bxIn{0%{opacity:0;transform:scale(.55)}100%{opacity:1;transform:none}}
-.bxd{stroke-dasharray:900;stroke-dashoffset:0}
-.bxd.nw{animation:bxDr .9s ease-out both}
+.bxd.nw path{animation:bxDr 1s ease-out both;stroke-dasharray:900}
 @keyframes bxDr{0%{stroke-dashoffset:900}100%{stroke-dashoffset:0}}
 .bx-mac{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:6px 0 18px}
 .bx-mac span{display:flex;flex-direction:column;align-items:center;padding:9px 4px;border-radius:14px;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.05);font-size:11px;color:#86868B}
@@ -2981,27 +2987,71 @@ const BX_DCOL={zitrone:'#F5D547',honigsenf:'#E3A82B',sesam:'#8A5A2B',erdnuss:'#C
 const BX_MAX=5,BX_EX={b:'quinoa',t:['mango','edamame','avocado','zwiebel','gurke'],x:'haehnchen',d:'sesam'};
 const bxF=(L,id)=>L.find(x=>x[0]===id);
 const bxSt=s=>{const b=s.bx||{};return {b:bxF(BX_BASE,b.b)?b.b:null,t:(b.t||[]).filter(k=>bxF(BX_TOP,k)).slice(0,BX_MAX),x:bxF(BX_X,b.x)?b.x:null,d:BX_DK[b.d]?b.d:null}};
-/* Bowl von oben: Basis als Grund, Toppings als Segmente, Extra-Protein in der Mitte, Dressing als Linie */
-function bxSVG(st,prev,big){const C=150,R0=124,base=bxF(BX_BASE,st.b),T=st.t.map(k=>bxF(BX_TOP,k)),X=bxF(BX_X,st.x),P=prev||{t:[]};
-  let rnd=7;const rr=()=>{rnd=(rnd*9301+49297)%233280;return rnd/233280};
-  const pt=(a,r)=>[(C+Math.cos(a)*r).toFixed(1),(C+Math.sin(a)*r).toFixed(1)];
-  const wedge=(a0,a1,r)=>{const [x0,y0]=pt(a0,r),[x1,y1]=pt(a1,r);return `M${C} ${C}L${x0} ${y0}A${r} ${r} 0 ${a1-a0>Math.PI?1:0} 1 ${x1} ${y1}Z`};
-  const dots=(a0,a1,col,n,rmin,sz)=>{let o='';for(let i=0;i<n;i++){const a=a0+(a1-a0)*(.08+.84*rr()),r=rmin+(R0-8-rmin)*Math.sqrt(rr()),[x,y]=pt(a,r);o+=`<circle cx="${x}" cy="${y}" r="${(sz*(.6+rr()*.7)).toFixed(1)}" fill="${col}"/>`}return o};
-  const shade=(c,f)=>`color-mix(in srgb,${c} ${Math.round(f*100)}%,${f>0?'#000':'#fff'})`;
+/* V201: realistische Bowl – Basis als echte Körner/Stücke, Toppings als einzelne Zutaten in festen Plätzen, Protein in der Mitte */
+const bxRng=s=>{let h=7;for(const c of s)h=(h*31+c.charCodeAt(0))|0;let x=(h>>>0)||1;return()=>{x^=x<<13;x>>>=0;x^=x>>>17;x^=x<<5;x>>>=0;return x/4294967296}};
+const BXR_BASE={
+ quinoa:(r,n)=>{let o='';const P=['#F1E4C2','#E6D3A6','#DCC392','#EADBB4','#C9A777','#B9835A'];for(let i=0;i<n;i++){const a=r()*6.283,d=Math.sqrt(r())*121,x=150+Math.cos(a)*d,y=150+Math.sin(a)*d,s=1.5+r()*.8;o+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${s.toFixed(1)}" fill="${P[(r()*(r()<.1?6:4))|0]}"/>`}return ['#E3D2A8',o]},
+ reis:(r,n)=>{let o='';for(let i=0;i<n*.6;i++){const a=r()*6.283,d=Math.sqrt(r())*121,x=150+Math.cos(a)*d,y=150+Math.sin(a)*d;o+=`<ellipse cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" rx="3.6" ry="1.5" transform="rotate(${(r()*180)|0} ${x.toFixed(1)} ${y.toFixed(1)})" fill="${r()<.5?'#FCFAF4':'#F3EEE2'}" stroke="#DCD3C0" stroke-width=".5"/>`}return ['#EEE7D8',o]},
+ hirse:(r,n)=>{let o='';const P=['#F2D27A','#E8C463','#F6DE95','#DDB653'];for(let i=0;i<n*1.05;i++){const a=r()*6.283,d=Math.sqrt(r())*121;o+=`<circle cx="${(150+Math.cos(a)*d).toFixed(1)}" cy="${(150+Math.sin(a)*d).toFixed(1)}" r="${(1.3+r()*.5).toFixed(1)}" fill="${P[(r()*4)|0]}"/>`}return ['#E2BE5E',o]},
+ vollkorn:(r,n)=>{let o='';const P=['#D9C49A','#CDB383','#E2D0AA','#BFA172'];for(let i=0;i<n*.6;i++){const a=r()*6.283,d=Math.sqrt(r())*121,x=150+Math.cos(a)*d,y=150+Math.sin(a)*d;o+=`<ellipse cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" rx="3.4" ry="1.6" transform="rotate(${(r()*180)|0} ${x.toFixed(1)} ${y.toFixed(1)})" fill="${P[(r()*4)|0]}" stroke="rgba(90,60,20,.15)" stroke-width=".5"/>`}return ['#C7AE80',o]},
+ couscous:(r,n)=>{let o='';const P=['#EED39A','#E4C383','#F3DDAE','#DDB873'];for(let i=0;i<n*1.4;i++){const a=r()*6.283,d=Math.sqrt(r())*121;o+=`<circle cx="${(150+Math.cos(a)*d).toFixed(1)}" cy="${(150+Math.sin(a)*d).toFixed(1)}" r="${(.9+r()*.5).toFixed(1)}" fill="${P[(r()*4)|0]}"/>`}return ['#E2C27F',o]},
+ soba:(r,n)=>{let o='';for(let i=0;i<n*.09;i++){const a=r()*6.283,d=Math.sqrt(r())*105,x=150+Math.cos(a)*d,y=150+Math.sin(a)*d,b=r()*6.283,L=40+r()*40,x2=x+Math.cos(b)*L,y2=y+Math.sin(b)*L,cx=(x+x2)/2+(r()-.5)*40,cy=(y+y2)/2+(r()-.5)*40;
+   o+=`<path d="M${x.toFixed(0)} ${y.toFixed(0)}Q${cx.toFixed(0)} ${cy.toFixed(0)} ${x2.toFixed(0)} ${y2.toFixed(0)}" stroke="#7E5F45" stroke-width="2.6" fill="none" stroke-linecap="round"/><path d="M${x.toFixed(0)} ${y.toFixed(0)}Q${cx.toFixed(0)} ${cy.toFixed(0)} ${x2.toFixed(0)} ${y2.toFixed(0)}" stroke="#A9876A" stroke-width=".9" fill="none" stroke-linecap="round" transform="translate(-.6 -.6)"/>`}return ['#6E523B',o]},
+ suesskartoffel:(r,n)=>{let o='';for(let i=0;i<n*.09;i++){const a=r()*6.283,d=Math.sqrt(r())*112,x=150+Math.cos(a)*d,y=150+Math.sin(a)*d;o+=`<g transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${(r()*90)|0})"><rect x="-7" y="-7" width="14" height="14" rx="3" fill="url(#bxSk)" stroke="rgba(120,50,0,.3)" stroke-width=".8"/><circle cx="${(r()*8-4).toFixed(1)}" cy="${(r()*8-4).toFixed(1)}" r="1.4" fill="rgba(90,40,10,.45)"/><rect x="-5" y="-5.5" width="6" height="2" rx="1" fill="rgba(255,255,255,.35)"/></g>`}return ['#D9772B',o]},
+ salat:(r,n)=>{let o='';const P=['#7FB24A','#9CCB6A','#5E9A3A','#B5D98A'];for(let i=0;i<n*.06;i++){const a=r()*6.283,d=Math.sqrt(r())*112,x=150+Math.cos(a)*d,y=150+Math.sin(a)*d,s=.9+r()*.6;o+=`<g transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${(r()*360)|0}) scale(${s.toFixed(2)})"><path d="M-14 0C-8 -10 8 -11 14 0C8 9 -8 10 -14 0Z" fill="${P[(r()*4)|0]}" stroke="rgba(40,80,20,.25)" stroke-width=".6"/><path d="M-13 0H12M-4 0l-4 -4M3 0l-3 -5M-4 0l-4 4M3 0l-3 5" stroke="rgba(230,245,210,.7)" stroke-width=".7" fill="none"/></g>`}return ['#6FA544',o]}};
+/* Toppings: [Anzahl Stücke, Form(r) → SVG um 0/0, Größe] */
+const BXR_TOP={
+ mango:[26,r=>`<rect x="-6" y="-6" width="12" height="12" rx="2.6" fill="url(#bxMa)" stroke="rgba(190,110,0,.35)" stroke-width=".6"/><rect x="-4" y="-4.6" width="5" height="2" rx="1" fill="rgba(255,255,255,.5)"/>`],
+ edamame:[64,r=>`<ellipse rx="4.4" ry="3.5" fill="url(#bxEd)" stroke="rgba(50,90,20,.35)" stroke-width=".5"/><ellipse cx="-1.4" cy="-1.2" rx="1.5" ry=".9" fill="rgba(255,255,255,.55)"/>`],
+ zwiebel:[34,r=>`<path d="M-9 1a9 6.5 0 0 1 18 0" fill="none" stroke="#B4377A" stroke-width="2.8" stroke-linecap="round"/><path d="M-9 1a9 6.5 0 0 1 18 0" fill="none" stroke="#F5CDE2" stroke-width=".9" opacity=".9"/>`],
+ avocado:[7,r=>`<path d="M-22 5C-12 -13 12 -13 22 5C10 1 -10 1 -22 5Z" fill="url(#bxAv)" stroke="rgba(80,110,30,.35)" stroke-width=".6"/><path d="M-22 5C-12 -13 12 -13 22 5" fill="none" stroke="#2F4A1B" stroke-width="2.6" stroke-linecap="round"/><path d="M-12 -1C-5 -6 5 -6 12 -1" fill="none" stroke="rgba(255,255,230,.6)" stroke-width="1.2"/>`,'fan'],
+ gurke:[17,r=>`<circle r="8.4" fill="#E2F1C6" stroke="#3F7A2E" stroke-width="1.9"/><circle r="4.8" fill="#CFE6A6"/>${[0,1,2,3,4].map(k=>`<ellipse cx="${(Math.cos(k*1.256)*3).toFixed(1)}" cy="${(Math.sin(k*1.256)*3).toFixed(1)}" rx="1.1" ry=".6" transform="rotate(${k*72})" fill="#F7FBEA"/>`).join('')}`],
+ karotte:[120,r=>`<path d="M-7 -1Q0 ${(r()*3).toFixed(1)} 7 0" stroke="${r()<.5?'#F08A3C':'#F7A24E'}" stroke-width="2.3" stroke-linecap="round" fill="none"/>`],
+ rotkohl:[110,r=>`<path d="M-8 0Q0 ${(r()*4-2).toFixed(1)} 8 1" stroke="${r()<.55?'#6E3584':'#B07BC4'}" stroke-width="1.9" stroke-linecap="round" fill="none"/>`],
+ kichererbsen:[44,r=>`<circle r="4.8" fill="url(#bxKi)" stroke="rgba(120,70,20,.3)" stroke-width=".5"/><path d="M-1 -4.2q2.4 3.4 0 7.6" stroke="rgba(120,70,20,.35)" fill="none" stroke-width=".8"/>`],
+ mais:[110,r=>`<rect x="-2.5" y="-2.3" width="5" height="4.6" rx="1.5" fill="#F7D650" stroke="#DDAF2A" stroke-width=".6"/><rect x="-1.6" y="-1.7" width="1.8" height="1.2" rx=".6" fill="rgba(255,255,255,.55)"/>`],
+ tomate:[13,r=>`<circle r="8.2" fill="#D9372A"/><circle r="6.4" fill="#F0614A"/><path d="M-4.2 0h8.4M0 -4.2v8.4" stroke="#F9B49F" stroke-width="1.1"/><circle cx="-2.3" cy="-2.3" r="1" fill="#FCE3A6"/><circle cx="2.3" cy="2.3" r="1" fill="#FCE3A6"/>`],
+ radieschen:[17,r=>`<circle r="7" fill="#FFF8F8" stroke="#D83652" stroke-width="2"/><circle r="4.4" fill="none" stroke="#F4D3DA" stroke-width=".8"/>`],
+ feta:[26,r=>`<path d="M-5 -5H5L5.4 4.6L-4.6 5.2Z" fill="#F9F7F0" stroke="#DDD7C6" stroke-width=".8" stroke-linejoin="round"/><circle cx="1.5" cy="-1" r=".8" fill="#E8E2D2"/>`],
+ kimchi:[22,r=>`<path d="M-8 -4L7 -6L9 3L-6 6Z" fill="#CF4B2B" stroke="#CF4B2B" stroke-width="2.5" stroke-linejoin="round"/><path d="M-5 -1L5 -3M-4 2L6 0" stroke="#F4A88E" stroke-width="1" opacity=".8"/>`],
+ spinat:[20,r=>`<path d="M-11 0C-6 -8 6 -8 11 0C6 8 -6 8 -11 0Z" fill="${r()<.5?'#3E7A31':'#4F8F3E'}"/><path d="M-11 0H10M-3 0l-3-3M3 0l-3-4M-3 0l-3 3M3 0l-3 4" stroke="#86BE66" stroke-width=".7" fill="none"/>`]};
+/* Protein in der Mitte */
+const BXR_X={
+ haehnchen:r=>[0,1,2,3,4].map(j=>[(j-2)*-7,(j-2)*10,35+(j-2)*4,`<rect x="-17" y="-5.5" width="34" height="11" rx="4.5" fill="url(#bxCh)" stroke="rgba(130,80,30,.35)" stroke-width=".7"/><path d="M-8 -5l-3 10M2 -5l-3 10M12 -5l-3 10" stroke="#8A5524" stroke-width="1.6" opacity=".45"/>`]),
+ steak:r=>[0,1,2,3,4].map(j=>[(j-2)*-6.6,(j-2)*9.4,35+(j-2)*4,`<rect x="-17" y="-5" width="34" height="10" rx="3" fill="#5C2D22"/><rect x="-15.5" y="-3.4" width="31" height="6.8" rx="2.5" fill="#C9696A"/><rect x="-12" y="-1.6" width="24" height="3.2" rx="1.6" fill="#DD8A88"/>`]),
+ lachs:r=>Array.from({length:18},(_,j)=>{const a=j*2.4,d=3+((j*7)%6)*5.6;return [Math.cos(a)*d,Math.sin(a)*d,(j*37)%90,`<rect x="-7" y="-7" width="14" height="14" rx="2.4" fill="#F2876A" stroke="rgba(170,70,40,.35)" stroke-width=".6"/><path d="M-6 -2.2h12M-6 2h12" stroke="#FFD8C8" stroke-width="1.1"/>`]}),
+ garnelen:r=>Array.from({length:7},(_,j)=>{const a=j*0.9,d=j?20:0;return [Math.cos(a)*d,Math.sin(a)*d,j*51,`<path d="M-8 4C-10 -6 6 -11 9 -2C10 3 5 7 1 4" fill="none" stroke="#F0895C" stroke-width="6.5" stroke-linecap="round"/><path d="M-8 4C-10 -6 6 -11 9 -2C10 3 5 7 1 4" fill="none" stroke="#FFD2BC" stroke-width="1.2" stroke-dasharray="2 3"/>`]}),
+ tofu:r=>Array.from({length:16},(_,j)=>{const a=j*2.4,d=3+((j*5)%6)*5.8;return [Math.cos(a)*d,Math.sin(a)*d,(j*29)%90,`<rect x="-6.5" y="-6.5" width="13" height="13" rx="2" fill="#EFDCAA" stroke="#C3934C" stroke-width="1.6"/><rect x="-4" y="-4" width="6" height="2" rx="1" fill="rgba(255,255,255,.45)"/>`]}),
+ ei:r=>[[-14,-10,20],[14,-8,-25],[-10,14,-40],[14,14,30]].map(([x,y,t])=>[x,y,t,`<ellipse rx="14" ry="10.5" fill="#FBFAF5" stroke="#E6E1D3" stroke-width=".8"/><circle r="6.4" fill="url(#bxYo)"/>`])};
+function bxSVG(st,prev,big,flat){const C=150,R0=121,base=bxF(BX_BASE,st.b),P=prev||{t:[]},n=big?820:480,nw=k=>flat?'':' nw',dl=(i,k)=>flat?'':` style="animation-delay:${Math.min(i*22,500)}ms"`;
   let g='';
-  if(base){g+=`<g class="bxw ${P.b===st.b?'':'nw'}"><circle cx="${C}" cy="${C}" r="${R0}" fill="${base[9]}"/>${dots(0,Math.PI*2,'rgba(255,255,255,.55)',90,0,2.2)}${dots(0,Math.PI*2,'rgba(120,90,50,.16)',70,0,2)}</g>`;
-   if(T.length){const bs=Math.PI*2*(T.length>=4?.22:.3),start=Math.PI/2+bs/2,sw=(Math.PI*2-bs)/T.length;
-    T.forEach((t,i)=>{const a0=start+i*sw,a1=a0+sw,am=(a0+a1)/2,[ex,ey]=pt(am,R0*.64);
-     g+=`<g class="bxw ${P.t.includes(t[0])?'':'nw'}" style="transform-origin:${ex}px ${ey}px"><path d="${wedge(a0,a1,R0)}" fill="${t[9]}"/>${dots(a0,a1,'rgba(255,255,255,.35)',16,X?44:18,4.2)}${dots(a0,a1,'rgba(0,0,0,.08)',12,X?44:18,3.6)}<path d="${wedge(a0,a1,R0)}" fill="none" stroke="rgba(255,255,255,.75)" stroke-width="2.4"/><text x="${ex}" y="${ey}" font-size="${big?26:24}" text-anchor="middle" dominant-baseline="central">${t[2]}</text></g>`});
-    const [bx,by]=pt(Math.PI/2,R0*.66);g+=`<text x="${bx}" y="${by}" font-size="22" text-anchor="middle" dominant-baseline="central" opacity=".9">${base[2]}</text>`}
-   if(X)g+=`<g class="bxw ${P.x===st.x?'':'nw'}" style="transform-origin:${C}px ${C}px"><circle cx="${C}" cy="${C}" r="40" fill="${X[9]}" stroke="#fff" stroke-width="3"/>${(()=>{let o='';for(let i=0;i<7;i++){const a=i*0.9,r=8+i*3.2,[x,y]=pt(a,r);o+=`<ellipse cx="${x}" cy="${y}" rx="9" ry="4.5" transform="rotate(${(a*57).toFixed(0)} ${x} ${y})" fill="rgba(255,255,255,.22)"/>`}return o})()}<text x="${C}" y="${C}" font-size="30" text-anchor="middle" dominant-baseline="central">${X[2]}</text></g>`;
-   if(st.d){const col=BX_DCOL[st.d];let d='M64 128';for(let i=0;i<9;i++){d+=` Q${74+i*19} ${i%2?108:200} ${84+i*19} ${i%2?136:170}`}
-    g+=`<path class="bxd ${P.d===st.d?'':'nw'}" d="${d}" fill="none" stroke="${col}" stroke-width="3" stroke-linecap="round" opacity=".82" style="filter:drop-shadow(0 1px 1px rgba(0,0,0,.25))"/>`}}
-  return `<svg class="bxs" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="bxg" cx="50%" cy="40%" r="60%"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#EDE6DC"/></radialGradient><clipPath id="bxc"><circle cx="${C}" cy="${C}" r="${R0}"/></clipPath></defs>
-   <circle cx="${C}" cy="${C+5}" r="146" fill="rgba(60,40,30,.12)"/><circle cx="${C}" cy="${C}" r="146" fill="url(#bxg)" stroke="#E4DCD0" stroke-width="1.5"/><circle cx="${C}" cy="${C}" r="${R0+3}" fill="#F3EEE7"/>
-   ${base?'':`<circle cx="${C}" cy="${C}" r="${R0}" fill="none" stroke="#D9D0C3" stroke-width="2" stroke-dasharray="6 8"/><text x="${C}" y="${C-8}" font-size="15" text-anchor="middle" fill="#A39A8E" font-family="-apple-system,system-ui,sans-serif">Wähle zuerst</text><text x="${C}" y="${C+14}" font-size="15" text-anchor="middle" fill="#A39A8E" font-family="-apple-system,system-ui,sans-serif">deine Basis</text>`}
-   <g clip-path="url(#bxc)">${g}</g><circle cx="${C}" cy="${C}" r="${R0}" fill="none" stroke="rgba(0,0,0,.06)" stroke-width="3"/></svg>`}
-const bxUrl=st=>'data:image/svg+xml;utf8,'+encodeURIComponent(bxSVG(st,st,true).replace(/class="[^"]*"/g,''));
+  if(base){const r=bxRng('b'+st.b),[bg,body]=BXR_BASE[st.b](r,n);g+=`<g class="bxb${P.b===st.b?'':nw()}"><circle cx="${C}" cy="${C}" r="${R0+2}" fill="${bg}"/>${body}</g>`;
+   const slots=[-90,-30,30,150,210],xIn=st.x?50:24;
+   st.t.forEach((k,si)=>{const T=BXR_TOP[k];if(!T)return;const r=bxRng('t'+k+si),mid=slots[si]*Math.PI/180,w=0.52,isNew=!P.t.includes(k);let pcs='';
+    if(T[2]==='fan'){for(let i=0;i<T[0];i++){const a=mid-w*.7+i*(w*1.4/(T[0]-1)),d=(xIn+R0)/2+2,x=C+Math.cos(a)*d,y=C+Math.sin(a)*d;pcs+=`<g class="bxp${isNew?nw():''}"${dl(i)}><g transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${(a*57.3+90+(i-3)*9).toFixed(0)})">${T[1](r)}</g></g>`}}
+    else{const L=[];for(let i=0;i<T[0];i++){const u=r(),a=mid+(r()+r()-1)*w,d=xIn+4+(0.15+0.85*Math.sqrt(u))*(R0-xIn-14);L.push([C+Math.cos(a)*d,C+Math.sin(a)*d,r()*360])}L.sort((p,q)=>p[1]-q[1]).forEach(([x,y,t],i)=>{pcs+=`<g class="bxp${isNew?nw():''}"${dl(i)}><g transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) rotate(${t.toFixed(0)})">${T[1](r)}</g></g>`})}
+    g+=`<g filter="url(#bxSh)">${pcs}</g>`});
+   if(st.x&&BXR_X[st.x]){const r=bxRng('x'+st.x),isNew=P.x!==st.x;g+=`<circle cx="${C}" cy="${C}" r="40" fill="rgba(0,0,0,.08)" filter="url(#bxBl)"/><g filter="url(#bxSh)">`+BXR_X[st.x](r).map(([x,y,t,s],i)=>`<g class="bxp${isNew?nw():''}"${dl(i)}><g transform="translate(${(C+x).toFixed(1)} ${(C+y).toFixed(1)}) rotate(${t})">${s}</g></g>`).join('')+'</g>'}
+   if(st.d){const col=BX_DCOL[st.d],r=bxRng('d'+st.d);let d='';for(let k=0;k<3;k++){const x0=58+r()*20,y0=96+k*52+r()*10,x1=242-r()*20,y1=y0+22+r()*12,N=90;for(let i=0;i<=N;i++){const t=i/N,x=x0+(x1-x0)*t+Math.sin(t*15)*4,y=y0+(y1-y0)*t+Math.cos(t*15)*7;d+=(i?'L':'M')+x.toFixed(1)+' '+y.toFixed(1)}}
+    g+=`<g class="bxd${P.d===st.d?'':nw()}"><path d="${d}" fill="none" stroke="rgba(0,0,0,.15)" stroke-width="2.6" stroke-linecap="round" transform="translate(0 1.5)"/><path d="${d}" fill="none" stroke="${col}" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" opacity=".85"/>${st.d==='sesam'?Array.from({length:70},()=>{const a=r()*6.283,dd=Math.sqrt(r())*112,x=C+Math.cos(a)*dd,y=C+Math.sin(a)*dd;return `<ellipse cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" rx="1.5" ry=".8" transform="rotate(${(r()*180)|0} ${x.toFixed(1)} ${y.toFixed(1)})" fill="${r()<.7?'#F6EFD9':'#2B2622'}"/>`}).join(''):''}</g>`}}
+  return `<svg class="bxs" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg"><defs>
+   <radialGradient id="bxOut" cx="45%" cy="38%" r="65%"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".75" stop-color="#F1ECE4"/><stop offset="1" stop-color="#DCD3C6"/></radialGradient>
+   <radialGradient id="bxIn" cx="50%" cy="50%" r="50%"><stop offset=".78" stop-color="rgba(60,40,20,0)"/><stop offset="1" stop-color="rgba(60,40,20,.32)"/></radialGradient>
+   <linearGradient id="bxMa" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFD45E"/><stop offset="1" stop-color="#F0921C"/></linearGradient>
+   <radialGradient id="bxEd" cx="35%" cy="35%"><stop offset="0" stop-color="#B9E07E"/><stop offset="1" stop-color="#6AA239"/></radialGradient>
+   <linearGradient id="bxAv" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#EEF3B0"/><stop offset=".7" stop-color="#B8D06A"/><stop offset="1" stop-color="#7FA845"/></linearGradient>
+   <radialGradient id="bxKi" cx="35%" cy="35%"><stop offset="0" stop-color="#F2CF92"/><stop offset="1" stop-color="#BF873F"/></radialGradient>
+   <linearGradient id="bxCh" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F1CB95"/><stop offset="1" stop-color="#C78845"/></linearGradient>
+   <linearGradient id="bxSk" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFB46B"/><stop offset="1" stop-color="#E2701D"/></linearGradient>
+   <radialGradient id="bxYo" cx="40%" cy="40%"><stop offset="0" stop-color="#FFD15C"/><stop offset="1" stop-color="#EE9A1E"/></radialGradient>
+   <filter id="bxBl"><feGaussianBlur stdDeviation="4"/></filter><filter id="bxSh" x="-10%" y="-10%" width="120%" height="120%"><feDropShadow dx="0" dy="1.2" stdDeviation="1" flood-color="#3A2A10" flood-opacity=".35"/></filter>
+   <clipPath id="bxc"><circle cx="${C}" cy="${C}" r="${R0}"/></clipPath></defs>
+   <ellipse cx="${C}" cy="${C+8}" rx="146" ry="144" fill="rgba(60,40,30,.16)" filter="url(#bxBl)"/>
+   <circle cx="${C}" cy="${C}" r="146" fill="url(#bxOut)" stroke="#E2D9CC" stroke-width="1"/><circle cx="${C}" cy="${C}" r="${R0+4}" fill="#E9E2D7"/>
+   ${base?'':`<circle cx="${C}" cy="${C}" r="${R0}" fill="#F4EFE8"/><circle cx="${C}" cy="${C}" r="${R0-10}" fill="none" stroke="#D9D0C3" stroke-width="1.6" stroke-dasharray="5 8"/><text x="${C}" y="${C-8}" font-size="15" text-anchor="middle" fill="#A39A8E" font-family="-apple-system,system-ui,sans-serif">Wähle zuerst</text><text x="${C}" y="${C+14}" font-size="15" text-anchor="middle" fill="#A39A8E" font-family="-apple-system,system-ui,sans-serif">deine Basis</text>`}
+   <g clip-path="url(#bxc)">${g}<circle cx="${C}" cy="${C}" r="${R0}" fill="url(#bxIn)"/></g>
+   <path d="M${C-120} ${C-40}A128 128 0 0 1 ${C-40} ${C-120}" fill="none" stroke="rgba(255,255,255,.8)" stroke-width="3" stroke-linecap="round"/></svg>`}
+const bxUrl=st=>'data:image/svg+xml;utf8,'+encodeURIComponent(bxSVG(st,st,false,true));
 const bxNut=st=>{const L=[bxF(BX_BASE,st.b)].concat(st.t.map(k=>bxF(BX_TOP,k)),[bxF(BX_X,st.x)]).filter(Boolean),d=BX_DK[st.d]||[0,0,0,0];
   return [0,1,2,3].map(j=>Math.round(L.reduce((a,x)=>a+x[5+j],0)+d[j]))};
 function bxApply(r,st){if(!st.b)st=BX_EX;const B=bxF(BX_BASE,st.b),T=st.t.map(k=>bxF(BX_TOP,k)),X=bxF(BX_X,st.x),D=DRESS.find(x=>x.id===st.d);
