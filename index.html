@@ -774,7 +774,7 @@ html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
 @keyframes icbFing{0%,8%{opacity:0;transform:translateY(0) scale(1.3)}14%{opacity:1;transform:translateY(0) scale(1)}40%{opacity:1;transform:translateY(-110px) scale(1)}48%,54%{opacity:0;transform:translateY(-110px) scale(1.2)}60%{opacity:1;transform:translateY(-110px) scale(1)}86%{opacity:1;transform:translateY(0) scale(1)}94%,100%{opacity:0;transform:translateY(0) scale(1.2)}}
 @media (prefers-reduced-motion:reduce){.icb,.ill-cube .fing{animation:none}.icb{transform:translateZ(-118px) rotateX(35deg)}}
 /* V107: Begrüßung beim Start + Namensfeld im Intro und unten in den Einstellungen */
-.hello{position:absolute;inset:0;z-index:200;display:grid;place-items:center;text-align:center;padding:0 28px;border-radius:inherit;overflow:hidden;
+.hello{position:absolute;inset:0;z-index:200;display:grid;place-items:center;grid-template-rows:40% 1fr;text-align:center;padding:0 28px;border-radius:inherit;overflow:hidden;
   background:linear-gradient(160deg,rgba(120,52,72,.2),rgba(60,30,50,.16));-webkit-backdrop-filter:blur(1.5px);backdrop-filter:blur(1.5px);animation:helloIn .4s ease both;transition:opacity .5s ease}
 .hello.out{opacity:0;pointer-events:none}
 .hello h2{margin:0;font-family:-apple-system,"SF Pro Display","Helvetica Neue",system-ui,sans-serif;font-weight:200;font-size:60px;line-height:1.02;letter-spacing:-.025em;color:#fff;text-shadow:0 2px 16px rgba(50,15,35,.45),0 18px 40px rgba(40,10,30,.3);white-space:nowrap}
@@ -2017,6 +2017,48 @@ img,svg{-webkit-user-drag:none}
 .fdc-card.fin p{margin:0 0 16px;color:#6E6E73;line-height:1.45}
 .fdc-nav{display:flex;gap:8px}
 .fdc-nav .obtn[disabled]{opacity:.4}
+/* V200: Begrüßung oben, dünn */
+.hello>div{align-self:end}
+.hello h2{font-weight:100!important;letter-spacing:-.03em!important}
+.hello p{font-weight:200!important;font-size:23px!important}
+/* Lerncenter: Teller vollständig */
+.ls-im.pl.fit .stage,.ls-im.pl.fit .plate{transform:none!important}
+/* Bowl-Baukasten */
+.bx-st{display:grid;place-items:center;margin:18px 0 6px}
+.bxs{width:300px;height:300px;overflow:visible}
+.bxw.nw{animation:bxIn .5s cubic-bezier(.2,.9,.3,1.25) both}
+.bxs .bxw:first-child.nw{transform-origin:150px 150px}
+@keyframes bxIn{0%{opacity:0;transform:scale(.55)}100%{opacity:1;transform:none}}
+.bxd{stroke-dasharray:900;stroke-dashoffset:0}
+.bxd.nw{animation:bxDr .9s ease-out both}
+@keyframes bxDr{0%{stroke-dashoffset:900}100%{stroke-dashoffset:0}}
+.bx-mac{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:6px 0 18px}
+.bx-mac span{display:flex;flex-direction:column;align-items:center;padding:9px 4px;border-radius:14px;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.05);font-size:11px;color:#86868B}
+.bx-mac b{font-size:16px;font-weight:600;color:#1D1D1F;font-variant-numeric:tabular-nums}
+.bx-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.bx-tabs button{border:0;border-radius:16px;padding:9px 4px 8px;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.06);display:flex;flex-direction:column;align-items:center;gap:2px;min-width:0}
+.bx-tabs em{font-style:normal;width:22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:700;background:#F0EEE9;color:#6E6E73;margin-bottom:2px}
+.bx-tabs em .ic{width:13px;height:13px}
+.bx-tabs b{font-size:13px;font-weight:600;color:#1D1D1F}
+.bx-tabs small{font-size:10.5px;color:#86868B;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bx-tabs button.on{background:#EEF6E8;box-shadow:0 0 0 2px #4F8F5B}
+.bx-tabs button.on em{background:#4F8F5B;color:#fff}
+.bx-tabs button.lock{opacity:.45}
+.bx-hint{margin:12px 2px 10px;font-size:13.5px;color:#6E6E73;line-height:1.4}
+.bx-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px 6px;--c:#4F8F5B}
+.bxo{border:0;background:none;padding:0;display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0}
+.bxo .fdo-c{width:64px;height:64px;font-size:30px}
+.bxo b{font-size:11.5px;font-weight:600;line-height:1.2;text-align:center;color:#1D1D1F}
+.bxo small{font-size:10px;color:#86868B}
+.bxo.on .fdo-c{box-shadow:0 0 0 3px var(--c),0 12px 22px -12px var(--c);transform:scale(1.04)}
+.bxo.dis{opacity:.35}
+.bx-next{margin:18px auto 0;justify-content:center;gap:6px;padding:0 18px}
+.bx-steps{display:flex;flex-direction:column;gap:10px}
+.bx-steps div{display:flex;gap:12px;background:#fff;border-radius:16px;padding:12px 14px;box-shadow:0 0 0 1px rgba(0,0,0,.05)}
+.bx-steps span{flex:none;width:24px;height:24px;border-radius:50%;background:#EEF6E8;color:#2F6B3F;display:grid;place-items:center;font-size:12.5px;font-weight:700}
+.bx-steps p{margin:0;font-size:15px;line-height:1.45}
+.bx-reset{display:block;margin:18px auto 0;border:0;background:none;color:#86868B;font-size:14px;text-decoration:underline}
+.bottom-cta.bx-off .gbtn{opacity:.5}
 .fthero b{color:#fff!important}
 .fthero+.wo-list{margin-top:10px}
 .phw-d em{overflow-wrap:normal!important}
@@ -2658,6 +2700,7 @@ const R=[
  {id:"m34",n:"Großer Salat mit Steak und Kartoffeln",s:"Steakstreifen, Kartoffelspalten, Salat",c:["fleisch", "bowl"],m:35,k:450,p:46,kh:40,f:16,g:525,e:"🥗",t:["#F8EADC", "#E5BF9C"],img:IMG_N34,
   i:[["Rindersteak", 150, "g"], ["Kartoffeln", 200, "g"], ["Blattsalat", 1, "Handvoll"], ["Cherrytomaten", 4, "Stk"], ["Gurke", 0.25, "Stk"], ["Olivenöl", 1, "TL"], ["Essig", 1, "TL"], ["Salz", 0, ""], ["Pfeffer", 0, ""]],
   st:["Kartoffeln in Spalten schneiden und im Ofen bei 200 °C etwa 25 Minuten backen.", "Steak würzen und in einer Pfanne braten.", "Salat, Tomaten und Gurke schneiden.", "Steak kurz ruhen lassen und in Streifen schneiden.", "Alles auf einem Teller anrichten und mit Öl und Essig beträufeln."]},
+ {id:"b11",n:"Bowl nach Wahl",s:"Basis, Toppings, Extra-Protein und Dressing selbst wählen",d:"Dein Bowl-Baukasten.",c:["bowl","veggie"],bx:1,isNew:true,m:25,k:0,p:0,kh:0,f:0,g:500,e:"🥣",t:["#EEF5E6","#C9E2B4"],i:[],st:[]},
  {id:"b01",n:"Avocado Chicken Bowl",s:"Basmatireis, Hähnchen, Avocado, Edamame",c:["fleisch", "bowl"],m:25,k:580,p:37,kh:65,f:19,g:560,e:"🍗",t:["#EAF6E2", "#BFE3A8"],img:IMG_B01,
   i:[["Basmatireis", 60, "g"], ["Hähnchenbrust", 100, "g"], ["Avocado", 0.5, "Stk"], ["Edamame", 50, "g"], ["Gurke", 0.5, "Stk"], ["Sojasauce", 1, "EL"], ["Limettensaft", 1, "EL"], ["Honig", 1, "TL"], ["Sesamöl", 1, "TL"]],
   st:["Reis kochen und Edamame garen.", "Hähnchen würzen, anbraten und in Streifen schneiden.", "Avocado und Gurke schneiden.", "Alle Zutaten in einer Bowl anrichten.", "Dressing verrühren und darübergeben."]},
@@ -2900,6 +2943,104 @@ function bowlApply(r,id){if(!r._i0){r._i0=r.i.map(x=>x.slice());r._st0=r.st.slic
 Phone.prototype.vDressPick=function(r){const s=this.s,cur=(s.bdr||{})[r.id]||'orig',L=[{id:'orig',n:'Original',e:'🥣'}].concat(DRESS);
   return `<div class="fd-pane dr" style="--c:#4F8F5B"><div class="fd-lbl">Dressing wählen</div>
    <div class="fd-opts" data-keep="dr-${r.id}">${L.map(x=>`<button class="fdo ${x.id===cur?'on':''}" data-a="bdr" data-v="${x.id}" aria-pressed="${x.id===cur}"><span class="fdo-c">${x.e}${x.id===cur?`<i>${ic('check')}</i>`:''}</span><b>${x.n}</b></button>`).join('')}</div></div>`};
+/* ===== V200: Bowl-Baukasten – Basis → Toppings → Extra-Protein → Dressing, Bowl füllt sich grafisch ===== */
+/* [id, Name, Emoji, Menge, Einheit, kcal, Eiweiß, KH, Fett, Farbe, Zubereitung] */
+const BX_BASE=[
+ ['quinoa','Quinoa','🌾',60,'g',220,8,39,4,'#E8D9B5','Quinoa heiß abspülen und in der doppelten Menge Salzwasser 15 Minuten köcheln, dann 5 Minuten quellen lassen.',20],
+ ['reis','Basmatireis','🍚',60,'g',210,4,46,0.5,'#F4EFE4','Reis abspülen und mit der 1,5-fachen Menge Salzwasser zugedeckt 12 Minuten garen, 5 Minuten ruhen lassen.',17],
+ ['hirse','Hirse','🌼',60,'g',215,6,41,2.5,'#EFD58A','Hirse heiß abspülen und in der doppelten Menge Salzwasser 10 Minuten köcheln, 10 Minuten quellen lassen.',20],
+ ['vollkorn','Vollkornreis','🍙',60,'g',215,5,44,1.7,'#D8C7A4','Vollkornreis in reichlich Salzwasser etwa 30 Minuten garen und abgießen.',30],
+ ['couscous','Couscous','🥣',60,'g',215,7,43,1,'#EBCB8E','Couscous mit der gleichen Menge kochender Brühe übergießen, 5 Minuten quellen lassen und mit einer Gabel auflockern.',8],
+ ['soba','Soba-Nudeln','🍜',60,'g',200,8,40,0.5,'#B99A7A','Soba-Nudeln 4–5 Minuten kochen, kalt abspülen und abtropfen lassen.',10],
+ ['suesskartoffel','Süßkartoffel','🍠',200,'g',170,3,40,0.2,'#F2A55C','Süßkartoffel würfeln, mit etwas Öl und Salz bei 200 °C etwa 25 Minuten rösten.',30],
+ ['salat','Blattsalat','🥬',80,'g',15,1,2,0.2,'#9CCB6A','Blattsalat waschen, trocken schleudern und zupfen.',5]];
+const BX_TOP=[
+ ['edamame','Edamame','🫛',50,'g',60,6,4,3,'#7DB65A','Edamame kurz in Salzwasser garen'],
+ ['mango','Mango','🥭',80,'g',48,0.5,12,0.3,'#F6B73C','Mango würfeln'],
+ ['zwiebel','Eingelegte rote Zwiebel','🧅',30,'g',15,0.3,3,0,'#C2508A','Zwiebel in feine Ringe schneiden und 10 Minuten in Essig mit einer Prise Zucker und Salz ziehen lassen','Rote Zwiebel (eingelegt)'],
+ ['avocado','Avocado','🥑',0.5,'Stk',115,1.2,1.5,11,'#A9C46A','Avocado in Spalten schneiden'],
+ ['gurke','Gurke','🥒',80,'g',10,0.5,2,0.1,'#9CCB7A','Gurke in Scheiben schneiden'],
+ ['karotte','Karotte','🥕',60,'g',25,0.5,5,0.1,'#F08A3C','Karotte raspeln'],
+ ['rotkohl','Rotkohl','🥬',50,'g',15,0.7,3,0.1,'#7A4A9E','Rotkohl fein hobeln und mit etwas Salz kneten'],
+ ['kichererbsen','Geröstete Kichererbsen','🫘',60,'g',95,5,13,2.5,'#D9A85A','Kichererbsen abtropfen und mit Paprika in der Pfanne knusprig rösten','Kichererbsen (geröstet)'],
+ ['mais','Mais','🌽',50,'g',45,1.6,9,0.6,'#F2D24B','Mais abtropfen lassen'],
+ ['tomate','Cherrytomaten','🍅',80,'g',15,0.7,3,0.2,'#E5533F','Tomaten halbieren'],
+ ['radieschen','Radieschen','🔴',40,'g',6,0.3,1,0,'#E86C7E','Radieschen in dünne Scheiben schneiden'],
+ ['feta','Feta','🧀',30,'g',80,5,0.3,6.5,'#F3F0E6','Feta zerbröseln'],
+ ['kimchi','Kimchi','🌶️',50,'g',12,0.6,2,0.2,'#D9563A','Kimchi grob hacken'],
+ ['spinat','Babyspinat','🌿',30,'g',7,0.9,0.4,0.1,'#4E8F45','Spinat waschen']];
+const BX_X=[
+ ['haehnchen','Hähnchen','🍗',100,'g',165,31,0,4,'#E3B98A','Hähnchen salzen, in der Pfanne 5–6 Minuten je Seite braten und in Streifen schneiden.'],
+ ['lachs','Lachs','🐟',100,'g',200,20,0,13,'#F08C6E','Lachs auf der Hautseite 4 Minuten braten, wenden, 2 Minuten fertig garen und zerpflücken.'],
+ ['steak','Rindersteak','🥩',100,'g',150,22,0,7,'#9C4A3C','Steak je Seite 2–3 Minuten scharf braten, 5 Minuten ruhen lassen und in Streifen schneiden.'],
+ ['garnelen','Garnelen','🦐',100,'g',85,19,0,1,'#F4A07E','Garnelen mit Knoblauch 2–3 Minuten braten, bis sie rosa sind.'],
+ ['tofu','Tofu','🧈',100,'g',120,13,2,7,'#EFE0B9','Tofu würfeln, trocken tupfen und in Öl rundum knusprig braten.'],
+ ['ei','Eier','🥚',2,'Stk',155,13,1,11,'#F7D46A','Eier 7 Minuten kochen, abschrecken, pellen und halbieren.']];
+const BX_DK={zitrone:[135,0,1,14],honigsenf:[145,0.5,5,14],sesam:[70,2,5,4.5],erdnuss:[110,4,4,8.5],joghurt:[35,2,3,1.5],tahini:[95,3,2,8]};
+const BX_DCOL={zitrone:'#F5D547',honigsenf:'#E3A82B',sesam:'#8A5A2B',erdnuss:'#C98A4B',joghurt:'#FFFFFF',tahini:'#D9C29A'};
+const BX_MAX=5,BX_EX={b:'quinoa',t:['mango','edamame','avocado','zwiebel','gurke'],x:'haehnchen',d:'sesam'};
+const bxF=(L,id)=>L.find(x=>x[0]===id);
+const bxSt=s=>{const b=s.bx||{};return {b:bxF(BX_BASE,b.b)?b.b:null,t:(b.t||[]).filter(k=>bxF(BX_TOP,k)).slice(0,BX_MAX),x:bxF(BX_X,b.x)?b.x:null,d:BX_DK[b.d]?b.d:null}};
+/* Bowl von oben: Basis als Grund, Toppings als Segmente, Extra-Protein in der Mitte, Dressing als Linie */
+function bxSVG(st,prev,big){const C=150,R0=124,base=bxF(BX_BASE,st.b),T=st.t.map(k=>bxF(BX_TOP,k)),X=bxF(BX_X,st.x),P=prev||{t:[]};
+  let rnd=7;const rr=()=>{rnd=(rnd*9301+49297)%233280;return rnd/233280};
+  const pt=(a,r)=>[(C+Math.cos(a)*r).toFixed(1),(C+Math.sin(a)*r).toFixed(1)];
+  const wedge=(a0,a1,r)=>{const [x0,y0]=pt(a0,r),[x1,y1]=pt(a1,r);return `M${C} ${C}L${x0} ${y0}A${r} ${r} 0 ${a1-a0>Math.PI?1:0} 1 ${x1} ${y1}Z`};
+  const dots=(a0,a1,col,n,rmin,sz)=>{let o='';for(let i=0;i<n;i++){const a=a0+(a1-a0)*(.08+.84*rr()),r=rmin+(R0-8-rmin)*Math.sqrt(rr()),[x,y]=pt(a,r);o+=`<circle cx="${x}" cy="${y}" r="${(sz*(.6+rr()*.7)).toFixed(1)}" fill="${col}"/>`}return o};
+  const shade=(c,f)=>`color-mix(in srgb,${c} ${Math.round(f*100)}%,${f>0?'#000':'#fff'})`;
+  let g='';
+  if(base){g+=`<g class="bxw ${P.b===st.b?'':'nw'}"><circle cx="${C}" cy="${C}" r="${R0}" fill="${base[9]}"/>${dots(0,Math.PI*2,'rgba(255,255,255,.55)',90,0,2.2)}${dots(0,Math.PI*2,'rgba(120,90,50,.16)',70,0,2)}</g>`;
+   if(T.length){const bs=Math.PI*2*(T.length>=4?.22:.3),start=Math.PI/2+bs/2,sw=(Math.PI*2-bs)/T.length;
+    T.forEach((t,i)=>{const a0=start+i*sw,a1=a0+sw,am=(a0+a1)/2,[ex,ey]=pt(am,R0*.64);
+     g+=`<g class="bxw ${P.t.includes(t[0])?'':'nw'}" style="transform-origin:${ex}px ${ey}px"><path d="${wedge(a0,a1,R0)}" fill="${t[9]}"/>${dots(a0,a1,'rgba(255,255,255,.35)',16,X?44:18,4.2)}${dots(a0,a1,'rgba(0,0,0,.08)',12,X?44:18,3.6)}<path d="${wedge(a0,a1,R0)}" fill="none" stroke="rgba(255,255,255,.75)" stroke-width="2.4"/><text x="${ex}" y="${ey}" font-size="${big?26:24}" text-anchor="middle" dominant-baseline="central">${t[2]}</text></g>`});
+    const [bx,by]=pt(Math.PI/2,R0*.66);g+=`<text x="${bx}" y="${by}" font-size="22" text-anchor="middle" dominant-baseline="central" opacity=".9">${base[2]}</text>`}
+   if(X)g+=`<g class="bxw ${P.x===st.x?'':'nw'}" style="transform-origin:${C}px ${C}px"><circle cx="${C}" cy="${C}" r="40" fill="${X[9]}" stroke="#fff" stroke-width="3"/>${(()=>{let o='';for(let i=0;i<7;i++){const a=i*0.9,r=8+i*3.2,[x,y]=pt(a,r);o+=`<ellipse cx="${x}" cy="${y}" rx="9" ry="4.5" transform="rotate(${(a*57).toFixed(0)} ${x} ${y})" fill="rgba(255,255,255,.22)"/>`}return o})()}<text x="${C}" y="${C}" font-size="30" text-anchor="middle" dominant-baseline="central">${X[2]}</text></g>`;
+   if(st.d){const col=BX_DCOL[st.d];let d='M64 128';for(let i=0;i<9;i++){d+=` Q${74+i*19} ${i%2?108:200} ${84+i*19} ${i%2?136:170}`}
+    g+=`<path class="bxd ${P.d===st.d?'':'nw'}" d="${d}" fill="none" stroke="${col}" stroke-width="3" stroke-linecap="round" opacity=".82" style="filter:drop-shadow(0 1px 1px rgba(0,0,0,.25))"/>`}}
+  return `<svg class="bxs" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="bxg" cx="50%" cy="40%" r="60%"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#EDE6DC"/></radialGradient><clipPath id="bxc"><circle cx="${C}" cy="${C}" r="${R0}"/></clipPath></defs>
+   <circle cx="${C}" cy="${C+5}" r="146" fill="rgba(60,40,30,.12)"/><circle cx="${C}" cy="${C}" r="146" fill="url(#bxg)" stroke="#E4DCD0" stroke-width="1.5"/><circle cx="${C}" cy="${C}" r="${R0+3}" fill="#F3EEE7"/>
+   ${base?'':`<circle cx="${C}" cy="${C}" r="${R0}" fill="none" stroke="#D9D0C3" stroke-width="2" stroke-dasharray="6 8"/><text x="${C}" y="${C-8}" font-size="15" text-anchor="middle" fill="#A39A8E" font-family="-apple-system,system-ui,sans-serif">Wähle zuerst</text><text x="${C}" y="${C+14}" font-size="15" text-anchor="middle" fill="#A39A8E" font-family="-apple-system,system-ui,sans-serif">deine Basis</text>`}
+   <g clip-path="url(#bxc)">${g}</g><circle cx="${C}" cy="${C}" r="${R0}" fill="none" stroke="rgba(0,0,0,.06)" stroke-width="3"/></svg>`}
+const bxUrl=st=>'data:image/svg+xml;utf8,'+encodeURIComponent(bxSVG(st,st,true).replace(/class="[^"]*"/g,''));
+const bxNut=st=>{const L=[bxF(BX_BASE,st.b)].concat(st.t.map(k=>bxF(BX_TOP,k)),[bxF(BX_X,st.x)]).filter(Boolean),d=BX_DK[st.d]||[0,0,0,0];
+  return [0,1,2,3].map(j=>Math.round(L.reduce((a,x)=>a+x[5+j],0)+d[j]))};
+function bxApply(r,st){if(!st.b)st=BX_EX;const B=bxF(BX_BASE,st.b),T=st.t.map(k=>bxF(BX_TOP,k)),X=bxF(BX_X,st.x),D=DRESS.find(x=>x.id===st.d);
+  r.i=[[B[1],B[3],B[4]]].concat(X?[[X[1]==='Eier'?'Eier':X[1],X[3],X[4]]]:[],T.map(t=>[t[11]||t[1],t[3],t[4]]),D?D.i.map(x=>x.slice()):[]);
+  r.st=[B[10]].concat(X?[X[10]]:[],T.length?['Toppings vorbereiten: '+T.map(t=>t[10]).join('; ')+'.']:[],D?[D.st]:[],['Basis in eine Schale geben, Toppings nebeneinander darauf anrichten'+(X?', '+X[1]+' in die Mitte setzen':'')+(D?' und mit dem Dressing beträufeln':'')+'.']);
+  const [k,p,kh,f]=bxNut(st);Object.assign(r,{k,p,kh,f,m:Math.max(B[11],X?15:0)+8,s:[B[1]].concat(T.slice(0,3).map(t=>t[1]),X?[X[1]]:[]).join(', '),img:bxUrl(st)})}
+Phone.prototype.vBxDetail=function(r,btn,eb){const s=this.s,st=bxSt(s),prev=this.bxPrev||st;this.bxPrev=JSON.parse(JSON.stringify(st));
+  const tab=['b','t','x','d'].includes(s.bxTab)?s.bxTab:'b',[k,p,kh,f]=bxNut(st),has=!!st.b;
+  const TABS=[['b','Basis',st.b?bxF(BX_BASE,st.b)[1]:'wählen'],['t','Toppings',`${st.t.length}/${BX_MAX}`],['x','Extra',st.x?bxF(BX_X,st.x)[1]:'optional'],['d','Dressing',st.d?DRESS.find(x=>x.id===st.d).n:'optional']];
+  const chip=(id,n,e,on,act,sub,dis)=>`<button class="bxo ${on?'on':''} ${dis?'dis':''}" data-a="${act}" data-v="${id}" aria-pressed="${on}"><span class="fdo-c">${e}${on?`<i>${ic('check')}</i>`:''}</span><b>${n}</b>${sub?`<small>${sub}</small>`:''}</button>`;
+  const grid=tab==='b'?BX_BASE.map(x=>chip(x[0],x[1],x[2],st.b===x[0],'bxb',x[5]+' kcal')).join('')
+   :tab==='t'?BX_TOP.map(x=>chip(x[0],x[1],x[2],st.t.includes(x[0]),'bxt',x[5]+' kcal',!st.t.includes(x[0])&&st.t.length>=BX_MAX)).join('')
+   :tab==='x'?BX_X.map(x=>chip(x[0],x[1],x[2],st.x===x[0],'bxx','+'+x[6]+' g Eiweiß')).join('')
+   :DRESS.map(x=>chip(x.id,x.n,x.e,st.d===x.id,'bxd',BX_DK[x.id][0]+' kcal')).join('');
+  const hint={b:'Die Basis macht satt und liefert Kohlenhydrate. Wähle eine.',t:`Bis zu ${BX_MAX} Toppings – bunt gemischt schmeckt's am besten.`,x:'Fleisch, Fisch oder Tofu als Extra-Portion Eiweiß. Nochmal tippen = entfernen.',d:'Das Dressing bringt alles zusammen.'}[tab];
+  const nx={b:['t','Weiter zu den Toppings'],t:['x','Weiter zum Extra'],x:['d','Weiter zum Dressing']}[tab];
+  return `<div class="view det rz bxv" style="padding-bottom:130px"><div class="z">
+   <div style="height:58px"></div>
+   <div class="eb">${eb}</div>
+   <h1 class="ap-h1 rz-t">Deine Bowl.</h1>
+   <p class="rz-sub">Stell sie dir selbst zusammen: erst die Basis, dann Toppings, Extra-Protein und Dressing.</p>
+   <div class="bx-st">${bxSVG(st,prev,true)}</div>
+   <div class="bx-mac">${[[k,'kcal'],[p+' g','Eiweiß'],[kh+' g','Kohlenh.'],[f+' g','Fett']].map(([v,l])=>`<span><b>${has?v:'–'}</b>${l}</span>`).join('')}</div>
+   <div class="bx-tabs">${TABS.map(([id,n,sub],j)=>`<button class="${tab===id?'on':''} ${!has&&j>0?'lock':''}" data-a="bxtab" data-v="${id}"><em>${!has&&j>0?ic('lock'):j+1}</em><b>${n}</b><small>${sub}</small></button>`).join('')}</div>
+   <p class="bx-hint">${hint}</p>
+   <div class="bx-grid">${grid}</div>
+   ${nx&&has?`<button class="obtn bx-next" data-a="bxtab" data-v="${nx[0]}">${nx[1]}${ic('right')}</button>`:''}
+   ${has?`<div class="rz-h"><h2>Zutaten</h2><div class="stepper"><button data-a="pers" data-v="-1" aria-label="Weniger Personen">${ic('minus')}</button>${s.persons} Pers.<button data-a="pers" data-v="1" aria-label="Mehr Personen">${ic('plus')}</button></div></div>
+   <div class="rz-ing">${fdIngList(r.i,s)}</div>
+   <div class="eb rz-eb2">Zubereitung</div>
+   <h2 class="ap-h1 rz-t2">So gelingt's. <span>In ${r.m} Minuten.</span></h2>
+   <div class="bx-steps">${r.st.map((t,j)=>`<div><span>${j+1}</span><p>${t}</p></div>`).join('')}</div>
+   <button class="bx-reset" data-a="bxreset">Neu zusammenstellen</button>`:''}
+  </div></div>
+  <div class="swipehint"></div>
+  <div class="det-top"><button class="iconbtn" data-a="back" aria-label="Zurück">${ic('left')}</button></div>
+  <div class="fade-bottom"></div><div class="bottom-cta ${has?'':'bx-off'}">${has?btn:`<button class="gbtn" data-a="bxtab" data-v="b" disabled>Erst Basis wählen</button>`}</div>`};
+Object.assign(P,{lock:'<rect x="5.5" y="10.5" width="13" height="9.5" rx="2.4"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/>'});
+if(RM.b11)bxApply(RM.b11,BX_EX);
 /* V146: Sammlungen nur zur Ordnung im Hintergrund (nicht in der Oberfläche) – für spätere Erweiterungen.
    abnehmen-gesund = Hauptgerichte ohne Bowls, Unterkategorie „abendessen“ = Abendessen; bowls = alle Bowls; fruehstueck-trend = alle Frühstücke.
    Neue Rezepte bekommen bei Bedarf ein eigenes Feld col/sub, sonst gilt diese Regel. */
@@ -3122,13 +3263,14 @@ Phone.prototype.reset=function(init){
       if(Array.isArray(d.fstd))s.fstd=Array.from({length:7},(_,j)=>d.fstd[j]||null);
       if(d.fdSel&&typeof d.fdSel==='object'){s.fdSel=d.fdSel;Object.entries(d.fdSel).forEach(([id,sl])=>{const r=RM[id];if(r&&r.fd)fdApply(r,fdSel(s,r))})}
       if(d.bdr&&typeof d.bdr==='object'){s.bdr=d.bdr;Object.entries(d.bdr).forEach(([id,v])=>{if(RM[id])bowlApply(RM[id],v)})}
+      if(d.bx&&typeof d.bx==='object'){s.bx=d.bx;const st=bxSt(s);if(st.b)bxApply(RM.b11,st)}
       if(d.fitSeen)s.fitSeen=true;if(d.voice)s.voice=d.voice;if(d.fitAI&&d.fitAI.res)s.fitAI=d.fitAI;if(d.faiC)s.faiC=true;}}
   this.s=s;this.lastScreen=null;this.render();
 };
 Phone.prototype.save=function(){if(!this.opts.persist)return;const s=this.s;const plan={};Object.keys(s.plan).forEach(i=>plan[isoOf(+i)]=s.plan[i]);
   data.save({plan,shop:s.shop,favs:[...s.favs],persons:s.persons,done:s.done,doneD:isoOf(TODAY),learn:s.learn,stock:s.stock,
     extra:Object.fromEntries(Object.entries(s.extra).map(([i,v])=>[isoOf(+i),v])),
-    train:Object.fromEntries(Object.entries(s.train).map(([i,v])=>[isoOf(+i),v])),tx:Object.fromEntries(Object.entries(s.tx).filter(([iso])=>{const i=idxOf(iso);return i<0||i>=NDAYS})),trainV:155,fstd:s.fstd,prof:s.prof,fitSeen:s.fitSeen,fdSel:s.fdSel,bdr:s.bdr,voice:s.voice,fitAI:s.fitAI&&s.fitAI.res?s.fitAI:null,faiC:!!s.faiC})};
+    train:Object.fromEntries(Object.entries(s.train).map(([i,v])=>[isoOf(+i),v])),tx:Object.fromEntries(Object.entries(s.tx).filter(([iso])=>{const i=idxOf(iso);return i<0||i>=NDAYS})),trainV:155,fstd:s.fstd,prof:s.prof,fitSeen:s.fitSeen,fdSel:s.fdSel,bdr:s.bdr,bx:s.bx||null,voice:s.voice,fitAI:s.fitAI&&s.fitAI.res?s.fitAI:null,faiC:!!s.faiC})};
 Phone.prototype.list=function(){const s=this.s;return R.filter(r=>(s.cat==='all'||r.c.includes(s.cat))&&(!s.en||enOf(r)===s.en))};
 Phone.prototype.toast=function(t,btn,act){const old=this.scr.querySelector('.toast');if(old)old.remove();const d=document.createElement('div');d.className='toast'+(btn?' act':'');d.innerHTML=`<span></span>${btn?`<button data-a="${act}">${btn}</button>`:''}`;d.firstChild.textContent=t;this.scr.appendChild(d);setTimeout(()=>d.remove(),btn?4600:2500)};
 Phone.prototype.backAfterPlan=function(d){if(wkOf(d)===0)return this.goPlanToday();const s=this.s;s.screen='plan';s.wk=1;s.sel=7;s.edit=false;s.pick=-1}; /* nächste Woche: dort bleiben (Montag) */
@@ -3207,6 +3349,7 @@ const DECKS=[
   ['🧭','Vorziehen ist der Profi-Trick','Jus, Fonds und Schmorgerichte brauchen viel Zeit, aber wenig Arbeit. Starte sie zuerst; Kartoffeln oder Sellerie kochen nebenbei. Das Fleisch kommt zum Schluss, damit es auf den Punkt gart und ruhen kann.','Eine Jus kannst du schon am Vortag kochen und am Abend nur noch aufwärmen und mit Butter montieren.'],
   ['👨‍🍳','„Jetzt kochen“: Schritt für Schritt','Erst „Jetzt kochen“ öffnet die Zubereitung: ein Schritt pro Seite, oben die Timeline mit deiner Position, darunter was gerade nebenbei läuft und was als Nächstes kommt.','Vor dem Start einmal alle Bausteine durchlesen und alles bereitstellen – Mise en place ist die halbe Miete.'],
   ['🥗','Auch bei Bowls: Dressing wählen','Bei jeder Bowl kannst du das Dressing tauschen: Zitronen-Vinaigrette, Honig-Senf, Sesam-Ingwer, Erdnuss-Limette, Joghurt-Kräuter oder Tahini-Zitrone. Zutaten und der Dressing-Schritt ändern sich automatisch; „Original“ stellt das ursprüngliche Rezept wieder her.','Faustregel für Vinaigrettes: 3 Teile Öl, 1 Teil Säure, dazu etwas Senf und Honig.'],
+  ['🥣','Bowl nach Wahl: dein Baukasten','Unter Bowls findest du „Bowl nach Wahl“. Erst die Basis wählen – Quinoa, Reis, Hirse, Couscous und mehr –, dann bis zu 5 Toppings, optional Fleisch, Fisch oder Tofu als Extra und zum Schluss das Dressing. Die Bowl füllt sich dabei sichtbar, Nährwerte, Zutaten und Schritte rechnen mit.','Bunt kombinieren: etwas Süßes (Mango), etwas Saures (eingelegte Zwiebel), etwas Knackiges (Edamame, Gurke) und etwas Cremiges (Avocado).'],
   ['🌸','Anrichten wie im Restaurant','Großer, heller und vorgewärmter Teller. Komponenten leicht versetzt setzen, die Sauce als Spiegel daneben statt darüber. Etwas Grün oder essbare Blüten geben Höhe und Farbe.','Weniger ist mehr: freie Fläche auf dem Teller wirkt edel.']]},
  {id:'sauce',t:'Die perfekte Sauce',e:'🥄',c:['#F6D9C9','#E9A98F'],cards:[
   ['⚖️','Das Geheimnis: Balance','Eine gute Sauce balanciert fünf Dinge: Fett, Säure, Salz, Süße und Umami. Schmeckt etwas „flach“, fehlt meist Säure oder Salz – nicht noch mehr Gewürz.','Ein Spritzer Zitrone oder Essig am Ende weckt jede Sauce auf.'],
@@ -3296,12 +3439,12 @@ Phone.prototype.vLearn=function(){const s=this.s;const L=s.learn||{};
   const nxt=DECKS.find(d=>pr(d)>0&&pr(d)<d.cards.length)||DECKS.find(d=>pr(d)===0)||DECKS[0],rest=DECKS.filter(d=>d!==nxt);
   const ring=(v,n)=>{const C=2*Math.PI*15;return `<svg viewBox="0 0 36 36" width="46" height="46" aria-hidden="true"><circle cx="18" cy="18" r="15" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="3"/><circle cx="18" cy="18" r="15" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-dasharray="${(C*v/n).toFixed(1)} ${C.toFixed(1)}" transform="rotate(-90 18 18)"/></svg>`};
   /* Drei Größen wie auf apple.com: big (volle Breite, 16:9), half (zwei nebeneinander, quadratisch), row (Bild links, Text rechts) */
-  const story=(d,ty)=>{const n=d.cards.length,v=pr(d),S=LSTORY[d.id]||[d.t,d.sub||''],img=S[2]&&S[2](),r=S[3]&&RM[S[3]];
-    return `<button class="ls ${ty} rv" data-a="deck" data-v="${d.id}"><span class="ls-im ${img?'':'pl'}">${img?`<img src="${img}" alt="" decoding="async">`:r?plate(r,ty==='big'?250:ty==='half'?150:120):`<span class="ls-e">${d.e}</span>`}${d===nxt?`<i class="ls-tag">${v?'Weiterlernen':'Jetzt starten'}</i>`:''}</span>
+  const story=(d,ty)=>{const n=d.cards.length,v=pr(d),S=LSTORY[d.id]||[d.t,d.sub||''],img=S[2]&&S[2](),r=S[3]&&RM[S[3]],fit=r&&(r.fd||r.bx);
+    return `<button class="ls ${ty} rv" data-a="deck" data-v="${d.id}"><span class="ls-im ${img?'':'pl'}${fit?' fit':''}">${img?`<img src="${img}" alt="" decoding="async">`:r?plate(r,fit?(ty==='big'?168:ty==='half'?130:100):ty==='big'?250:ty==='half'?150:120):`<span class="ls-e">${d.e}</span>`}${d===nxt?`<i class="ls-tag">${v?'Weiterlernen':'Jetzt starten'}</i>`:''}</span>
      <span class="ls-tx"><small>${d.t}</small><b>${S[0]}</b>${ty==='half'?'':`<span class="ls-s">${S[1]}</span>`}
      <span class="ls-f"><em>${v>=n?'Wiederholen':v?'Weiter':'Starten'}${ic('right')}</em><span>${ty==='big'?`${n} Lektionen · ca. ${Math.max(2,Math.round(n*.6))} Min`:`${n} Lektionen`}${v&&v<n?` · ${v}/${n}`:v>=n?' · fertig':''}</span></span>
      ${v?`<span class="ls-bar"><i style="width:${v/n*100}%"></i></span>`:''}</span></button>`};
-  const LAY=[['fine','big'],['french','big'],['sauce','half'],['dress','half'],['knife','row'],['prep','big'],['heat','half'],['spice','half'],['peppy','row']];
+  const LAY=[['french','big'],['fine','big'],['sauce','half'],['dress','half'],['knife','row'],['prep','big'],['heat','half'],['spice','half'],['peppy','row']];
   return `<div class="view lrnv"><div class="z">
    <div class="top-row"></div>
    <div class="eb">Lerncenter · ${seen}/${tot} Lektionen</div>
@@ -4392,7 +4535,7 @@ function fitLocal(s,w){const D=Array.from({length:7},(_,j)=>w*7+j),T=i=>s.train[
     D.filter(i=>i>=TODAY&&T(i)&&(T(i).k||(T(i).s&&(T(i).s.lv||2)===3))&&!(s.extra[i]||{}).b).slice(0,2).forEach(i=>{const r=bf.find(r=>!usedX.has(r.id));if(r){usedX.add(r.id);ex.push({d:i,m:'b',id:r.id})}});
     if(sw.length||ex.length)tips.unshift('Unten steht ein Vorschlag: Gerichte der kommenden Tage tauschen oder ein Frühstück ergänzen.')}
   else{ /* nächste Woche: Vorschlag für die ganze Woche */
-    const used=new Set();D.forEach(i=>{const sc=fitScore(T(i))||lightSc;const r=R.filter(r=>!used.has(r.id)&&!r.fd).sort((a,b)=>sc(b)-sc(a))[0];if(r){used.add(r.id);if(s.plan[i]!==r.id)sw.push({d:i,id:r.id})}});
+    const used=new Set();D.forEach(i=>{const sc=fitScore(T(i))||lightSc;const r=R.filter(r=>!used.has(r.id)&&!r.fd&&!r.bx).sort((a,b)=>sc(b)-sc(a))[0];if(r){used.add(r.id);if(s.plan[i]!==r.id)sw.push({d:i,id:r.id})}});
     if(sw.length)tips.unshift('Unten steht ein Vorschlag für die ganze Woche, passend zu deinem Training.')}
   res.push({t:'Empfehlung',x:tips.join(' ')});res.sw=sw;res.ex=ex;return res}
 Phone.prototype.fitAnalyze=async function(){const s=this.s,w=s.fwk||0,sig=fitSig(s,w);if(s.fitAI&&s.fitAI.step==='think')return;
@@ -4727,6 +4870,7 @@ Phone.prototype.vDetail=function(){const s=this.s;const r=RM[s.did];const cat=CA
   if(xk){const xd=s.sel,is=(s.extra[xd]||{})[xk]===r.id;btn=is?`<button class="gbtn done" data-a="back">${ic('check')}Als ${XM[xk][0]} eingetragen</button>`:`<button class="gbtn" data-a="explan" data-id="${r.id}">${ic('plus')}${XM[xk][0]} für ${xd===TODAY?'heute':dn(xd)}</button>`}
   const eb=xk?XM[xk][0]:d!==null&&d!==undefined?(d===TODAY?'Heute · ':'')+dn(d)+' · '+dm(d):'Rezept · '+r.c.map(c=>CATNAME[c][0]).join(' · ');
   if(r.fd)return this.vFdDetail(r,btn,eb,E);
+  if(r.bx)return this.vBxDetail(r,btn,eb);
   return `<div class="view det rz" style="padding-bottom:120px"><div class="z">
    <div style="height:58px"></div>
    <div class="eb">${eb}</div>
@@ -5290,7 +5434,7 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
    case 'skip':{const d=s.sel;s.plan[d]=OUT;this.pop=d!==TODAY;this.backAfterPlan(d);this.anim='inF';this.render();this.toast(`${dn(d)}: auswärts essen`);break}
    case 'unskip':delete s.plan[s.sel];s.edit=false;s.pick=-1;this.anim='inF';this.render();break;
    case 'randweek':{this.prevPlan=Object.assign({},s.plan);const used=new Set(Object.values(s.plan));let filled=0,fitted=0;
-      for(let i=(s.wk||0)*7;i<(s.wk||0)*7+7;i++){if(s.plan[i])continue;const pool=R.filter(r=>!used.has(r.id)&&!r.fd);if(!pool.length)break;
+      for(let i=(s.wk||0)*7;i<(s.wk||0)*7+7;i++){if(s.plan[i])continue;const pool=R.filter(r=>!used.has(r.id)&&!r.fd&&!r.bx);if(!pool.length)break;
         const f=fitScore(s.train[i]);let r;
         if(f){const top=pool.slice().sort((a,b)=>f(b)-f(a)).slice(0,6);r=top[Math.floor(Math.random()*top.length)];fitted++}else r=pool[Math.floor(Math.random()*pool.length)];
         s.plan[i]=r.id;used.add(r.id);filled++}
@@ -5357,6 +5501,13 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
    case 'fdisc':s.sheet='fdisc';haptic();this.render();break;
    case 'ftph':s.ftPh=v;haptic();this.render();break;
    case 'fdtab':s.fdTab=v;haptic();this.render();break;
+   case 'bxtab':{const st=bxSt(s);if(!st.b&&v!=='b'){this.toast('Wähle zuerst eine Basis');break}s.bxTab=v;haptic();this.render();break}
+   case 'bxb':case 'bxt':case 'bxx':case 'bxd':{const st=bxSt(s);if(a!=='bxb'&&!st.b){this.toast('Wähle zuerst eine Basis');break}
+     if(a==='bxb'){const first=!st.b;st.b=v;if(first)s.bxTab='t'}
+     else if(a==='bxt'){const i=st.t.indexOf(v);if(i>=0)st.t.splice(i,1);else if(st.t.length>=BX_MAX){this.toast(`Höchstens ${BX_MAX} Toppings`);break}else st.t.push(v)}
+     else if(a==='bxx')st.x=st.x===v?null:v;else st.d=st.d===v?null:v;
+     s.bx=st;bxApply(RM.b11,st);haptic();this.render();break}
+   case 'bxreset':s.bx=null;s.bxTab='b';this.bxPrev=null;bxApply(RM.b11,BX_EX);haptic();this.render();{const v0=this.scr.querySelector('.view');if(v0)v0.scrollTop=0}break;
    case 'fdopt':{const r=RM[s.did];if(!r||!r.fd)break;s.fdSel=s.fdSel||{};const sl=fdSel(s,r);sl[t.dataset.k]=v;s.fdSel[r.id]=sl;fdApply(r,sl);if(s.shop&&s.shop.length&&Object.values(s.plan).includes(r.id))this.rebuildShop&&this.rebuildShop();haptic();this.render();break}
    case 'fdcook':s.fdStep=0;s.screen='fdcook';haptic();this.render();{const v0=this.scr.querySelector('.view');if(v0)v0.scrollTop=0}break;
    case 'fdstep':{const r=RM[s.did];const n=fdSteps(r,fdSel(s,r)).length;s.fdStep=Math.max(0,Math.min(n,(s.fdStep||0)+(+v)));haptic();this.render();break}
@@ -5443,7 +5594,7 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
    case 'fxrm':this.prevTrain=JSON.stringify([s.train,s.tx]);delete s.tx[s.fxiso];s.sheet=null;haptic();this.render();this.toast('Entfernt','Rückgängig','fundo');break;
    case 'fundo':if(this.prevTrain){const [a,b]=JSON.parse(this.prevTrain);s.train=a;s.tx=b;this.prevTrain=null;this.render();this.toast('Rückgängig gemacht')}break;
    case 'fitfill':{const w=s.fwk||0;this.prevPlan=Object.assign({},s.plan);const used=new Set(Object.values(s.plan));let n=0;
-      for(let i=w*7;i<w*7+7;i++){if(s.plan[i]||i<TODAY)continue;const pool=R.filter(r=>!used.has(r.id)&&!r.fd);if(!pool.length)break;const f=fitScore(s.train[i]);
+      for(let i=w*7;i<w*7+7;i++){if(s.plan[i]||i<TODAY)continue;const pool=R.filter(r=>!used.has(r.id)&&!r.fd&&!r.bx);if(!pool.length)break;const f=fitScore(s.train[i]);
         const top=f?pool.slice().sort((a,b)=>f(b)-f(a)).slice(0,6):pool;const r=top[Math.floor(Math.random()*top.length)];s.plan[i]=r.id;used.add(r.id);n++}
       haptic();this.render();this.toast(n?`${n} freie Tage passend zum Training geplant`:'Keine freien Tage in dieser Woche',n?'Rückgängig':null,'undo');break}
    case 'nextvoice':if(KI&&KI.tts&&!this.noTts){s.sheet='voice';haptic();this.render();kiVoiceNames().then(()=>{if(s.sheet==='voice')this.render()});break}
