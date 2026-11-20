@@ -1935,6 +1935,88 @@ img,svg{-webkit-user-drag:none}
 .mobv .mk .mk-i{width:104px;height:78px}
 .mobv .mk .pose{width:78px!important;height:78px!important}
 .mobv .mk b{font-size:17px}
+/* V199: Fine Dining */
+.fd-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:4px 0 0}
+.fd-tabs button{border:0;border-radius:18px;padding:11px 10px 10px;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.06);display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;min-width:0;transition:background .2s,box-shadow .2s}
+.fd-tabs i{width:9px;height:9px;border-radius:50%;background:var(--c);margin-bottom:4px}
+.fd-tabs b{font-size:14px;font-weight:600;color:#1D1D1F}
+.fd-tabs small{font-size:11.5px;color:#86868B;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.fd-tabs button.on{background:color-mix(in srgb,var(--c) 11%,#fff);box-shadow:0 0 0 2px var(--c),0 12px 22px -16px var(--c)}
+.fd-tabs button.on small{color:color-mix(in srgb,var(--c) 75%,#000)}
+.fd-pane{margin-top:14px}
+.fd-pane.dr{margin:6px 0 18px}
+.fd-lbl{font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--a-eyebrow);margin:0 2px 10px}
+.fd-opts{display:flex;gap:10px;overflow-x:auto;margin:0 -16px 12px;padding:4px 16px 6px;scrollbar-width:none;scroll-snap-type:x proximity}
+.fd-opts::-webkit-scrollbar{display:none}
+.fdo{flex:none;width:88px;border:0;background:none;padding:0;display:flex;flex-direction:column;align-items:center;gap:5px;scroll-snap-align:start}
+.fdo-c{position:relative;width:72px;height:72px;border-radius:50%;display:grid;place-items:center;font-size:34px;background:radial-gradient(circle at 35% 30%,#fff,color-mix(in srgb,var(--c) 14%,#fff));box-shadow:0 0 0 1px color-mix(in srgb,var(--c) 22%,transparent),0 10px 18px -12px rgba(0,0,0,.35);transition:box-shadow .2s,transform .2s}
+.fdo.on .fdo-c{box-shadow:0 0 0 3px var(--c),0 12px 22px -12px var(--c);transform:scale(1.04)}
+.fdo-c i{position:absolute;right:-2px;top:-2px;width:22px;height:22px;border-radius:50%;background:var(--c);color:#fff;display:grid;place-items:center;box-shadow:0 0 0 2px #fff}
+.fdo-c i .ic{width:13px;height:13px;stroke-width:2.6}
+.fdo b{font-size:12.5px;font-weight:600;line-height:1.2;text-align:center;color:#1D1D1F}
+.fdo small{font-size:10.5px;color:#86868B;margin-top:-2px}
+.fd-card{background:#fff;border-radius:18px;padding:14px 16px;box-shadow:0 0 0 1px rgba(0,0,0,.05);border-left:4px solid var(--c)}
+.fd-card b{display:block;font-size:17px;font-weight:600;letter-spacing:-.015em;color:#1D1D1F}
+.fd-card p{margin:4px 0 8px;font-size:14px;line-height:1.42;color:#6E6E73}
+.fd-when{display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:600;color:color-mix(in srgb,var(--c) 80%,#000)}
+.fd-when .ic{width:14px;height:14px}
+.fd-pane .rz-ing{margin-top:6px}
+.tl{background:#fff;border-radius:20px;padding:14px 14px 8px;box-shadow:0 0 0 1px rgba(0,0,0,.05),0 14px 28px -24px rgba(60,40,30,.5)}
+.tl-r{display:grid;grid-template-columns:92px 1fr;align-items:center;height:28px}
+.tl-l{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:#3A3A3C}
+.tl-l i{width:8px;height:8px;border-radius:50%}
+.tl-t{position:relative;height:14px;border-radius:7px;background:#F2F2F4}
+.tl-t b{position:absolute;top:0;height:100%;border-radius:7px;background:var(--c)}
+.tl-t b.p{background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--c) 38%,#fff) 0 4px,color-mix(in srgb,var(--c) 22%,#fff) 4px 8px)}
+.tl-t b.on{box-shadow:0 0 0 2px #fff,0 0 0 4px var(--c);z-index:2}
+.tl-t b.dn{opacity:.35}
+.tl-nw{position:absolute;top:-5px;bottom:-5px;width:2px;margin-left:-1px;border-radius:2px;background:#1D1D1F;z-index:3}
+.tl-r.ax{height:22px}
+.tl-r.ax .tl-t{background:none;height:16px}
+.tl-r.ax .tl-t span{position:absolute;top:2px;transform:translateX(-50%);font-size:10.5px;color:#86868B;white-space:nowrap}
+.tl-r.ax .tl-t span:first-child{transform:none}
+.tl-r.ax .tl-t span.end{transform:translateX(-100%);color:#1D1D1F;font-weight:600}
+.tl.mini{padding:10px 12px 4px;margin:12px 0 0}
+.tl.mini .tl-r{height:21px;grid-template-columns:90px 1fr}
+.tl.mini .tl-l{font-size:11.5px}
+.tl.mini .tl-t{height:9px}
+.tl.mini .tl-r.ax{height:18px}
+.tl-k{display:flex;gap:16px;justify-content:center;margin:9px 0 0;font-size:11.5px;color:#86868B}
+.tl-k span{display:flex;align-items:center;gap:6px}
+.tl-k i{width:18px;height:8px;border-radius:4px;background:#8E3B32}
+.tl-k .p i{background:repeating-linear-gradient(135deg,#E0C4BF 0 3px,#EFDDDA 3px 6px)}
+.fd-note{margin:14px 4px 0;font-size:13px;color:#86868B;text-align:center}
+.bottom-cta.fd2{display:flex;gap:8px}
+/* Koch-Modus */
+.fdc{padding-bottom:120px}
+.fdc-top{display:flex;align-items:center;gap:12px;margin-top:52px}
+.fdc-top span{display:flex;flex-direction:column;min-width:0}
+.fdc-top small{font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--a-eyebrow)}
+.fdc-top b{font-size:17px;font-weight:600;letter-spacing:-.015em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fdc-seg{display:flex;gap:3px;margin:16px 0 0}
+.fdc-seg i{flex:1;height:4px;border-radius:2px;background:#E5E5EA}
+.fdc-seg i.dn{background:color-mix(in srgb,var(--c) 45%,#fff)}
+.fdc-seg i.on{background:var(--c)}
+.fdc-card{margin-top:14px;background:#fff;border-radius:24px;padding:18px 18px 16px;box-shadow:0 0 0 1px rgba(0,0,0,.05),0 20px 36px -26px rgba(60,40,30,.55);border-top:5px solid var(--c)}
+.fdc-chip{display:inline-flex;align-items:center;gap:7px;padding:5px 11px;border-radius:999px;background:color-mix(in srgb,var(--c) 12%,#fff);color:color-mix(in srgb,var(--c) 80%,#000);font-size:12.5px;font-weight:600}
+.fdc-chip i{width:8px;height:8px;border-radius:50%;background:var(--c)}
+.fdc-when{margin-top:10px;font-size:13px;color:#86868B}
+.fdc-when em{font-style:normal;font-weight:600;color:color-mix(in srgb,var(--c) 80%,#000)}
+.fdc-t{margin:8px 0 0;font-size:21px;line-height:1.36;letter-spacing:-.015em;color:#1D1D1F}
+.fdc-i{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.fdc-i span{display:inline-flex;align-items:center;gap:5px;padding:6px 10px;border-radius:12px;background:#F5F5F7;font-size:13px}
+.fdc-i b{font-weight:600}
+.fdc-run{margin-top:10px;padding:12px 14px;border-radius:18px;background:rgba(255,255,255,.7);box-shadow:0 0 0 1px rgba(0,0,0,.05);display:flex;flex-direction:column;gap:6px}
+.fdc-run>b,.fdc-next small{font-size:11.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#86868B}
+.fdc-run span,.fdc-next span{display:flex;align-items:flex-start;gap:8px;font-size:14px;line-height:1.4;color:#3A3A3C}
+.fdc-run i,.fdc-next i{flex:none;width:8px;height:8px;border-radius:50%;background:var(--c);margin-top:6px}
+.fdc-next{margin-top:10px;padding:12px 14px;border-radius:18px;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.05);display:flex;flex-direction:column;gap:6px}
+.fdc-card.fin{text-align:center;border-top-color:#6E2444}
+.fdc-card.fin .fdc-e{font-size:46px}
+.fdc-card.fin h3{margin:6px 0 4px;font-size:22px}
+.fdc-card.fin p{margin:0 0 16px;color:#6E6E73;line-height:1.45}
+.fdc-nav{display:flex;gap:8px}
+.fdc-nav .obtn[disabled]{opacity:.4}
 .fthero b{color:#fff!important}
 .fthero+.wo-list{margin-top:10px}
 .phw-d em{overflow-wrap:normal!important}
@@ -2414,8 +2496,8 @@ const isoOf=i=>{const d=dayDate(i);return d.getFullYear()+'-'+String(d.getMonth(
 const idxOf=iso=>{const [y,m,d]=iso.split('-').map(Number);return Math.round((new Date(y,m-1,d)-BASE)/864e5)};
 function isoWeek(d){const t=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));const n=t.getUTCDay()||7;t.setUTCDate(t.getUTCDate()+4-n);const y0=new Date(Date.UTC(t.getUTCFullYear(),0,1));return Math.ceil(((t-y0)/864e5+1)/7)}
 const OUT='out';
-const CATS=[['all','Alle','grid'],['fisch','Fisch','fish'],['fleisch','Fleisch','meat'],['veggie','Vegetarisch','leaf'],['bowl','Bowl','bowl'],['suppe','Suppe','soup']];
-const CATNAME={fisch:['Fisch','fish'],fleisch:['Fleisch','meat'],veggie:['Vegetarisch','leaf'],bowl:['Bowl','bowl'],suppe:['Suppe','soup']};
+const CATS=[['all','Alle','grid'],['fine','Fine Dining','chef'],['fisch','Fisch','fish'],['fleisch','Fleisch','meat'],['veggie','Vegetarisch','leaf'],['bowl','Bowl','bowl'],['suppe','Suppe','soup']];
+const CATNAME={fine:['Fine Dining','chef'],fisch:['Fisch','fish'],fleisch:['Fleisch','meat'],veggie:['Vegetarisch','leaf'],bowl:['Bowl','bowl'],suppe:['Suppe','soup']};
 const EN={low:['Leicht','leaf','#1FAE7A','#E3F6EE','unter 1,5 kcal/g','Viel Volumen, wenig Kalorien. Macht lange satt.'],
           mid:['Ausgewogen','half','#E59A2C','#FDF1DE','1,5 – 2,5 kcal/g','Gute Alltagsgerichte mit normaler Energiemenge.'],
           high:['Energiereich','flame','#F0645A','#FDE6E4','über 2,5 kcal/g','Viel Energie auf kleinem Raum, gut für Trainingstage.']};
@@ -2490,6 +2572,7 @@ const IMG_RX_F15='img/img_rx_f15-da17f00c.webp';
 const IMG_RX_F16='img/img_rx_f16-8d41f7ba.webp';
 const IMG_RX_F17='img/img_rx_f17-dd81f70d.webp';
 const IMG_RX_F18='img/img_rx_f18-844ff2e2.webp';
+const IMG_FD01='img/img_fd01-10e1dc55.webp';
 const R=[
  {id:"m01",n:"Rindersteak mit Gemüse und Süßkartoffel",s:"Süßkartoffel, Karotte, Erbsen, Salat",c:["fleisch"],m:35,k:530,p:55,kh:47,f:18,g:505,e:"🥩",t:["#FBE6DA", "#EBB79A"],img:STEAK_IMG,
   i:[["Rindersteak", 1, "Stk"], ["Süßkartoffel (klein)", 1, "Stk"], ["Karotte", 1, "Stk"], ["Erbsen", 1, "Handvoll"], ["Blattsalat", 1, "Handvoll"], ["Olivenöl", 1, "TL"], ["Salz", 0, ""], ["Pfeffer", 0, ""], ["Rosmarin", 0, ""]],
@@ -2610,7 +2693,9 @@ const R=[
   st:["Kürbis würfeln und Zwiebel klein schneiden.", "Zwiebel in Öl anschwitzen.", "Kürbis, Linsen und Brühe hinzufügen.", "Etwa 20 Minuten köcheln lassen.", "Suppe pürieren, würzen und mit Joghurt servieren."]},
  {id:"m37",n:"Linsensuppe mit Reis",s:"Linsen, Basmatireis, Karotte, Kreuzkümmel",c:["veggie", "suppe"],m:35,k:460,p:20,kh:82,f:7,g:795,e:"🍛",t:["#F8EBDA", "#E2C094"],img:IMG_N37,
   i:[["Linsen (trocken)", 60, "g"], ["Basmatireis (trocken)", 40, "g"], ["Karotte", 1, "Stk"], ["Zwiebel", 0.5, "Stk"], ["Gemüsebrühe", 400, "ml"], ["Olivenöl", 1, "TL"], ["Salz", 0, ""], ["Pfeffer", 0, ""], ["Kreuzkümmel", 0, ""]],
-  st:["Reis separat gar kochen.", "Karotte würfeln und Zwiebel klein schneiden.", "Zwiebel in Öl anschwitzen.", "Linsen, Karotte und Brühe dazugeben und etwa 20–25 Minuten köcheln lassen.", "Reis unterheben und mit Salz, Pfeffer und Kreuzkümmel abschmecken."]}
+  st:["Reis separat gar kochen.", "Karotte würfeln und Zwiebel klein schneiden.", "Zwiebel in Öl anschwitzen.", "Linsen, Karotte und Brühe dazugeben und etwa 20–25 Minuten köcheln lassen.", "Reis unterheben und mit Salz, Pfeffer und Kreuzkümmel abschmecken."]},
+ {id:"fd01",n:"Rinderfilet mit Selleriepüree und Rotwein-Jus",s:"Rinderfilet, Selleriepüree, glasiertes Gemüse, Rotwein-Jus",d:"Ein Restaurant-Teller für zu Hause: rosa Filet, seidiges Püree und eine glänzende Jus. Beilage und Sauce kannst du tauschen.",c:["fine","fleisch"],m:150,k:720,p:48,kh:28,f:44,g:520,e:"🥩",t:["#F3ECE6","#D8C4B2"],img:IMG_FD01,i:[],st:[],
+  tip:"Die Jus kannst du schon am Vortag kochen. Dann bleiben am Kochtag nur Püree, Gemüse und Fleisch – gut 1:30 h."},
 ];
 
 /* ===== Frühstück (meal:'b') und Abendessen (meal:'d'): eigene Rezepte, getrennt von den Hauptgerichten R ===== */
@@ -2677,6 +2762,144 @@ const RX=[
   st:["Ei 8 Minuten hart kochen und halbieren.","Radieschen und Gurke in Scheiben schneiden.","Brot mit Butter bestreichen.","Alles mit dem Käse auf einem Teller anrichten und mit Kresse und Salz bestreuen."]}
 ];
 const RM=Object.fromEntries(R.concat(RX).map(r=>[r.id,r]));
+/* ===== V199: Fine Dining – Bausteine (Hauptzutat, Beilage, Sauce) mit Auswahl, Ablauf-Timeline und Koch-Modus; Dressing-Wahl bei Bowls ===== */
+const FD_COMP={main:['Hauptzutat','#8E3B32'],side:['Beilage','#C9932E'],sauce:['Sauce','#6E4A9E']};
+/* Schritte: [Start in Minuten vor dem Servieren (negativ), Dauer in Minuten, Text, 1 = läuft nebenbei] */
+const FDDATA={
+ fd01:{comps:[
+  {k:'main',opts:[{id:'filet',n:'Rinderfilet rosa',e:'🥩',d:'Bei Niedrigtemperatur im Ofen gegart, vorher scharf angebraten – gleichmäßig rosa bis an den Rand.',
+   i:[['Rinderfilet (Mittelstück)',180,'g'],['Butterschmalz',1,'EL'],['Butter',15,'g'],['Thymian',2,'Zweige'],['Knoblauch',1,'Zehe'],['Fleur de Sel',0,''],['Pfeffer (grob)',0,'']],
+   st:[[-95,5,'Filet aus dem Kühlschrank nehmen, Sehnen und Silberhaut entfernen, trocken tupfen und Raumtemperatur annehmen lassen.'],
+       [-35,7,'Ofen auf 120 °C Ober-/Unterhitze vorheizen. Filet salzen und in Butterschmalz rundum je 1 Minute scharf anbraten.'],
+       [-28,18,'Filet auf einem Gitter in den Ofen schieben, bis zu 54 °C Kerntemperatur garen (rosa).',1],
+       [-10,7,'Herausnehmen, mit Butter, Thymian und angedrücktem Knoblauch kurz nachbraten und ruhen lassen.',1],
+       [-3,3,'In zwei dicke Tranchen schneiden und mit grobem Pfeffer und Fleur de Sel würzen.']]}]},
+  {k:'side',opts:[
+   {id:'sellerie',n:'Selleriepüree & Gemüse',e:'🥕',d:'Seidiges Selleriepüree mit glasierten Mini-Karotten, Perlzwiebeln und gerösteter Zucchini.',
+    i:[['Knollensellerie',200,'g'],['Milch',100,'ml'],['Butter',20,'g'],['Mini-Karotten',4,'Stk'],['Perlzwiebeln',4,'Stk'],['Zucchini',0.5,'Stk'],['Kräuter & essbare Blüten',1,'Handvoll'],['Zucker',0,''],['Muskat',0,'']],
+    st:[[-70,10,'Sellerie schälen und würfeln; Karotten, Perlzwiebeln und Zucchini putzen.'],
+        [-60,30,'Sellerie in Milch mit etwas Wasser und Salz weich köcheln.',1],
+        [-30,6,'Sellerie abgießen, mit Butter sehr fein pürieren, mit Salz und Muskat abschmecken, warm halten.'],
+        [-24,14,'Karotten und Perlzwiebeln in Butter mit einer Prise Zucker und einem Schuss Wasser glasieren.',1],
+        [-12,6,'Zucchini in dicke Scheiben schneiden und in der Grillpfanne kräftig rösten.'],
+        [-2,2,'Püree als Nocke anrichten, Gemüse anlegen, mit Kräutern und Blüten garnieren.']]},
+   {id:'kartoffel',n:'Kartoffelpüree & Karotten',e:'🥔',d:'Klassisches Butter-Kartoffelpüree mit glasierten Karotten – schnell und sicher.',
+    i:[['Kartoffeln (mehligkochend)',220,'g'],['Milch',80,'ml'],['Butter',25,'g'],['Karotten',2,'Stk'],['Muskat',0,''],['Zucker',0,'']],
+    st:[[-55,10,'Kartoffeln schälen und vierteln, Karotten schälen und schräg schneiden.'],
+        [-45,22,'Kartoffeln in Salzwasser weich kochen.',1],
+        [-22,8,'Abgießen, kurz ausdampfen lassen und mit warmer Milch und Butter stampfen, mit Muskat abschmecken.'],
+        [-18,14,'Karotten in Butter mit einer Prise Zucker und etwas Wasser glasieren.',1],
+        [-2,2,'Püree und Karotten anrichten.']]},
+   {id:'gratin',n:'Kartoffelgratin',e:'🧀',d:'Cremiges Gratin aus dem Ofen – braucht Zeit, ist aber fast nur Warten.',
+    i:[['Kartoffeln (festkochend)',220,'g'],['Sahne',100,'ml'],['Knoblauch',1,'Zehe'],['Gruyère (gerieben)',25,'g'],['Muskat',0,'']],
+    st:[[-115,15,'Kartoffeln in dünne Scheiben hobeln; Sahne mit Knoblauch, Salz und Muskat aufkochen.'],
+        [-100,60,'Kartoffeln in eine Form schichten, mit Sahne übergießen, Käse darüber, bei 160 °C backen.',1],
+        [-40,35,'Gratin herausnehmen und ruhen lassen – so lässt es sich sauber schneiden.',1],
+        [-3,3,'In Rechtecke schneiden und anrichten.']]}]},
+  {k:'sauce',opts:[
+   {id:'jus',n:'Rotwein-Jus',e:'🍷',d:'Kräftig, glänzend, tief im Geschmack. Lange Reduktion – am besten als Erstes starten oder am Vortag kochen.',
+    i:[['Schalotten',2,'Stk'],['Tomatenmark',1,'TL'],['Rotwein',200,'ml'],['Rinderfond',300,'ml'],['Thymian',1,'Zweig'],['Butter (kalt)',20,'g']],
+    st:[[-150,10,'Schalotten fein schneiden und mit Tomatenmark in etwas Öl kräftig anrösten.'],
+        [-140,12,'Mit Rotwein in drei Etappen ablöschen und jeweils fast vollständig einkochen.'],
+        [-128,85,'Rinderfond und Thymian zugeben und langsam auf etwa ein Drittel reduzieren.',1],
+        [-42,5,'Durch ein feines Sieb passieren und warm halten.'],
+        [-5,3,'Kurz vor dem Servieren mit kalter Butter montieren und abschmecken.']]},
+   {id:'beurre',n:'Beurre blanc',e:'🧈',d:'Französische Buttersauce mit Weißwein und Schalotte – fein, säuerlich, frisch.',
+    i:[['Schalotte',1,'Stk'],['Weißwein',100,'ml'],['Weißweinessig',2,'EL'],['Butter (eiskalt)',80,'g']],
+    st:[[-25,5,'Schalotte sehr fein würfeln, Butter in Würfel schneiden und kalt stellen.'],
+        [-20,10,'Schalotte mit Weißwein und Essig fast vollständig einkochen.',1],
+        [-8,5,'Hitze reduzieren und die eiskalte Butter Würfel für Würfel einrühren – nicht mehr kochen.'],
+        [-3,2,'Salzen, nach Wunsch passieren und sofort servieren.']]},
+   {id:'safran',n:'Safransauce',e:'🌼',d:'Cremig und goldgelb mit feinem Safranaroma – passt auch wunderbar zu Fisch.',
+    i:[['Safranfäden',1,'Prise'],['Schalotte',1,'Stk'],['Weißwein',100,'ml'],['Gemüsefond',150,'ml'],['Sahne',100,'ml'],['Butter',10,'g']],
+    st:[[-32,5,'Safran in 2 EL warmem Wasser einweichen; Schalotte fein würfeln und in Butter glasig dünsten.'],
+        [-27,12,'Mit Weißwein ablöschen, einkochen, Fond zugeben und um die Hälfte reduzieren.',1],
+        [-15,9,'Sahne und Safran zugeben und sämig einkochen.',1],
+        [-3,2,'Abschmecken und mit dem Stabmixer kurz aufschäumen.']]}]}]}};
+const fdSel=(s,r)=>{const o=(s.fdSel&&s.fdSel[r.id])||{},R0={};r.fd.comps.forEach(c=>{R0[c.k]=c.opts.find(x=>x.id===o[c.k])?o[c.k]:c.opts[0].id});return R0};
+const fdOpt=(r,k,sel)=>{const c=r.fd.comps.find(x=>x.k===k);return c.opts.find(x=>x.id===sel[k])||c.opts[0]};
+const fdSteps=(r,sel)=>{const L=[];r.fd.comps.forEach((c,ci)=>{const o=fdOpt(r,c.k,sel);o.st.forEach(([a,d,t,p])=>L.push({k:c.k,ci,o,a,d,t,p:!!p}))});
+  return L.sort((x,y)=>x.a-y.a||x.ci-y.ci)};
+const fdHm=m=>{m=Math.round(Math.abs(m));return m<60?`${m} Min`:`${Math.floor(m/60)}:${String(m%60).padStart(2,'0')} h`};
+/* Gewählte Varianten in Zutaten, Schritte und Zeit des Rezepts übernehmen (Einkaufsliste, Vorlesen usw. arbeiten damit weiter) */
+function fdApply(r,sel){const S=fdSteps(r,sel);r.i=[];const seen={};
+  r.fd.comps.forEach(c=>fdOpt(r,c.k,sel).i.forEach(([n,q,u])=>{const k=n+'|'+u;if(seen[k]&&q){seen[k][1]+=q}else if(!seen[k]){seen[k]=[n,q,u];r.i.push(seen[k])}}));
+  r.st=S.map(x=>`${FD_COMP[x.k][0]}: ${x.t}`);r.m=Math.round(-S[0].a)}
+Object.entries(FDDATA).forEach(([id,fd])=>{const r=RM[id];if(r){r.fd=fd;fdApply(r,fdSel({},r))}});
+/* Timeline: je Baustein eine Zeile, Balken = Schritte (voll = aktiv, hell = läuft nebenbei) */
+function fdTL(r,sel,cur,mini){const S=fdSteps(r,sel),A=S[0].a,span=-A,pc=x=>((x-A)/span*100).toFixed(2),ci=cur?S.indexOf(cur):-1;
+  const now=cur?`<i class="tl-nw" style="left:${pc(cur.a)}%"></i>`:'';
+  const rows=r.fd.comps.map(c=>{const C=FD_COMP[c.k];return `<div class="tl-r"><span class="tl-l"><i style="background:${C[1]}"></i>${C[0]}</span><span class="tl-t">${S.filter(x=>x.k===c.k).map(x=>`<b class="${x.p?'p':''}${x===cur?' on':''}${ci>=0&&S.indexOf(x)<ci?' dn':''}" style="left:${pc(x.a)}%;width:${Math.max(1.8,x.d/span*100).toFixed(2)}%;--c:${C[1]}"></b>`).join('')}${now}</span></div>`}).join('');
+  const st=span>150?60:span>70?30:15,tk=[];for(let t=Math.ceil(A/st)*st;t<=0;t+=st)if(t-A>=st*.45||t===0)tk.push(t);
+  return `<div class="tl ${mini?'mini':''}">${rows}<div class="tl-r ax"><span class="tl-l"></span><span class="tl-t"><span style="left:0">Start</span>${tk.map(t=>`<span class="${t===0?'end':''}" style="left:${pc(t)}%">${t===0?'Servieren':'−'+fdHm(t)}</span>`).join('')}</span></div></div>`}
+const fdIngList=(L,s)=>{const nm=n=>n.replace(/\s*\(.*?\)/g,''),sub=n=>{const m=n.match(/\((.*?)\)/);return m?`<small>${m[1]}</small>`:''};
+  const main=L.filter(x=>x[1]),sp=L.filter(x=>!x[1]);
+  return main.map(([n,q,u])=>`<div class="rz-ir"><span class="e">${emo(n)}</span><span class="n">${nm(n)}${sub(n)}</span><b>${fqg(n,q*s.persons,u)}</b></div>`).join('')
+   +(sp.length?`<div class="rz-ir"><span class="e">🧂</span><span class="n">${sp.map(x=>nm(x[0])).join(', ')}<small>nach Geschmack</small></span><b></b></div>`:'')};
+Phone.prototype.vFdDetail=function(r,btn,eb,E){const s=this.s,sel=fdSel(s,r),S=fdSteps(r,sel),tab=r.fd.comps.find(c=>c.k===s.fdTab)?s.fdTab:r.fd.comps[0].k;
+  const C=r.fd.comps.find(c=>c.k===tab),o=fdOpt(r,tab,sel),col=FD_COMP[tab][1],OS=S.filter(x=>x.k===tab),act=OS.filter(x=>!x.p).reduce((a,x)=>a+x.d,0);
+  const first=S[0],fc=FD_COMP[first.k][0];
+  return `<div class="view det rz fdv" style="padding-bottom:130px"><div class="z">
+   <div style="height:58px"></div>
+   <div class="eb">${eb}</div>
+   <h1 class="ap-h1 rz-t">${r.n}.</h1>
+   <p class="rz-sub">${r.d||r.s}</p>
+   <div class="rz-meta"><span>${ic('clock')}${fdHm(r.m)}</span><span>${ic('chef')}Fine Dining</span><span>${ic('flame')}${r.k} kcal</span><span>${r.p} g Eiweiß</span></div>
+   <div class="nutri"><div class="ring"></div><div class="nimg">${plate(r,300)}</div></div>
+   <div class="rz-h"><h2>Dein Teller</h2><div class="stepper"><button data-a="pers" data-v="-1" aria-label="Weniger Personen">${ic('minus')}</button>${s.persons} Pers.<button data-a="pers" data-v="1" aria-label="Mehr Personen">${ic('plus')}</button></div></div>
+   <div class="fd-tabs" role="tablist">${r.fd.comps.map(c=>`<button class="${c.k===tab?'on':''}" style="--c:${FD_COMP[c.k][1]}" data-a="fdtab" data-v="${c.k}" role="tab" aria-selected="${c.k===tab}"><i></i><b>${FD_COMP[c.k][0]}</b><small>${fdOpt(r,c.k,sel).n}</small></button>`).join('')}</div>
+   <div class="fd-pane" style="--c:${col}">
+    ${C.opts.length>1?`<div class="fd-lbl">${tab==='sauce'?'Wähle deine Sauce':tab==='side'?'Wähle deine Beilage':'Wähle deine Variante'}</div>
+    <div class="fd-opts" data-keep="fdo-${tab}">${C.opts.map(x=>{const L=x.st,lead=-Math.min(...L.map(y=>y[0]));return `<button class="fdo ${x.id===o.id?'on':''}" data-a="fdopt" data-k="${tab}" data-v="${x.id}" aria-pressed="${x.id===o.id}"><span class="fdo-c">${x.e}${x.id===o.id?`<i>${ic('check')}</i>`:''}</span><b>${x.n}</b><small>ab ${fdHm(lead)} vorher</small></button>`}).join('')}</div>`:''}
+    <div class="fd-card"><b>${o.n}</b><p>${o.d}</p><span class="fd-when">${ic('clock')}Start ${fdHm(OS[0].a)} vor dem Servieren · ca. ${act} Min aktiv</span></div>
+    <div class="rz-ing">${fdIngList(o.i,s)}</div>
+   </div>
+   <div class="eb rz-eb2">Ablauf</div>
+   <h2 class="ap-h1 rz-t2">Alles zur richtigen Zeit. <span>Rückwärts vom Servieren.</span></h2>
+   ${fdTL(r,sel)}
+   <div class="tl-k"><span><i></i>du bist aktiv</span><span class="p"><i></i>läuft nebenbei</span></div>
+   <div class="rz-tip"><b>${ic('spark')}Vorziehen</b><p>Starte mit der ${fc}: ${first.o.n} braucht am längsten (${fdHm(first.a)}). ${S.filter(x=>x.p).length} Schritte laufen nebenbei – in der Zeit bereitest du den Rest vor.</p></div>
+   <p class="fd-note">Die Schritte siehst du nach „Jetzt kochen“ – einer pro Seite, mit Timeline.</p>
+  </div></div>
+  <div class="swipehint"></div>
+  <div class="det-top"><button class="iconbtn" data-a="back" aria-label="Zurück">${ic('left')}</button></div>
+  <div class="fade-bottom"></div><div class="bottom-cta fd2">${btn.replace('class="gbtn','class="obtn')}<button class="gbtn" data-a="fdcook">${ic('chef')}Jetzt kochen</button></div>`};
+/* Koch-Modus: ein Schritt pro Seite, Timeline mit Position, was nebenbei läuft und was als Nächstes kommt */
+Phone.prototype.vFdCook=function(){const s=this.s,r=RM[s.did];if(!r||!r.fd)return '<div class="view"></div>';const sel=fdSel(s,r),S=fdSteps(r,sel),n=S.length,k=Math.max(0,Math.min(s.fdStep||0,n)),end=k>=n,x=S[k],nx=S[k+1];
+  const C=x?FD_COMP[x.k]:null,nm=t=>t.replace(/\s*\(.*?\)/g,'');
+  const ings=x?x.o.i.filter(([t])=>{const w=nm(t).toLowerCase().split(/[ &-]/)[0];return w.length>2&&x.t.toLowerCase().includes(w.slice(0,Math.max(4,w.length-2)))}):[];
+  const run=x?S.filter(y=>y!==x&&y.p&&y.a<x.a+0.01&&y.a+y.d>x.a):[];
+  return `<div class="view fdc"><div class="z">
+   <div class="fdc-top"><button class="iconbtn" data-a="fdclose" aria-label="Koch-Modus schließen">${ic('x')}</button><span><small>${end?'Fertig':'Schritt '+(k+1)+' von '+n}</small><b>${r.n}</b></span></div>
+   <div class="fdc-seg">${S.map((y,j)=>`<i class="${j<k?'dn':j===k?'on':''}" style="--c:${FD_COMP[y.k][1]}"></i>`).join('')}</div>
+   ${fdTL(r,sel,x,true)}
+   ${end?`<div class="fdc-card fin"><span class="fdc-e">🍽️</span><h3>Anrichten & genießen</h3><p>Alle Bausteine sind fertig. Großer, warmer Teller, Sauce als Spiegel daneben, zum Schluss etwas Grün oder Blüten.</p><button class="gbtn" data-a="fdclose">${ic('check')}Fertig</button></div>`
+   :`<div class="fdc-card" style="--c:${C[1]}">
+     <div class="fdc-chip"><i></i>${C[0]} · ${x.o.n}</div>
+     <div class="fdc-when">${x.a===0?'Zum Servieren':fdHm(x.a)+' vor dem Servieren'} · ca. ${x.d} Min${x.p?' · <em>läuft nebenbei</em>':''}</div>
+     <p class="fdc-t">${x.t}</p>
+     ${ings.length?`<div class="fdc-i">${ings.map(([t,q,u])=>`<span><em>${emo(t)}</em>${nm(t)}${q?` <b>${fqg(t,q*s.persons,u)}</b>`:''}</span>`).join('')}</div>`:''}
+    </div>
+    ${run.length?`<div class="fdc-run"><b>Läuft gerade nebenbei</b>${run.map(y=>`<span style="--c:${FD_COMP[y.k][1]}"><i></i>${FD_COMP[y.k][0]}: ${y.t.split(/[.,–]/)[0]}</span>`).join('')}</div>`:''}
+    <div class="fdc-next">${nx?`<small>Als Nächstes · ${nx.a===x.a?'gleich danach':'in '+fdHm(nx.a-x.a)}</small><span style="--c:${FD_COMP[nx.k][1]}"><i></i><b>${FD_COMP[nx.k][0]}:</b> ${nx.t}</span>`:`<small>Als Nächstes</small><span><b>Anrichten</b> und servieren</span>`}</div>`}
+  </div></div>
+  <div class="bottom-cta fdc-nav"><button class="obtn" data-a="fdstep" data-v="-1" ${k===0?'disabled':''}>${ic('left')}Zurück</button>${end?'':`<button class="gbtn" data-a="fdstep" data-v="1">${k===n-1?'Fertig':'Weiter'}${ic('right')}</button>`}</div>`};
+/* ----- Bowls: Dressing / Vinaigrette wählen ----- */
+const DRESS=[
+ {id:'zitrone',n:'Zitronen-Vinaigrette',e:'🍋',i:[['Olivenöl',1,'EL'],['Zitronensaft',1,'EL'],['Senf',0.5,'TL'],['Honig',0.5,'TL']],st:'Dressing: Olivenöl, Zitronensaft, Senf und Honig mit Salz und Pfeffer im Glas kräftig schütteln und darübergeben.'},
+ {id:'honigsenf',n:'Honig-Senf',e:'🍯',i:[['Olivenöl',1,'EL'],['Weißweinessig',1,'TL'],['Dijonsenf',1,'TL'],['Honig',1,'TL']],st:'Dressing: Senf, Honig und Essig verrühren, Öl langsam einrühren, salzen und darübergeben.'},
+ {id:'sesam',n:'Sesam-Ingwer',e:'🥢',i:[['Sojasauce',1,'EL'],['Reisessig',1,'TL'],['Sesamöl',1,'TL'],['Ingwer (gerieben)',0.5,'TL'],['Honig',0.5,'TL']],st:'Dressing: Sojasauce, Reisessig, Sesamöl, Ingwer und Honig verrühren und darübergeben.'},
+ {id:'erdnuss',n:'Erdnuss-Limette',e:'🥜',i:[['Erdnussbutter',1,'EL'],['Limettensaft',1,'EL'],['Sojasauce',1,'TL'],['Wasser (warm)',1,'EL']],st:'Dressing: Erdnussbutter mit warmem Wasser glatt rühren, Limettensaft und Sojasauce einrühren, darübergeben.'},
+ {id:'joghurt',n:'Joghurt-Kräuter',e:'🌿',i:[['Naturjoghurt',2,'EL'],['Zitronensaft',1,'TL'],['Kräuter (gehackt)',1,'EL']],st:'Dressing: Joghurt mit Zitronensaft, Kräutern, Salz und Pfeffer verrühren und darübergeben.'},
+ {id:'tahini',n:'Tahini-Zitrone',e:'🫙',i:[['Tahini',1,'EL'],['Zitronensaft',1,'EL'],['Wasser',1,'EL']],st:'Dressing: Tahini mit Zitronensaft und Wasser glatt rühren, mit Salz abschmecken und darübergeben.'}];
+const DR_KEY=/sojasauce|limettensaft|zitronensaft|honig|sesamöl|erdnussbutter|olivenöl|essig|senf|tahini|ahornsirup|ingwer|sriracha|miso|dressing|leinöl|rapsöl/i;
+function bowlApply(r,id){if(!r._i0){r._i0=r.i.map(x=>x.slice());r._st0=r.st.slice()}
+  r.i=r._i0.map(x=>x.slice());r.st=r._st0.slice();const D=DRESS.find(x=>x.id===id);if(!D)return;
+  let j=r.i.length;while(j>0&&DR_KEY.test(r.i[j-1][0]))j--;r.i=r.i.slice(0,j).concat(D.i.map(x=>x.slice()));
+  const si=r.st.map((t,k)=>/dressing|sauce|vinaigrette/i.test(t)?k:-1).filter(k=>k>=0).pop();if(si!==undefined)r.st[si]=D.st;else r.st.push(D.st)}
+Phone.prototype.vDressPick=function(r){const s=this.s,cur=(s.bdr||{})[r.id]||'orig',L=[{id:'orig',n:'Original',e:'🥣'}].concat(DRESS);
+  return `<div class="fd-pane dr" style="--c:#4F8F5B"><div class="fd-lbl">Dressing wählen</div>
+   <div class="fd-opts" data-keep="dr-${r.id}">${L.map(x=>`<button class="fdo ${x.id===cur?'on':''}" data-a="bdr" data-v="${x.id}" aria-pressed="${x.id===cur}"><span class="fdo-c">${x.e}${x.id===cur?`<i>${ic('check')}</i>`:''}</span><b>${x.n}</b></button>`).join('')}</div></div>`};
 /* V146: Sammlungen nur zur Ordnung im Hintergrund (nicht in der Oberfläche) – für spätere Erweiterungen.
    abnehmen-gesund = Hauptgerichte ohne Bowls, Unterkategorie „abendessen“ = Abendessen; bowls = alle Bowls; fruehstueck-trend = alle Frühstücke.
    Neue Rezepte bekommen bei Bedarf ein eigenes Feld col/sub, sonst gilt diese Regel. */
@@ -2884,7 +3107,7 @@ const migId=x=>typeof x==='string'?(/^n\d\d$/.test(x)?'m'+x.slice(1):x==='r2'?'b
 const migObj=o=>o&&typeof o==='object'&&!Array.isArray(o)?Object.fromEntries(Object.entries(o).map(([k,v])=>[migId(k),v])):o;
 Phone.prototype.reset=function(init){
   const s={screen:'plan',ip:0,plan:{0:'m02',1:'m01'},sel:TODAY,wk:0,edit:false,cat:'all',en:null,pick:-1,
-    favs:new Set(['m01','b06','m07','m13','m22']),learn:{},deck:null,did:null,dday:null,from:'plan',persons:1,shopWk:0,twice:false,done:{},sheet:null,shopQ:'',recQ:'',recCat:'all',recMeal:'l',exPick:0,stock:[],stockQ:'',cook:null,cookQ:'',extra:{},exK:'b',exQ:'',prof:{name:'',photo:'',sport:'',goal:''},train:{},tx:{},fstd:null,fimp:null,fstdW:0,fxiso:null,fsel:TODAY,fwk:0,fitAI:null,ipop:null,fitSeen:false,voice:''};
+    fdSel:{},bdr:{},favs:new Set(['m01','b06','m07','m13','m22']),learn:{},deck:null,did:null,dday:null,from:'plan',persons:1,shopWk:0,twice:false,done:{},sheet:null,shopQ:'',recQ:'',recCat:'all',recMeal:'l',exPick:0,stock:[],stockQ:'',cook:null,cookQ:'',extra:{},exK:'b',exQ:'',prof:{name:'',photo:'',sport:'',goal:''},train:{},tx:{},fstd:null,fimp:null,fstdW:0,fxiso:null,fsel:TODAY,fwk:0,fitAI:null,ipop:null,fitSeen:false,voice:''};
   Object.assign(s,JSON.parse(JSON.stringify(Object.assign({},init,{favs:undefined}))));
   if(init.favs)s.favs=new Set(init.favs);
   s.shop=init.shopFromPlan?applyStock(buildShop(s.plan,s.persons,[]),s.stock):[]; /* Standard: leere Liste */
@@ -2897,13 +3120,15 @@ Phone.prototype.reset=function(init){
         Object.entries(Object.assign({},d.tx||{},d.train||{})).forEach(([iso,v])=>{if(!v)return;const i=idxOf(iso);if(i>=0&&i<NDAYS){if(d.train&&d.train[iso]===undefined&&d.tx&&d.tx[iso]&&Object.prototype.hasOwnProperty.call(d,'trainV')&&d.trainV>=155)return;s.train[i]=v}else if(i>=-7)s.tx[iso]=v})}
       if(d.prof&&typeof d.prof==='object')s.prof=Object.assign(s.prof,d.prof);
       if(Array.isArray(d.fstd))s.fstd=Array.from({length:7},(_,j)=>d.fstd[j]||null);
+      if(d.fdSel&&typeof d.fdSel==='object'){s.fdSel=d.fdSel;Object.entries(d.fdSel).forEach(([id,sl])=>{const r=RM[id];if(r&&r.fd)fdApply(r,fdSel(s,r))})}
+      if(d.bdr&&typeof d.bdr==='object'){s.bdr=d.bdr;Object.entries(d.bdr).forEach(([id,v])=>{if(RM[id])bowlApply(RM[id],v)})}
       if(d.fitSeen)s.fitSeen=true;if(d.voice)s.voice=d.voice;if(d.fitAI&&d.fitAI.res)s.fitAI=d.fitAI;if(d.faiC)s.faiC=true;}}
   this.s=s;this.lastScreen=null;this.render();
 };
 Phone.prototype.save=function(){if(!this.opts.persist)return;const s=this.s;const plan={};Object.keys(s.plan).forEach(i=>plan[isoOf(+i)]=s.plan[i]);
   data.save({plan,shop:s.shop,favs:[...s.favs],persons:s.persons,done:s.done,doneD:isoOf(TODAY),learn:s.learn,stock:s.stock,
     extra:Object.fromEntries(Object.entries(s.extra).map(([i,v])=>[isoOf(+i),v])),
-    train:Object.fromEntries(Object.entries(s.train).map(([i,v])=>[isoOf(+i),v])),tx:Object.fromEntries(Object.entries(s.tx).filter(([iso])=>{const i=idxOf(iso);return i<0||i>=NDAYS})),trainV:155,fstd:s.fstd,prof:s.prof,fitSeen:s.fitSeen,voice:s.voice,fitAI:s.fitAI&&s.fitAI.res?s.fitAI:null,faiC:!!s.faiC})};
+    train:Object.fromEntries(Object.entries(s.train).map(([i,v])=>[isoOf(+i),v])),tx:Object.fromEntries(Object.entries(s.tx).filter(([iso])=>{const i=idxOf(iso);return i<0||i>=NDAYS})),trainV:155,fstd:s.fstd,prof:s.prof,fitSeen:s.fitSeen,fdSel:s.fdSel,bdr:s.bdr,voice:s.voice,fitAI:s.fitAI&&s.fitAI.res?s.fitAI:null,faiC:!!s.faiC})};
 Phone.prototype.list=function(){const s=this.s;return R.filter(r=>(s.cat==='all'||r.c.includes(s.cat))&&(!s.en||enOf(r)===s.en))};
 Phone.prototype.toast=function(t,btn,act){const old=this.scr.querySelector('.toast');if(old)old.remove();const d=document.createElement('div');d.className='toast'+(btn?' act':'');d.innerHTML=`<span></span>${btn?`<button data-a="${act}">${btn}</button>`:''}`;d.firstChild.textContent=t;this.scr.appendChild(d);setTimeout(()=>d.remove(),btn?4600:2500)};
 Phone.prototype.backAfterPlan=function(d){if(wkOf(d)===0)return this.goPlanToday();const s=this.s;s.screen='plan';s.wk=1;s.sel=7;s.edit=false;s.pick=-1}; /* nächste Woche: dort bleiben (Montag) */
@@ -2929,6 +3154,7 @@ Phone.prototype.render=function(){
   else if(s.screen==='deck')body=this.vDeck();
   else if(s.screen==='shop')body=this.vShop();
   else if(s.screen==='detail')body=this.vDetail();
+  else if(s.screen==='fdcook')body=this.vFdCook();
   else if(s.screen==='settings')body=this.vSettings();
   const tabs=['plan','fit','recipes','shop','favs','learn','ftrain','fmob','flearn'].includes(s.screen)?this.vTabs():'';
   const vd=['ftrain','fmob','flearn'].includes(s.screen)?`<button class="vdots f" data-a="tab" data-v="plan" aria-label="Zum Essensplan"><i></i><i></i></button>`:['plan','fit'].includes(s.screen)?`<button class="vdots${s.screen==='fit'?' f':''}" data-a="flip" data-v="${s.screen==='fit'?'plan':'fit'}" aria-label="${s.screen==='fit'?'Zum Essensplan':'Zu Mein Fitnessbereich'}"><i></i><i></i></button>`:'';
@@ -2974,6 +3200,14 @@ Phone.prototype.vTabs=function(){const s=this.s;const open=s.shop.filter(x=>!x.d
 
 /* ===== Lerncenter: Karteien mit Lernkarten (Emoji, Titel, Text, Tipp) ===== */
 const DECKS=[
+ {id:'fine',t:'Fine Dining zu Hause',sub:'Baukasten, Timeline und Koch-Modus',e:'🍽️',c:['#EFE4DA','#B88F72'],cards:[
+  ['🍽️','Ein Teller, drei Bausteine','Jedes Fine-Dining-Gericht besteht aus Hauptzutat, Beilage und Sauce. Jeder Baustein hat eigene Zutaten und eigene Schritte – so behältst du auch bei einem aufwändigen Gericht den Überblick.','Du findest die Gerichte im Rezepte-Tab unter „Fine Dining“.'],
+  ['🔄','Sauce und Beilage selbst wählen','Tippe auf der Rezeptseite auf „Beilage“ oder „Sauce“ und wähle im Kreis deine Variante – zum Beispiel Rotwein-Jus, Beurre blanc oder Safransauce, Selleriepüree, Kartoffelpüree oder Gratin. Zutaten, Einkaufsliste und Ablauf passen sich sofort an.','Zwischen den Bausteinen kannst du jederzeit hin und her wechseln.'],
+  ['⏱️','Die Timeline: rückwärts vom Servieren','Die farbigen Balken zeigen, wann welcher Schritt startet – gerechnet ab dem Moment, in dem der Teller auf den Tisch kommt. Volle Balken: du bist aktiv. Helle Balken: es läuft nebenbei, zum Beispiel Reduzieren, Köcheln oder Ruhen.','Was ganz links beginnt, braucht am längsten – damit fängst du an.'],
+  ['🧭','Vorziehen ist der Profi-Trick','Jus, Fonds und Schmorgerichte brauchen viel Zeit, aber wenig Arbeit. Starte sie zuerst; Kartoffeln oder Sellerie kochen nebenbei. Das Fleisch kommt zum Schluss, damit es auf den Punkt gart und ruhen kann.','Eine Jus kannst du schon am Vortag kochen und am Abend nur noch aufwärmen und mit Butter montieren.'],
+  ['👨‍🍳','„Jetzt kochen“: Schritt für Schritt','Erst „Jetzt kochen“ öffnet die Zubereitung: ein Schritt pro Seite, oben die Timeline mit deiner Position, darunter was gerade nebenbei läuft und was als Nächstes kommt.','Vor dem Start einmal alle Bausteine durchlesen und alles bereitstellen – Mise en place ist die halbe Miete.'],
+  ['🥗','Auch bei Bowls: Dressing wählen','Bei jeder Bowl kannst du das Dressing tauschen: Zitronen-Vinaigrette, Honig-Senf, Sesam-Ingwer, Erdnuss-Limette, Joghurt-Kräuter oder Tahini-Zitrone. Zutaten und der Dressing-Schritt ändern sich automatisch; „Original“ stellt das ursprüngliche Rezept wieder her.','Faustregel für Vinaigrettes: 3 Teile Öl, 1 Teil Säure, dazu etwas Senf und Honig.'],
+  ['🌸','Anrichten wie im Restaurant','Großer, heller und vorgewärmter Teller. Komponenten leicht versetzt setzen, die Sauce als Spiegel daneben statt darüber. Etwas Grün oder essbare Blüten geben Höhe und Farbe.','Weniger ist mehr: freie Fläche auf dem Teller wirkt edel.']]},
  {id:'sauce',t:'Die perfekte Sauce',e:'🥄',c:['#F6D9C9','#E9A98F'],cards:[
   ['⚖️','Das Geheimnis: Balance','Eine gute Sauce balanciert fünf Dinge: Fett, Säure, Salz, Süße und Umami. Schmeckt etwas „flach“, fehlt meist Säure oder Salz – nicht noch mehr Gewürz.','Ein Spritzer Zitrone oder Essig am Ende weckt jede Sauce auf.'],
   ['🍳','Ansetzen & Ablöschen','Der braune Bodensatz nach dem Anbraten ist pures Aroma. Mit Wein, Brühe oder Wasser ablöschen und den Boden mit dem Kochlöffel loskratzen.','Was nach dem Braten in der Pfanne klebt, ist die Basis – nicht wegwaschen.'],
@@ -3047,7 +3281,7 @@ DECKS.push(
   ['🧄','Zitronen-Knoblauch-Joghurt','3 EL Joghurt, ½ geriebene Knoblauchzehe, Zitronenabrieb, Salz und 1 TL Olivenöl verrühren.','Der schnellste Dip zu Ofengemüse und Fladenbrot.'],
   ['🥒','Schnelle Pickles','100 ml Essig, 100 ml Wasser, 1 EL Zucker und 1 TL Salz aufkochen und über dünn geschnittene rote Zwiebeln, Gurken oder Radieschen gießen. Nach 20 Minuten sind sie fertig.','Die Säure bringt Frische in jede Bowl.']]});
 /* Story-Texte und Bilder je Kartei (Apple-Stil: großes Bild, fette Zeile, ruhiger Text) */
-const LSTORY={french:['Meistere die Kunst der Saucen.','Von Jus bis Béarnaise: die Klassiker der französischen Küche, Schritt für Schritt.',()=>IMG_L_DUCK],
+const LSTORY={fine:['Fine Dining zu Hause.','Sauce und Beilage selbst wählen, Timeline rückwärts vom Servieren und ein Koch-Modus Schritt für Schritt.',null,'fd01'],french:['Meistere die Kunst der Saucen.','Von Jus bis Béarnaise: die Klassiker der französischen Küche, Schritt für Schritt.',()=>IMG_L_DUCK],
   prep:['Jeder Tag ein Genuss.','Meal Prep neu gedacht. Weniger Aufwand, bessere Zutaten, mehr Geschmack.',()=>IMG_L_PREP],
   dress:['Kleine Details. Großer Geschmack.','Wie aus wenigen Zutaten besondere Dressings für deine Bowls entstehen.',()=>IMG_L_VINA],
   sauce:['Die perfekte Sauce.','Balance, Reduktion und Bindung – das Fundament für alles Weitere.',()=>IMG_L_WINE],
@@ -3067,7 +3301,7 @@ Phone.prototype.vLearn=function(){const s=this.s;const L=s.learn||{};
      <span class="ls-tx"><small>${d.t}</small><b>${S[0]}</b>${ty==='half'?'':`<span class="ls-s">${S[1]}</span>`}
      <span class="ls-f"><em>${v>=n?'Wiederholen':v?'Weiter':'Starten'}${ic('right')}</em><span>${ty==='big'?`${n} Lektionen · ca. ${Math.max(2,Math.round(n*.6))} Min`:`${n} Lektionen`}${v&&v<n?` · ${v}/${n}`:v>=n?' · fertig':''}</span></span>
      ${v?`<span class="ls-bar"><i style="width:${v/n*100}%"></i></span>`:''}</span></button>`};
-  const LAY=[['french','big'],['sauce','half'],['dress','half'],['knife','row'],['prep','big'],['heat','half'],['spice','half'],['peppy','row']];
+  const LAY=[['fine','big'],['french','big'],['sauce','half'],['dress','half'],['knife','row'],['prep','big'],['heat','half'],['spice','half'],['peppy','row']];
   return `<div class="view lrnv"><div class="z">
    <div class="top-row"></div>
    <div class="eb">Lerncenter · ${seen}/${tot} Lektionen</div>
@@ -4158,7 +4392,7 @@ function fitLocal(s,w){const D=Array.from({length:7},(_,j)=>w*7+j),T=i=>s.train[
     D.filter(i=>i>=TODAY&&T(i)&&(T(i).k||(T(i).s&&(T(i).s.lv||2)===3))&&!(s.extra[i]||{}).b).slice(0,2).forEach(i=>{const r=bf.find(r=>!usedX.has(r.id));if(r){usedX.add(r.id);ex.push({d:i,m:'b',id:r.id})}});
     if(sw.length||ex.length)tips.unshift('Unten steht ein Vorschlag: Gerichte der kommenden Tage tauschen oder ein Frühstück ergänzen.')}
   else{ /* nächste Woche: Vorschlag für die ganze Woche */
-    const used=new Set();D.forEach(i=>{const sc=fitScore(T(i))||lightSc;const r=R.filter(r=>!used.has(r.id)).sort((a,b)=>sc(b)-sc(a))[0];if(r){used.add(r.id);if(s.plan[i]!==r.id)sw.push({d:i,id:r.id})}});
+    const used=new Set();D.forEach(i=>{const sc=fitScore(T(i))||lightSc;const r=R.filter(r=>!used.has(r.id)&&!r.fd).sort((a,b)=>sc(b)-sc(a))[0];if(r){used.add(r.id);if(s.plan[i]!==r.id)sw.push({d:i,id:r.id})}});
     if(sw.length)tips.unshift('Unten steht ein Vorschlag für die ganze Woche, passend zu deinem Training.')}
   res.push({t:'Empfehlung',x:tips.join(' ')});res.sw=sw;res.ex=ex;return res}
 Phone.prototype.fitAnalyze=async function(){const s=this.s,w=s.fwk||0,sig=fitSig(s,w);if(s.fitAI&&s.fitAI.step==='think')return;
@@ -4471,7 +4705,7 @@ Phone.prototype.vRecipes=function(favOnly){const s=this.s;const q=s.recQ.toLower
   const sec=(ti,a,grp)=>{if(!a.length)return '';const h=a.find(r=>r.img)||a[0];
     const body=grp?bar('Klassiker',a.filter(r=>!r.c.includes('bowl')&&!r.c.includes('suppe')))+bar('Bowls',a.filter(r=>r.c.includes('bowl')))+bar('Suppen',a.filter(r=>r.c.includes('suppe')&&!r.c.includes('bowl'))):a.map(item).join('');
     return `<div class="mn-s"><div class="mn-hero rv"><span class="mn-hp">${plate(h,300)}</span><h2>${ti}</h2><small>${a.length} Gerichte</small></div>${body}</div>`};
-  const menu=a=>M==='l'&&s.recCat==='all'&&!q&&!favOnly?[['fleisch','Fleisch'],['fisch','Fisch'],['veggie','Vegetarisch']].map(([c,l])=>sec(l,a.filter(r=>r.c[0]===c),true)).join(''):sec(q?'Suche':favOnly||s.recCat==='fav'?'Favoriten':M==='l'?(CATNAME[s.recCat]||['Auswahl'])[0]:MEALS.find(x=>x[0]===M)[1],a,false);
+  const menu=a=>M==='l'&&s.recCat==='all'&&!q&&!favOnly?[['fine','Fine Dining'],['fleisch','Fleisch'],['fisch','Fisch'],['veggie','Vegetarisch']].map(([c,l])=>sec(l,a.filter(r=>r.c[0]===c),c!=='fine')).join(''):sec(q?'Suche':favOnly||s.recCat==='fav'?'Favoriten':M==='l'?(CATNAME[s.recCat]||['Auswahl'])[0]:MEALS.find(x=>x[0]===M)[1],a,false);
   return `<div class="view recv"><div class="z">
    <div class="top-row"></div>
    <div class="eb">${favOnly?'Deine Lieblinge':`${R.length+RX.length} Rezepte`}</div>
@@ -4492,6 +4726,7 @@ Phone.prototype.vDetail=function(){const s=this.s;const r=RM[s.did];const cat=CA
   else btn=`<button class="gbtn" data-a="sheet" data-v="pickday">${ic('plus')}Einplanen</button>`;
   if(xk){const xd=s.sel,is=(s.extra[xd]||{})[xk]===r.id;btn=is?`<button class="gbtn done" data-a="back">${ic('check')}Als ${XM[xk][0]} eingetragen</button>`:`<button class="gbtn" data-a="explan" data-id="${r.id}">${ic('plus')}${XM[xk][0]} für ${xd===TODAY?'heute':dn(xd)}</button>`}
   const eb=xk?XM[xk][0]:d!==null&&d!==undefined?(d===TODAY?'Heute · ':'')+dn(d)+' · '+dm(d):'Rezept · '+r.c.map(c=>CATNAME[c][0]).join(' · ');
+  if(r.fd)return this.vFdDetail(r,btn,eb,E);
   return `<div class="view det rz" style="padding-bottom:120px"><div class="z">
    <div style="height:58px"></div>
    <div class="eb">${eb}</div>
@@ -4499,7 +4734,7 @@ Phone.prototype.vDetail=function(){const s=this.s;const r=RM[s.did];const cat=CA
    <p class="rz-sub">${r.d||r.s}</p>
    <div class="rz-meta"><span>${ic('clock')}${r.m} Min.</span><button data-a="sheet" data-v="energy" style="color:${E[2]}">${ic(E[1])}${E[0]}</button><span>${ic('flame')}${r.k} kcal</span><span>${r.p} g Eiweiß</span></div>
    <div class="nutri"><div class="ring"></div><div class="nimg">${plate(r,300)}</div></div>
-   <div class="rz-h"><h2>Zutaten</h2>${xk?'':twiceBtn(d)}<div class="stepper"><button data-a="pers" data-v="-1" aria-label="Weniger Personen">${ic('minus')}</button>${s.persons} Pers.<button data-a="pers" data-v="1" aria-label="Mehr Personen">${ic('plus')}</button></div></div>
+   ${r.c.includes('bowl')?this.vDressPick(r):''}<div class="rz-h"><h2>Zutaten</h2>${xk?'':twiceBtn(d)}<div class="stepper"><button data-a="pers" data-v="-1" aria-label="Weniger Personen">${ic('minus')}</button>${s.persons} Pers.<button data-a="pers" data-v="1" aria-label="Mehr Personen">${ic('plus')}</button></div></div>
    <div class="rz-ing">${(()=>{const sub=n=>{const m=n.match(/\((.*?)\)/);return m?`<small>${m[1]}</small>`:''};const nm=n=>n.replace(/\s*\(.*?\)/g,'');
      const main=r.i.filter(x=>x[1]),sp=r.i.filter(x=>!x[1]);
      return main.map(([n,q,u])=>`<div class="rz-ir"><span class="e">${emo(n)}</span><span class="n">${nm(n)}${sub(n)}</span><b>${fqg(n,q*s.persons,u)}</b></div>`).join('')
@@ -5055,7 +5290,7 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
    case 'skip':{const d=s.sel;s.plan[d]=OUT;this.pop=d!==TODAY;this.backAfterPlan(d);this.anim='inF';this.render();this.toast(`${dn(d)}: auswärts essen`);break}
    case 'unskip':delete s.plan[s.sel];s.edit=false;s.pick=-1;this.anim='inF';this.render();break;
    case 'randweek':{this.prevPlan=Object.assign({},s.plan);const used=new Set(Object.values(s.plan));let filled=0,fitted=0;
-      for(let i=(s.wk||0)*7;i<(s.wk||0)*7+7;i++){if(s.plan[i])continue;const pool=R.filter(r=>!used.has(r.id));if(!pool.length)break;
+      for(let i=(s.wk||0)*7;i<(s.wk||0)*7+7;i++){if(s.plan[i])continue;const pool=R.filter(r=>!used.has(r.id)&&!r.fd);if(!pool.length)break;
         const f=fitScore(s.train[i]);let r;
         if(f){const top=pool.slice().sort((a,b)=>f(b)-f(a)).slice(0,6);r=top[Math.floor(Math.random()*top.length)];fitted++}else r=pool[Math.floor(Math.random()*pool.length)];
         s.plan[i]=r.id;used.add(r.id);filled++}
@@ -5121,6 +5356,12 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
    case 'faitog':s.faiC=!s.faiC;haptic();this.render();break;
    case 'fdisc':s.sheet='fdisc';haptic();this.render();break;
    case 'ftph':s.ftPh=v;haptic();this.render();break;
+   case 'fdtab':s.fdTab=v;haptic();this.render();break;
+   case 'fdopt':{const r=RM[s.did];if(!r||!r.fd)break;s.fdSel=s.fdSel||{};const sl=fdSel(s,r);sl[t.dataset.k]=v;s.fdSel[r.id]=sl;fdApply(r,sl);if(s.shop&&s.shop.length&&Object.values(s.plan).includes(r.id))this.rebuildShop&&this.rebuildShop();haptic();this.render();break}
+   case 'fdcook':s.fdStep=0;s.screen='fdcook';haptic();this.render();{const v0=this.scr.querySelector('.view');if(v0)v0.scrollTop=0}break;
+   case 'fdstep':{const r=RM[s.did];const n=fdSteps(r,fdSel(s,r)).length;s.fdStep=Math.max(0,Math.min(n,(s.fdStep||0)+(+v)));haptic();this.render();break}
+   case 'fdclose':s.screen='detail';haptic();this.render();break;
+   case 'bdr':{const r=RM[s.did];s.bdr=s.bdr||{};if(v==='orig')delete s.bdr[r.id];else s.bdr[r.id]=v;bowlApply(r,v);haptic();this.render();break}
    case 'ftsp':s.ftSp=v;haptic();this.render();break;
    case 'fwo':s.fwoId=v;s.fwoD=null;s.sheet='fwo';haptic();this.render();break;
    case 'fwoday':s.fwoD=+t.dataset.i;haptic();this.render();break;
@@ -5202,7 +5443,7 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
    case 'fxrm':this.prevTrain=JSON.stringify([s.train,s.tx]);delete s.tx[s.fxiso];s.sheet=null;haptic();this.render();this.toast('Entfernt','Rückgängig','fundo');break;
    case 'fundo':if(this.prevTrain){const [a,b]=JSON.parse(this.prevTrain);s.train=a;s.tx=b;this.prevTrain=null;this.render();this.toast('Rückgängig gemacht')}break;
    case 'fitfill':{const w=s.fwk||0;this.prevPlan=Object.assign({},s.plan);const used=new Set(Object.values(s.plan));let n=0;
-      for(let i=w*7;i<w*7+7;i++){if(s.plan[i]||i<TODAY)continue;const pool=R.filter(r=>!used.has(r.id));if(!pool.length)break;const f=fitScore(s.train[i]);
+      for(let i=w*7;i<w*7+7;i++){if(s.plan[i]||i<TODAY)continue;const pool=R.filter(r=>!used.has(r.id)&&!r.fd);if(!pool.length)break;const f=fitScore(s.train[i]);
         const top=f?pool.slice().sort((a,b)=>f(b)-f(a)).slice(0,6):pool;const r=top[Math.floor(Math.random()*top.length)];s.plan[i]=r.id;used.add(r.id);n++}
       haptic();this.render();this.toast(n?`${n} freie Tage passend zum Training geplant`:'Keine freien Tage in dieser Woche',n?'Rückgängig':null,'undo');break}
    case 'nextvoice':if(KI&&KI.tts&&!this.noTts){s.sheet='voice';haptic();this.render();kiVoiceNames().then(()=>{if(s.sheet==='voice')this.render()});break}
