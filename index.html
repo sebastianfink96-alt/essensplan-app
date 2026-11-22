@@ -2091,6 +2091,8 @@ img,svg{-webkit-user-drag:none}
 .fd-mode small{font-size:12px;font-weight:600;color:var(--a-eyebrow)}
 .fd-mode span{font-size:12px;line-height:1.35;color:#86868B;margin-top:3px}
 .fd-mode button.on{background:color-mix(in srgb,var(--a-eyebrow) 8%,#fff);box-shadow:0 0 0 2px var(--a-eyebrow)}
+.mseg.ph4.ph6{grid-template-columns:repeat(3,1fr)!important}
+.mseg.ph6 b{font-size:12px!important}
 .fthero b{color:#fff!important}
 .fthero+.wo-list{margin-top:10px}
 .phw-d em{overflow-wrap:normal!important}
@@ -3622,16 +3624,32 @@ const discOpts=(cur0,cls='',open=false,pf={},ownOpen=false)=>{const SEL=discsOf(
    ${tile('ball','Ballsport\u00adarten','f_ball',ballOn||bo,'discball',BS.map(x=>x[1]).join(', '))}
    ${tile('eigen',eo?esc(pf.discX):'Nicht dabei?',eo?'mono':'f_eigen',eo||ownOpen,'discown',eo?'Antippen zum Lösen':'Selbst eintragen')}</div>
    ${bo?`<div class="pf-opts c3 fit disc sub ${cls}">${PF_BALL.map(([k,t,sub,icn])=>tile(k,t,icn,has(k))).join('')}</div>`:''}`};
-const PH=[['g','Grundlage','#7DAFE3','Ruhig und lang – Ausdauer aufbauen'],['a','Aufbau','#2E9E6B','Mehr Umfang, erste harte Einheiten'],['s','Spezifisch','#F0A03A','Wettkampfnah trainieren'],['t','Tapering','#E0688C','Weniger Umfang, frisch werden']];
+const PH=[['v','Vorbereitung','#9DB0C4','Locker wieder einsteigen'],['g','Grundlage','#7DAFE3','Ruhig und lang – Ausdauer, Kraft und Technik'],['a','Aufbau','#2E9E6B','Mehr Umfang, erste harte Einheiten'],['s','Spezifisch','#F0A03A','Wettkampfnah trainieren'],['t','Tapering','#E0688C','Weniger Umfang, frisch werden'],['u','Übergang','#B49AD8','Erholen und auftanken']];
 const phOf=k=>PH.find(x=>x[0]===k);
 const fGoals=s=>(s.prof.goals||[]).filter(g=>g&&g.d&&idxOf(g.d)>=TODAY).sort((a,b)=>a.d<b.d?-1:1);
 const dLong=i=>{const d=dayDate(i);return `${d.getDate()}. ${MON[d.getMonth()]} ${d.getFullYear()}`};
 /* Phasen rückwärts vom Wettkampf: Tapering 1–2 Wochen, davor Spezifisch, Aufbau, Grundlage (je nach verfügbarer Zeit) */
-function seasonPlan(s){const G=fGoals(s),segs=[];let st=TODAY;
-  G.forEach((g,gi)=>{const e=idxOf(g.d),days=e-st;if(days<=0)return;const W=days/7;
-    const t=W>=12?14:W>=5?7:Math.min(days,4),R=days-t;let gr=0,au=0,sp=0;
-    if(gi>0&&W<10)sp=R;else if(W>=16){sp=Math.round(R*.25);au=Math.round(R*.33);gr=R-sp-au}else if(W>=8){gr=Math.round(R*.3);au=Math.round(R*.35);sp=R-gr-au}else if(W>=4){au=Math.round(R*.5);sp=R-au}else sp=R;
-    [['g',gr],['a',au],['s',sp],['t',t]].forEach(([k,n])=>{if(n<=0)return;const L=segs[segs.length-1];if(L&&L.k===k&&L.b===st)L.b+=n;else segs.push({k,a:st,b:st+n});st+=n});st=e});
+/* V205: Saisonplanung nach dem Modell der linearen Periodisierung
+   1. Saisonziel: Vorbereitung bis 4 Wo., Grundlage bis 12 Wo., Aufbau + Spezifisch 6–8 Wo., Tapering 1–2 Wo.
+   Weitere Ziele: Übergang (2–3 Tage bis 1 Woche), dann je nach Abstand verkürzte Grundlage/Aufbau/Spezifisch + Tapering.
+   Nach dem letzten Ziel: 2 Wochen Übergang. */
+function seasonPlan(s){const G=fGoals(s),segs=[],D=7;let st=TODAY;
+  const push=(k,n)=>{n=Math.round(n);if(n<=0)return;const L=segs[segs.length-1];if(L&&L.k===k&&L.b===st)L.b+=n;else segs.push({k,a:st,b:st+n});st+=n};
+  G.forEach((g,gi)=>{const e=idxOf(g.d);
+    if(gi>0){const gap=e-st;push('u',gap>=7*D?7:gap>=14?3:gap>=7?2:0)}
+    const days=e-st;if(days<=0){st=Math.max(st,e+1);return}const W=days/7;
+    const t=W>=16?14:W>=6?7:Math.min(days,W>=3?5:3),R=days-t;let v=0,gr=0,au=0,sp=0;
+    if(gi===0){
+      if(R>=15*D){sp=4*D;au=4*D;gr=Math.min(12*D,R-8*D);v=R-8*D-gr;if(v>4*D){gr+=v-4*D;v=4*D}}
+      else if(R>=10*D){au=3*D;sp=3*D;gr=R-6*D}
+      else if(R>=5*D){gr=Math.round(R*.4);sp=R-gr}
+      else sp=R}
+    else{
+      if(R>=10*D){gr=Math.min(4*D,Math.round(R/3));au=Math.min(4*D,Math.round(R/3));sp=R-gr-au;if(sp>4*D){gr+=sp-4*D;sp=4*D}}
+      else if(R>=5*D){gr=Math.round(R*.45);sp=R-gr}
+      else sp=R}
+    [['v',v],['g',gr],['a',au],['s',sp],['t',t]].forEach(([k,n])=>push(k,n));st=e+1});
+  if(G.length)push('u',14);
   return {G,segs}}
 const wkTxt=n=>{const w=Math.round(n/7);return n<10?`${n} ${n===1?'Tag':'Tage'}`:`${w} ${w===1?'Woche':'Wochen'}`};
 /* Für was trainierst du? + Saisonziele (zwischen Plan und KI-Analyse) */
@@ -3659,7 +3677,7 @@ Phone.prototype.vSeason=function(){const s=this.s,{G,segs}=seasonPlan(s);
     const gs=G.map((g,n)=>[g,n]).filter(([g])=>{const e=idxOf(g.d);return e>a&&e<=b}).map(([g,n])=>{const x=+pc(idxOf(g.d));return multi?`<span class="ftl-p" style="left:${x}%">${n+1}</span>`:`<span class="ftl-g ${x<35?'l':''}" style="left:${x}%"><em>${esc(g.t)}</em><b>${ic('flag')}</b></span>`}).join('');
     return `<div class="ftl-r"><div class="ftl-gs">${gs}</div><div class="ftl-b">${bars}</div><div class="ftl-m">${ri===0?'<span class="now" style="left:0">Heute</span>':''}${mk}</div></div>`};
   const cur=segs.find(g=>g.a<=TODAY&&TODAY<g.b)||segs[0],P0=phOf(cur.k),nx=segs[segs.indexOf(cur)+1],goal=G.find(g=>idxOf(g.d)>=cur.b)||G[G.length-1];
-  const sub=cur.k==='t'?`Noch ${wkTxt(cur.b-TODAY)} bis ${esc(goal.t)}`:`Noch ${wkTxt(cur.b-TODAY)}, dann ${phOf(nx?nx.k:'t')[1]}`;
+  const sub=cur.k==='t'?`Noch ${wkTxt(cur.b-TODAY)} bis ${esc(goal.t)}`:`Noch ${wkTxt(cur.b-TODAY)}, dann ${nx?phOf(nx.k)[1]:'startet die neue Saison'}`;
   return head+`<div class="ftl rv"><div class="ftl-now"><small>Aktuelle Phase</small><b style="color:${P0[2]}">${P0[1]}.</b><p>${sub}.<br>${P0[3]}.</p></div>
    ${rows.map(row).join('')}
    ${multi?`<div class="ftl-k">${G.map((g,n)=>`<span><i>${n+1}</i>${esc(g.t)}</span>`).join('')}</div>`:''}
@@ -3674,7 +3692,7 @@ Diese und nächste Woche:
 ${Array.from({length:14},(_,i)=>f(i)).join('\n')}`}
 function fcoOffline(s,q){const ql=q.toLowerCase(),{G,segs}=seasonPlan(s),cur=segs.find(g=>g.a<=TODAY&&TODAY<g.b);
   const ph=cur?`Du bist gerade in der Phase ${phOf(cur.k)[1]} (noch ${wkTxt(cur.b-TODAY)}): ${phOf(cur.k)[3]}.`:'Trag ein Saisonziel mit Datum ein, dann teile ich deine Saison in Phasen ein.';
-  const tip={g:'Viele lockere, lange Einheiten; dazu reichlich Kohlenhydrate an langen Tagen und genug Eiweiß.',a:'Umfang und harte Einheiten steigen – an harten Tagen mehr Kohlenhydrate, nach dem Training 20–30 g Eiweiß.',s:'Trainiere wettkampfnah und teste deine Wettkampfverpflegung.',t:'Weniger Umfang, Intensität kurz halten; die letzten 2–3 Tage vor dem Ziel kohlenhydratbetont essen.'};
+  const tip={v:'Locker wieder einsteigen: kurze, ruhige Einheiten, dazu Kraft und Beweglichkeit. Regelmäßig essen, keine Diät-Experimente.',u:'Erholung hat Vorrang: wenig Struktur, viel Schlaf, ausgewogen essen – der Körper repariert jetzt.',g:'Viele lockere, lange Einheiten; dazu reichlich Kohlenhydrate an langen Tagen und genug Eiweiß.',a:'Umfang und harte Einheiten steigen – an harten Tagen mehr Kohlenhydrate, nach dem Training 20–30 g Eiweiß.',s:'Trainiere wettkampfnah und teste deine Wettkampfverpflegung.',t:'Weniger Umfang, Intensität kurz halten; die letzten 2–3 Tage vor dem Ziel kohlenhydratbetont essen.'};
   if(/lang|vor |nach |verpfleg|riegel|gel/.test(ql))return 'Vor einer langen Einheit (2–3 Stunden vorher): kohlenhydratreich und leicht, z. B. Porridge, Reis oder Brot mit Honig. Unterwegs ab 90 Minuten 60–90 g Kohlenhydrate pro Stunde. Danach innerhalb von einer Stunde Eiweiß plus Kohlenhydrate, z. B. Skyr-Bowl oder ein Reisgericht mit Hähnchen.';
   if(/essen|ernähr|passt|eiweiß|kohlen|mahlzeit/.test(ql))return fitLocal(s,0).map(x=>x.x).join('\n\n');
   return ph+(cur?' '+tip[cur.k]:'')+(G.length?` Dein nächstes Ziel: ${G[0].t} am ${isoLbl(G[0].d)}.`:'')}
@@ -4092,8 +4110,20 @@ const PHS_NM={kraft:'Kraftsport'};
 /* Einträge [Schlüssel, Name, Symbol, Inhalt, Farbe] – jede gewählte Sportart; ohne eigene Texte = allgemeine Version */
 const phsSports=pf=>discAll(pf).map(x=>{const own=PHS_SP.find(y=>y[0]===x[0]);return own?[own[0],own[1],own[2],own[0],DCOL[x[0]]]:[x[0],PHS_NM[x[0]]||x[1],x[3],'allg',DCOL[x[0]]||'#2F7F8F']});
 const phsSport=s=>{const L=phsSports(s.prof);return L.find(x=>x[0]===s.ftSp)||L[0]||['rad','Rennrad','f_bike','rad',FA.bike]};
+/* V205: Vorbereitung und Übergang – gleich für alle Sportarten ('sp' = gewählte Sportart) */
+const PHS_VU={
+ v:{c:'Locker wieder einsteigen.',d:'Nach einer Pause gewöhnst du Körper und Kopf wieder an regelmäßiges Training: kurze, lockere Einheiten, gern auch andere Sportarten, dazu allgemeine Kraft und Beweglichkeit.',
+  z:[['clock','Routine','Feste Trainingstage wieder einplanen.'],['ph_shield','Allgemeine Kraft','Rumpf, Beine und Rücken stärken.'],['f_mob','Beweglichkeit','Steifheit aus der Pause lösen.'],['ph_heart','Abwechslung','Wandern, Laufen, Schwimmen – alles zählt.']],
+  w:[['sp',1,'locker'],['kraft',1,'Kraft'],['rest',0,'Ruhe'],['sp',1,'locker'],['mob',1,'Mobility'],['run',1,'Alternativ'],['rest',0,'Ruhe']],
+  f:'Regelmäßig und ausgewogen essen. Noch kein Bedarf an Extra-Kohlenhydraten – gute Zeit, um Essgewohnheiten zu verbessern.',
+  t:[['Langsam starten.','Die ersten zwei Wochen bewusst kurz und locker halten – die Lust soll wachsen, nicht die Müdigkeit.'],['Kraft jetzt aufbauen.','Zwei Krafteinheiten pro Woche zahlen sich die ganze Saison aus.'],['Ziele festlegen.','Jetzt Saisonziele mit Datum eintragen – daraus entsteht dein Plan.']]},
+ u:{c:'Erholen und auftanken.',d:'Nach einem Saisonhöhepunkt braucht der Körper echte Erholung. Wenig Struktur, Bewegung nach Lust und Laune, Kopf frei bekommen. Zwischen zwei Zielen reichen ein paar Tage bis eine Woche, am Saisonende auch länger.',
+  z:[['refresh','Regeneration','Muskeln, Sehnen und Hormone erholen sich.'],['ph_heart','Motivation','Wieder Lust aufs Training bekommen.'],['spark','Rückblick','Was lief gut, was willst du ändern?'],['leaf','Auftanken','Gut essen und viel schlafen.']],
+  w:[['rest',0,'Ruhe'],['sp',1,'locker'],['rest',0,'Ruhe'],['run',1,'nach Lust'],['rest',0,'Ruhe'],['sp',1,'locker'],['rest',0,'Ruhe']],
+  f:'Ausgewogen essen, Eiweiß für die Reparatur der Muskeln. Weniger Training heißt etwas weniger Energiebedarf – Portionen anpassen.',
+  t:[['Pause ist Training.','Ohne Erholung kommt die nächste Form nicht – auch Profis machen nach der Saison bewusst Pause.'],['Ohne Plan bewegen.','Rad, Wandern, Schwimmen – alles erlaubt, Hauptsache locker und mit Freude.'],['Notizen machen.','Kurz festhalten, was diese Saison funktioniert hat – das macht die nächste Planung leichter.']]}};
 const phsDay=(s,ph,cur)=>{const {segs}=seasonPlan(s);if(cur&&cur.k===ph)return TODAY;const g=segs.find(x=>x.k===ph);return g?g.a:TODAY};
-const phsData=(s,ph,cur)=>{const SP=phsSport(s),se=seasonOf(phsDay(s,ph,cur)),base=PHS[SP[3]][ph],win=se==='w'&&PHS_WIN[SP[3]]&&PHS_WIN[SP[3]][ph];return {SP,se,C:Object.assign({},base,win||{}),indoor:se==='w'&&['rad','tri'].includes(SP[3])}};
+const phsData=(s,ph,cur)=>{const SP=phsSport(s),se=seasonOf(phsDay(s,ph,cur)),base=PHS[SP[3]][ph]||PHS_VU[ph],win=se==='w'&&PHS_WIN[SP[3]]&&PHS_WIN[SP[3]][ph];return {SP,se,C:Object.assign({},base,win||{}),indoor:se==='w'&&['rad','tri'].includes(SP[3])}};
 /* Einheiten je Sportart; im Winter keine Radeinheiten über 1,5 h */
 const phsWork=(s,ph,cur)=>{const {SP,indoor}=phsData(s,ph,cur),k=SP[3];if(!['rad','tri','lauf'].includes(k))return [];
   return WORK.filter(w=>w.ph===ph&&(k==='lauf'?w.a==='run':true)&&!(indoor&&w.a==='bike'&&w.min>90))};
@@ -4102,7 +4132,7 @@ Phone.prototype.vPhase=function(ph,cur){const s=this.s,{SP,se,C,indoor}=phsData(
   const day=([a,lv,t],j)=>{const col=a==='rest'?'#C7C7CC':a==='z'?'#006039':a==='sp'?SP[4]:a==='tri'?FA.swim:FA[a],icn=a==='z'?'flag':a==='sp'?SP[2]:a==='tri'?'f_tri':'f_'+a;
     return `<div class="phw-d ${a==='rest'?'rest':''}"><small>${['Mo','Di','Mi','Do','Fr','Sa','So'][j]}</small><span class="phw-i" style="--c:${col};--o:${lv?[0,.35,.65,1][lv]:0}">${a==='rest'?'':a==='sp'?dIc(icn,SP[1]):ic(icn)}</span><em>${t}</em></div>`};
   return `${L.length>1?`<div class="phs-sw ${L.length>3?'many':''}">${L.map(([k,t,icn])=>`<button class="${k===SP[0]?'on':''}" data-a="ftsp" data-v="${k}">${dIc(icn,t)}${esc(t)}</button>`).join('')}</div>`:''}
-   <div class="phc rv" style="--pc:${P0[2]}"><div class="phc-eb">${isCur?'Deine aktuelle Trainingsphase':'Phase '+n+' von 4'} · ${esc(SP[1])}</div>
+   <div class="phc rv" style="--pc:${P0[2]}"><div class="phc-eb">${isCur?'Deine aktuelle Trainingsphase':'Phase '+n+' von '+PH.length} · ${esc(SP[1])}</div>
     <h3>${n}. ${P0[1]}</h3><b class="phc-cl">${C.c}</b><p>${C.d}</p>
     <span class="phc-se" style="--sc:${SE[2]}">${ic(SE[1])}${SE[0]}${indoor?' · Rad drinnen':''}</span>
     ${wk?`<div class="phc-pr"><span>Phasenfortschritt</span><span>Woche ${Math.min(wk[0],wk[1])} von ${wk[1]}</span></div><div class="phc-bar"><i style="width:${Math.min(100,Math.round(Math.min(wk[0],wk[1])/wk[1]*100))}%"></i></div>`:''}</div>
@@ -4122,7 +4152,7 @@ Phone.prototype.vFtrain=function(){const s=this.s,{segs}=seasonPlan(s),cur=segs.
    <div class="top-row between"><span></span><button class="iconbtn" data-a="tab" data-v="plan" aria-label="Zur Ernährung">${ic('up')}</button></div>
    <div class="eb">${esc(SP[1])}${cur?' · aktuell '+phOf(cur.k)[1]:''}</div>
    <h1 class="ap-h1">Training. <span>Für jede Phase.</span></h1>
-   <div class="mseg ph4">${PH.map(([k,t,c])=>{const m=hasW?phsWork(s,k,cur).length:0;return `<button class="${ph===k?'on':''}" style="--pc:${c}" data-a="ftph" data-v="${k}"><i></i><b>${t}</b>${m?`<small>${m}</small>`:''}</button>`}).join('')}</div>
+   <div class="mseg ph4 ph6">${PH.map(([k,t,c])=>{const m=hasW?phsWork(s,k,cur).length:0;return `<button class="${ph===k?'on':''}" style="--pc:${c}" data-a="ftph" data-v="${k}"><i></i><b>${t}</b>${m?`<small>${m}</small>`:''}</button>`}).join('')}</div>
    ${this.vPhase(ph,cur)}
    ${hero?`<h2 class="ap-h2 ft-h">Einheiten. <span>Passend zur Phase.</span></h2>
    <button class="fthero" data-a="fwo" data-v="${hero.id}"><span class="rh-tx"><small>${cur&&cur.k===ph?'Empfehlung für deine Phase':P[1]}</small><b>${hero.n}</b><span class="fth-m">${fDur(hero.min)} · ${hero.tss} TSS</span>${woBars(hero)}<i>Ansehen${ic('right')}</i></span></button>
@@ -4430,11 +4460,17 @@ const IMG_FL_KIT='img/img_fl_kit-2eb6df09.webp';
 const IMG_FL_PORT='img/img_fl_port-d3a8427b.webp';
 const IMG_FL_SIT='img/img_fl_sit-4a988d2b.webp';
 const FDECKS=[
- {id:'fphase',t:'Trainingsphasen',e:'📈',c:['#D7EDE1','#8FC5A6'],sub:'Grundlage, Aufbau, Spezifisch, Tapering',cards:[
-  ['🧱','Grundlage','Viel ruhiges Training in Zone 2. Dein Körper baut Mitochondrien und Kapillaren auf – das Fundament für alles Weitere.','80 % deiner Zeit locker, auch wenn es sich „zu leicht“ anfühlt.'],
-  ['📈','Aufbau','Jetzt kommen Sweet Spot und Schwelle dazu. Umfang bleibt hoch, die Intensität steigt schrittweise.','Nach 3 harten Wochen eine leichte Woche einplanen.'],
-  ['🎯','Spezifisch','Trainiere, was dein Rennen verlangt: lange Anstiege, Renntempo, Verpflegung testen.','Fahre einmal die geplante Rennverpflegung unter Last.'],
-  ['🪶','Tapering','1–2 Wochen vor dem Ziel weniger Umfang, kurze Intensität bleibt. So startest du frisch.','Nicht neu probieren – nur ausruhen und schärfen.']]},
+ {id:'fphase',t:'Trainingsphasen',e:'📈',c:['#D7EDE1','#8FC5A6'],sub:'Von der Vorbereitung bis zum Übergang',cards:[
+  ['🗺️','Die Saison in Phasen','Wer das ganze Jahr gleich trainiert, tritt irgendwann auf der Stelle. Ein Saisonplan teilt die Zeit bis zum Ziel in Abschnitte mit eigenem Schwerpunkt: Vorbereitung, Grundlage, Aufbau, Spezifisch, Tapering und Übergang.','Geplant wird rückwärts – vom Zieldatum zum heutigen Tag. Die App macht das automatisch, sobald du ein Saisonziel einträgst.'],
+  ['🧩','Basis- und Renn-Fähigkeiten','Es gibt zwei Gruppen von Fähigkeiten. Basis: Ausdauer, Kraft und eine saubere Technik. Renn-Fähigkeiten: lange zügige Abschnitte, Leistung an der Schwelle, kurze harte Belastungen und Sprints. Die Renn-Fähigkeiten bauen auf der Basis auf.','Weit weg vom Ziel steht die Basis im Vordergrund, je näher das Ziel rückt, desto mehr die Renn-Fähigkeiten.'],
+  ['🌱','Vorbereitung · 1–4 Wochen','Der Wiedereinstieg nach einer Pause: kurze, lockere Einheiten, gerne auch andere Sportarten, dazu Kraft und Beweglichkeit. Ziel ist, wieder in einen Rhythmus zu kommen.','Lieber zu locker als zu hart – die Saison ist noch lang.'],
+  ['🧱','Grundlage · etwa 2–3 Monate','Die längste Phase. Viel ruhiges Ausdauertraining, Krafttraining und Technik. Hier entsteht das Fundament, auf dem später die harten Einheiten aufsetzen.','Rund 80 % der Zeit locker – auch wenn es sich „zu leicht“ anfühlt.'],
+  ['📈','Aufbau & Spezifisch · zusammen 6–8 Wochen','Jetzt wird es renntypisch: Schwelle, Tempo, Intervalle und Einheiten, die deinem Ziel ähneln – Anstiege, Renntempo, Verpflegung unter Last. Die Basis wird nur noch erhalten.','2–3 Wochen steigern, dann eine leichtere Woche. So wird die Belastung verarbeitet.'],
+  ['🪶','Tapering · 1–2 Wochen','Der Umfang sinkt deutlich, kurze intensive Reize bleiben. Die Müdigkeit verschwindet, die Form bleibt – du kommst frisch an den Start.','Nichts Neues mehr ausprobieren und verpasste Einheiten nicht nachholen.'],
+  ['🏁','Rennblock · 1–3 Wochen','Liegen mehrere Rennen kurz hintereinander, wird zwischen ihnen nicht mehr aufgebaut: erholen, kurz schärfen, wieder starten.','Nach jedem Rennen erst Erholung, dann ein bis zwei kurze, knackige Einheiten.'],
+  ['🛋️','Übergang · wenige Tage bis 4 Wochen','Nach einem Saisonhöhepunkt braucht der Körper echte Erholung – körperlich und im Kopf. Bewegung nach Lust, wenig Struktur.','Am Saisonende darf die Pause länger sein, zwischen zwei Zielen reichen ein paar Tage.'],
+  ['🔁','Das zweite Saisonziel','Wie viel Zeit bis zum nächsten Ziel bleibt, bestimmt den Plan. Ab etwa 12 Wochen: rund eine Woche Übergang, dann je 3–4 Wochen Grundlage, Aufbau und Spezifisch, zum Schluss Tapering. Bei 7–11 Wochen: kurze Pause, 2–4 Wochen Grundlage, 2–4 Wochen spezifisch und eine Woche Tapering. Unter 7 Wochen: nur 2–3 Tage locker, dann direkt wieder rennspezifisch.','Trag alle Saisonziele ein – die App teilt die Abschnitte dazwischen automatisch so ein.'],
+  ['📅','Der Wochen-Rhythmus','Jede Phase besteht aus Wochenblöcken. Typisch sind zwei bis drei Wochen mit steigender Belastung und danach eine leichtere Woche. Erst in der Erholung wird das Training zu Form.','Fühlst du dich nach der Ruhewoche frisch und stark, war der Block richtig dosiert.']]},
  {id:'fzone',t:'Zonen & FTP',e:'⚡',c:['#FDE9D6','#F2B37E'],sub:'Wie hart ist hart?',cards:[
   ['⚡','Was ist die FTP?','Die Leistung, die du etwa eine Stunde halten kannst. Alle Zonen werden in Prozent davon angegeben.','Alle 6–8 Wochen neu testen.'],
   ['🟢','Zone 2 (56–75 %)','Locker, du kannst ganze Sätze sprechen. Hier entsteht die Ausdauer.',''],
@@ -4471,7 +4507,7 @@ const ILL={
  frec:()=>svgUrl(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180"><defs><linearGradient id="n" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2B3A6B"/><stop offset="1" stop-color="#6E7FB8"/></linearGradient></defs><rect width="320" height="180" fill="url(#n)"/><circle cx="230" cy="62" r="34" fill="#F5E6B8"/><circle cx="246" cy="52" r="32" fill="#2F3F72"/>${[[40,40],[80,22],[120,58],[170,30],[290,110],[60,120],[280,30]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="2.2" fill="#fff" opacity=".8"/>`).join('')}<path d="M20 150 q40 -26 90 -14 t110 0 t100 -6 V180 H20Z" fill="#fff" opacity=".18"/></svg>`),
  fmobk:()=>svgUrl(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 180"><rect width="320" height="180" fill="#E9F3EC"/></svg>`),
 };
-const FSTORY={fphase:['Die Saison richtig planen.','Grundlage, Aufbau, Spezifisch, Tapering – wann welche Einheit Sinn macht.',ILL.fphase],
+const FSTORY={fphase:['Die Saison richtig planen.','Von der Vorbereitung bis zum Übergang – wie lange jede Phase dauert und worauf es ankommt.',ILL.fphase],
  fberg:['Der Weg nach oben.','Pässe wie Tourmalet und Stilfser Joch richtig einteilen.',()=>IMG_FL_SIGN],
  fzone:['Wie hart ist hart?','FTP und Trainingszonen einfach erklärt.',()=>IMG_FL_RIDE],
  frec:['Stärker in der Pause.','Schlaf, aktive Erholung und leichte Wochen.',()=>IMG_FL_SIT],
