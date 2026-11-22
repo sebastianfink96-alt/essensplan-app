@@ -3555,7 +3555,7 @@ Phone.prototype.vLearn=function(){const s=this.s;const L=s.learn||{};
    <p class="ap-sub">Kurze Lektionen zu Saucen, Technik und Meal Prep. Öffnen und Karte für Karte weiterwischen.</p>
    <div class="lstories">${LAY.map(([id,ty])=>DECK[id]?story(DECK[id],ty):'').join('')}</div>
   </div></div>`};
-Phone.prototype.vDeck=function(){const s=this.s,d=DECK[s.deck],n=d.cards.length,k=DECKS.indexOf(d),nx=DECKS[k+1];
+Phone.prototype.vDeck=function(){const s=this.s,d=DECK[s.deck],n=d.cards.length,DL=DECKS.includes(d)?DECKS:FDECKS,k=DL.indexOf(d),nx=DL[k+1];
   return `<div class="lk" style="--d1:${d.c[0]};--d2:${d.c[1]}"><div class="lk-bg"></div>
    <div class="lk-top"><button class="iconbtn" data-a="lback" aria-label="Zurück zum Lerncenter">${ic('left')}</button><div class="lk-h"><small>Kartei ${k+1}</small><b>${d.t}</b></div><span class="lk-c">1/${n}</span></div>
    <div class="lk-dots">${d.cards.map((_,i)=>`<i class="${i?'':'on'}"></i>`).join('')}<i class="end"></i></div>
