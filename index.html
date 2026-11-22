@@ -2078,6 +2078,19 @@ img,svg{-webkit-user-drag:none}
 .fdc-card.wph{padding-top:0;overflow:hidden}
 .fdc-card .fdc-img{width:calc(100% + 36px)!important;height:auto!important;border-radius:0!important}
 .fdc-img{display:block;width:calc(100% + 36px);margin:0 -18px 14px;aspect-ratio:3/2;object-fit:cover}
+.fd-solo{margin-top:16px;background:#fff;border-radius:18px;padding:14px 16px 16px;box-shadow:0 0 0 1px rgba(0,0,0,.05)}
+.fd-solo ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.fd-solo li{display:grid;grid-template-columns:58px 1fr;gap:10px;align-items:start}
+.fd-solo li span{font-size:12px;font-weight:700;color:color-mix(in srgb,var(--c) 80%,#000);background:color-mix(in srgb,var(--c) 12%,#fff);border-radius:8px;padding:3px 6px;text-align:center;font-variant-numeric:tabular-nums}
+.fd-solo li p{margin:0;font-size:14.5px;line-height:1.42;color:#1D1D1F}
+.fd-solo li em{font-style:normal;color:#86868B;font-size:12.5px}
+.fd-solo .obtn{margin-top:14px;width:100%;justify-content:center}
+.fd-mode{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 0 12px}
+.fd-mode button{border:0;border-radius:18px;padding:12px 12px 11px;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.06);text-align:left;display:flex;flex-direction:column;gap:2px}
+.fd-mode b{font-size:16px;font-weight:650;color:#1D1D1F}
+.fd-mode small{font-size:12px;font-weight:600;color:var(--a-eyebrow)}
+.fd-mode span{font-size:12px;line-height:1.35;color:#86868B;margin-top:3px}
+.fd-mode button.on{background:color-mix(in srgb,var(--a-eyebrow) 8%,#fff);box-shadow:0 0 0 2px var(--a-eyebrow)}
 .fthero b{color:#fff!important}
 .fthero+.wo-list{margin-top:10px}
 .phw-d em{overflow-wrap:normal!important}
@@ -2836,8 +2849,8 @@ const FDDATA={
 fd02:{comps:[
   {k:'main',opts:[{id:'heilbutt',n:'Heilbutt aus der Pfanne',e:'🐟',d:'Auf der schönen Seite goldgelb gebraten, dann in schäumender Butter mit Thymian und Knoblauch glasig gegart.',
    i:[['Heilbuttfilet',180,'g'],['Olivenöl',0.5,'EL'],['Butter',15,'g'],['Thymian',0.5,'Zweig'],['Knoblauch (angedrückt)',0.5,'Zehe'],['Dill oder Kerbel (Garnitur)',0.5,'Zweig'],['Kapern (optional)',0.5,'TL'],['Salz',0,''],['Weißer Pfeffer',0,'']],
-   st:[[-22,3,'Heilbutt aus dem Kühlschrank nehmen und mit Küchenpapier trocken tupfen. Noch nicht salzen – erst direkt vor dem Braten.',0,FD02S[1]],
-       [-19,13,'Fisch Raumtemperatur annehmen lassen.',1],
+   st:[[-33,3,'Heilbutt aus dem Kühlschrank nehmen und mit Küchenpapier trocken tupfen. Noch nicht salzen – erst direkt vor dem Braten.',0,FD02S[1]],
+       [-30,25,'Fisch Raumtemperatur annehmen lassen (mindestens 15 Minuten).',1],
        [-5,2,'Fisch salzen. Pfanne auf mittlere bis höhere Hitze bringen, Olivenöl hinein und den Heilbutt auf der schöneren Seite ca. 2 Minuten goldgelb anbraten.'],
        [-3,1,'Vorsichtig wenden, Butter, Thymian und Knoblauch dazugeben.'],
        [-2,2,'Schäumende Butter immer wieder mit einem Löffel über den Fisch geben, je nach Dicke 2–4 Minuten. Innen saftig und gerade durch: 63 °C Kerntemperatur.',0,FD02S[2]]]}]},
@@ -2845,7 +2858,7 @@ fd02:{comps:[
    i:[['Kartoffeln (mehligkochend)',500,'g'],['Grobes Meersalz (Unterlage)',500,'g'],['Milch',50,'ml'],['Sahne',50,'ml'],['Butter (kalt)',50,'g'],['Salz',0.5,'TL'],['Muskat',0,'']],
    st:[[-85,5,'Backofen auf 160 °C vorheizen. Meersalz in ein ofenfestes Gefäß geben und die ungeschälten Kartoffeln darauflegen.',0,FD02S[3]],
        [-80,52,'Kartoffeln 45–60 Minuten im Ofen backen.',1],
-       [-29,6,'Milch und Sahne 1:1 in einen Topf geben, salzen, Muskat frisch dazureiben und bei mittlerer Hitze etwas einkochen lassen.',1],
+       [-31,6,'Milch und Sahne 1:1 in einen Topf geben, salzen, Muskat frisch dazureiben und bei mittlerer Hitze etwas einkochen lassen.',1],
        [-27,2,'Kartoffeln mit Zange herausnehmen und nur kurz abkühlen lassen – beim Pressen müssen sie noch heiß sein.'],
        [-25,5,'Kartoffeln quer halbieren, mit der Schnittfläche nach unten in die Presse legen und pressen. Nie mit dem Pürierstab – sonst wird es klebrig.',0,FD02S[4]],
        [-20,3,'Die Masse in den Topf geben und die Milch-Sahne-Mischung nach und nach bei leicht reduzierter Hitze glatt einrühren.',0,FD02S[5]],
@@ -2853,15 +2866,15 @@ fd02:{comps:[
   {k:'side2',opts:[{id:'spinat',n:'Feiner Blattspinat',e:'🥬',d:'Babyspinat mit Schalotte und Knoblauch nur kurz zusammenfallen lassen, mit Butter, einem Hauch Obers und Zitrone.',
    i:[['Babyspinat',150,'g'],['Schalotte (klein)',0.5,'Stk'],['Knoblauch',0.5,'Zehe'],['Butter',7,'g'],['Olivenöl',0.5,'EL'],['Schlagobers (optional)',1,'EL'],['Bio-Zitrone (Abrieb und Saft)',0.25,'Stk'],['Salz',0,''],['Weißer Pfeffer',0,''],['Muskat',0,'']],
    st:[[-75,8,'Spinat waschen und gut trocknen. Schalotte sehr fein würfeln, Knoblauch fein hacken.',0,FD02S[6]],
-       [-8,2,'Olivenöl und die Hälfte der Butter in einer großen Pfanne erhitzen. Schalotte glasig anschwitzen, Knoblauch kurz mitgaren – nicht bräunen.',0,FD02S[7]],
-       [-6,3,'Spinat portionsweise dazugeben und 1–2 Minuten zusammenfallen lassen. Restliche Butter und nach Wunsch Obers unterrühren, abschmecken. Vom Herd nehmen, Zitronenabrieb und ein paar Tropfen Saft untermischen.',0,FD02S[8]]]}]},
+       [-15,2,'Olivenöl und die Hälfte der Butter in einer großen Pfanne erhitzen. Schalotte glasig anschwitzen, Knoblauch kurz mitgaren – nicht bräunen.',0,FD02S[7]],
+       [-13,3,'Spinat portionsweise dazugeben und 1–2 Minuten zusammenfallen lassen. Restliche Butter und nach Wunsch Obers unterrühren, abschmecken. Vom Herd nehmen, Zitronenabrieb und ein paar Tropfen Saft untermischen, zugedeckt warm halten.',0,FD02S[8]]]}]},
   {k:'sauce',opts:[
    {id:'nussbutter',n:'Zitronen-Nussbutter',e:'🍋',d:'Leicht gebräunte Butter mit Weißwein und Zitrone, zum Schluss mit kalter Butter glänzend montiert.',
     i:[['Butter',25,'g'],['Weißwein (trocken)',1,'EL'],['Zitronensaft',0.5,'TL'],['Bio-Zitrone (Abrieb)',0,''],['Butter (kalt, zum Montieren)',0.5,'EL'],['Salz',0,'']],
-    st:[[-15,3,'Butter in einem kleinen Topf schmelzen und bei mittlerer Hitze leicht bräunen, bis sie nussig duftet.',0,FD02S[9]],
-        [-12,2,'Mit Weißwein ablöschen und kurz reduzieren lassen.'],
-        [-10,1,'Zitronensaft und Zitronenabrieb dazugeben.'],
-        [-9,1,'Vom Herd nehmen, kalte Butter einrühren und mit Salz abschmecken. Die Sauce soll glänzen und leicht cremig sein. Warm halten.',0,FD02S[10]]]},
+    st:[[-10,2,'Butter in einem kleinen Topf schmelzen und bei mittlerer Hitze leicht bräunen, bis sie nussig duftet.',0,FD02S[9]],
+        [-8,1,'Mit Weißwein ablöschen und kurz reduzieren lassen.'],
+        [-7,1,'Zitronensaft und Zitronenabrieb dazugeben.'],
+        [-6,1,'Vom Herd nehmen, kalte Butter einrühren und mit Salz abschmecken. Die Sauce soll glänzen und leicht cremig sein. Warm halten.',0,FD02S[10]]]},
    ]}]},
  fd01:{comps:[
   {k:'main',opts:[{id:'filet',n:'Rinderfilet rosa',e:'🥩',d:'Bei Niedrigtemperatur im Ofen gegart, vorher scharf angebraten – gleichmäßig rosa bis an den Rand.',
@@ -2916,26 +2929,41 @@ fd02:{comps:[
 let FDCUR=null;const fdN=k=>k==='side'&&FDCUR&&FDCUR.fd&&FDCUR.fd.comps.some(c=>c.k==='side2')?'Beilage 1':FD_COMP[k][0];
 const fdSel=(s,r)=>{const o=(s.fdSel&&s.fdSel[r.id])||{},R0={};r.fd.comps.forEach(c=>{R0[c.k]=c.opts.find(x=>x.id===o[c.k])?o[c.k]:c.opts[0].id});return R0};
 const fdOpt=(r,k,sel)=>{const c=r.fd.comps.find(x=>x.k===k);return c.opts.find(x=>x.id===sel[k])||c.opts[0]};
-const fdSteps=(r,sel)=>{const L=[];r.fd.comps.forEach((c,ci)=>{const o=fdOpt(r,c.k,sel);o.st.forEach(([a,d,t,p,im])=>L.push({k:c.k,ci,o,a,d,t,p:!!p,img:im||null}))});
+const fdStepsRaw=(r,sel)=>{const L=[];r.fd.comps.forEach((c,ci)=>{const o=fdOpt(r,c.k,sel);o.st.forEach(([a,d,t,p,im])=>L.push({k:c.k,ci,o,a,d,t,p:!!p,img:im||null}))});
   return L.sort((x,y)=>x.a-y.a||x.ci-y.ci)};
+/* V204: Modus – 'p' Profi (parallel, wenig Wechsel), 'h' Hobby (Baustein für Baustein), only = nur ein Baustein */
+let FDOPT={mode:'p',only:null};
+const fdMode=s=>s.fdMode==='h'?'h':'p';
+/* Baustein am Stück: Leerlauf zwischen den Schritten fällt weg, nur echtes Warten (Backen, Ruhen) bleibt */
+const fdChain=L=>{let t=0;return L.map((x,i)=>{const y=Object.assign({},x,{a:t}),nx=L[i+1];
+  t+=x.p&&nx&&nx.a<x.a+x.d?Math.max(0,nx.a-x.a):x.d;return y})};
+const fdShiftEnd=L=>{const e=Math.max(...L.map(x=>x.a+x.d));return L.map(x=>Object.assign(x,{a:x.a-e}))};
+const fdSteps=(r,sel,o=FDOPT)=>{const L=fdStepsRaw(r,sel);
+  if(o.only)return fdShiftEnd(fdChain(L.filter(x=>x.k===o.only)));
+  if(o.mode==='h'){const ks=r.fd.comps.map(c=>c.k).filter(k=>k!=='main').sort((a,b)=>Math.min(...L.filter(x=>x.k===a).map(x=>x.a))-Math.min(...L.filter(x=>x.k===b).map(x=>x.a)));
+    if(r.fd.comps.some(c=>c.k==='main'))ks.push('main');let t=0,out=[];
+    ks.forEach(k=>{const B=fdChain(L.filter(x=>x.k===k));B.forEach(x=>{x.a+=t});t=Math.max(t,...B.map(x=>x.a+x.d));out=out.concat(B)});return fdShiftEnd(out)}
+  /* Profi: zeitlich parallel, aber beim selben Baustein bleiben, solange der nächste Schritt höchstens 4 Min später dran ist */
+  const rest=L.slice(),out=[];let last=null;while(rest.length){const m=rest[0].a;let i=last?rest.findIndex(x=>x.k===last&&x.a<=m+4):-1;if(i<0)i=0;const x=rest.splice(i,1)[0];out.push(x);last=x.k}
+  return out};
 const fdHm=m=>{m=Math.round(Math.abs(m));return m<60?`${m} Min`:`${Math.floor(m/60)}:${String(m%60).padStart(2,'0')} h`};
 /* Gewählte Varianten in Zutaten, Schritte und Zeit des Rezepts übernehmen (Einkaufsliste, Vorlesen usw. arbeiten damit weiter) */
-function fdApply(r,sel){const S=fdSteps(r,sel);r.i=[];const seen={};
+function fdApply(r,sel){const S=fdStepsRaw(r,sel);r.i=[];const seen={};
   r.fd.comps.forEach(c=>fdOpt(r,c.k,sel).i.forEach(([n,q,u])=>{const k=n+'|'+u;if(seen[k]&&q){seen[k][1]+=q}else if(!seen[k]){seen[k]=[n,q,u];r.i.push(seen[k])}}));
   r.st=S.map(x=>`${fdN(x.k)}: ${x.t}`);r.m=Math.round(-S[0].a)}
 FDDATA.fd02.comps[3].opts.push(FDDATA.fd01.comps[2].opts.find(o=>o.id==='beurre'));
 Object.entries(FDDATA).forEach(([id,fd])=>{const r=RM[id];if(r){r.fd=fd;fdApply(r,fdSel({},r))}});
 /* Timeline: je Baustein eine Zeile, Balken = Schritte (voll = aktiv, hell = läuft nebenbei) */
-function fdTL(r,sel,cur,mini){const S=fdSteps(r,sel),A=S[0].a,span=-A,pc=x=>((x-A)/span*100).toFixed(2),ci=cur?S.indexOf(cur):-1;
+function fdTL(r,sel,cur,mini){const S=fdSteps(r,sel),A=Math.min(...S.map(x=>x.a)),span=-A,pc=x=>((x-A)/span*100).toFixed(2),ci=cur?S.indexOf(cur):-1;
   const now=cur?`<i class="tl-nw" style="left:${pc(cur.a)}%"></i>`:'';
-  const rows=r.fd.comps.map(c=>{const C=FD_COMP[c.k];return `<div class="tl-r"><span class="tl-l"><i style="background:${C[1]}"></i>${fdN(c.k)}</span><span class="tl-t">${S.filter(x=>x.k===c.k).map(x=>`<b class="${x.p?'p':''}${x===cur?' on':''}${ci>=0&&S.indexOf(x)<ci?' dn':''}" style="left:${pc(x.a)}%;width:${Math.max(1.8,x.d/span*100).toFixed(2)}%;--c:${C[1]}"></b>`).join('')}${now}</span></div>`}).join('');
-  const st=span>150?60:span>70?30:15,tk=[];for(let t=Math.ceil(A/st)*st;t<=0;t+=st)if(t-A>=st*.45||t===0)tk.push(t);
+  const rows=r.fd.comps.filter(c=>!FDOPT.only||c.k===FDOPT.only).map(c=>{const C=FD_COMP[c.k];return `<div class="tl-r"><span class="tl-l"><i style="background:${C[1]}"></i>${fdN(c.k)}</span><span class="tl-t">${S.filter(x=>x.k===c.k).map(x=>`<b class="${x.p?'p':''}${x===cur?' on':''}${ci>=0&&S.indexOf(x)<ci?' dn':''}" style="left:${pc(x.a)}%;width:${Math.max(1.8,x.d/span*100).toFixed(2)}%;--c:${C[1]}"></b>`).join('')}${now}</span></div>`}).join('');
+  const st=span>150?60:span>70?30:15,tk=[];for(let t=Math.ceil(A/st)*st;t<=0;t+=st)if((t-A>=st*.45&&-t>=span*.14)||t===0)tk.push(t);
   return `<div class="tl ${mini?'mini':''}">${rows}<div class="tl-r ax"><span class="tl-l"></span><span class="tl-t"><span style="left:0">Start</span>${tk.map(t=>`<span class="${t===0?'end':''}" style="left:${pc(t)}%">${t===0?'Servieren':'−'+fdHm(t)}</span>`).join('')}</span></div></div>`}
 const fdIngList=(L,s)=>{const nm=n=>n.replace(/\s*\(.*?\)/g,''),sub=n=>{const m=n.match(/\((.*?)\)/);return m?`<small>${m[1]}</small>`:''};
   const main=L.filter(x=>x[1]),sp=L.filter(x=>!x[1]);
   return main.map(([n,q,u])=>`<div class="rz-ir"><span class="e">${emo(n)}</span><span class="n">${nm(n)}${sub(n)}</span><b>${fqg(n,q*s.persons,u)}</b></div>`).join('')
    +(sp.length?`<div class="rz-ir"><span class="e">🧂</span><span class="n">${sp.map(x=>nm(x[0])).join(', ')}<small>nach Geschmack</small></span><b></b></div>`:'')};
-Phone.prototype.vFdDetail=function(r,btn,eb,E){FDCUR=r;const s=this.s,sel=fdSel(s,r),S=fdSteps(r,sel),tab=r.fd.comps.find(c=>c.k===s.fdTab)?s.fdTab:r.fd.comps[0].k;
+Phone.prototype.vFdDetail=function(r,btn,eb,E){FDCUR=r;const s=this.s,sel=fdSel(s,r);FDOPT={mode:'p',only:null};const S=fdSteps(r,sel),tab=r.fd.comps.find(c=>c.k===s.fdTab)?s.fdTab:r.fd.comps[0].k;
   const C=r.fd.comps.find(c=>c.k===tab),o=fdOpt(r,tab,sel),col=FD_COMP[tab][1],OS=S.filter(x=>x.k===tab),act=OS.filter(x=>!x.p).reduce((a,x)=>a+x.d,0);
   const first=S[0],fc=fdN(first.k);
   return `<div class="view det rz fdv" style="padding-bottom:130px"><div class="z">
@@ -2953,35 +2981,41 @@ Phone.prototype.vFdDetail=function(r,btn,eb,E){FDCUR=r;const s=this.s,sel=fdSel(
     <div class="fd-card"><b>${o.n}</b><p>${o.d}</p><span class="fd-when">${ic('clock')}Start ${fdHm(OS[0].a)} vor dem Servieren · ca. ${act} Min aktiv</span></div>
     ${OS.some(x=>x.img)?`<div class="fd-ph">${OS.filter(x=>x.img).map(x=>`<span><img src="${x.img}" alt="" decoding="async"><small>${x.t.split(/[.,–]/)[0]}</small></span>`).join('')}</div>`:''}
     <div class="rz-ing">${fdIngList(o.i,s)}</div>
+    ${(()=>{FDOPT={mode:'p',only:tab};const B=fdSteps(r,sel),tot=-Math.min(...B.map(x=>x.a));FDOPT={mode:fdMode(s),only:null};
+     return `<div class="fd-solo"><div class="fd-lbl">So bereitest du ${tab==='main'?'die Hauptzutat':tab==='sauce'?'die Sauce':'die Beilage'} zu</div>
+      <ol>${B.map(x=>`<li><span>${Math.round(x.a+tot)<=0?'Start':'+'+fdHm(x.a+tot)}</span><p>${x.t}${x.p?' <em>· läuft nebenbei</em>':''}</p></li>`).join('')}</ol>
+      <button class="obtn" data-a="fdsolo" data-v="${tab}">${ic('chef')}Nur ${fdN(tab)} kochen · ${fdHm(tot)}</button></div>`})()}
    </div>
    <div class="eb rz-eb2">Ablauf</div>
-   <h2 class="ap-h1 rz-t2">Alles zur richtigen Zeit. <span>Rückwärts vom Servieren.</span></h2>
+   <h2 class="ap-h1 rz-t2">Alles zur richtigen Zeit. <span>Wähle deinen Stil.</span></h2>
+   ${(()=>{const tt=m=>{FDOPT={mode:m,only:null};return -Math.min(...fdSteps(r,sel).map(x=>x.a))},tp=tt('p'),th=tt('h');FDOPT={mode:fdMode(s),only:null};
+    return `<div class="fd-mode">${[['p','Profi','parallel · '+fdHm(tp),'Mehrere Töpfe gleichzeitig, alles wird zur selben Zeit fertig.'],['h','Hobby','nacheinander · '+fdHm(th),'Ein Baustein nach dem anderen – fertige Teile hältst du warm.']].map(([k,t,sub,d])=>`<button class="${fdMode(s)===k?'on':''}" data-a="fdmode" data-v="${k}"><b>${t}</b><small>${sub}</small><span>${d}</span></button>`).join('')}</div>`})()}
    ${fdTL(r,sel)}
    <div class="tl-k"><span><i></i>du bist aktiv</span><span class="p"><i></i>läuft nebenbei</span></div>
-   <div class="rz-tip"><b>${ic('spark')}Vorziehen</b><p>Starte mit der ${fc}: ${first.o.n} braucht am längsten (${fdHm(first.a)}). ${S.filter(x=>x.p).length} Schritte laufen nebenbei – in der Zeit bereitest du den Rest vor.</p></div>
+   ${fdMode(s)==='p'?`<div class="rz-tip"><b>${ic('spark')}Vorziehen</b><p>Starte mit der ${fc}: ${first.o.n} braucht am längsten (${fdHm(first.a)}). ${S.filter(x=>x.p).length} Schritte laufen nebenbei – in der Zeit bereitest du den Rest vor.</p></div>`:`<div class="rz-tip"><b>${ic('spark')}Nacheinander</b><p>Du kochst ${(()=>{FDOPT={mode:'h',only:null};const ks=[...new Set(fdSteps(r,sel).map(x=>x.k))];return ks.map(fdN).join(' → ')})()}. Fertige Beilagen und Sauce zugedeckt bei kleiner Hitze oder im Ofen bei 60 °C warm halten – die Hauptzutat kommt zum Schluss, damit sie frisch auf den Teller kommt.</p></div>`}
    <p class="fd-note">Die Schritte siehst du nach „Jetzt kochen“ – einer pro Seite, mit Timeline.</p>
   </div></div>
   <div class="swipehint"></div>
   <div class="det-top"><button class="iconbtn" data-a="back" aria-label="Zurück">${ic('left')}</button></div>
   <div class="fade-bottom"></div><div class="bottom-cta fd2">${btn.replace('class="gbtn','class="obtn')}<button class="gbtn" data-a="fdcook">${ic('chef')}Jetzt kochen</button></div>`};
 /* Koch-Modus: ein Schritt pro Seite, Timeline mit Position, was nebenbei läuft und was als Nächstes kommt */
-Phone.prototype.vFdCook=function(){const s=this.s,r=RM[s.did];FDCUR=r;if(!r||!r.fd)return '<div class="view"></div>';const sel=fdSel(s,r),S=fdSteps(r,sel),n=S.length,k=Math.max(0,Math.min(s.fdStep||0,n)),end=k>=n,x=S[k],nx=S[k+1];
+Phone.prototype.vFdCook=function(){const s=this.s,r=RM[s.did];FDCUR=r;if(!r||!r.fd)return '<div class="view"></div>';FDOPT={mode:fdMode(s),only:s.fdOnly||null};const sel=fdSel(s,r),S=fdSteps(r,sel),n=S.length,k=Math.max(0,Math.min(s.fdStep||0,n)),end=k>=n,x=S[k],nx=S[k+1];
   const C=x?FD_COMP[x.k]:null,nm=t=>t.replace(/\s*\(.*?\)/g,'');
   const ings=x?x.o.i.filter(([t])=>{const w=nm(t).toLowerCase().split(/[ &-]/)[0];return w.length>2&&x.t.toLowerCase().includes(w.slice(0,Math.max(4,w.length-2)))}):[];
   const run=x?S.filter(y=>y!==x&&y.p&&y.a<x.a+0.01&&y.a+y.d>x.a):[];
   return `<div class="view fdc"><div class="z">
-   <div class="fdc-top"><button class="iconbtn" data-a="fdclose" aria-label="Koch-Modus schließen">${ic('x')}</button><span><small>${end?'Fertig':'Schritt '+(k+1)+' von '+n}</small><b>${r.n}</b></span></div>
+   <div class="fdc-top"><button class="iconbtn" data-a="fdclose" aria-label="Koch-Modus schließen">${ic('x')}</button><span><small>${end?'Fertig':'Schritt '+(k+1)+' von '+n} · ${s.fdOnly?'Nur '+fdN(s.fdOnly):fdMode(s)==='h'?'Hobby · nacheinander':'Profi · parallel'}</small><b>${s.fdOnly?fdOpt(r,s.fdOnly,sel).n:r.n}</b></span></div>
    <div class="fdc-seg">${S.map((y,j)=>`<i class="${j<k?'dn':j===k?'on':''}" style="--c:${FD_COMP[y.k][1]}"></i>`).join('')}</div>
    ${fdTL(r,sel,x,true)}
-   ${end?`<div class="fdc-card fin"><span class="fdc-e">🍽️</span><h3>Anrichten & genießen</h3><p>Alle Bausteine sind fertig. Großer, warmer Teller, Sauce als Spiegel daneben, zum Schluss etwas Grün oder Blüten.</p><button class="gbtn" data-a="fdclose">${ic('check')}Fertig</button></div>`
+   ${end?`<div class="fdc-card fin"><span class="fdc-e">🍽️</span><h3>${s.fdOnly?fdN(s.fdOnly)+' ist fertig':'Anrichten & genießen'}</h3><p>${s.fdOnly?'Zugedeckt warm halten, bis der Rest fertig ist.':'Alle Bausteine sind fertig.'} ${s.fdOnly?'':'Großer, warmer Teller, Sauce als Spiegel daneben, zum Schluss etwas Grün oder Blüten.'}</p><button class="gbtn" data-a="fdclose">${ic('check')}Fertig</button></div>`
    :`<div class="fdc-card ${x.img?'wph':''}" style="--c:${C[1]}">
      ${x.img?`<img class="fdc-img" src="${x.img}" alt="" decoding="async">`:''}<div class="fdc-chip"><i></i>${fdN(x.k)} · ${x.o.n}</div>
-     <div class="fdc-when">${x.a===0?'Zum Servieren':fdHm(x.a)+' vor dem Servieren'} · ca. ${x.d} Min${x.p?' · <em>läuft nebenbei</em>':''}</div>
+     <div class="fdc-when">${s.fdOnly?(x.a===0?'Letzter Handgriff':'noch '+fdHm(x.a)+' bis fertig'):x.a===0?'Zum Servieren':fdHm(x.a)+' vor dem Servieren'} · ca. ${x.d} Min${x.p?' · <em>läuft nebenbei</em>':''}</div>
      <p class="fdc-t">${x.t}</p>
      ${ings.length?`<div class="fdc-i">${ings.map(([t,q,u])=>`<span><em>${emo(t)}</em>${nm(t)}${q?` <b>${fqg(t,q*s.persons,u)}</b>`:''}</span>`).join('')}</div>`:''}
     </div>
     ${run.length?`<div class="fdc-run"><b>Läuft gerade nebenbei</b>${run.map(y=>`<span style="--c:${FD_COMP[y.k][1]}"><i></i>${fdN(y.k)}: ${y.t.split(/[.,–]/)[0]}</span>`).join('')}</div>`:''}
-    <div class="fdc-next">${nx?`<small>Als Nächstes · ${nx.a===x.a?'gleich danach':'in '+fdHm(nx.a-x.a)}</small><span style="--c:${FD_COMP[nx.k][1]}"><i></i><b>${fdN(nx.k)}:</b> ${nx.t}</span>`:`<small>Als Nächstes</small><span><b>Anrichten</b> und servieren</span>`}</div>`}
+    <div class="fdc-next">${nx?`<small>Als Nächstes · ${nx.a<=x.a?'gleich danach':'in '+fdHm(nx.a-x.a)}${nx.k!==x.k&&(s.fdOnly||fdMode(s)==='h')?' · neuer Baustein':''}</small><span style="--c:${FD_COMP[nx.k][1]}"><i></i><b>${fdN(nx.k)}:</b> ${nx.t}</span>`:`<small>Als Nächstes</small><span><b>${s.fdOnly?'Fertig':'Anrichten'}</b> ${s.fdOnly?'– warm halten oder servieren':'und servieren'}</span>`}</div>`}
   </div></div>
   <div class="bottom-cta fdc-nav"><button class="obtn" data-a="fdstep" data-v="-1" ${k===0?'disabled':''}>${ic('left')}Zurück</button>${end?'':`<button class="gbtn" data-a="fdstep" data-v="1">${k===n-1?'Fertig':'Weiter'}${ic('right')}</button>`}</div>`};
 /* ----- Bowls: Dressing / Vinaigrette wählen ----- */
@@ -3327,6 +3361,7 @@ Phone.prototype.reset=function(init){
         Object.entries(Object.assign({},d.tx||{},d.train||{})).forEach(([iso,v])=>{if(!v)return;const i=idxOf(iso);if(i>=0&&i<NDAYS){if(d.train&&d.train[iso]===undefined&&d.tx&&d.tx[iso]&&Object.prototype.hasOwnProperty.call(d,'trainV')&&d.trainV>=155)return;s.train[i]=v}else if(i>=-7)s.tx[iso]=v})}
       if(d.prof&&typeof d.prof==='object')s.prof=Object.assign(s.prof,d.prof);
       if(Array.isArray(d.fstd))s.fstd=Array.from({length:7},(_,j)=>d.fstd[j]||null);
+      if(d.fdMode)s.fdMode=d.fdMode;
       if(d.fdSel&&typeof d.fdSel==='object'){s.fdSel=d.fdSel;Object.entries(d.fdSel).forEach(([id,sl])=>{const r=RM[id];if(r&&r.fd)fdApply(r,fdSel(s,r))})}
       if(d.bdr&&typeof d.bdr==='object'){s.bdr=d.bdr;Object.entries(d.bdr).forEach(([id,v])=>{if(RM[id])bowlApply(RM[id],v)})}
       if(d.bx&&typeof d.bx==='object'){s.bx=d.bx;const st=bxSt(s);if(st.b)bxApply(RM.b11,st)}
@@ -3336,7 +3371,7 @@ Phone.prototype.reset=function(init){
 Phone.prototype.save=function(){if(!this.opts.persist)return;const s=this.s;const plan={};Object.keys(s.plan).forEach(i=>plan[isoOf(+i)]=s.plan[i]);
   data.save({plan,shop:s.shop,favs:[...s.favs],persons:s.persons,done:s.done,doneD:isoOf(TODAY),learn:s.learn,stock:s.stock,
     extra:Object.fromEntries(Object.entries(s.extra).map(([i,v])=>[isoOf(+i),v])),
-    train:Object.fromEntries(Object.entries(s.train).map(([i,v])=>[isoOf(+i),v])),tx:Object.fromEntries(Object.entries(s.tx).filter(([iso])=>{const i=idxOf(iso);return i<0||i>=NDAYS})),trainV:155,fstd:s.fstd,prof:s.prof,fitSeen:s.fitSeen,fdSel:s.fdSel,bdr:s.bdr,bx:s.bx||null,voice:s.voice,fitAI:s.fitAI&&s.fitAI.res?s.fitAI:null,faiC:!!s.faiC})};
+    train:Object.fromEntries(Object.entries(s.train).map(([i,v])=>[isoOf(+i),v])),tx:Object.fromEntries(Object.entries(s.tx).filter(([iso])=>{const i=idxOf(iso);return i<0||i>=NDAYS})),trainV:155,fstd:s.fstd,prof:s.prof,fitSeen:s.fitSeen,fdMode:s.fdMode||'p',fdSel:s.fdSel,bdr:s.bdr,bx:s.bx||null,voice:s.voice,fitAI:s.fitAI&&s.fitAI.res?s.fitAI:null,faiC:!!s.faiC})};
 Phone.prototype.list=function(){const s=this.s;return R.filter(r=>(s.cat==='all'||r.c.includes(s.cat))&&(!s.en||enOf(r)===s.en))};
 Phone.prototype.toast=function(t,btn,act){const old=this.scr.querySelector('.toast');if(old)old.remove();const d=document.createElement('div');d.className='toast'+(btn?' act':'');d.innerHTML=`<span></span>${btn?`<button data-a="${act}">${btn}</button>`:''}`;d.firstChild.textContent=t;this.scr.appendChild(d);setTimeout(()=>d.remove(),btn?4600:2500)};
 Phone.prototype.backAfterPlan=function(d){if(wkOf(d)===0)return this.goPlanToday();const s=this.s;s.screen='plan';s.wk=1;s.sel=7;s.edit=false;s.pick=-1}; /* nächste Woche: dort bleiben (Montag) */
@@ -5575,8 +5610,10 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
      s.bx=st;bxApply(RM.b11,st);haptic();this.render();break}
    case 'bxreset':s.bx=null;s.bxTab='b';this.bxPrev=null;bxApply(RM.b11,BX_EX);haptic();this.render();{const v0=this.scr.querySelector('.view');if(v0)v0.scrollTop=0}break;
    case 'fdopt':{const r=RM[s.did];if(!r||!r.fd)break;s.fdSel=s.fdSel||{};const sl=fdSel(s,r);sl[t.dataset.k]=v;s.fdSel[r.id]=sl;fdApply(r,sl);if(s.shop&&s.shop.length&&Object.values(s.plan).includes(r.id))this.rebuildShop&&this.rebuildShop();haptic();this.render();break}
-   case 'fdcook':s.fdStep=0;s.screen='fdcook';haptic();this.render();{const v0=this.scr.querySelector('.view');if(v0)v0.scrollTop=0}break;
-   case 'fdstep':{const r=RM[s.did];const n=fdSteps(r,fdSel(s,r)).length;s.fdStep=Math.max(0,Math.min(n,(s.fdStep||0)+(+v)));haptic();this.render();break}
+   case 'fdcook':s.fdOnly=null;s.fdStep=0;s.screen='fdcook';haptic();this.render();{const v0=this.scr.querySelector('.view');if(v0)v0.scrollTop=0}break;
+   case 'fdmode':s.fdMode=v;haptic();this.render();break;
+   case 'fdsolo':s.fdOnly=v;s.fdStep=0;s.screen='fdcook';haptic();this.render();{const v0=this.scr.querySelector('.view');if(v0)v0.scrollTop=0}break;
+   case 'fdstep':{const r=RM[s.did];FDOPT={mode:fdMode(s),only:s.fdOnly||null};const n=fdSteps(r,fdSel(s,r)).length;s.fdStep=Math.max(0,Math.min(n,(s.fdStep||0)+(+v)));haptic();this.render();break}
    case 'fdclose':s.screen='detail';haptic();this.render();break;
    case 'bdr':{const r=RM[s.did];s.bdr=s.bdr||{};if(v==='orig')delete s.bdr[r.id];else s.bdr[r.id]=v;bowlApply(r,v);haptic();this.render();break}
    case 'ftsp':s.ftSp=v;haptic();this.render();break;
