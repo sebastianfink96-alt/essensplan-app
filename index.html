@@ -5658,7 +5658,8 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
      if(s.prK==='week'){const w=s.prW!=null?s.prW:(s.wk||0);pages=prWeek(s,w,s.prX!==false,P0);if(s.prDr)pages.push(prDress(P0))}
      else{const r=RM[s.did];if(!r)break;pages=[prRecipe(r,P0)];if(r.c&&r.c.includes('bowl')&&s.prDr)pages.push(prDress(P0))}
      s.prBusy=1;this.prL=null;this.prBlob=null;this.render();const self=this;
-     prImgs(pages).then(L=>{self.prL=L;s.prBusy=0;s.prReady=1;self.render()}).catch(er=>{console.error('PR',er&&er.message||er);s.prBusy=0;self.render();
+     const btn=()=>self.scr.querySelector('.pr-prep');
+     prImgs(pages,(i,n)=>{const b=btn();if(b)b.lastChild.textContent=`Seite ${i} von ${n} wird vorbereitet …`}).then(L=>{self.prL=L;s.prBusy=0;s.prReady=1;self.render()}).catch(er=>{console.error('PR',er&&er.message||er);s.prBusy=0;s.prReady=0;self.render();self.toast('Vorbereiten nicht möglich – es wird direkt gedruckt.');
        /* ohne Bibliothek (offline/Artifact): direkt drucken wie bisher */prRun(pages,self)});break}
    case 'prprint':if(this.prL)prPrintImgs(this.prL,this);break;
    case 'prshare':{if(!this.prBlob&&this.prL){const self=this;s.prBusy=2;this.render();prPdfFrom(this.prL).then(b=>{self.prBlob=b;s.prBusy=0;self.render();self.toast('PDF ist fertig – nochmal auf „PDF teilen“ tippen')}).catch(()=>{s.prBusy=0;self.render();self.toast('PDF konnte nicht erstellt werden.')});break}
@@ -5950,9 +5951,14 @@ function prRun(pages,self){const root=prBuild(pages,150,238);document.body.class
 /* PDF: Bibliotheken bei Bedarf laden (App: lokale Kopie, sonst CDN) */
 const prLoad=(src,cdn)=>new Promise((ok,no)=>{const t=u=>{const x=document.createElement('script');x.src=u;x.onload=ok;x.onerror=()=>u===cdn?no(new Error('lib')):t(cdn);document.head.appendChild(x)};t(src)});
 /* V213: Seiten werden einmal als Bilder erzeugt (unabhängig davon, wie breit Safari druckt). Daraus entstehen Druck und PDF. */
-async function prImgs(pages){if(!window.html2canvas)await prLoad('lib/html2canvas.min.js','https://cdn.jsdelivr.net/npm/html2canvas@1/dist/html2canvas.min.js');
+async function prImgs(pages,prog){if(!window.html2canvas)await prLoad('lib/html2canvas.min.js','https://cdn.jsdelivr.net/npm/html2canvas@1/dist/html2canvas.min.js');
   const root=prBuild(pages,180,265);root.classList.add('pdf','meas');root.style.width='180mm';const P=[...root.children],L=[];
-  for(const p of P){p.style.zoom='';const c=await window.html2canvas(p,{scale:2.2,backgroundColor:'#ffffff',useCORS:true,logging:false});L.push({u:c.toDataURL('image/jpeg',.88),r:c.height/c.width})}
+  /* Nur die Druckseiten kopieren lassen – sonst klont html2canvas je Seite die ganze App mit allen Fotos (iPhone hängt) */
+  const skip=el=>el!==root&&!root.contains(el)&&!el.contains(root)&&!(el.closest&&el.closest('head'))&&el.tagName!=='STYLE'&&el.tagName!=='LINK';
+  const sc=Math.min(2,(window.devicePixelRatio||2));
+  for(let i=0;i<P.length;i++){const p=P[i];p.style.zoom='';prog&&prog(i+1,P.length);await new Promise(r=>setTimeout(r,30));
+    const c=await Promise.race([window.html2canvas(p,{scale:sc,backgroundColor:'#ffffff',useCORS:true,logging:false,imageTimeout:4000,ignoreElements:skip}),new Promise((_,no)=>setTimeout(()=>no(new Error('Zeitüberschreitung')),20000))]);
+    L.push({u:c.toDataURL('image/jpeg',.86),r:c.height/c.width});c.width=c.height=0}
   root.classList.remove('pdf','meas');root.style.width='';root.innerHTML='';return L}
 async function prPdfFrom(L){if(!window.jspdf)await prLoad('lib/jspdf.umd.min.js','https://cdn.jsdelivr.net/npm/jspdf@2/dist/jspdf.umd.min.js');
   const pdf=new window.jspdf.jsPDF({unit:'mm',format:'a4',compress:true});
