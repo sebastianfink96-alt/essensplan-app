@@ -1117,7 +1117,7 @@ html,body{touch-action:manipulation}
 .wtrack{display:flex;width:200%;transition:transform .38s cubic-bezier(.2,.9,.3,1)}
 .week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;flex:1 1 0;min-width:0;padding:0 16px}
 .wlist{display:none}
-.wnav{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;margin:-2px 2px 12px}.wnav .wnext{justify-self:end}
+.wnav{display:flex;justify-content:space-between;gap:10px;align-items:center;margin:-2px 2px 12px}.wnav .wnext{justify-self:end}
 .wdice .ic{width:15px;height:15px}
 .wdots{display:flex;gap:5px}
 .wdots i{width:6px;height:6px;border-radius:3px;background:rgba(120,120,140,.25);transition:width .3s,background .3s}
@@ -5816,7 +5816,7 @@ const prAmt=(n,q,u,P0)=>q?fqg(n,q*P0,u):'n. G.';
 const prNm=n=>n.replace(/\s*\(.*?\)/g,'');
 const prIngs=(L,P0)=>L.map(([n,q,u])=>`<div class="ir"><span class="e">${emo(n)}</span><span class="n">${prEsc(prNm(n))}</span><b>${prAmt(n,q,u,P0)}</b></div>`).join('');
 const prPage=(inner,reg,foot,sub)=>{const k=Math.max(0,PR_REG.findIndex(x=>x[0]===reg)),R0=PR_REG[k];
-  return `<section class="prpg" style="--rc:${reg?R0[2]:'#9A4766'}">${reg?`<i class="reg" style="top:${2+k*16}mm"><span>${R0[1]}</span></i>`:''}
+  return `<section class="prpg" style="--rc:${reg?R0[2]:'#9A4766'}">${reg?`<i class="reg"><span>${R0[1]}</span></i>`:''}
    <div class="kat"><h6>${reg?R0[1]:'Wochenplan'}</h6><div class="kl"><i></i><span>${sub||''}</span><i></i></div></div>${inner}<div class="ft"><span>Essensplan</span><span>${foot||''}</span></div></section>`};
 function prRecipe(r,P0,days){const reg=prReg(r),R0=PR_REG.find(x=>x[0]===reg)||PR_REG[0],M=r.fd?null:stepIngs(r);
   const tags=(days||[]).map(([i,m])=>`<span class="day">${DAYS[(i%7+7)%7]}, ${dm(i)} · ${m}</span>`).join('');
@@ -5827,10 +5827,14 @@ function prRecipe(r,P0,days){const reg=prReg(r),R0=PR_REG.find(x=>x[0]===reg)||P
    ${tags?`<div class="days">${tags}</div>`:''}</div></header>`;
   let body;
   if(r.fd){const sel=fdSel({fdSel:(window.__fdSelSave||{})},r);FDCUR=r;
-    body=r.fd.comps.map(c=>{const o=fdOpt(r,c.k,sel),C=FD_COMP[c.k];const lead=-Math.min(...o.st.map(x=>x[0]));
+    const B=r.fd.comps.map(c=>{const o=fdOpt(r,c.k,sel),C=FD_COMP[c.k];const lead=-Math.min(...o.st.map(x=>x[0]));
      return `<div class="fdb" style="--c:${C[1]}"><h2><i></i>${prEsc(fdN(c.k))}: ${prEsc(o.n)}<small>Start ${fdHm(lead)} vor dem Servieren</small></h2><div class="bd"><div class="ing">${prIngs(o.i,P0)}</div>
-      <div class="stp">${o.st.map((x,k)=>`<div class="s"><span class="no">${String(k+1).padStart(2,'0')}</span><p>${prEsc(x[2])}${x[3]?' <em>(läuft nebenbei)</em>':''}</p></div>`).join('')}</div></div></div>`}).join('')
-     +(r.tip?`<div class="tip"><b>Tipp</b> ${prEsc(r.tip)}</div>`:'')}
+      <div class="stp">${o.st.map((x,k)=>`<div class="s"><span class="no">${String(k+1).padStart(2,'0')}</span><p>${prEsc(x[2])}${x[3]?' <em>(läuft nebenbei)</em>':''}</p></div>`).join('')}</div></div></div>`}),tip=r.tip?`<div class="tip"><b>Tipp</b> ${prEsc(r.tip)}</div>`:'',ft=r.id.toUpperCase()+' · '+prEsc(r.n),zt='Zubereitungszeit · '+fdHm(r.m);
+    /* Fine Dining: Bausteine nach geschätzter Höhe auf Seiten verteilen (max. ca. 225 mm je Seite) */
+    const est=r.fd.comps.map(c=>{const o=fdOpt(r,c.k,sel);return 16+Math.max(o.i.length*6.2,o.st.reduce((a,x)=>a+Math.ceil(x[2].length/40)*5.3+3.6,0))});
+    const P=[[]];let h=82;est.forEach((e,i)=>{if(h+e>225&&P[P.length-1].length){P.push([]);h=12}P[P.length-1].push(B[i]);h+=e});
+    if(tip&&h+22>225)P.push([]);const n=P.length;
+    return P.map((L,k)=>prPage((k?`<div class="cont">${prEsc(r.n)} · Fortsetzung</div>`:head)+L.join('')+(k===n-1?tip:''),reg,ft+(n>1?` · ${k+1}/${n}`:''),zt)).join('')}
   else body=`<div class="bd"><div class="ing"><h3>Zutaten</h3>${prIngs(r.i,P0)}</div>
    <div class="stp"><h3>So gelingt's.</h3>${r.st.map((t,k)=>`<div class="s"><span class="no">${String(k+1).padStart(2,'0')}</span><div><p>${prEsc(t)}</p>${M&&M[k]&&M[k].length?`<div class="chips">${M[k].map(j=>{const [n,q,u]=r.i[j];return `<span>${emo(n)} ${prEsc(prNm(n))} <b>${prAmt(n,q,u,P0)}</b></span>`}).join('')}</div>`:''}</div></div>`).join('')}
    ${r.tip?`<div class="tip"><b>Tipp</b> ${prEsc(r.tip)}</div>`:''}</div></div>`;
@@ -5853,10 +5857,10 @@ const PR_CSS=`@page{size:A4;margin:10mm}
 @media print{html,body{background:#fff!important;height:auto!important;min-height:0!important;overflow:visible!important}body.printing>*:not(#prroot){display:none!important}body.printing #prroot{display:block}}
 #prroot *{box-sizing:border-box}
 #prroot{font-family:Inter,-apple-system,'Helvetica Neue',system-ui,sans-serif;color:#1D1D1F;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-#prroot .prpg{position:relative;width:100%;max-width:180mm;margin:0 auto;padding:0 11mm 0 4mm;break-after:page;page-break-after:always;break-inside:auto}
+#prroot .prpg{position:relative;width:100%;max-width:178mm;margin:0 auto;padding:0 9mm;break-after:page;page-break-after:always;break-inside:auto}
 #prroot .prpg:last-child{break-after:auto;page-break-after:auto}
-#prroot .reg{position:absolute;right:0;width:6mm;height:15mm;border-radius:2.5mm 0 0 2.5mm;background:var(--rc);display:flex;align-items:center;justify-content:center}
-#prroot .reg span{writing-mode:vertical-rl;transform:rotate(180deg);font-size:5pt;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#fff;white-space:nowrap}
+#prroot .reg{position:absolute;right:0;top:0;width:6mm;height:22mm;border-radius:2.5mm 0 0 2.5mm;background:var(--rc);display:flex;align-items:center;justify-content:center}
+#prroot .reg span{writing-mode:vertical-rl;transform:rotate(180deg);font-size:5.5pt;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#fff;white-space:nowrap}
 #prroot .kat{text-align:center;margin:0 0 7mm}
 #prroot .kat h6{margin:0;font-size:24pt;font-weight:200;letter-spacing:.32em;text-transform:uppercase;color:#1D1D1F;padding-left:.32em}
 #prroot .kl{display:flex;align-items:center;gap:3mm;margin:2mm auto 0;max-width:120mm}
@@ -5887,12 +5891,14 @@ const PR_CSS=`@page{size:A4;margin:10mm}
 #prroot .tip{margin-top:5mm;padding:3.5mm 4.5mm;border-left:.6mm solid var(--rc);background:#FAF6F7;font-size:9.4pt;line-height:1.5;break-inside:avoid}#prroot .tip b{font-size:7.5pt;letter-spacing:.16em;text-transform:uppercase;color:var(--rc);margin-right:2mm}
 #prroot .fdb{margin-top:6mm;break-inside:avoid}#prroot .fdb h2{display:flex;align-items:baseline;gap:2mm;margin:0;font-size:12pt;font-weight:700;padding-bottom:1.5mm;border-bottom:.4mm solid var(--c)}
 #prroot .fdb h2 i{width:2.4mm;height:2.4mm;border-radius:50%;background:var(--c);flex:none;align-self:center}#prroot .fdb h2 small{margin-left:auto;font-size:8.3pt;font-weight:600;color:var(--c)}
-#prroot .fdb .bd{margin-top:3mm}
+#prroot .fdb .bd{margin-top:2.5mm;grid-template-columns:54mm 1fr;gap:6mm}#prroot .fdb{margin-top:5mm}
+#prroot .fdb .ir{font-size:9pt;padding:1mm 0}#prroot .fdb .s{padding:1.4mm 0}#prroot .fdb .s p{font-size:9.6pt;line-height:1.4}#prroot .fdb .no{font-size:15pt}
+#prroot .cont{text-align:center;font-size:10pt;font-weight:600;color:#6E6E73;margin:-3mm 0 2mm}
 #prroot .dg{display:grid;grid-template-columns:1fr 1fr;gap:5mm}
 #prroot .dc{border:.25mm solid #EFE6E9;border-radius:4mm;padding:4mm 4.5mm;break-inside:avoid}
 #prroot .dh{display:flex;gap:3mm;align-items:center;margin-bottom:2mm}#prroot .dh .em{font-size:20pt}#prroot .dh b{display:block;font-size:12pt}#prroot .dh small{font-size:8pt;color:#86868B}
 #prroot .dc .ir{font-size:8.8pt;padding:.75mm 0}#prroot .dc p{margin:2mm 0 0;font-size:8.8pt;line-height:1.38}
-#prroot .dg{gap:3.5mm!important}#prroot .dc{padding:3mm 4mm!important}#prroot .dh{margin-bottom:1.2mm!important}#prroot .dh .em{font-size:17pt!important}
+#prroot .dg{grid-template-columns:1fr 1fr 1fr!important;gap:3mm!important}#prroot .dc{padding:3mm 3.2mm!important}#prroot .dc .ir{grid-template-columns:4.5mm 1fr auto!important;font-size:8.3pt!important;gap:1.2mm!important}#prroot .dc .ir small{display:none}#prroot .dh b{font-size:10.5pt!important}#prroot .dh{margin-bottom:1.2mm!important}#prroot .dh .em{font-size:17pt!important}
 #prroot table.wk{width:100%;border-collapse:separate;border-spacing:0 1.8mm}
 #prroot .wk thead th{font-size:7.5pt;letter-spacing:.16em;text-transform:uppercase;color:#9A4766;text-align:left;padding:0 2.5mm}
 #prroot .wk tbody th{width:25mm;text-align:left;vertical-align:top;padding:2.3mm 2.5mm;background:#F7F1F3;border-radius:3mm 0 0 3mm}
