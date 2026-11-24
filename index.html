@@ -2572,7 +2572,7 @@ const isoOf=i=>{const d=dayDate(i);return d.getFullYear()+'-'+String(d.getMonth(
 const idxOf=iso=>{const [y,m,d]=iso.split('-').map(Number);return Math.round((new Date(y,m-1,d)-BASE)/864e5)};
 function isoWeek(d){const t=new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate()));const n=t.getUTCDay()||7;t.setUTCDate(t.getUTCDate()+4-n);const y0=new Date(Date.UTC(t.getUTCFullYear(),0,1));return Math.ceil(((t-y0)/864e5+1)/7)}
 const OUT='out';
-const CATS=[['all','Alle','grid'],['fine','Fine Dining','chef'],['fisch','Fisch','fish'],['fleisch','Fleisch','meat'],['veggie','Vegetarisch','leaf'],['bowl','Bowl','bowl'],['suppe','Suppe','soup']];
+const CATS=[['all','Alle','grid'],['bowl','Bowls','bowl'],['fisch','Fisch','fish'],['fleisch','Fleisch','meat'],['veggie','Vegetarisch','leaf'],['fine','Fine Dining','chef'],['suppe','Suppe','soup']];
 const CATNAME={fine:['Fine Dining','chef'],fisch:['Fisch','fish'],fleisch:['Fleisch','meat'],veggie:['Vegetarisch','leaf'],bowl:['Bowl','bowl'],suppe:['Suppe','soup']};
 const EN={low:['Leicht','leaf','#1FAE7A','#E3F6EE','unter 1,5 kcal/g','Viel Volumen, wenig Kalorien. Macht lange satt.'],
           mid:['Ausgewogen','half','#E59A2C','#FDF1DE','1,5 – 2,5 kcal/g','Gute Alltagsgerichte mit normaler Energiemenge.'],
@@ -4985,7 +4985,7 @@ Phone.prototype.vRecipes=function(favOnly){const s=this.s;const q=s.recQ.toLower
   const sec=(ti,a,grp)=>{if(!a.length)return '';const h=a.find(r=>r.img)||a[0];
     const body=grp?bar('Klassiker',a.filter(r=>!r.c.includes('bowl')&&!r.c.includes('suppe')))+bar('Bowls',a.filter(r=>r.c.includes('bowl')))+bar('Suppen',a.filter(r=>r.c.includes('suppe')&&!r.c.includes('bowl'))):a.map(item).join('');
     return `<div class="mn-s"><div class="mn-hero rv"><span class="mn-hp">${plate(h,300)}</span><h2>${ti}</h2><small>${a.length} Gerichte</small></div>${body}</div>`};
-  const menu=a=>M==='l'&&s.recCat==='all'&&!q&&!favOnly?[['fine','Fine Dining'],['fleisch','Fleisch'],['fisch','Fisch'],['veggie','Vegetarisch']].map(([c,l])=>sec(l,a.filter(r=>r.c[0]===c),c!=='fine')).join(''):sec(q?'Suche':favOnly||s.recCat==='fav'?'Favoriten':M==='l'?(CATNAME[s.recCat]||['Auswahl'])[0]:MEALS.find(x=>x[0]===M)[1],a,false);
+  const menu=a=>M==='l'&&s.recCat==='all'&&!q&&!favOnly?[['fisch','Fisch'],['fleisch','Fleisch'],['veggie','Vegetarisch'],['fine','Fine Dining']].map(([c,l])=>sec(l,a.filter(r=>r.c[0]===c),c!=='fine')).join(''):sec(q?'Suche':favOnly||s.recCat==='fav'?'Favoriten':M==='l'?(CATNAME[s.recCat]||['Auswahl'])[0]:MEALS.find(x=>x[0]===M)[1],a,false);
   return `<div class="view recv"><div class="z">
    <div class="top-row"></div>
    <div class="eb">${favOnly?'Deine Lieblinge':`${R.length+RX.length} Rezepte`}</div>
