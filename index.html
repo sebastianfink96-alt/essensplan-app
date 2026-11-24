@@ -1944,7 +1944,9 @@ img,svg{-webkit-user-drag:none}
 .pr-row{display:flex;justify-content:space-between;align-items:center;margin:14px 2px 16px;font-size:15px}
 .pr-seg{margin-top:6px}.sheet h3 .ic{width:20px;height:20px;vertical-align:-3px;margin-right:4px}
 .det-top .iconbtn.prb .ic{width:20px;height:20px}
-.sheet .gbtn[data-a="prgo"]{width:100%;flex:none;margin-top:4px}
+.sheet .gbtn[data-a="prgo"]{margin-top:0}.sheet .gbtn[data-a="prshare"]{width:100%}
+.pr-btns{display:flex;gap:8px}.pr-btns .obtn{flex:none;justify-content:center;padding:0 16px}.pr-btns .gbtn{flex:1}
+.pr-hint{margin:10px 2px 0;font-size:12.5px;color:var(--a-muted);line-height:1.4}
 /* V199: Fine Dining */
 .fd-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:4px 0 0}
 .fd-tabs button{border:0;border-radius:18px;padding:11px 10px 10px;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.06);display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;min-width:0;transition:background .2s,box-shadow .2s}
@@ -5648,14 +5650,19 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
    case 'faitog':s.faiC=!s.faiC;haptic();this.render();break;
    case 'fdisc':s.sheet='fdisc';haptic();this.render();break;
    case 'ftph':s.ftPh=v;haptic();this.render();break;
-   case 'print':s.prK=v;s.prW=null;s.sheet='print';haptic();this.render();break;
-   case 'prw':s.prW=+v;haptic();this.render();break;
-   case 'prx':s.prX=s.prX===false;haptic();this.render();break;
-   case 'prdr':s.prDr=!s.prDr;haptic();this.render();break;
+   case 'print':s.prK=v;s.prW=null;s.prReady=0;s.prBusy=0;this.prBlob=null;s.sheet='print';haptic();this.render();break;
+   case 'prw':s.prReady=0;s.prW=+v;haptic();this.render();break;
+   case 'prx':s.prReady=0;s.prX=s.prX===false;haptic();this.render();break;
+   case 'prdr':s.prReady=0;s.prDr=!s.prDr;haptic();this.render();break;
    case 'prgo':{window.__fdSelSave=s.fdSel;const P0=s.persons;let pages;
      if(s.prK==='week'){const w=s.prW!=null?s.prW:(s.wk||0);pages=prWeek(s,w,s.prX!==false,P0);if(s.prDr)pages.push(prDress(P0))}
      else{const r=RM[s.did];if(!r)break;pages=[prRecipe(r,P0)];if(r.c&&r.c.includes('bowl')&&s.prDr)pages.push(prDress(P0))}
+     if(t.dataset.v==='pdf'){s.prBusy=1;this.render();const self=this;prPdf(pages).then(b=>{self.prBlob=b;s.prBusy=0;s.prReady=1;self.render()}).catch(er=>{console.error('PDF',er&&er.message||er);s.prBusy=0;self.render();self.toast('PDF konnte nicht erstellt werden – bitte Internet prüfen.')});break}
      prRun(pages,this);s.sheet=null;setTimeout(()=>this.render(),0);break}
+   case 'prshare':{const b=this.prBlob;if(!b)break;const nm=(s.prK==='week'?'Essensplan-Woche':'Essensplan-Rezept')+'.pdf',f=new File([b],nm,{type:'application/pdf'});
+     if(navigator.canShare&&navigator.canShare({files:[f]}))navigator.share({files:[f],title:nm}).catch(()=>{});
+     else{const u=URL.createObjectURL(b),a2=document.createElement('a');a2.href=u;a2.download=nm;document.body.appendChild(a2);a2.click();a2.remove();setTimeout(()=>URL.revokeObjectURL(u),4000)}
+     break}
    case 'fdtab':s.fdTab=v;haptic();this.render();break;
    case 'bxtab':{const st=bxSt(s);if(!st.b&&v!=='b'){this.toast('Wähle zuerst eine Basis');break}s.bxTab=v;haptic();this.render();break}
    case 'bxb':case 'bxt':case 'bxx':case 'bxd':{const st=bxSt(s);if(a!=='bxb'&&!st.b){this.toast('Wähle zuerst eine Basis');break}
@@ -5815,9 +5822,10 @@ const prEsc=t=>String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;');
 const prAmt=(n,q,u,P0)=>q?fqg(n,q*P0,u):'n. G.';
 const prNm=n=>n.replace(/\s*\(.*?\)/g,'');
 const prIngs=(L,P0)=>L.map(([n,q,u])=>`<div class="ir"><span class="e">${emo(n)}</span><span class="n">${prEsc(prNm(n))}</span><b>${prAmt(n,q,u,P0)}</b></div>`).join('');
-const prPage=(inner,reg,foot,sub)=>{const k=Math.max(0,PR_REG.findIndex(x=>x[0]===reg)),R0=PR_REG[k];
-  return `<section class="prpg" style="--rc:${reg?R0[2]:'#9A4766'}">${reg?`<i class="reg"><span>${R0[1]}</span></i>`:''}
-   <div class="kat"><h6>${reg?R0[1]:'Wochenplan'}</h6><div class="kl"><i></i><span>${sub||''}</span><i></i></div></div>${inner}<div class="ft"><span>Essensplan</span><span>${foot||''}</span></div></section>`};
+const prPage=(inner,reg,foot,sub,meta)=>{const k=Math.max(0,PR_REG.findIndex(x=>x[0]===reg)),R0=PR_REG[k],m=meta||{};
+  return `<section class="prpg" data-kind="${m.kind||''}" data-n="${prEsc(m.n||'')}" data-g="${m.g||''}" style="--rc:${reg?R0[2]:'#9A4766'}">${reg?`<i class="reg"><span>${R0[1]}</span></i>`:''}
+   <div class="pt"><span>Essensplan</span><span>${foot||''}<b class="pno"></b></span></div>
+   <div class="kat"><h6>${reg?R0[1]:'Wochenplan'}</h6><div class="kl"><i></i><span>${sub||''}</span><i></i></div></div>${inner}</section>`};
 function prRecipe(r,P0,days){const reg=prReg(r),R0=PR_REG.find(x=>x[0]===reg)||PR_REG[0],M=r.fd?null:stepIngs(r);
   const tags=(days||[]).map(([i,m])=>`<span class="day">${DAYS[(i%7+7)%7]}, ${dm(i)} · ${m}</span>`).join('');
   const head=`<header><div class="ph">${r.img?`<img src="${r.img}" alt="">`:`<span>${r.e||'🍽️'}</span>`}</div><div class="hd">
@@ -5830,15 +5838,11 @@ function prRecipe(r,P0,days){const reg=prReg(r),R0=PR_REG.find(x=>x[0]===reg)||P
     const B=r.fd.comps.map(c=>{const o=fdOpt(r,c.k,sel),C=FD_COMP[c.k];const lead=-Math.min(...o.st.map(x=>x[0]));
      return `<div class="fdb" style="--c:${C[1]}"><h2><i></i>${prEsc(fdN(c.k))}: ${prEsc(o.n)}<small>Start ${fdHm(lead)} vor dem Servieren</small></h2><div class="bd"><div class="ing">${prIngs(o.i,P0)}</div>
       <div class="stp">${o.st.map((x,k)=>`<div class="s"><span class="no">${String(k+1).padStart(2,'0')}</span><p>${prEsc(x[2])}${x[3]?' <em>(läuft nebenbei)</em>':''}</p></div>`).join('')}</div></div></div>`}),tip=r.tip?`<div class="tip"><b>Tipp</b> ${prEsc(r.tip)}</div>`:'',ft=r.id.toUpperCase()+' · '+prEsc(r.n),zt='Zubereitungszeit · '+fdHm(r.m);
-    /* Fine Dining: Bausteine nach geschätzter Höhe auf Seiten verteilen (max. ca. 225 mm je Seite) */
-    const est=r.fd.comps.map(c=>{const o=fdOpt(r,c.k,sel);return 16+Math.max(o.i.length*6.2,o.st.reduce((a,x)=>a+Math.ceil(x[2].length/40)*5.3+3.6,0))});
-    const P=[[]];let h=82;est.forEach((e,i)=>{if(h+e>225&&P[P.length-1].length){P.push([]);h=12}P[P.length-1].push(B[i]);h+=e});
-    if(tip&&h+22>225)P.push([]);const n=P.length;
-    return P.map((L,k)=>prPage((k?`<div class="cont">${prEsc(r.n)} · Fortsetzung</div>`:head)+L.join('')+(k===n-1?tip:''),reg,ft+(n>1?` · ${k+1}/${n}`:''),zt)).join('')}
+    return prPage(head+B.join('')+tip,reg,'Nr. '+r.id.toUpperCase(),zt,{kind:'fd',n:r.n,g:r.id})}
   else body=`<div class="bd"><div class="ing"><h3>Zutaten</h3>${prIngs(r.i,P0)}</div>
    <div class="stp"><h3>So gelingt's.</h3>${r.st.map((t,k)=>`<div class="s"><span class="no">${String(k+1).padStart(2,'0')}</span><div><p>${prEsc(t)}</p>${M&&M[k]&&M[k].length?`<div class="chips">${M[k].map(j=>{const [n,q,u]=r.i[j];return `<span>${emo(n)} ${prEsc(prNm(n))} <b>${prAmt(n,q,u,P0)}</b></span>`}).join('')}</div>`:''}</div></div>`).join('')}
    ${r.tip?`<div class="tip"><b>Tipp</b> ${prEsc(r.tip)}</div>`:''}</div></div>`;
-  return prPage(head+body,reg,r.id.toUpperCase()+' · '+prEsc(r.n),'Zubereitungszeit · '+(r.fd?fdHm(r.m):r.m+' Minuten'))}
+  return prPage(head+body,reg,'Nr. '+r.id.toUpperCase(),'Zubereitungszeit · '+(r.fd?fdHm(r.m):r.m+' Minuten'),{kind:'rec',n:r.n,g:r.id})}
 function prDress(P0){return prPage(`<header class="sm"><div class="hd"><h1>Dressings für jede Bowl.</h1><p class="sub">Alle Varianten zum Tauschen – für ${P0} ${P0===1?'Person':'Personen'}. Im Glas kräftig schütteln, dann hält das Dressing ein paar Tage im Kühlschrank.</p></div></header>
   <div class="dg">${DRESS.map(x=>{const k=BX_DK[x.id]||[];return `<div class="dc"><div class="dh"><span class="em">${x.e}</span><div><b>${x.n}</b><small>${k[0]||'–'} kcal · ${k[3]!=null?k[3]+' g Fett':''} pro Portion</small></div></div>${prIngs(x.i.concat([['Salz, Pfeffer',0,'']]),P0)}<p>${prEsc(x.st.replace(/^Dressing:\s*/,''))}</p></div>`}).join('')}</div>`,'bowl','Dressings','Zum Tauschen · alle Varianten')}
 function prWeek(s,w,withX,P0){const days=Array.from({length:7},(_,j)=>w*7+j),use=new Map(),order=[];
@@ -5859,14 +5863,18 @@ const PR_CSS=`@page{size:A4;margin:10mm}
 #prroot{font-family:Inter,-apple-system,'Helvetica Neue',system-ui,sans-serif;color:#1D1D1F;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 #prroot .prpg{position:relative;width:100%;max-width:178mm;margin:0 auto;padding:0 9mm;break-after:page;page-break-after:always;break-inside:auto}
 #prroot .prpg:last-child{break-after:auto;page-break-after:auto}
-#prroot .reg{position:absolute;right:0;top:0;width:6mm;height:22mm;border-radius:2.5mm 0 0 2.5mm;background:var(--rc);display:flex;align-items:center;justify-content:center}
+#prroot .reg{position:absolute;right:0;top:4mm;width:6mm;height:22mm;border-radius:2.5mm 0 0 2.5mm;background:var(--rc);display:flex;align-items:center;justify-content:center}
 #prroot .reg span{writing-mode:vertical-rl;transform:rotate(180deg);font-size:5.5pt;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#fff;white-space:nowrap}
 #prroot .kat{text-align:center;margin:0 0 7mm}
 #prroot .kat h6{margin:0;font-size:24pt;font-weight:200;letter-spacing:.32em;text-transform:uppercase;color:#1D1D1F;padding-left:.32em}
 #prroot .kl{display:flex;align-items:center;gap:3mm;margin:2mm auto 0;max-width:120mm}
 #prroot .kl i{flex:1;height:.25mm;background:var(--rc);opacity:.55}
 #prroot .kl span{font-size:7.5pt;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--rc);white-space:nowrap}
-#prroot .ft{display:flex;justify-content:space-between;margin-top:7mm;padding-top:2mm;border-top:.25mm solid #EEE6E9;font-size:6.8pt;letter-spacing:.14em;text-transform:uppercase;color:#B3A7AC;font-weight:600}
+#prroot.meas{display:block!important;position:absolute;left:-10000px;top:0}#prroot.pdf .reg span{visibility:hidden}#prroot.pdf .prpg{background:#fff;padding:0 9mm 2mm}
+#prroot .pt{display:flex;justify-content:space-between;margin:0 9mm 3mm 0;font-size:6.5pt;letter-spacing:.16em;text-transform:uppercase;color:#B3A7AC;font-weight:600}
+#prroot .more{margin:3mm 0 0;font-size:9pt;font-weight:600;color:var(--rc);text-align:right}
+#prroot .bd.one{grid-template-columns:1fr}#prroot .bd.one .stp{max-width:150mm;margin:0 auto;width:100%}
+#prroot .ft{display:none;border-top:.25mm solid #EEE6E9;font-size:6.8pt;letter-spacing:.14em;text-transform:uppercase;color:#B3A7AC;font-weight:600}
 #prroot header{display:flex;gap:7mm;align-items:center}
 #prroot header.sm{display:block;text-align:center;margin-bottom:6mm}#prroot header.sm .sub{max-width:130mm;margin:0 auto}
 #prroot .ph{flex:none;width:44mm;height:44mm;border-radius:50%;background:radial-gradient(circle,#F3EDE6,#E9DFD6);display:grid;place-items:center;overflow:hidden;font-size:34pt}
@@ -5908,11 +5916,42 @@ const PR_CSS=`@page{size:A4;margin:10mm}
 #prroot .wk td b{display:block;font-weight:600;line-height:1.25}#prroot .wk td small{display:block;margin-top:.8mm;font-size:7.8pt;color:#86868B}
 #prroot .wk td.em,#prroot .wk td.o{color:#B3A7AC}#prroot .pg-ref{color:#9A4766;font-weight:700}
 #prroot .leg{display:flex;flex-wrap:wrap;justify-content:center;gap:2mm 4mm;margin-top:5mm;font-size:8pt;color:#6E6E73}#prroot .leg i{display:inline-block;width:3mm;height:3mm;border-radius:1mm;margin-right:1.2mm;vertical-align:-.3mm}`;
-function prRun(pages,self){let st=document.getElementById('prcss');if(!st){st=document.createElement('style');st.id='prcss';st.textContent=PR_CSS;document.head.appendChild(st)}
+/* V211: Jede Seite in der echten Druckfläche messen. Zu lang → stufenweise verkleinern (bis 85 %), dann an Schritt-/Bausteingrenzen auf eine Folgeseite teilen. */
+const PR_MM=3.7795;
+function prFit(root,wmm,hmm){root.classList.add('meas');root.style.width=wmm+'mm';const H=hmm*PR_MM,hi=p=>p.getBoundingClientRect().height;
+  const zoom=(p,z)=>{p.style.zoom=z;p.dataset.z=z};
+  const fit=p=>{for(let z=1;z>=.849;z=Math.round((z-.05)*100)/100){zoom(p,z);if(hi(p)<=H)return true}return false};
+  const cont=p=>{const n=document.createElement('section');n.className='prpg';n.style.cssText=p.style.cssText;n.style.zoom='';['kind','n','g'].forEach(k=>n.dataset[k]=p.dataset[k]);
+    [...p.children].filter(c=>c.matches('.reg,.pt,.kat')).forEach(c=>n.appendChild(c.cloneNode(true)));
+    const c=document.createElement('div');c.className='cont';c.textContent=p.dataset.n+' · Fortsetzung';n.appendChild(c);p.after(n);return n};
+  for(let i=0;i<root.children.length&&i<80;i++){const p=root.children[i];if(fit(p))continue;zoom(p,.9);
+    const n=cont(p),more=document.createElement('p');more.className='more';more.textContent='Weiter auf der nächsten Seite →';
+    if(p.dataset.kind==='fd'){const U=[...p.querySelectorAll(':scope>.fdb,:scope>.tip')],an=n.querySelector('.cont');
+      while(U.length>1&&hi(p)>H)an.after(U.pop());p.appendChild(more)}
+    else{const S=[...p.querySelectorAll('.stp .s')],tip=p.querySelector('.stp .tip'),bd=document.createElement('div');bd.className='bd one';bd.innerHTML='<div class="stp"><h3>So gelingt\'s · Fortsetzung</h3></div>';n.appendChild(bd);const st=bd.firstChild;
+      if(tip)st.appendChild(tip);p.querySelector('.stp').appendChild(more);
+      while(S.length>1&&hi(p)>H){const x=S.pop();st.insertBefore(x,st.children[1]||null)}}
+    }
+  /* Seitenzähler je Rezept */
+  const G={};[...root.children].forEach(p=>{const g=p.dataset.g;if(g)(G[g]=G[g]||[]).push(p)});
+  Object.values(G).forEach(L=>{if(L.length>1)L.forEach((p,k)=>{const b=p.querySelector('.pno');if(b)b.textContent=` · ${k+1}/${L.length}`})});
+  root.classList.remove('meas');root.style.width=''}
+function prBuild(pages,wmm,hmm){let st=document.getElementById('prcss');if(!st){st=document.createElement('style');st.id='prcss';st.textContent=PR_CSS;document.head.appendChild(st)}
   let root=document.getElementById('prroot');if(!root){root=document.createElement('div');root.id='prroot';document.body.appendChild(root)}
-  root.innerHTML=pages.join('');const done=()=>{document.body.classList.remove('printing');root.innerHTML=''};
+  root.innerHTML=pages.join('');prFit(root,wmm,hmm);return root}
+/* Druck: Safari legt eigene Ränder darüber → mit Puffer messen (150 × 238 mm) */
+function prRun(pages,self){const root=prBuild(pages,150,238);const done=()=>{document.body.classList.remove('printing');root.innerHTML=''};
   document.body.classList.add('printing');addEventListener('afterprint',()=>setTimeout(done,300),{once:true});
-  try{window.print()}catch(e){done();self&&self.toast('Drucken ist hier nicht möglich – bitte in der installierten App versuchen.')}}
+  try{window.print()}catch(e){done();self&&self.toast('Drucken ist hier nicht möglich – bitte „Als PDF“ verwenden.')}}
+/* PDF: Bibliotheken bei Bedarf laden (App: lokale Kopie, sonst CDN) */
+const prLoad=(src,cdn)=>new Promise((ok,no)=>{const t=u=>{const x=document.createElement('script');x.src=u;x.onload=ok;x.onerror=()=>u===cdn?no(new Error('lib')):t(cdn);document.head.appendChild(x)};t(src)});
+async function prPdf(pages){if(!window.jspdf)await prLoad('lib/jspdf.umd.min.js','https://cdn.jsdelivr.net/npm/jspdf@2/dist/jspdf.umd.min.js');
+  if(!window.html2canvas)await prLoad('lib/html2canvas.min.js','https://cdn.jsdelivr.net/npm/html2canvas@1/dist/html2canvas.min.js');
+  const root=prBuild(pages,180,265);root.classList.add('pdf','meas');root.style.width='180mm';const pdf=new window.jspdf.jsPDF({unit:'mm',format:'a4',compress:true});
+  const P=[...root.children];for(let i=0;i<P.length;i++){const p=P[i];p.style.zoom=''; /* html2canvas kann kein zoom → in voller Größe aufnehmen, Bild wird beim Einsetzen verkleinert */
+    const c=await window.html2canvas(p,{scale:2.2,backgroundColor:'#ffffff',useCORS:true,logging:false});
+    let w=180,h=c.height/c.width*w;if(h>273){w=w*273/h;h=273}if(i)pdf.addPage();pdf.addImage(c.toDataURL('image/jpeg',.88),'JPEG',(210-w)/2,12,w,h)}
+  root.classList.remove('pdf','meas');root.style.width='';root.innerHTML='';return pdf.output('blob')}
 Phone.prototype.vPrint=function(){const s=this.s,P0=s.persons,k=s.prK||'rec',r=RM[s.did];
   const tg=(a,on,t,sub)=>`<button class="pr-t ${on?'on':''}" data-a="${a}"><span class="pr-c">${on?ic('check'):''}</span><span><b>${t}</b>${sub?`<small>${sub}</small>`:''}</span></button>`;
   const pers=`<div class="pr-row"><span>Mengen für</span><div class="stepper"><button data-a="pers" data-v="-1" aria-label="Weniger Personen">${ic('minus')}</button>${P0} Pers.<button data-a="pers" data-v="1" aria-label="Mehr Personen">${ic('plus')}</button></div></div>`;
@@ -5923,12 +5962,14 @@ Phone.prototype.vPrint=function(){const s=this.s,P0=s.persons,k=s.prK||'rec',r=R
      ${tg('prx',s.prX!==false,'Frühstück & Abendessen','dem richtigen Tag zugeordnet, als eigene Rezeptseiten')}
      ${tg('prdr',!!s.prDr,'Dressing-Blatt anhängen','alle Bowl-Dressings auf einer Seite')}
      ${pers}
-     <button class="gbtn" data-a="prgo" ${tot?'':'disabled'}>${ic('printer')}${tot?`Drucken · ${tot} ${tot===1?'Rezept':'Rezepte'}`:'Noch nichts geplant'}</button>`}
+${s.prReady?`<button class="gbtn" data-a="prshare">${ic('share')}PDF teilen, sichern oder drucken</button>`:`<div class="pr-btns"><button class="obtn" data-a="prgo" data-v="pdf" ${tot&&!s.prBusy?'':'disabled'}>${s.prBusy?'PDF wird erstellt …':'Als PDF'}</button><button class="gbtn" data-a="prgo" ${tot?'':'disabled'}>${ic('printer')}${tot?`Drucken · ${tot} ${tot===1?'Rezept':'Rezepte'}`:'Noch nichts geplant'}</button></div>`}
+     <p class="pr-hint">„Als PDF“ ergibt das genaue Layout ohne Adresszeile – ideal zum Drucken über das Teilen-Menü oder zum Sichern in Dateien.</p>`}
   const bowl=r&&r.c&&r.c.includes('bowl');
   return `<h3>${ic('printer')} Rezept drucken</h3><p>Ein A4-Blatt mit Lochrand links und farbigem Reiter für die Kategorie „${(PR_REG.find(x=>x[0]===prReg(r))||PR_REG[0])[1]}“ – passend für deine Rezeptmappe.</p>
    ${bowl?tg('prdr',!!s.prDr,'Alle Dressings mitdrucken','zweite Seite mit allen 6 Dressings zum Tauschen'):''}
    ${pers}
-   <button class="gbtn" data-a="prgo">${ic('printer')}Drucken${bowl&&s.prDr?' · mit Dressings':''}</button>`};
+${s.prReady?`<button class="gbtn" data-a="prshare">${ic('share')}PDF teilen, sichern oder drucken</button>`:`<div class="pr-btns"><button class="obtn" data-a="prgo" data-v="pdf" ${s.prBusy?'disabled':''}>${s.prBusy?'PDF wird erstellt …':'Als PDF'}</button><button class="gbtn" data-a="prgo">${ic('printer')}Drucken${bowl&&s.prDr?' · mit Dressings':''}</button></div>`}
+   <p class="pr-hint">„Als PDF“ ergibt das genaue Layout ohne Adresszeile.</p>`};
 const PR_UI=`.pr-t{display:flex;gap:12px;align-items:center;width:100%;border:0;background:var(--a-card);box-shadow:0 0 0 1px var(--a-line);border-radius:16px;padding:12px 14px;margin-top:10px;text-align:left}
 .pr-t b{display:block;font-size:15px;font-weight:600}.pr-t small{display:block;font-size:12.5px;color:var(--a-muted);margin-top:1px}
 .pr-c{flex:none;width:24px;height:24px;border-radius:7px;box-shadow:inset 0 0 0 1.6px #C7C7CC;display:grid;place-items:center;color:#fff}.pr-c .ic{width:15px;height:15px;stroke-width:2.6}
