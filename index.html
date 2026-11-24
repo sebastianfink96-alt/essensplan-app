@@ -1945,6 +1945,8 @@ img,svg{-webkit-user-drag:none}
 .pr-seg{margin-top:6px}.sheet h3 .ic{width:20px;height:20px;vertical-align:-3px;margin-right:4px}
 .det-top .iconbtn.prb .ic{width:20px;height:20px}
 .sheet .gbtn[data-a="prgo"]{margin-top:0}.sheet .pr-prep{width:100%}.sheet .gbtn[data-a="prshare"]{width:100%}
+.rz-grp{margin:16px 0 0;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#B4B4BA}.rz-grp:first-child{margin-top:2px}
+.rz-grp+.rz-ir{border-top:0}
 .pr-btns{display:flex;gap:8px}.pr-btns .obtn{flex:none;justify-content:center;padding:0 16px}.pr-btns .gbtn{flex:1}
 .pr-hint{margin:10px 2px 0;font-size:12.5px;color:var(--a-muted);line-height:1.4}
 /* V199: Fine Dining */
@@ -2973,9 +2975,17 @@ function fdTL(r,sel,cur,mini){const S=fdSteps(r,sel),A=Math.min(...S.map(x=>x.a)
   const rows=r.fd.comps.filter(c=>!FDOPT.only||c.k===FDOPT.only).map(c=>{const C=FD_COMP[c.k];return `<div class="tl-r"><span class="tl-l"><i style="background:${C[1]}"></i>${fdN(c.k)}</span><span class="tl-t">${S.filter(x=>x.k===c.k).map(x=>`<b class="${x.p?'p':''}${x===cur?' on':''}${ci>=0&&S.indexOf(x)<ci?' dn':''}" style="left:${pc(x.a)}%;width:${Math.max(1.8,x.d/span*100).toFixed(2)}%;--c:${C[1]}"></b>`).join('')}${now}</span></div>`}).join('');
   const st=span>150?60:span>70?30:15,tk=[];for(let t=Math.ceil(A/st)*st;t<=0;t+=st)if((t-A>=st*.45&&-t>=span*.14)||t===0)tk.push(t);
   return `<div class="tl ${mini?'mini':''}">${rows}<div class="tl-r ax"><span class="tl-l"></span><span class="tl-t"><span style="left:0">Start</span>${tk.map(t=>`<span class="${t===0?'end':''}" style="left:${pc(t)}%">${t===0?'Servieren':'−'+fdHm(t)}</span>`).join('')}</span></div></div>`}
-const fdIngList=(L,s)=>{const nm=n=>n.replace(/\s*\(.*?\)/g,''),sub=n=>{const m=n.match(/\((.*?)\)/);return m?`<small>${m[1]}</small>`:''};
-  const main=L.filter(x=>x[1]),sp=L.filter(x=>!x[1]);
-  return main.map(([n,q,u])=>`<div class="rz-ir"><span class="e">${emo(n)}</span><span class="n">${nm(n)}${sub(n)}</span><b>${fqg(n,q*s.persons,u)}</b></div>`).join('')
+/* V216: Zutaten-Blöcke – kleine hellgraue Zwischenzeile je Block (Bowl · Dressing; Baukasten: Basis · Extra · Toppings · Dressing). r.ig = [[Startindex,Name],…] */
+const DR_LBL=/sojasauce|teriyaki|sauce|limettensaft|zitronensaft|zitrone|honig|ahornsirup|sesamöl|erdnussbutter|olivenöl|essig|senf|tahini|ingwer|sriracha|miso|dressing|leinöl|rapsöl|wasser|joghurt/i;
+function igOf(r){if(r.ig)return r.ig;if(!r.c||!r.c.includes('bowl')||r.bx||!r.i||!r.i.length)return [];
+  if(!r.st.some(t=>/dressing/i.test(t)))return [];
+  let j=r.i.length,n=0;while(j>0&&(DR_LBL.test(r.i[j-1][0])||/^(salz|pfeffer|sesam|paprika|chili|kümmel)/i.test(r.i[j-1][0]))){if(DR_LBL.test(r.i[j-1][0]))n++;j--}
+  return j>0&&n>=2&&j<r.i.length?[[0,'Bowl'],[j,'Dressing']]:[]}
+/* Zeilen mit Gruppenköpfen: rows = [[index,html],…] */
+const igRows=(rows,G,cls)=>{let out='',g=0;G=(G||[]).slice().sort((a,b)=>a[0]-b[0]);rows.forEach(([i,h])=>{while(g<G.length&&G[g][0]<=i){out+=`<div class="${cls}">${G[g][1]}</div>`;g++}out+=h});return out};
+const fdIngList=(L,s,G)=>{const nm=n=>n.replace(/\s*\(.*?\)/g,''),sub=n=>{const m=n.match(/\((.*?)\)/);return m?`<small>${m[1]}</small>`:''};
+  const main=L.map((x,i)=>[i,x]).filter(([i,x])=>x[1]),sp=L.filter(x=>!x[1]);
+  return igRows(main.map(([i,[n,q,u]])=>[i,`<div class="rz-ir"><span class="e">${emo(n)}</span><span class="n">${nm(n)}${sub(n)}</span><b>${fqg(n,q*s.persons,u)}</b></div>`]),G,'rz-grp')
    +(sp.length?`<div class="rz-ir"><span class="e">🧂</span><span class="n">${sp.map(x=>nm(x[0])).join(', ')}<small>nach Geschmack</small></span><b></b></div>`:'')};
 Phone.prototype.vFdDetail=function(r,btn,eb,E){FDCUR=r;const s=this.s,sel=fdSel(s,r);FDOPT={mode:'p',only:null};const S=fdSteps(r,sel),tab=r.fd.comps.find(c=>c.k===s.fdTab)?s.fdTab:r.fd.comps[0].k;
   const C=r.fd.comps.find(c=>c.k===tab),o=fdOpt(r,tab,sel),col=FD_COMP[tab][1],OS=S.filter(x=>x.k===tab),act=OS.filter(x=>!x.p).reduce((a,x)=>a+x.d,0);
@@ -3042,8 +3052,8 @@ const DRESS=[
  {id:'tahini',n:'Tahini-Zitrone',e:'🫙',i:[['Tahini',1,'EL'],['Zitronensaft',1,'EL'],['Wasser',1,'EL']],st:'Dressing: Tahini mit Zitronensaft und Wasser glatt rühren, mit Salz abschmecken und darübergeben.'}];
 const DR_KEY=/sojasauce|limettensaft|zitronensaft|honig|sesamöl|erdnussbutter|olivenöl|essig|senf|tahini|ahornsirup|ingwer|sriracha|miso|dressing|leinöl|rapsöl/i;
 function bowlApply(r,id){if(!r._i0){r._i0=r.i.map(x=>x.slice());r._st0=r.st.slice()}
-  r.i=r._i0.map(x=>x.slice());r.st=r._st0.slice();const D=DRESS.find(x=>x.id===id);if(!D)return;
-  let j=r.i.length;const sp=[];while(j>0&&(DR_KEY.test(r.i[j-1][0])||/^(salz|pfeffer)/i.test(r.i[j-1][0]))){if(/^(salz|pfeffer)/i.test(r.i[j-1][0]))sp.unshift(r.i[j-1]);j--}r.i=r.i.slice(0,j).concat(D.i.map(x=>x.slice()),sp);
+  r.i=r._i0.map(x=>x.slice());r.st=r._st0.slice();delete r.ig;const D=DRESS.find(x=>x.id===id);if(!D)return;
+  let j=r.i.length;const sp=[];while(j>0&&(DR_KEY.test(r.i[j-1][0])||/^(salz|pfeffer)/i.test(r.i[j-1][0]))){if(/^(salz|pfeffer)/i.test(r.i[j-1][0]))sp.unshift(r.i[j-1]);j--}r.i=r.i.slice(0,j).concat(D.i.map(x=>x.slice()),sp);if(j>0)r.ig=[[0,'Bowl'],[j,'Dressing']];
   const si=r.st.map((t,k)=>/dressing|sauce|vinaigrette/i.test(t)?k:-1).filter(k=>k>=0).pop();if(si!==undefined)r.st[si]=D.st;else r.st.push(D.st)}
 Phone.prototype.vDressPick=function(r){const s=this.s,cur=(s.bdr||{})[r.id]||'orig',L=[{id:'orig',n:'Original',e:'🥣'}].concat(DRESS);
   return `<div class="fd-pane dr" style="--c:#4F8F5B"><div class="fd-lbl">Dressing wählen</div>
@@ -3119,6 +3129,7 @@ const bxNut=st=>{const L=[bxF(BX_BASE,st.b)].concat(st.t.map(k=>bxF(BX_TOP,k)),[
   return [0,1,2,3].map(j=>Math.round(L.reduce((a,x)=>a+x[5+j],0)+d[j]))};
 function bxApply(r,st){if(!st.b)st=BX_EX;const B=bxF(BX_BASE,st.b),T=st.t.map(k=>bxF(BX_TOP,k)),X=bxF(BX_X,st.x),D=DRESS.find(x=>x.id===st.d);
   r.i=[[B[1],B[3],B[4]]].concat(X?[[X[1]==='Eier'?'Eier':X[1],X[3],X[4]]]:[],T.map(t=>[t[11]||t[1],t[3],t[4]]),D?D.i.map(x=>x.slice()):[]);
+  r.ig=[[0,'Basis']];{let k=1;if(X){r.ig.push([k,'Extra']);k++}if(T.length){r.ig.push([k,'Toppings']);k+=T.length}if(D)r.ig.push([k,'Dressing'])}
   r.st=[B[10]].concat(X?[X[10]]:[],T.length?['Toppings vorbereiten: '+T.map(t=>t[10]).join('; ')+'.']:[],D?[D.st]:[],['Basis in eine Schale geben, Toppings nebeneinander darauf anrichten'+(X?', '+X[1]+' in die Mitte setzen':'')+(D?' und mit dem Dressing beträufeln':'')+'.']);
   const [k,p,kh,f]=bxNut(st);Object.assign(r,{k,p,kh,f,m:Math.max(B[11],X?15:0)+8,s:[B[1]].concat(T.slice(0,3).map(t=>t[1]),X?[X[1]]:[]).join(', ')});
   if(st===BX_EX)r.img=BXP.beispiel.src;else{const key=JSON.stringify(st);r._bxk=key;bxRaster(st).then(u=>{if(r._bxk===key)r.img=u}).catch(()=>{})}}
@@ -3144,7 +3155,7 @@ Phone.prototype.vBxDetail=function(r,btn,eb){const s=this.s,st=bxSt(s),prev=this
    <div class="bx-grid">${grid}</div>
    ${nx&&has?`<button class="obtn bx-next" data-a="bxtab" data-v="${nx[0]}">${nx[1]}${ic('right')}</button>`:''}
    ${has?`<div class="rz-h"><h2>Zutaten</h2><div class="stepper"><button data-a="pers" data-v="-1" aria-label="Weniger Personen">${ic('minus')}</button>${s.persons} Pers.<button data-a="pers" data-v="1" aria-label="Mehr Personen">${ic('plus')}</button></div></div>
-   <div class="rz-ing">${fdIngList(r.i,s)}</div>
+   <div class="rz-ing">${fdIngList(r.i,s,r.ig)}</div>
    <div class="eb rz-eb2">Zubereitung</div>
    <h2 class="ap-h1 rz-t2">So gelingt's. <span>In ${r.m} Minuten.</span></h2>
    <div class="bx-steps">${r.st.map((t,j)=>`<div><span>${j+1}</span><p>${t}</p></div>`).join('')}</div>
@@ -5029,8 +5040,8 @@ Phone.prototype.vDetail=function(){const s=this.s;const r=RM[s.did];const cat=CA
    <div class="nutri"><div class="ring"></div><div class="nimg">${plate(r,300)}</div></div>
    ${r.c.includes('bowl')?this.vDressPick(r):''}<div class="rz-h"><h2>Zutaten</h2>${xk?'':twiceBtn(d)}<div class="stepper"><button data-a="pers" data-v="-1" aria-label="Weniger Personen">${ic('minus')}</button>${s.persons} Pers.<button data-a="pers" data-v="1" aria-label="Mehr Personen">${ic('plus')}</button></div></div>
    <div class="rz-ing">${(()=>{const sub=n=>{const m=n.match(/\((.*?)\)/);return m?`<small>${m[1]}</small>`:''};const nm=n=>n.replace(/\s*\(.*?\)/g,'');
-     const main=r.i.filter(x=>x[1]),sp=r.i.filter(x=>!x[1]);
-     return main.map(([n,q,u])=>`<div class="rz-ir"><span class="e">${emo(n)}</span><span class="n">${nm(n)}${sub(n)}</span><b>${fqg(n,q*s.persons,u)}</b></div>`).join('')
+     const main=r.i.map((x,i)=>[i,x]).filter(([i,x])=>x[1]),sp=r.i.filter(x=>!x[1]);
+     return igRows(main.map(([i,[n,q,u]])=>[i,`<div class="rz-ir"><span class="e">${emo(n)}</span><span class="n">${nm(n)}${sub(n)}</span><b>${fqg(n,q*s.persons,u)}</b></div>`]),igOf(r),'rz-grp')
       +(sp.length?`<div class="rz-ir"><span class="e">🧂</span><span class="n">${sp.map(x=>nm(x[0])).join(', ')}<small>Gewürze nach Geschmack</small></span><b></b></div>`:'')})()}</div>
    <div class="eb rz-eb2">Zubereitung</div>
    <h2 class="ap-h1 rz-t2">So gelingt's. <span>Schritt für Schritt.</span></h2>
@@ -5819,7 +5830,7 @@ const prReg=r=>r.meal?r.meal:r.c.includes('bowl')?'bowl':r.c.includes('fine')?'f
 const prEsc=t=>String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;');
 const prAmt=(n,q,u,P0)=>q?fqg(n,q*P0,u):'n. G.';
 const prNm=n=>n.replace(/\s*\(.*?\)/g,'');
-const prIngs=(L,P0)=>L.map(([n,q,u])=>`<div class="ir"><span class="e">${emo(n)}</span><span class="n">${prEsc(prNm(n))}</span><b>${prAmt(n,q,u,P0)}</b></div>`).join('');
+const prIngs=(L,P0,G)=>igRows(L.map(([n,q,u],i)=>[i,`<div class="ir"><span class="e">${emo(n)}</span><span class="n">${prEsc(prNm(n))}</span><b>${prAmt(n,q,u,P0)}</b></div>`]),G,'gl');
 const prPage=(inner,reg,foot,sub,meta)=>{const k=Math.max(0,PR_REG.findIndex(x=>x[0]===reg)),R0=PR_REG[k],m=meta||{};
   return `<section class="prpg" data-kind="${m.kind||''}" data-n="${prEsc(m.n||'')}" data-g="${m.g||''}" style="--rc:${reg?R0[2]:'#9A4766'}">${reg?`<i class="reg"><span>${R0[1]}</span></i>`:''}
    <div class="pt"><span>Essensplan</span><span>${foot||''}<b class="pno"></b></span></div>
@@ -5837,7 +5848,7 @@ function prRecipe(r,P0,days){const reg=prReg(r),R0=PR_REG.find(x=>x[0]===reg)||P
      return `<div class="fdb" style="--c:${C[1]}"><h2><i></i>${prEsc(fdN(c.k))}: ${prEsc(o.n)}<small>Start ${fdHm(lead)} vor dem Servieren</small></h2><div class="bd"><div class="ing">${prIngs(o.i,P0)}</div>
       <div class="stp">${o.st.map((x,k)=>`<div class="s"><span class="no">${String(k+1).padStart(2,'0')}</span><p>${prEsc(x[2])}${x[3]?' <em>(läuft nebenbei)</em>':''}</p></div>`).join('')}</div></div></div>`}),tip=r.tip?`<div class="tip"><b>Tipp</b> ${prEsc(r.tip)}</div>`:'',ft=r.id.toUpperCase()+' · '+prEsc(r.n),zt='Zubereitungszeit · '+fdHm(r.m);
     return prPage(head+B.join('')+tip,reg,'Nr. '+r.id.toUpperCase(),zt,{kind:'fd',n:r.n,g:r.id})}
-  else body=`<div class="bd"><div class="ing"><h3>Zutaten</h3>${prIngs(r.i,P0)}</div>
+  else body=`<div class="bd"><div class="ing"><h3>Zutaten</h3>${prIngs(r.i,P0,igOf(r))}</div>
    <div class="stp"><h3>So gelingt's.</h3>${r.st.map((t,k)=>`<div class="s"><span class="no">${String(k+1).padStart(2,'0')}</span><div><p>${prEsc(t)}</p>${M&&M[k]&&M[k].length?`<div class="chips">${M[k].map(j=>{const [n,q,u]=r.i[j];return `<span>${emo(n)} ${prEsc(prNm(n))} <b>${prAmt(n,q,u,P0)}</b></span>`}).join('')}</div>`:''}</div></div>`).join('')}
    ${r.tip?`<div class="tip"><b>Tipp</b> ${prEsc(r.tip)}</div>`:''}</div></div>`;
   return prPage(head+body,reg,'Nr. '+r.id.toUpperCase(),'Zubereitungszeit · '+(r.fd?fdHm(r.m):r.m+' Minuten'),{kind:'rec',n:r.n,g:r.id})}
@@ -5861,36 +5872,37 @@ const PR_CSS=`@page{size:A4;margin:10mm}
 #prroot{font-family:Inter,-apple-system,'Helvetica Neue',system-ui,sans-serif;color:#1D1D1F;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 #prroot .prpg{position:relative;width:100%;max-width:178mm;margin:0 auto;padding:0 9mm;break-after:page;page-break-after:always;break-inside:auto}
 #prroot .prpg:last-child{break-after:auto;page-break-after:auto}
-#prroot .reg{position:absolute;right:0;top:4mm;width:6mm;height:22mm;border-radius:2.5mm 0 0 2.5mm;background:var(--rc);display:flex;align-items:center;justify-content:center}
-#prroot .reg span{writing-mode:vertical-rl;transform:rotate(180deg);font-size:5.5pt;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#fff;white-space:nowrap}
-#prroot .kat{text-align:center;margin:0 0 7mm}
+#prroot .reg{position:absolute;right:0;top:14mm;width:9mm;height:42mm;border-radius:3mm 0 0 3mm;background:var(--rc);overflow:hidden}
+#prroot .reg span{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-90deg);font-size:7.5pt;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#fff;white-space:nowrap}
+#prroot .kat{text-align:center;margin:0 0 10mm}
 #prroot .kat h6{margin:0;font-size:24pt;font-weight:200;letter-spacing:.32em;text-transform:uppercase;color:#1D1D1F;padding-left:.32em}
 #prroot .kl{display:flex;align-items:center;gap:3mm;margin:2mm auto 0;max-width:120mm}
 #prroot .kl i{flex:1;height:.25mm;background:var(--rc);opacity:.55}
 #prroot .kl span{font-size:7.5pt;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--rc);white-space:nowrap}
-#prroot .primg{break-after:page;page-break-after:always}#prroot .primg:last-child{break-after:auto;page-break-after:auto}#prroot .primg img{display:block;width:90%;height:auto;margin:0 auto}
-#prroot.meas{display:block!important;position:absolute;left:-10000px;top:0}#prroot.pdf .reg span{visibility:hidden}#prroot.pdf .prpg{background:#fff;padding:0 9mm 2mm}
+#prroot .primg{break-after:page;page-break-after:always}#prroot .primg:last-child{break-after:auto;page-break-after:auto}#prroot .primg img{display:block;width:100%;height:auto;margin:0 auto}
+#prroot.meas{display:block!important;position:absolute;left:-10000px;top:0}#prroot.pdf .prpg{background:#fff;max-width:none;width:206mm;margin:0;padding:10mm 13mm 5mm}#prroot.pdf .pt{margin-right:0}
 #prroot .pt{display:flex;justify-content:space-between;margin:0 9mm 3mm 0;font-size:6.5pt;letter-spacing:.16em;text-transform:uppercase;color:#B3A7AC;font-weight:600}
+#prroot .gl{margin:4mm 0 .6mm;font-size:6.8pt;letter-spacing:.16em;text-transform:uppercase;color:#B7B7BC;font-weight:600}#prroot h3+.gl{margin-top:1mm}
 #prroot .more{margin:3mm 0 0;font-size:9pt;font-weight:600;color:var(--rc);text-align:right}
 #prroot .bd.one{grid-template-columns:1fr}#prroot .bd.one .stp{max-width:150mm;margin:0 auto;width:100%}
 #prroot .ft{display:none;border-top:.25mm solid #EEE6E9;font-size:6.8pt;letter-spacing:.14em;text-transform:uppercase;color:#B3A7AC;font-weight:600}
 #prroot header{display:flex;gap:7mm;align-items:center}
-#prroot header.sm{display:block;text-align:center;margin-bottom:6mm}#prroot header.sm .sub{max-width:130mm;margin:0 auto}
+#prroot header.sm{display:block;text-align:center;margin-bottom:10mm}#prroot header.sm h1{margin:0 0 4mm}#prroot header.sm .sub{line-height:1.55}#prroot header.sm .sub{max-width:130mm;margin:0 auto}
 #prroot .ph{flex:none;width:44mm;height:44mm;border-radius:50%;background:radial-gradient(circle,#F3EDE6,#E9DFD6);display:grid;place-items:center;overflow:hidden;font-size:34pt}
 #prroot .ph img{width:100%;height:100%;object-fit:cover}
-#prroot .eb{font-size:7.5pt;letter-spacing:.16em;text-transform:uppercase;color:#9A4766;font-weight:700}
-#prroot h1{margin:1mm 0 1mm;font-size:22pt;font-weight:700;letter-spacing:-.03em;line-height:1.05}
-#prroot .sub{margin:0;font-size:10.5pt;line-height:1.42;color:#6E6E73}
-#prroot .meta{display:flex;flex-wrap:wrap;gap:1.4mm 2.2mm;margin-top:2.6mm;font-size:8.8pt;color:#3A3A3C}
+#prroot .eb{margin-bottom:2.4mm;font-size:7.5pt;letter-spacing:.16em;text-transform:uppercase;color:#9A4766;font-weight:700}
+#prroot h1{margin:0 0 2.8mm;font-size:22pt;font-weight:700;letter-spacing:-.03em;line-height:1.05}
+#prroot .sub{margin:0;font-size:10.5pt;line-height:1.5;color:#6E6E73}
+#prroot .meta{display:flex;flex-wrap:wrap;justify-content:flex-start;gap:2mm 2.4mm;margin-top:5.5mm;font-size:8.8pt;color:#3A3A3C}
 #prroot .meta span{padding:.7mm 2.4mm;border-radius:9mm;background:#F5EFF1}#prroot .meta .pp{color:#fff}
-#prroot .days{display:flex;flex-wrap:wrap;gap:1.4mm;margin-top:2mm}#prroot .day{font-size:8.3pt;font-weight:600;color:#9A4766;border:.3mm solid #E7D3DB;border-radius:9mm;padding:.6mm 2.4mm}
+#prroot .days{display:flex;flex-wrap:wrap;justify-content:flex-start;gap:2mm;margin-top:4.5mm}#prroot .day{font-size:8.3pt;font-weight:600;color:#9A4766;border:.3mm solid #E7D3DB;border-radius:9mm;padding:.6mm 2.4mm}
 #prroot h3{margin:0 0 2mm;font-size:8pt;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--rc)}
 #prroot h3::after{content:"";display:block;width:9mm;height:.3mm;background:var(--rc);margin-top:1.4mm;opacity:.7}
-#prroot .bd{display:grid;grid-template-columns:58mm 1fr;gap:8mm;margin-top:8mm}
+#prroot .bd{display:grid;grid-template-columns:58mm 1fr;gap:8mm;margin-top:12mm}
 #prroot .ing{border-right:.25mm solid #EFE6E9;padding-right:6mm;border-radius:0;background:none;box-shadow:none}
-#prroot .ir{display:grid;grid-template-columns:5.5mm 1fr auto;gap:2mm;align-items:baseline;padding:1.4mm 0;border-bottom:.25mm solid #F0ECEA;font-size:9.8pt;break-inside:avoid}
+#prroot .ir{display:grid;grid-template-columns:5.5mm 1fr auto;gap:2mm;align-items:baseline;padding:1.7mm 0;border-bottom:.25mm solid #F0ECEA;font-size:9.8pt;break-inside:avoid}
 #prroot .ir b{color:#8E3A5A;font-weight:600;white-space:nowrap}#prroot small.gr,#prroot .ir small,#prroot .chips small{font-weight:400;color:#A8A8AD;font-size:7.3pt}
-#prroot .s{display:grid;grid-template-columns:11mm 1fr;gap:2mm;padding:2mm 0;border-bottom:.25mm solid #F0ECEA;break-inside:avoid}#prroot .s:last-child{border:0}
+#prroot .s{display:grid;grid-template-columns:11mm 1fr;gap:2mm;padding:2.7mm 0;border-bottom:.25mm solid #F0ECEA;break-inside:avoid}#prroot .s:last-child{border:0}
 #prroot .no{font-size:18pt;font-weight:200;color:var(--rc);line-height:1}
 #prroot .s p{margin:0;font-size:10.4pt;line-height:1.45}#prroot .s em{font-style:normal;color:#86868B;font-size:9pt}
 #prroot .chips{display:flex;flex-wrap:wrap;gap:1.2mm 1.8mm;margin-top:1.3mm}
@@ -5906,7 +5918,7 @@ const PR_CSS=`@page{size:A4;margin:10mm}
 #prroot .dh{display:flex;gap:3mm;align-items:center;margin-bottom:2mm}#prroot .dh .em{font-size:20pt}#prroot .dh b{display:block;font-size:12pt}#prroot .dh small{font-size:8pt;color:#86868B}
 #prroot .dc .ir{font-size:8.8pt;padding:.75mm 0}#prroot .dc p{margin:2mm 0 0;font-size:8.8pt;line-height:1.38}
 #prroot .dg{grid-template-columns:1fr 1fr 1fr!important;gap:3mm!important}#prroot .dc{padding:3mm 3.2mm!important}#prroot .dc .ir{grid-template-columns:4.5mm 1fr auto!important;font-size:8.3pt!important;gap:1.2mm!important}#prroot .dc .ir small{display:none}#prroot .dh b{font-size:10.5pt!important}#prroot .dh{margin-bottom:1.2mm!important}#prroot .dh .em{font-size:17pt!important}
-#prroot table.wk{width:100%;border-collapse:separate;border-spacing:0 1.8mm}
+#prroot table.wk{width:100%;border-collapse:separate;border-spacing:0 2.4mm;margin-top:3mm}
 #prroot .wk thead th{font-size:7.5pt;letter-spacing:.16em;text-transform:uppercase;color:#9A4766;text-align:left;padding:0 2.5mm}
 #prroot .wk tbody th{width:25mm;text-align:left;vertical-align:top;padding:2.3mm 2.5mm;background:#F7F1F3;border-radius:3mm 0 0 3mm}
 #prroot .wk tbody th b{display:block;font-size:10pt}#prroot .wk tbody th small{font-size:8.3pt;color:#86868B;font-weight:400}
@@ -5935,9 +5947,9 @@ function prFit(root,wmm,hmm){root.classList.add('meas');root.style.width=wmm+'mm
   const G={};[...root.children].forEach(p=>{const g=p.dataset.g;if(g)(G[g]=G[g]||[]).push(p)});
   Object.values(G).forEach(L=>{if(L.length>1)L.forEach((p,k)=>{const b=p.querySelector('.pno');if(b)b.textContent=` · ${k+1}/${L.length}`})});
   root.classList.remove('meas');root.style.width=''}
-function prBuild(pages,wmm,hmm){let st=document.getElementById('prcss');if(!st){st=document.createElement('style');st.id='prcss';st.textContent=PR_CSS;document.head.appendChild(st)}
+function prBuild(pages,wmm,hmm,mode){let st=document.getElementById('prcss');if(!st){st=document.createElement('style');st.id='prcss';st.textContent=PR_CSS;document.head.appendChild(st)}
   let root=document.getElementById('prroot');if(!root){root=document.createElement('div');root.id='prroot';document.body.appendChild(root)}
-  root.innerHTML=pages.join('');prFit(root,wmm,hmm);return root}
+  root.classList.toggle('pdf',!!mode);root.innerHTML=pages.join('');prFit(root,wmm,hmm);return root}
 /* Druck: Safari legt eigene Ränder darüber → mit Puffer messen (150 × 238 mm) */
 /* Druckseiten bleiben bis zum nächsten Druckauftrag bereit: Safari druckt teils erst nach „Erlauben“ oder über Teilen → Drucken – dann soll trotzdem das Rezept kommen, nicht der Bildschirm */
 function prRun(pages,self){const root=prBuild(pages,150,238);document.body.classList.add('printing');
@@ -5946,7 +5958,7 @@ function prRun(pages,self){const root=prBuild(pages,150,238);document.body.class
 const prLoad=(src,cdn)=>new Promise((ok,no)=>{const t=u=>{const x=document.createElement('script');x.src=u;x.onload=ok;x.onerror=()=>u===cdn?no(new Error('lib')):t(cdn);document.head.appendChild(x)};t(src)});
 /* V213: Seiten werden einmal als Bilder erzeugt (unabhängig davon, wie breit Safari druckt). Daraus entstehen Druck und PDF. */
 async function prImgs(pages,prog){if(!window.html2canvas)await prLoad('lib/html2canvas.min.js','https://cdn.jsdelivr.net/npm/html2canvas@1/dist/html2canvas.min.js');
-  const root=prBuild(pages,180,265);root.classList.add('pdf','meas');root.style.width='180mm';const P=[...root.children],L=[];
+  const root=prBuild(pages,206,268,true);root.classList.add('pdf','meas');root.style.width='206mm';const P=[...root.children],L=[];
   /* Nur die Druckseiten kopieren lassen – sonst klont html2canvas je Seite die ganze App mit allen Fotos (iPhone hängt) */
   const skip=el=>el!==root&&!root.contains(el)&&!el.contains(root)&&!(el.closest&&el.closest('head'))&&el.tagName!=='STYLE'&&el.tagName!=='LINK';
   const sc=1.7;
@@ -5956,7 +5968,7 @@ async function prImgs(pages,prog){if(!window.html2canvas)await prLoad('lib/html2
   root.classList.remove('pdf','meas');root.style.width='';root.innerHTML='';return L}
 async function prPdfFrom(L){if(!window.jspdf)await prLoad('lib/jspdf.umd.min.js','https://cdn.jsdelivr.net/npm/jspdf@2/dist/jspdf.umd.min.js');
   const pdf=new window.jspdf.jsPDF({unit:'mm',format:'a4',compress:true});
-  L.forEach((x,i)=>{let w=180,h=x.r*w;if(h>273){w=w*273/h;h=273}if(i)pdf.addPage();pdf.addImage(x.u,'JPEG',(210-w)/2,12,w,h)});return pdf.output('blob')}
+  L.forEach((x,i)=>{let w=210,h=x.r*w;if(h>297){w=w*297/h;h=297}if(i)pdf.addPage();pdf.addImage(x.u,'JPEG',(210-w)/2,0,w,h)});return pdf.output('blob')}
 /* Druck aus den Bildern: ein Bild pro Blatt, auf Seitenbreite skaliert – passt immer, egal welche Ränder Safari setzt */
 function prPrintImgs(L,self){let st=document.getElementById('prcss');if(!st){st=document.createElement('style');st.id='prcss';st.textContent=PR_CSS;document.head.appendChild(st)}
   let root=document.getElementById('prroot');if(!root){root=document.createElement('div');root.id='prroot';document.body.appendChild(root)}
