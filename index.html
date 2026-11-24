@@ -5940,9 +5940,9 @@ function prBuild(pages,wmm,hmm){let st=document.getElementById('prcss');if(!st){
   let root=document.getElementById('prroot');if(!root){root=document.createElement('div');root.id='prroot';document.body.appendChild(root)}
   root.innerHTML=pages.join('');prFit(root,wmm,hmm);return root}
 /* Druck: Safari legt eigene Ränder darüber → mit Puffer messen (150 × 238 mm) */
-function prRun(pages,self){const root=prBuild(pages,150,238);const done=()=>{document.body.classList.remove('printing');root.innerHTML=''};
-  document.body.classList.add('printing');addEventListener('afterprint',()=>setTimeout(done,300),{once:true});
-  try{window.print()}catch(e){done();self&&self.toast('Drucken ist hier nicht möglich – bitte „Als PDF“ verwenden.')}}
+/* Druckseiten bleiben bis zum nächsten Druckauftrag bereit: Safari druckt teils erst nach „Erlauben“ oder über Teilen → Drucken – dann soll trotzdem das Rezept kommen, nicht der Bildschirm */
+function prRun(pages,self){const root=prBuild(pages,150,238);document.body.classList.add('printing');
+  try{window.print()}catch(e){self&&self.toast('Drucken ist hier nicht möglich – bitte „Als PDF“ verwenden.')}}
 /* PDF: Bibliotheken bei Bedarf laden (App: lokale Kopie, sonst CDN) */
 const prLoad=(src,cdn)=>new Promise((ok,no)=>{const t=u=>{const x=document.createElement('script');x.src=u;x.onload=ok;x.onerror=()=>u===cdn?no(new Error('lib')):t(cdn);document.head.appendChild(x)};t(src)});
 async function prPdf(pages){if(!window.jspdf)await prLoad('lib/jspdf.umd.min.js','https://cdn.jsdelivr.net/npm/jspdf@2/dist/jspdf.umd.min.js');
@@ -5951,7 +5951,7 @@ async function prPdf(pages){if(!window.jspdf)await prLoad('lib/jspdf.umd.min.js'
   const P=[...root.children];for(let i=0;i<P.length;i++){const p=P[i];p.style.zoom=''; /* html2canvas kann kein zoom → in voller Größe aufnehmen, Bild wird beim Einsetzen verkleinert */
     const c=await window.html2canvas(p,{scale:2.2,backgroundColor:'#ffffff',useCORS:true,logging:false});
     let w=180,h=c.height/c.width*w;if(h>273){w=w*273/h;h=273}if(i)pdf.addPage();pdf.addImage(c.toDataURL('image/jpeg',.88),'JPEG',(210-w)/2,12,w,h)}
-  root.classList.remove('pdf','meas');root.style.width='';root.innerHTML='';return pdf.output('blob')}
+  root.classList.remove('pdf','meas');root.style.width='';P.forEach(p=>{if(p.dataset.z)p.style.zoom=p.dataset.z});document.body.classList.add('printing');return pdf.output('blob')}
 Phone.prototype.vPrint=function(){const s=this.s,P0=s.persons,k=s.prK||'rec',r=RM[s.did];
   const tg=(a,on,t,sub)=>`<button class="pr-t ${on?'on':''}" data-a="${a}"><span class="pr-c">${on?ic('check'):''}</span><span><b>${t}</b>${sub?`<small>${sub}</small>`:''}</span></button>`;
   const pers=`<div class="pr-row"><span>Mengen für</span><div class="stepper"><button data-a="pers" data-v="-1" aria-label="Weniger Personen">${ic('minus')}</button>${P0} Pers.<button data-a="pers" data-v="1" aria-label="Mehr Personen">${ic('plus')}</button></div></div>`;
