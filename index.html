@@ -1935,6 +1935,14 @@ img,svg{-webkit-user-drag:none}
 .mobv .mk .mk-i{width:104px;height:78px}
 .mobv .mk .pose{width:78px!important;height:78px!important}
 .mobv .mk b{font-size:17px}
+/* V207: Drucken */
+.pr-t{display:flex;gap:12px;align-items:center;width:100%;border:0;background:var(--a-card);box-shadow:0 0 0 1px var(--a-line);border-radius:16px;padding:12px 14px;margin-top:10px;text-align:left}
+.pr-t b{display:block;font-size:15px;font-weight:600}.pr-t small{display:block;font-size:12.5px;color:var(--a-muted);margin-top:1px}
+.pr-c{flex:none;width:24px;height:24px;border-radius:7px;box-shadow:inset 0 0 0 1.6px #C7C7CC;display:grid;place-items:center;color:#fff}.pr-c .ic{width:15px;height:15px;stroke-width:2.6}
+.pr-t.on .pr-c{background:var(--a-eyebrow);box-shadow:none}
+.pr-row{display:flex;justify-content:space-between;align-items:center;margin:14px 2px 16px;font-size:15px}
+.pr-seg{margin-top:6px}.sheet h3 .ic{width:20px;height:20px;vertical-align:-3px;margin-right:4px}
+.det-top .iconbtn.prb .ic{width:20px;height:20px}
 /* V199: Fine Dining */
 .fd-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:4px 0 0}
 .fd-tabs button{border:0;border-radius:18px;padding:11px 10px 10px;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.06);display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;min-width:0;transition:background .2s,box-shadow .2s}
@@ -2998,7 +3006,7 @@ Phone.prototype.vFdDetail=function(r,btn,eb,E){FDCUR=r;const s=this.s,sel=fdSel(
    <p class="fd-note">Die Schritte siehst du nach „Jetzt kochen“ – einer pro Seite, mit Timeline.</p>
   </div></div>
   <div class="swipehint"></div>
-  <div class="det-top"><button class="iconbtn" data-a="back" aria-label="Zurück">${ic('left')}</button></div>
+  <div class="det-top"><button class="iconbtn" data-a="back" aria-label="Zurück">${ic('left')}</button><button class="iconbtn prb" data-a="print" data-v="rec" aria-label="Rezept drucken">${ic('printer')}</button></div>
   <div class="fade-bottom"></div><div class="bottom-cta fd2">${btn.replace('class="gbtn','class="obtn')}<button class="gbtn" data-a="fdcook">${ic('chef')}Jetzt kochen</button></div>`};
 /* Koch-Modus: ein Schritt pro Seite, Timeline mit Position, was nebenbei läuft und was als Nächstes kommt */
 Phone.prototype.vFdCook=function(){const s=this.s,r=RM[s.did];FDCUR=r;if(!r||!r.fd)return '<div class="view"></div>';FDOPT={mode:fdMode(s),only:s.fdOnly||null};const sel=fdSel(s,r),S=fdSteps(r,sel),n=S.length,k=Math.max(0,Math.min(s.fdStep||0,n)),end=k>=n,x=S[k],nx=S[k+1];
@@ -3139,7 +3147,7 @@ Phone.prototype.vBxDetail=function(r,btn,eb){const s=this.s,st=bxSt(s),prev=this
    <button class="bx-reset" data-a="bxreset">Neu zusammenstellen</button>`:''}
   </div></div>
   <div class="swipehint"></div>
-  <div class="det-top"><button class="iconbtn" data-a="back" aria-label="Zurück">${ic('left')}</button></div>
+  <div class="det-top"><button class="iconbtn" data-a="back" aria-label="Zurück">${ic('left')}</button><button class="iconbtn prb" data-a="print" data-v="rec" aria-label="Rezept drucken">${ic('printer')}</button></div>
   <div class="fade-bottom"></div><div class="bottom-cta ${has?'':'bx-off'}">${has?btn:`<button class="gbtn" data-a="bxtab" data-v="b" disabled>Erst Basis wählen</button>`}</div>`};
 Object.assign(P,{lock:'<rect x="5.5" y="10.5" width="13" height="9.5" rx="2.4"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/>'});
 if(RM.b11)bxApply(RM.b11,BX_EX);
@@ -4715,7 +4723,7 @@ Antworte ausschließlich mit JSON: {"abschnitte":[{"titel":"Training","text":"�
 Phone.prototype.vPlan=function(){const s=this.s;const w=s.wk||0,ks=Object.keys(s.plan).map(Number).filter(i=>wkOf(i)===w);const n=ks.length;const cooked=ks.filter(i=>RM[s.plan[i]]).length;
   return `<div class="view planv"><div class="blob"><i></i><i></i><i></i><i></i></div><div class="z">
   <div class="phead"><div><div class="eb">KW ${KW(w)} · ${n}/7 geplant</div><div class="h-title">Mein Essensplan</div></div>
-   <div class="hbtns">${cooked?`<button class="iconbtn" data-a="mkshop" aria-label="Einkaufsliste erstellen" title="Einkaufsliste erstellen">${ic('bag')}</button>`:''}<button class="iconbtn" data-a="randweek" aria-label="Woche zufällig füllen" title="Woche zufällig füllen">${ic('dice')}</button><button class="iconbtn" data-a="go" data-v="settings" aria-label="Einstellungen">${ic('sliders')}</button></div></div>
+   <div class="hbtns">${cooked?`<button class="iconbtn" data-a="mkshop" aria-label="Einkaufsliste erstellen" title="Einkaufsliste erstellen">${ic('bag')}</button>`:''}<button class="iconbtn" data-a="print" data-v="week" aria-label="Woche drucken" title="Woche drucken">${ic('printer')}</button><button class="iconbtn" data-a="randweek" aria-label="Woche zufällig füllen" title="Woche zufällig füllen">${ic('dice')}</button><button class="iconbtn" data-a="go" data-v="settings" aria-label="Einstellungen">${ic('sliders')}</button></div></div>
   <div class="prog"><div class="bar"><b style="width:${n/7*100}%"></b></div></div>
   <div class="weeks"><div class="wtrack" style="transform:translateX(${-w*50}%)">${[0,1].map(k=>`<div class="week">${DAYS.map((d,j)=>this.vPill(k*7+j)).join('')}</div>`).join('')}</div></div>
   <div class="wnav"><span class="wnl"><span class="wdots"><i class="${w===0?'on':''}"></i><i class="${w===1?'on':''}"></i></span>${n||Array.from({length:7},(_,j)=>s.extra[w*7+j]).some(x=>x&&(x.b||x.d))?`<button class="wclr" data-a="clrwk">${ic('trash')}Woche leeren</button>`:''}</span><button class="wnext" data-a="wk" data-v="${1-w}">${w===0?`Nächste Woche · KW ${KW(1)}${ic('right')}`:`${ic('left')}Diese Woche · KW ${KW(0)}`}</button></div>
@@ -5027,7 +5035,7 @@ Phone.prototype.vDetail=function(){const s=this.s;const r=RM[s.did];const cat=CA
    ${r.tip?`<div class="rz-tip"><b>${ic('spark')}Tipp</b><p>${r.tip}</p></div>`:''}
   </div></div>
   <div class="swipehint"></div>
-  <div class="det-top"><button class="iconbtn" data-a="back" aria-label="Zurück">${ic('left')}</button></div>
+  <div class="det-top"><button class="iconbtn" data-a="back" aria-label="Zurück">${ic('left')}</button><button class="iconbtn prb" data-a="print" data-v="rec" aria-label="Rezept drucken">${ic('printer')}</button></div>
   <div class="fade-bottom"></div><div class="bottom-cta">${btn}</div>`};
 
 
@@ -5523,6 +5531,7 @@ Phone.prototype.vSheet=function(){const s=this.s;if(!s.sheet)return '';
   if(s.sheet==='fxday')c=this.vFxday();
   if(s.sheet==='extra')c=this.vExtra();
   if(s.sheet==='cook')c=this.vCook();
+  if(s.sheet==='print')c=this.vPrint();
   if(s.sheet==='pickday'){const r=RM[s.did];c=`<h3>Für welchen Tag?</h3><p>${r.n} einplanen${s.twice?' · 2×: auch am Folgetag':''}</p>
     ${Array.from({length:NDAYS},(_,i)=>i).map(i=>{const id=s.plan[i],x=RM[id];return `${i%7===0?`<div class="lbl" style="margin:${i?14:4}px 0 4px">KW ${KW(wkOf(i))}${i?' · nächste Woche':' · diese Woche'}</div>`:''}<button class="pd" data-a="planfor" data-i="${i}">${x?plate(x,40):id===OUT?`<span class="ph out">${ic('out')}</span>`:`<span class="ph">${ic('plus')}</span>`}<span>${dayLbl(i)}${i===TODAY?' · heute':''}<small>${x?x.n+' wird ersetzt':id===OUT?'Auswärts, wird ersetzt':'frei'}</small></span></button>`}).join('')}`}
   return `<div class="sheet-bg" data-a="closesheet"><div class="sheet" data-a="stop"><button class="sheet-x" data-a="closesheet" aria-label="Schließen">${ic('x')}</button>${c}</div></div>`};
@@ -5637,6 +5646,14 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
    case 'faitog':s.faiC=!s.faiC;haptic();this.render();break;
    case 'fdisc':s.sheet='fdisc';haptic();this.render();break;
    case 'ftph':s.ftPh=v;haptic();this.render();break;
+   case 'print':s.prK=v;s.prW=null;s.sheet='print';haptic();this.render();break;
+   case 'prw':s.prW=+v;haptic();this.render();break;
+   case 'prx':s.prX=s.prX===false;haptic();this.render();break;
+   case 'prdr':s.prDr=!s.prDr;haptic();this.render();break;
+   case 'prgo':{window.__fdSelSave=s.fdSel;const P0=s.persons;let pages;
+     if(s.prK==='week'){const w=s.prW!=null?s.prW:(s.wk||0);pages=prWeek(s,w,s.prX!==false,P0);if(s.prDr)pages.push(prDress(P0))}
+     else{const r=RM[s.did];if(!r)break;pages=[prRecipe(r,P0)];if(r.c&&r.c.includes('bowl')&&s.prDr)pages.push(prDress(P0))}
+     s.sheet=null;this.render();prRun(pages,this);break}
    case 'fdtab':s.fdTab=v;haptic();this.render();break;
    case 'bxtab':{const st=bxSt(s);if(!st.b&&v!=='b'){this.toast('Wähle zuerst eine Basis');break}s.bxTab=v;haptic();this.render();break}
    case 'bxb':case 'bxt':case 'bxx':case 'bxd':{const st=bxSt(s);if(a!=='bxb'&&!st.b){this.toast('Wähle zuerst eine Basis');break}
@@ -5786,6 +5803,126 @@ Phone.prototype.greetNow=function(){const s=this.s,n=(s.prof&&s.prof.name||'').t
   const L=('Hallo '+n).split('').map((c,i)=>`<i style="animation-delay:${(.06+i*.02).toFixed(3)}s">${c===' '?'&nbsp;':c.replace(/&/g,'&amp;').replace(/</g,'&lt;')}</i>`).join('');
   d.innerHTML=`<div><h2 style="font-size:${Math.max(30,Math.min(60,Math.floor(640/(n.length+6))))}px" aria-label="Hallo ${n.replace(/"/g,'&quot;')}">${L}</h2><p>schön, dass du da bist!</p></div>`;this.ph.appendChild(d);
   const off=()=>{if(d.classList.contains('out'))return;d.classList.add('out');setTimeout(()=>d.remove(),520)};d.addEventListener('pointerdown',off);setTimeout(off,2400);return true};
+
+/* ===== V207: Drucken – einzelnes Gericht, ganze Woche, Dressings. Jede Rezeptseite = 1 A4-Blatt mit Lochrand links und Register-Reiter rechts (für eine Mappe) ===== */
+Object.assign(P,{printer:'<path d="M7 9V3.8h10V9"/><rect x="3.5" y="9" width="17" height="8" rx="2.2"/><path d="M7 14.5h10V20.5H7z"/><circle cx="17" cy="12" r=".6" fill="currentColor"/>'});
+/* Register: feste Reihenfolge und Farbe → in der Mappe sitzt jede Kategorie auf ihrer eigenen Höhe */
+const PR_REG=[['bowl','Bowls','#4F8F5B'],['fisch','Fisch','#3D7FB8'],['fleisch','Fleisch','#A8463E'],['veggie','Vegetarisch','#7A9A3A'],['fine','Fine Dining','#B08A4A'],['suppe','Suppe','#D9822B'],['b','Frühstück','#E0A82E'],['d','Abendessen','#6E4A9E']];
+const prReg=r=>r.meal?r.meal:r.c.includes('bowl')?'bowl':r.c.includes('fine')?'fine':r.c.includes('suppe')?'suppe':r.c[0];
+const prEsc=t=>String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+const prAmt=(n,q,u,P0)=>q?fqg(n,q*P0,u):'n. G.';
+const prNm=n=>n.replace(/\s*\(.*?\)/g,'');
+const prIngs=(L,P0)=>L.map(([n,q,u])=>`<div class="ir"><span class="e">${emo(n)}</span><span class="n">${prEsc(prNm(n))}</span><b>${prAmt(n,q,u,P0)}</b></div>`).join('');
+const prPage=(inner,reg,foot)=>{const k=Math.max(0,PR_REG.findIndex(x=>x[0]===reg)),R0=PR_REG[k];
+  return `<section class="pg"><i class="reg" style="top:${18+k*32}mm;background:${R0[2]}"><span>${R0[1]}</span></i>${inner}<div class="ft"><span>Essensplan</span><span>${foot||''}</span></div></section>`};
+function prRecipe(r,P0,days){const reg=prReg(r),R0=PR_REG.find(x=>x[0]===reg)||PR_REG[0],M=r.fd?null:stepIngs(r);
+  const tags=(days||[]).map(([i,m])=>`<span class="day">${DAYS[(i%7+7)%7]}, ${dm(i)} · ${m}</span>`).join('');
+  const head=`<header><div class="ph">${r.img?`<img src="${r.img}" alt="">`:`<span>${r.e||'🍽️'}</span>`}</div><div class="hd">
+   <div class="eb" style="color:${R0[2]}">${R0[1]}${r.c&&r.c.includes('veggie')&&reg!=='veggie'?' · Vegetarisch':''} · ${r.id.toUpperCase()}</div>
+   <h1>${prEsc(r.n)}.</h1><p class="sub">${prEsc(r.d||r.s||'')}</p>
+   <div class="meta"><span>⏱ ${r.fd?fdHm(r.m):r.m+' Min.'}</span><span>${r.k} kcal</span><span>${r.p} g Eiweiß</span>${r.kh!=null?`<span>${r.kh} g KH</span>`:''}${r.f!=null?`<span>${r.f} g Fett</span>`:''}<span class="pp" style="background:${R0[2]}">für ${P0} ${P0===1?'Person':'Personen'}</span></div>
+   ${tags?`<div class="days">${tags}</div>`:''}</div></header>`;
+  let body;
+  if(r.fd){const sel=fdSel({fdSel:(window.__fdSelSave||{})},r);FDCUR=r;
+    body=r.fd.comps.map(c=>{const o=fdOpt(r,c.k,sel),C=FD_COMP[c.k];const lead=-Math.min(...o.st.map(x=>x[0]));
+     return `<div class="fdb" style="--c:${C[1]}"><h2><i></i>${prEsc(fdN(c.k))}: ${prEsc(o.n)}<small>Start ${fdHm(lead)} vor dem Servieren</small></h2><div class="bd"><div class="ing">${prIngs(o.i,P0)}</div>
+      <div class="stp">${o.st.map((x,k)=>`<div class="s"><span class="no">${String(k+1).padStart(2,'0')}</span><p>${prEsc(x[2])}${x[3]?' <em>(läuft nebenbei)</em>':''}</p></div>`).join('')}</div></div></div>`}).join('')
+     +(r.tip?`<div class="tip"><b>Tipp</b> ${prEsc(r.tip)}</div>`:'')}
+  else body=`<div class="bd"><div class="ing"><h3>Zutaten</h3>${prIngs(r.i,P0)}</div>
+   <div class="stp"><h3>So gelingt's.</h3>${r.st.map((t,k)=>`<div class="s"><span class="no">${String(k+1).padStart(2,'0')}</span><div><p>${prEsc(t)}</p>${M&&M[k]&&M[k].length?`<div class="chips">${M[k].map(j=>{const [n,q,u]=r.i[j];return `<span>${emo(n)} ${prEsc(prNm(n))} <b>${prAmt(n,q,u,P0)}</b></span>`}).join('')}</div>`:''}</div></div>`).join('')}
+   ${r.tip?`<div class="tip"><b>Tipp</b> ${prEsc(r.tip)}</div>`:''}</div></div>`;
+  return prPage(head+body,reg,r.id.toUpperCase()+' · '+prEsc(r.n))}
+function prDress(P0){return prPage(`<header class="sm"><div class="hd"><div class="eb" style="color:#4F8F5B">Bowls · Dressings</div><h1>Dressings für jede Bowl.</h1><p class="sub">Alle Varianten zum Tauschen – für ${P0} ${P0===1?'Person':'Personen'}. Im Glas kräftig schütteln, dann hält das Dressing ein paar Tage im Kühlschrank.</p></div></header>
+  <div class="dg">${DRESS.map(x=>{const k=BX_DK[x.id]||[];return `<div class="dc"><div class="dh"><span class="em">${x.e}</span><div><b>${x.n}</b><small>${k[0]||'–'} kcal · ${k[3]!=null?k[3]+' g Fett':''} pro Portion</small></div></div>${prIngs(x.i.concat([['Salz, Pfeffer',0,'']]),P0)}<p>${prEsc(x.st.replace(/^Dressing:\s*/,''))}</p></div>`}).join('')}</div>`,'bowl','Dressings')}
+function prWeek(s,w,withX,P0){const days=Array.from({length:7},(_,j)=>w*7+j),use=new Map(),order=[];
+  const add=(id,i,m)=>{const r=RM[id];if(!r)return;if(!use.has(id)){use.set(id,[]);order.push(id)}use.get(id).push([i,m])};
+  days.forEach(i=>{const X=s.extra[i]||{};if(withX&&X.b)add(X.b,i,'Frühstück');if(s.plan[i])add(s.plan[i],i,'Mittagessen');if(withX&&X.d)add(X.d,i,'Abendessen')});
+  const pageOf={};order.forEach((id,k)=>pageOf[id]=k+2);
+  const cell=(v,lbl)=>{if(!v)return '<td class="em">–</td>';if(v===OUT)return '<td class="o">auswärts</td>';const r=RM[v];
+   return r?`<td><b>${prEsc(r.n)}</b><small>${r.m} Min · ${r.k} kcal · <span class="pg-ref">S. ${pageOf[v]}</span></small></td>`:`<td><b>${prEsc(v)}</b><small>eigener Eintrag</small></td>`};
+  const ov=prPage(`<header class="sm"><div class="hd"><div class="eb">Wochenplan · KW ${KW(w)}</div><h1>Deine Woche.</h1><p class="sub">${dm(days[0])} – ${dm(days[6])} · Mengen für ${P0} ${P0===1?'Person':'Personen'}. Die Rezepte folgen auf den nächsten Seiten in der Reihenfolge der Woche – nach dem Kochen einfach in die Mappe hinter den passenden Reiter heften.</p></div></header>
+   <table class="wk"><thead><tr><th></th>${withX?'<th>Frühstück</th>':''}<th>Mittagessen</th>${withX?'<th>Abendessen</th>':''}</tr></thead><tbody>${days.map(i=>{const X=s.extra[i]||{};
+    return `<tr><th><b>${DAYS[i%7]}</b><small>${dm(i)}</small></th>${withX?cell(X.b):''}${cell(s.plan[i])}${withX?cell(X.d):''}</tr>`}).join('')}</tbody></table>
+   <div class="leg">${PR_REG.map(x=>`<span><i style="background:${x[2]}"></i>${x[1]}</span>`).join('')}</div>`,'','Wochenplan KW '+KW(w));
+  return [ov].concat(order.map(id=>prRecipe(RM[id],P0,use.get(id))))}
+const PR_CSS=`@page{size:A4;margin:0}
+#prroot{display:none}
+@media print{html,body{background:#fff!important;height:auto!important;overflow:visible!important}body.printing>*:not(#prroot){display:none!important}body.printing #prroot{display:block}}
+#prroot *{box-sizing:border-box}
+#prroot{font-family:Inter,-apple-system,'Helvetica Neue',system-ui,sans-serif;color:#1D1D1F;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+#prroot .pg{position:relative;width:210mm;min-height:297mm;padding:12mm 14mm 16mm 25mm;break-after:page;page-break-after:always;background:#fff;overflow:hidden}
+#prroot .pg:last-child{break-after:auto;page-break-after:auto}
+#prroot .pg::before{content:"";position:absolute;left:9mm;top:0;bottom:0;border-left:.25mm dashed #E3DCDF}
+#prroot .reg{position:absolute;right:0;width:7mm;height:29mm;border-radius:2.5mm 0 0 2.5mm;display:flex;align-items:center;justify-content:center}
+#prroot .reg span{writing-mode:vertical-rl;transform:rotate(180deg);font-size:7pt;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#fff;white-space:nowrap}
+#prroot .ft{position:absolute;left:25mm;right:14mm;bottom:7mm;display:flex;justify-content:space-between;font-size:7pt;letter-spacing:.14em;text-transform:uppercase;color:#B3A7AC;font-weight:600}
+#prroot header{display:flex;gap:6mm;align-items:center;margin-right:4mm}
+#prroot header.sm{margin-bottom:6mm}
+#prroot .ph{flex:none;width:46mm;height:46mm;border-radius:50%;background:radial-gradient(circle,#F3EDE6,#E9DFD6);display:grid;place-items:center;overflow:hidden;font-size:34pt}
+#prroot .ph img{width:100%;height:100%;object-fit:cover}
+#prroot .eb{font-size:8pt;letter-spacing:.16em;text-transform:uppercase;color:#9A4766;font-weight:700}
+#prroot h1{margin:1.2mm 0 1mm;font-size:23pt;font-weight:700;letter-spacing:-.03em;line-height:1.05}
+#prroot .sub{margin:0;font-size:10.5pt;line-height:1.4;color:#6E6E73}
+#prroot .meta{display:flex;flex-wrap:wrap;gap:1.4mm 2.4mm;margin-top:2.6mm;font-size:9pt;color:#3A3A3C}
+#prroot .meta span{padding:.7mm 2.4mm;border-radius:9mm;background:#F5EFF1}#prroot .meta .pp{color:#fff}
+#prroot .days{display:flex;flex-wrap:wrap;gap:1.4mm;margin-top:2mm}#prroot .day{font-size:8.5pt;font-weight:600;color:#9A4766;border:.3mm solid #E7D3DB;border-radius:9mm;padding:.6mm 2.4mm}
+#prroot h3{margin:0 0 2mm;font-size:12pt;font-weight:700;letter-spacing:-.02em}
+#prroot .bd{display:grid;grid-template-columns:62mm 1fr;gap:7mm;margin-top:7mm}
+#prroot .ing{border-right:.3mm solid #EFE6E9;padding-right:5mm}
+#prroot .ir{display:grid;grid-template-columns:5.5mm 1fr auto;gap:2mm;align-items:baseline;padding:1.5mm 0;border-bottom:.25mm solid #F0ECEA;font-size:10pt}
+#prroot .ir b{color:#8E3A5A;font-weight:600;white-space:nowrap}#prroot small.gr,#prroot .ir small,#prroot .chips small{font-weight:400;color:#A8A8AD;font-size:7.5pt}
+#prroot .s{display:grid;grid-template-columns:11mm 1fr;gap:2mm;padding:2mm 0;border-bottom:.25mm solid #F0ECEA;break-inside:avoid}#prroot .s:last-child{border:0}
+#prroot .no{font-size:19pt;font-weight:300;color:#9A4766;line-height:1}
+#prroot .s p{margin:0;font-size:10.6pt;line-height:1.42}#prroot .s em{font-style:normal;color:#86868B;font-size:9pt}
+#prroot .chips{display:flex;flex-wrap:wrap;gap:1.2mm 1.8mm;margin-top:1.3mm}
+#prroot .chips span{font-size:8.3pt;color:#3A3A3C;background:#F7F3F1;border-radius:2mm;padding:.5mm 1.8mm}#prroot .chips b{color:#8E3A5A;font-weight:600}
+#prroot .tip{margin-top:4mm;padding:3mm 4mm;border-radius:3mm;background:#F7F1F3;font-size:9.5pt;line-height:1.45}#prroot .tip b{color:#9A4766;margin-right:1.5mm}
+#prroot .fdb{margin-top:5mm;break-inside:avoid}#prroot .fdb h2{display:flex;align-items:baseline;gap:2mm;margin:0;font-size:12.5pt;font-weight:700;padding-bottom:1.5mm;border-bottom:.5mm solid var(--c)}
+#prroot .fdb h2 i{width:2.6mm;height:2.6mm;border-radius:50%;background:var(--c);flex:none;align-self:center}#prroot .fdb h2 small{margin-left:auto;font-size:8.5pt;font-weight:600;color:var(--c)}
+#prroot .fdb .bd{margin-top:2.5mm}
+#prroot .dg{display:grid;grid-template-columns:1fr 1fr;gap:5mm}
+#prroot .dc{border:.3mm solid #EFE6E9;border-radius:4mm;padding:4mm 4.5mm;break-inside:avoid}
+#prroot .dh{display:flex;gap:3mm;align-items:center;margin-bottom:2mm}#prroot .dh .em{font-size:20pt}#prroot .dh b{display:block;font-size:12pt}#prroot .dh small{font-size:8pt;color:#86868B}
+#prroot .dc .ir{font-size:9.3pt;padding:1.1mm 0}#prroot .dc p{margin:2.5mm 0 0;font-size:9.3pt;line-height:1.4}
+#prroot table.wk{width:100%;border-collapse:separate;border-spacing:0 2mm;margin-top:2mm}
+#prroot .wk thead th{font-size:8pt;letter-spacing:.14em;text-transform:uppercase;color:#9A4766;text-align:left;padding:0 2.5mm}
+#prroot .wk tbody th{width:26mm;text-align:left;vertical-align:top;padding:2.5mm;background:#F7F1F3;border-radius:3mm 0 0 3mm}
+#prroot .wk tbody th b{display:block;font-size:10.5pt}#prroot .wk tbody th small{font-size:8.5pt;color:#86868B;font-weight:400}
+#prroot .wk td{vertical-align:top;padding:2.5mm;border-top:.3mm solid #EFE6E9;border-bottom:.3mm solid #EFE6E9;font-size:9.6pt}
+#prroot .wk td:last-child{border-right:.3mm solid #EFE6E9;border-radius:0 3mm 3mm 0}
+#prroot .wk td b{display:block;font-weight:600;line-height:1.25}#prroot .wk td small{display:block;margin-top:.8mm;font-size:8pt;color:#86868B}
+#prroot .wk td.em,#prroot .wk td.o{color:#B3A7AC}#prroot .pg-ref{color:#9A4766;font-weight:700}
+#prroot .leg{display:flex;flex-wrap:wrap;gap:2mm 4mm;margin-top:5mm;font-size:8pt;color:#6E6E73}#prroot .leg i{display:inline-block;width:3mm;height:3mm;border-radius:1mm;margin-right:1.2mm;vertical-align:-.3mm}`;
+function prRun(pages,self){let st=document.getElementById('prcss');if(!st){st=document.createElement('style');st.id='prcss';st.textContent=PR_CSS;document.head.appendChild(st)}
+  let root=document.getElementById('prroot');if(!root){root=document.createElement('div');root.id='prroot';document.body.appendChild(root)}
+  root.innerHTML=pages.join('');const done=()=>{document.body.classList.remove('printing');root.innerHTML=''};
+  const imgs=[...root.querySelectorAll('img')].map(i=>i.decode?i.decode().catch(()=>{}):Promise.resolve());
+  Promise.all(imgs).then(()=>{document.body.classList.add('printing');addEventListener('afterprint',done,{once:true});
+    try{window.print()}catch(e){done();self&&self.toast('Drucken ist hier nicht möglich – bitte in der installierten App versuchen.')}
+    setTimeout(()=>{if(!matchMedia('print').matches)done()},60000)})}
+Phone.prototype.vPrint=function(){const s=this.s,P0=s.persons,k=s.prK||'rec',r=RM[s.did];
+  const tg=(a,on,t,sub)=>`<button class="pr-t ${on?'on':''}" data-a="${a}"><span class="pr-c">${on?ic('check'):''}</span><span><b>${t}</b>${sub?`<small>${sub}</small>`:''}</span></button>`;
+  const pers=`<div class="pr-row"><span>Mengen für</span><div class="stepper"><button data-a="pers" data-v="-1" aria-label="Weniger Personen">${ic('minus')}</button>${P0} Pers.<button data-a="pers" data-v="1" aria-label="Mehr Personen">${ic('plus')}</button></div></div>`;
+  if(k==='week'){const w=s.prW!=null?s.prW:(s.wk||0),days=Array.from({length:7},(_,j)=>w*7+j),nR=new Set(days.map(i=>s.plan[i]).filter(id=>RM[id])),nX=new Set(days.flatMap(i=>{const X=s.extra[i]||{};return [X.b,X.d]}).filter(id=>RM[id]));
+    const tot=new Set([...nR,...(s.prX!==false?nX:[])]).size;
+    return `<h3>${ic('printer')} Woche drucken</h3><p>Seite 1 ist die Wochenübersicht, danach folgt jedes Rezept auf einem eigenen A4-Blatt – mit Tag und Mahlzeit oben, Lochrand links und farbigem Reiter rechts. So kannst du die Blätter in einer Mappe nach Kategorie sammeln.</p>
+     <div class="seg pr-seg">${[0,1].map(x=>`<button class="${w===x?'on':''}" data-a="prw" data-v="${x}">${x?'Nächste Woche':'Diese Woche'} · KW ${KW(x)}</button>`).join('')}</div>
+     ${tg('prx',s.prX!==false,'Frühstück & Abendessen','dem richtigen Tag zugeordnet, als eigene Rezeptseiten')}
+     ${tg('prdr',!!s.prDr,'Dressing-Blatt anhängen','alle Bowl-Dressings auf einer Seite')}
+     ${pers}
+     <button class="gbtn" data-a="prgo" ${tot?'':'disabled'}>${ic('printer')}${tot?`${tot+1+(s.prDr?1:0)} Seiten drucken`:'Noch nichts geplant'}</button>`}
+  const bowl=r&&r.c&&r.c.includes('bowl');
+  return `<h3>${ic('printer')} Rezept drucken</h3><p>Ein A4-Blatt mit Lochrand links und farbigem Reiter für die Kategorie „${(PR_REG.find(x=>x[0]===prReg(r))||PR_REG[0])[1]}“ – passend für deine Rezeptmappe.</p>
+   ${bowl?tg('prdr',!!s.prDr,'Alle Dressings mitdrucken','zweite Seite mit allen 6 Dressings zum Tauschen'):''}
+   ${pers}
+   <button class="gbtn" data-a="prgo">${ic('printer')}${bowl&&s.prDr?'2 Seiten':'1 Seite'} drucken</button>`};
+const PR_UI=`.pr-t{display:flex;gap:12px;align-items:center;width:100%;border:0;background:var(--a-card);box-shadow:0 0 0 1px var(--a-line);border-radius:16px;padding:12px 14px;margin-top:10px;text-align:left}
+.pr-t b{display:block;font-size:15px;font-weight:600}.pr-t small{display:block;font-size:12.5px;color:var(--a-muted);margin-top:1px}
+.pr-c{flex:none;width:24px;height:24px;border-radius:7px;box-shadow:inset 0 0 0 1.6px #C7C7CC;display:grid;place-items:center;color:#fff}.pr-c .ic{width:15px;height:15px;stroke-width:2.6}
+.pr-t.on .pr-c{background:var(--a-eyebrow);box-shadow:none}
+.pr-row{display:flex;justify-content:space-between;align-items:center;margin:14px 2px 16px;font-size:15px}
+.pr-seg{margin-top:6px}.sheet h3 .ic{width:20px;height:20px;vertical-align:-3px;margin-right:4px}
+.det-top .iconbtn.prb .ic{width:20px;height:20px}`;
 
 /* ---------- Übersicht ---------- */
 const FULL={0:'m02',1:'m07',2:'m16',3:OUT,4:'m01',5:'m13',6:'b06'};
