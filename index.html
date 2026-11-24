@@ -1944,7 +1944,7 @@ img,svg{-webkit-user-drag:none}
 .pr-row{display:flex;justify-content:space-between;align-items:center;margin:14px 2px 16px;font-size:15px}
 .pr-seg{margin-top:6px}.sheet h3 .ic{width:20px;height:20px;vertical-align:-3px;margin-right:4px}
 .det-top .iconbtn.prb .ic{width:20px;height:20px}
-.sheet .gbtn[data-a="prgo"]{margin-top:0}.sheet .gbtn[data-a="prshare"]{width:100%}
+.sheet .gbtn[data-a="prgo"]{margin-top:0}.sheet .pr-prep{width:100%}.sheet .gbtn[data-a="prshare"]{width:100%}
 .pr-btns{display:flex;gap:8px}.pr-btns .obtn{flex:none;justify-content:center;padding:0 16px}.pr-btns .gbtn{flex:1}
 .pr-hint{margin:10px 2px 0;font-size:12.5px;color:var(--a-muted);line-height:1.4}
 /* V199: Fine Dining */
@@ -5599,7 +5599,7 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
    case 'detail':{const v0=this.scr.querySelector('.view');this.backTop=v0?v0.scrollTop:0;this.backFrom=s.screen}s.from=s.screen;s.aiReturn=false;s.did=t.dataset.id;s.dday=t.dataset.day!==undefined?+t.dataset.day:null;s.screen='detail';this.render();break;
    case 'back':this.back();break;
    case 'planfor':{const i=+t.dataset.i;const dd=this.planDish(i,s.did);s.sheet=null;this.backAfterPlan(i);this.render();this.toast(`${RM[s.did].n} für ${dd} eingeplant`);break}
-   case 'pers':s.persons=Math.max(1,Math.min(8,s.persons+(+v)));this.render();break;
+   case 'pers':s.prReady=0;s.persons=Math.max(1,Math.min(8,s.persons+(+v)));this.render();break;
    case 'mkshop':case 'regen':case 'shopwk':{if(a==='mkshop')s.shopWk=s.wk||0;if(a==='shopwk')s.shopWk=+v;const w=s.shopWk||0;
       this.rebuildShop();s.screen='shop';this.render();
       this.toast(a==='mkshop'?`Einkaufsliste für KW ${KW(w)} erstellt`:`Aus Plan KW ${KW(w)} aktualisiert`);break}
@@ -5657,9 +5657,12 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
    case 'prgo':{window.__fdSelSave=s.fdSel;const P0=s.persons;let pages;
      if(s.prK==='week'){const w=s.prW!=null?s.prW:(s.wk||0);pages=prWeek(s,w,s.prX!==false,P0);if(s.prDr)pages.push(prDress(P0))}
      else{const r=RM[s.did];if(!r)break;pages=[prRecipe(r,P0)];if(r.c&&r.c.includes('bowl')&&s.prDr)pages.push(prDress(P0))}
-     if(t.dataset.v==='pdf'){s.prBusy=1;this.render();const self=this;prPdf(pages).then(b=>{self.prBlob=b;s.prBusy=0;s.prReady=1;self.render()}).catch(er=>{console.error('PDF',er&&er.message||er);s.prBusy=0;self.render();self.toast('PDF konnte nicht erstellt werden – bitte Internet prüfen.')});break}
-     prRun(pages,this);s.sheet=null;setTimeout(()=>this.render(),0);break}
-   case 'prshare':{const b=this.prBlob;if(!b)break;const nm=(s.prK==='week'?'Essensplan-Woche':'Essensplan-Rezept')+'.pdf',f=new File([b],nm,{type:'application/pdf'});
+     s.prBusy=1;this.prL=null;this.prBlob=null;this.render();const self=this;
+     prImgs(pages).then(L=>{self.prL=L;s.prBusy=0;s.prReady=1;self.render()}).catch(er=>{console.error('PR',er&&er.message||er);s.prBusy=0;self.render();
+       /* ohne Bibliothek (offline/Artifact): direkt drucken wie bisher */prRun(pages,self)});break}
+   case 'prprint':if(this.prL)prPrintImgs(this.prL,this);break;
+   case 'prshare':{if(!this.prBlob&&this.prL){const self=this;s.prBusy=2;this.render();prPdfFrom(this.prL).then(b=>{self.prBlob=b;s.prBusy=0;self.render();self.toast('PDF ist fertig – nochmal auf „PDF teilen“ tippen')}).catch(()=>{s.prBusy=0;self.render();self.toast('PDF konnte nicht erstellt werden.')});break}
+     const b=this.prBlob;if(!b)break;const nm=(s.prK==='week'?'Essensplan-Woche':'Essensplan-Rezept')+'.pdf',f=new File([b],nm,{type:'application/pdf'});
      if(navigator.canShare&&navigator.canShare({files:[f]}))navigator.share({files:[f],title:nm}).catch(()=>{});
      else{const u=URL.createObjectURL(b),a2=document.createElement('a');a2.href=u;a2.download=nm;document.body.appendChild(a2);a2.click();a2.remove();setTimeout(()=>URL.revokeObjectURL(u),4000)}
      break}
@@ -5870,6 +5873,7 @@ const PR_CSS=`@page{size:A4;margin:10mm}
 #prroot .kl{display:flex;align-items:center;gap:3mm;margin:2mm auto 0;max-width:120mm}
 #prroot .kl i{flex:1;height:.25mm;background:var(--rc);opacity:.55}
 #prroot .kl span{font-size:7.5pt;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--rc);white-space:nowrap}
+#prroot .primg{break-after:page;page-break-after:always}#prroot .primg:last-child{break-after:auto;page-break-after:auto}#prroot .primg img{display:block;width:90%;height:auto;margin:0 auto}
 #prroot.meas{display:block!important;position:absolute;left:-10000px;top:0}#prroot.pdf .reg span{visibility:hidden}#prroot.pdf .prpg{background:#fff;padding:0 9mm 2mm}
 #prroot .pt{display:flex;justify-content:space-between;margin:0 9mm 3mm 0;font-size:6.5pt;letter-spacing:.16em;text-transform:uppercase;color:#B3A7AC;font-weight:600}
 #prroot .more{margin:3mm 0 0;font-size:9pt;font-weight:600;color:var(--rc);text-align:right}
@@ -5945,13 +5949,19 @@ function prRun(pages,self){const root=prBuild(pages,150,238);document.body.class
   try{window.print()}catch(e){self&&self.toast('Drucken ist hier nicht möglich – bitte „Als PDF“ verwenden.')}}
 /* PDF: Bibliotheken bei Bedarf laden (App: lokale Kopie, sonst CDN) */
 const prLoad=(src,cdn)=>new Promise((ok,no)=>{const t=u=>{const x=document.createElement('script');x.src=u;x.onload=ok;x.onerror=()=>u===cdn?no(new Error('lib')):t(cdn);document.head.appendChild(x)};t(src)});
-async function prPdf(pages){if(!window.jspdf)await prLoad('lib/jspdf.umd.min.js','https://cdn.jsdelivr.net/npm/jspdf@2/dist/jspdf.umd.min.js');
-  if(!window.html2canvas)await prLoad('lib/html2canvas.min.js','https://cdn.jsdelivr.net/npm/html2canvas@1/dist/html2canvas.min.js');
-  const root=prBuild(pages,180,265);root.classList.add('pdf','meas');root.style.width='180mm';const pdf=new window.jspdf.jsPDF({unit:'mm',format:'a4',compress:true});
-  const P=[...root.children];for(let i=0;i<P.length;i++){const p=P[i];p.style.zoom=''; /* html2canvas kann kein zoom → in voller Größe aufnehmen, Bild wird beim Einsetzen verkleinert */
-    const c=await window.html2canvas(p,{scale:2.2,backgroundColor:'#ffffff',useCORS:true,logging:false});
-    let w=180,h=c.height/c.width*w;if(h>273){w=w*273/h;h=273}if(i)pdf.addPage();pdf.addImage(c.toDataURL('image/jpeg',.88),'JPEG',(210-w)/2,12,w,h)}
-  root.classList.remove('pdf','meas');root.style.width='';P.forEach(p=>{if(p.dataset.z)p.style.zoom=p.dataset.z});document.body.classList.add('printing');return pdf.output('blob')}
+/* V213: Seiten werden einmal als Bilder erzeugt (unabhängig davon, wie breit Safari druckt). Daraus entstehen Druck und PDF. */
+async function prImgs(pages){if(!window.html2canvas)await prLoad('lib/html2canvas.min.js','https://cdn.jsdelivr.net/npm/html2canvas@1/dist/html2canvas.min.js');
+  const root=prBuild(pages,180,265);root.classList.add('pdf','meas');root.style.width='180mm';const P=[...root.children],L=[];
+  for(const p of P){p.style.zoom='';const c=await window.html2canvas(p,{scale:2.2,backgroundColor:'#ffffff',useCORS:true,logging:false});L.push({u:c.toDataURL('image/jpeg',.88),r:c.height/c.width})}
+  root.classList.remove('pdf','meas');root.style.width='';root.innerHTML='';return L}
+async function prPdfFrom(L){if(!window.jspdf)await prLoad('lib/jspdf.umd.min.js','https://cdn.jsdelivr.net/npm/jspdf@2/dist/jspdf.umd.min.js');
+  const pdf=new window.jspdf.jsPDF({unit:'mm',format:'a4',compress:true});
+  L.forEach((x,i)=>{let w=180,h=x.r*w;if(h>273){w=w*273/h;h=273}if(i)pdf.addPage();pdf.addImage(x.u,'JPEG',(210-w)/2,12,w,h)});return pdf.output('blob')}
+/* Druck aus den Bildern: ein Bild pro Blatt, auf Seitenbreite skaliert – passt immer, egal welche Ränder Safari setzt */
+function prPrintImgs(L,self){let st=document.getElementById('prcss');if(!st){st=document.createElement('style');st.id='prcss';st.textContent=PR_CSS;document.head.appendChild(st)}
+  let root=document.getElementById('prroot');if(!root){root=document.createElement('div');root.id='prroot';document.body.appendChild(root)}
+  root.innerHTML=L.map(x=>`<div class="primg"><img src="${x.u}" alt=""></div>`).join('');document.body.classList.add('printing');
+  try{window.print()}catch(e){self&&self.toast('Drucken ist hier nicht möglich – bitte „Als PDF teilen“ verwenden.')}}
 Phone.prototype.vPrint=function(){const s=this.s,P0=s.persons,k=s.prK||'rec',r=RM[s.did];
   const tg=(a,on,t,sub)=>`<button class="pr-t ${on?'on':''}" data-a="${a}"><span class="pr-c">${on?ic('check'):''}</span><span><b>${t}</b>${sub?`<small>${sub}</small>`:''}</span></button>`;
   const pers=`<div class="pr-row"><span>Mengen für</span><div class="stepper"><button data-a="pers" data-v="-1" aria-label="Weniger Personen">${ic('minus')}</button>${P0} Pers.<button data-a="pers" data-v="1" aria-label="Mehr Personen">${ic('plus')}</button></div></div>`;
@@ -5962,14 +5972,14 @@ Phone.prototype.vPrint=function(){const s=this.s,P0=s.persons,k=s.prK||'rec',r=R
      ${tg('prx',s.prX!==false,'Frühstück & Abendessen','dem richtigen Tag zugeordnet, als eigene Rezeptseiten')}
      ${tg('prdr',!!s.prDr,'Dressing-Blatt anhängen','alle Bowl-Dressings auf einer Seite')}
      ${pers}
-${s.prReady?`<button class="gbtn" data-a="prshare">${ic('share')}PDF teilen, sichern oder drucken</button>`:`<div class="pr-btns"><button class="obtn" data-a="prgo" data-v="pdf" ${tot&&!s.prBusy?'':'disabled'}>${s.prBusy?'PDF wird erstellt …':'Als PDF'}</button><button class="gbtn" data-a="prgo" ${tot?'':'disabled'}>${ic('printer')}${tot?`Drucken · ${tot} ${tot===1?'Rezept':'Rezepte'}`:'Noch nichts geplant'}</button></div>`}
-     <p class="pr-hint">„Als PDF“ ergibt das genaue Layout ohne Adresszeile – ideal zum Drucken über das Teilen-Menü oder zum Sichern in Dateien.</p>`}
+${s.prReady?`<div class="pr-btns"><button class="obtn" data-a="prshare" ${s.prBusy?'disabled':''}>${ic('share')}${s.prBusy===2?'PDF …':this.prBlob?'PDF teilen':'Als PDF'}</button><button class="gbtn" data-a="prprint">${ic('printer')}Jetzt drucken</button></div>`:`<button class="gbtn pr-prep" data-a="prgo" ${tot&&!s.prBusy?'':'disabled'}>${ic('printer')}${s.prBusy?'Seiten werden vorbereitet …':tot?`Druck vorbereiten · ${tot} ${tot===1?'Rezept':'Rezepte'}`:'Noch nichts geplant'}</button>`}
+     <p class="pr-hint">${s.prReady?'Fertig. „Jetzt drucken“ öffnet den Druckdialog, „Als PDF“ zum Sichern oder Teilen.':'Die Seiten werden einmal genau im Layout erzeugt – dann passen sie auf jedes Blatt.'}</p>`}
   const bowl=r&&r.c&&r.c.includes('bowl');
   return `<h3>${ic('printer')} Rezept drucken</h3><p>Ein A4-Blatt mit Lochrand links und farbigem Reiter für die Kategorie „${(PR_REG.find(x=>x[0]===prReg(r))||PR_REG[0])[1]}“ – passend für deine Rezeptmappe.</p>
    ${bowl?tg('prdr',!!s.prDr,'Alle Dressings mitdrucken','zweite Seite mit allen 6 Dressings zum Tauschen'):''}
    ${pers}
-${s.prReady?`<button class="gbtn" data-a="prshare">${ic('share')}PDF teilen, sichern oder drucken</button>`:`<div class="pr-btns"><button class="obtn" data-a="prgo" data-v="pdf" ${s.prBusy?'disabled':''}>${s.prBusy?'PDF wird erstellt …':'Als PDF'}</button><button class="gbtn" data-a="prgo">${ic('printer')}Drucken${bowl&&s.prDr?' · mit Dressings':''}</button></div>`}
-   <p class="pr-hint">„Als PDF“ ergibt das genaue Layout ohne Adresszeile.</p>`};
+${s.prReady?`<div class="pr-btns"><button class="obtn" data-a="prshare" ${s.prBusy?'disabled':''}>${ic('share')}${s.prBusy===2?'PDF …':this.prBlob?'PDF teilen':'Als PDF'}</button><button class="gbtn" data-a="prprint">${ic('printer')}Jetzt drucken</button></div>`:`<button class="gbtn pr-prep" data-a="prgo" ${s.prBusy?'disabled':''}>${ic('printer')}${s.prBusy?'Seiten werden vorbereitet …':'Druck vorbereiten'+(bowl&&s.prDr?' · mit Dressings':'')}</button>`}
+   <p class="pr-hint">${s.prReady?'Fertig. „Jetzt drucken“ öffnet den Druckdialog, „Als PDF“ zum Sichern oder Teilen.':'Die Seite wird einmal genau im Layout erzeugt – dann passt sie auf jedes Blatt.'}</p>`};
 const PR_UI=`.pr-t{display:flex;gap:12px;align-items:center;width:100%;border:0;background:var(--a-card);box-shadow:0 0 0 1px var(--a-line);border-radius:16px;padding:12px 14px;margin-top:10px;text-align:left}
 .pr-t b{display:block;font-size:15px;font-weight:600}.pr-t small{display:block;font-size:12.5px;color:var(--a-muted);margin-top:1px}
 .pr-c{flex:none;width:24px;height:24px;border-radius:7px;box-shadow:inset 0 0 0 1.6px #C7C7CC;display:grid;place-items:center;color:#fff}.pr-c .ic{width:15px;height:15px;stroke-width:2.6}
