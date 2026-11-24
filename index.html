@@ -1945,8 +1945,9 @@ img,svg{-webkit-user-drag:none}
 .pr-seg{margin-top:6px}.sheet h3 .ic{width:20px;height:20px;vertical-align:-3px;margin-right:4px}
 .det-top .iconbtn.prb .ic{width:20px;height:20px}
 .sheet .gbtn[data-a="prgo"]{margin-top:0}.sheet .pr-prep{width:100%}.sheet .gbtn[data-a="prshare"]{width:100%}
-.rz-grp{margin:16px 0 0;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#B4B4BA}.rz-grp:first-child{margin-top:2px}
-.rz-grp+.rz-ir{border-top:0}
+.rz-ing .ig{display:grid;grid-template-columns:18px 1fr;column-gap:8px;margin-top:14px}.rz-ing .ig:first-child{margin-top:0}
+.rz-ing .igl{position:relative;border-right:1px solid rgba(0,0,0,.08)}
+.rz-ing .igl i{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-90deg);white-space:nowrap;font-style:normal;font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#B4B4BA}
 .pr-btns{display:flex;gap:8px}.pr-btns .obtn{flex:none;justify-content:center;padding:0 16px}.pr-btns .gbtn{flex:1}
 .pr-hint{margin:10px 2px 0;font-size:12.5px;color:var(--a-muted);line-height:1.4}
 /* V199: Fine Dining */
@@ -2981,12 +2982,15 @@ function igOf(r){if(r.ig)return r.ig;if(!r.c||!r.c.includes('bowl')||r.bx||!r.i|
   if(!r.st.some(t=>/dressing/i.test(t)))return [];
   let j=r.i.length,n=0;while(j>0&&(DR_LBL.test(r.i[j-1][0])||/^(salz|pfeffer|sesam|paprika|chili|kümmel)/i.test(r.i[j-1][0]))){if(DR_LBL.test(r.i[j-1][0]))n++;j--}
   return j>0&&n>=2&&j<r.i.length?[[0,'Bowl'],[j,'Dressing']]:[]}
-/* Zeilen mit Gruppenköpfen: rows = [[index,html],…] */
-const igRows=(rows,G,cls)=>{let out='',g=0;G=(G||[]).slice().sort((a,b)=>a[0]-b[0]);rows.forEach(([i,h])=>{while(g<G.length&&G[g][0]<=i){out+=`<div class="${cls}">${G[g][1]}</div>`;g++}out+=h});return out};
+/* V217: Blöcke mit senkrechter, hellgrauer Beschriftung links neben den Zeilen (Bowl · Dressing …). rows = [[index,html],…], tail = Zusatz-HTML am Ende des letzten Blocks */
+const igRows=(rows,G,cls,tail)=>{G=(G||[]).slice().sort((a,b)=>a[0]-b[0]);tail=tail||'';if(!G.length)return rows.map(r=>r[1]).join('')+tail;
+  const B=G.map(g=>({l:g[1],a:g[0],h:''}));const pre=rows.filter(r=>r[0]<G[0][0]).map(r=>r[1]).join('');
+  rows.forEach(([i,h])=>{let k=-1;B.forEach((b,j)=>{if(b.a<=i)k=j});if(k>=0)B[k].h+=h});
+  B[B.length-1].h+=tail;
+  return pre+B.filter(b=>b.h).map(b=>`<div class="${cls}"><span class="${cls}l"><i>${b.l}</i></span><div class="${cls}r">${b.h}</div></div>`).join('')};
 const fdIngList=(L,s,G)=>{const nm=n=>n.replace(/\s*\(.*?\)/g,''),sub=n=>{const m=n.match(/\((.*?)\)/);return m?`<small>${m[1]}</small>`:''};
   const main=L.map((x,i)=>[i,x]).filter(([i,x])=>x[1]),sp=L.filter(x=>!x[1]);
-  return igRows(main.map(([i,[n,q,u]])=>[i,`<div class="rz-ir"><span class="e">${emo(n)}</span><span class="n">${nm(n)}${sub(n)}</span><b>${fqg(n,q*s.persons,u)}</b></div>`]),G,'rz-grp')
-   +(sp.length?`<div class="rz-ir"><span class="e">🧂</span><span class="n">${sp.map(x=>nm(x[0])).join(', ')}<small>nach Geschmack</small></span><b></b></div>`:'')};
+  return igRows(main.map(([i,[n,q,u]])=>[i,`<div class="rz-ir"><span class="e">${emo(n)}</span><span class="n">${nm(n)}${sub(n)}</span><b>${fqg(n,q*s.persons,u)}</b></div>`]),G,'ig',sp.length?`<div class="rz-ir"><span class="e">🧂</span><span class="n">${sp.map(x=>nm(x[0])).join(', ')}<small>nach Geschmack</small></span><b></b></div>`:'')};
 Phone.prototype.vFdDetail=function(r,btn,eb,E){FDCUR=r;const s=this.s,sel=fdSel(s,r);FDOPT={mode:'p',only:null};const S=fdSteps(r,sel),tab=r.fd.comps.find(c=>c.k===s.fdTab)?s.fdTab:r.fd.comps[0].k;
   const C=r.fd.comps.find(c=>c.k===tab),o=fdOpt(r,tab,sel),col=FD_COMP[tab][1],OS=S.filter(x=>x.k===tab),act=OS.filter(x=>!x.p).reduce((a,x)=>a+x.d,0);
   const first=S[0],fc=fdN(first.k);
@@ -5041,8 +5045,7 @@ Phone.prototype.vDetail=function(){const s=this.s;const r=RM[s.did];const cat=CA
    ${r.c.includes('bowl')?this.vDressPick(r):''}<div class="rz-h"><h2>Zutaten</h2>${xk?'':twiceBtn(d)}<div class="stepper"><button data-a="pers" data-v="-1" aria-label="Weniger Personen">${ic('minus')}</button>${s.persons} Pers.<button data-a="pers" data-v="1" aria-label="Mehr Personen">${ic('plus')}</button></div></div>
    <div class="rz-ing">${(()=>{const sub=n=>{const m=n.match(/\((.*?)\)/);return m?`<small>${m[1]}</small>`:''};const nm=n=>n.replace(/\s*\(.*?\)/g,'');
      const main=r.i.map((x,i)=>[i,x]).filter(([i,x])=>x[1]),sp=r.i.filter(x=>!x[1]);
-     return igRows(main.map(([i,[n,q,u]])=>[i,`<div class="rz-ir"><span class="e">${emo(n)}</span><span class="n">${nm(n)}${sub(n)}</span><b>${fqg(n,q*s.persons,u)}</b></div>`]),igOf(r),'rz-grp')
-      +(sp.length?`<div class="rz-ir"><span class="e">🧂</span><span class="n">${sp.map(x=>nm(x[0])).join(', ')}<small>Gewürze nach Geschmack</small></span><b></b></div>`:'')})()}</div>
+     return igRows(main.map(([i,[n,q,u]])=>[i,`<div class="rz-ir"><span class="e">${emo(n)}</span><span class="n">${nm(n)}${sub(n)}</span><b>${fqg(n,q*s.persons,u)}</b></div>`]),igOf(r),'ig',sp.length?`<div class="rz-ir"><span class="e">🧂</span><span class="n">${sp.map(x=>nm(x[0])).join(', ')}<small>Gewürze nach Geschmack</small></span><b></b></div>`:'')})()}</div>
    <div class="eb rz-eb2">Zubereitung</div>
    <h2 class="ap-h1 rz-t2">So gelingt's. <span>Schritt für Schritt.</span></h2>
    <div class="rz-act">${this.sayBtns()}</div>
@@ -5830,7 +5833,7 @@ const prReg=r=>r.meal?r.meal:r.c.includes('bowl')?'bowl':r.c.includes('fine')?'f
 const prEsc=t=>String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;');
 const prAmt=(n,q,u,P0)=>q?fqg(n,q*P0,u):'n. G.';
 const prNm=n=>n.replace(/\s*\(.*?\)/g,'');
-const prIngs=(L,P0,G)=>igRows(L.map(([n,q,u],i)=>[i,`<div class="ir"><span class="e">${emo(n)}</span><span class="n">${prEsc(prNm(n))}</span><b>${prAmt(n,q,u,P0)}</b></div>`]),G,'gl');
+const prIngs=(L,P0,G)=>igRows(L.map(([n,q,u],i)=>[i,`<div class="ir"><span class="e">${emo(n)}</span><span class="n">${prEsc(prNm(n))}</span><b>${prAmt(n,q,u,P0)}</b></div>`]),G,'ig');
 const prPage=(inner,reg,foot,sub,meta)=>{const k=Math.max(0,PR_REG.findIndex(x=>x[0]===reg)),R0=PR_REG[k],m=meta||{};
   return `<section class="prpg" data-kind="${m.kind||''}" data-n="${prEsc(m.n||'')}" data-g="${m.g||''}" style="--rc:${reg?R0[2]:'#9A4766'}">${reg?`<i class="reg"><span>${R0[1]}</span></i>`:''}
    <div class="pt"><span>Essensplan</span><span>${foot||''}<b class="pno"></b></span></div>
@@ -5882,7 +5885,9 @@ const PR_CSS=`@page{size:A4;margin:10mm}
 #prroot .primg{break-after:page;page-break-after:always}#prroot .primg:last-child{break-after:auto;page-break-after:auto}#prroot .primg img{display:block;width:100%;height:auto;margin:0 auto}
 #prroot.meas{display:block!important;position:absolute;left:-10000px;top:0}#prroot.pdf .prpg{background:#fff;max-width:none;width:206mm;margin:0;padding:10mm 13mm 5mm}#prroot.pdf .pt{margin-right:0}
 #prroot .pt{display:flex;justify-content:space-between;margin:0 9mm 3mm 0;font-size:6.5pt;letter-spacing:.16em;text-transform:uppercase;color:#B3A7AC;font-weight:600}
-#prroot .gl{margin:4mm 0 .6mm;font-size:6.8pt;letter-spacing:.16em;text-transform:uppercase;color:#B7B7BC;font-weight:600}#prroot h3+.gl{margin-top:1mm}
+#prroot .ig{display:grid;grid-template-columns:5mm 1fr;column-gap:2.2mm;margin-top:4.5mm}#prroot h3+.ig{margin-top:1mm}
+#prroot .igl{position:relative;border-right:.25mm solid #E6E6EA}
+#prroot .igl i{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(-90deg);white-space:nowrap;font-style:normal;font-size:6.6pt;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#B7B7BC}
 #prroot .more{margin:3mm 0 0;font-size:9pt;font-weight:600;color:var(--rc);text-align:right}
 #prroot .bd.one{grid-template-columns:1fr}#prroot .bd.one .stp{max-width:150mm;margin:0 auto;width:100%}
 #prroot .ft{display:none;border-top:.25mm solid #EEE6E9;font-size:6.8pt;letter-spacing:.14em;text-transform:uppercase;color:#B3A7AC;font-weight:600}
@@ -5898,7 +5903,7 @@ const PR_CSS=`@page{size:A4;margin:10mm}
 #prroot .days{display:flex;flex-wrap:wrap;justify-content:flex-start;gap:2mm;margin-top:4.5mm}#prroot .day{font-size:8.3pt;font-weight:600;color:#9A4766;border:.3mm solid #E7D3DB;border-radius:9mm;padding:.6mm 2.4mm}
 #prroot h3{margin:0 0 2mm;font-size:8pt;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--rc)}
 #prroot h3::after{content:"";display:block;width:9mm;height:.3mm;background:var(--rc);margin-top:1.4mm;opacity:.7}
-#prroot .bd{display:grid;grid-template-columns:58mm 1fr;gap:8mm;margin-top:12mm}
+#prroot .bd{display:grid;grid-template-columns:64mm 1fr;gap:8mm;margin-top:12mm}
 #prroot .ing{border-right:.25mm solid #EFE6E9;padding-right:6mm;border-radius:0;background:none;box-shadow:none}
 #prroot .ir{display:grid;grid-template-columns:5.5mm 1fr auto;gap:2mm;align-items:baseline;padding:1.7mm 0;border-bottom:.25mm solid #F0ECEA;font-size:9.8pt;break-inside:avoid}
 #prroot .ir b{color:#8E3A5A;font-weight:600;white-space:nowrap}#prroot small.gr,#prroot .ir small,#prroot .chips small{font-weight:400;color:#A8A8AD;font-size:7.3pt}
