@@ -1943,6 +1943,7 @@ img,svg{-webkit-user-drag:none}
 .pr-row{display:flex;justify-content:space-between;align-items:center;margin:14px 2px 16px;font-size:15px}
 .pr-seg{margin-top:6px}.sheet h3 .ic{width:20px;height:20px;vertical-align:-3px;margin-right:4px}
 .det-top .iconbtn.prb .ic{width:20px;height:20px}
+.sheet .gbtn[data-a="prgo"]{width:100%;flex:none;margin-top:4px}
 /* V199: Fine Dining */
 .fd-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:4px 0 0}
 .fd-tabs button{border:0;border-radius:18px;padding:11px 10px 10px;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.06);display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;min-width:0;transition:background .2s,box-shadow .2s}
@@ -5910,12 +5911,12 @@ Phone.prototype.vPrint=function(){const s=this.s,P0=s.persons,k=s.prK||'rec',r=R
      ${tg('prx',s.prX!==false,'Frühstück & Abendessen','dem richtigen Tag zugeordnet, als eigene Rezeptseiten')}
      ${tg('prdr',!!s.prDr,'Dressing-Blatt anhängen','alle Bowl-Dressings auf einer Seite')}
      ${pers}
-     <button class="gbtn" data-a="prgo" ${tot?'':'disabled'}>${ic('printer')}${tot?`${tot+1+(s.prDr?1:0)} Seiten drucken`:'Noch nichts geplant'}</button>`}
+     <button class="gbtn" data-a="prgo" ${tot?'':'disabled'}>${ic('printer')}${tot?`Drucken · ${tot} ${tot===1?'Rezept':'Rezepte'}`:'Noch nichts geplant'}</button>`}
   const bowl=r&&r.c&&r.c.includes('bowl');
   return `<h3>${ic('printer')} Rezept drucken</h3><p>Ein A4-Blatt mit Lochrand links und farbigem Reiter für die Kategorie „${(PR_REG.find(x=>x[0]===prReg(r))||PR_REG[0])[1]}“ – passend für deine Rezeptmappe.</p>
    ${bowl?tg('prdr',!!s.prDr,'Alle Dressings mitdrucken','zweite Seite mit allen 6 Dressings zum Tauschen'):''}
    ${pers}
-   <button class="gbtn" data-a="prgo">${ic('printer')}${bowl&&s.prDr?'2 Seiten':'1 Seite'} drucken</button>`};
+   <button class="gbtn" data-a="prgo">${ic('printer')}Drucken${bowl&&s.prDr?' · mit Dressings':''}</button>`};
 const PR_UI=`.pr-t{display:flex;gap:12px;align-items:center;width:100%;border:0;background:var(--a-card);box-shadow:0 0 0 1px var(--a-line);border-radius:16px;padding:12px 14px;margin-top:10px;text-align:left}
 .pr-t b{display:block;font-size:15px;font-weight:600}.pr-t small{display:block;font-size:12.5px;color:var(--a-muted);margin-top:1px}
 .pr-c{flex:none;width:24px;height:24px;border-radius:7px;box-shadow:inset 0 0 0 1.6px #C7C7CC;display:grid;place-items:center;color:#fff}.pr-c .ic{width:15px;height:15px;stroke-width:2.6}
