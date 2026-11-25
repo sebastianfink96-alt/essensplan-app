@@ -710,6 +710,7 @@ html.sa body.appmode #app-host{height:auto;top:0;bottom:0}
 .rz-meta button .ic{color:inherit}
 .det.rz .nutri{margin-top:20px}
 .rz-h{display:flex;align-items:center;gap:10px;margin-top:26px}
+.rz-h.ig-on h2{padding-left:26px}
 .rz-h h2{flex:1;margin:0;font-weight:600;font-size:27px;letter-spacing:-.03em;color:#1D1D1F}
 .rz-h .twice{height:40px;width:46px}
 .rz-ing{margin-top:8px}
@@ -3158,7 +3159,7 @@ Phone.prototype.vBxDetail=function(r,btn,eb){const s=this.s,st=bxSt(s),prev=this
    <p class="bx-hint">${hint}</p>
    <div class="bx-grid">${grid}</div>
    ${nx&&has?`<button class="obtn bx-next" data-a="bxtab" data-v="${nx[0]}">${nx[1]}${ic('right')}</button>`:''}
-   ${has?`<div class="rz-h"><h2>Zutaten</h2><div class="stepper"><button data-a="pers" data-v="-1" aria-label="Weniger Personen">${ic('minus')}</button>${s.persons} Pers.<button data-a="pers" data-v="1" aria-label="Mehr Personen">${ic('plus')}</button></div></div>
+   ${has?`<div class="rz-h ig-on"><h2>Zutaten</h2><div class="stepper"><button data-a="pers" data-v="-1" aria-label="Weniger Personen">${ic('minus')}</button>${s.persons} Pers.<button data-a="pers" data-v="1" aria-label="Mehr Personen">${ic('plus')}</button></div></div>
    <div class="rz-ing">${fdIngList(r.i,s,r.ig)}</div>
    <div class="eb rz-eb2">Zubereitung</div>
    <h2 class="ap-h1 rz-t2">So gelingt's. <span>In ${r.m} Minuten.</span></h2>
@@ -5042,7 +5043,7 @@ Phone.prototype.vDetail=function(){const s=this.s;const r=RM[s.did];const cat=CA
    <p class="rz-sub">${r.d||r.s}</p>
    <div class="rz-meta"><span>${ic('clock')}${r.m} Min.</span><button data-a="sheet" data-v="energy" style="color:${E[2]}">${ic(E[1])}${E[0]}</button><span>${ic('flame')}${r.k} kcal</span><span>${r.p} g Eiweiß</span></div>
    <div class="nutri"><div class="ring"></div><div class="nimg">${plate(r,300)}</div></div>
-   ${r.c.includes('bowl')?this.vDressPick(r):''}<div class="rz-h"><h2>Zutaten</h2>${xk?'':twiceBtn(d)}<div class="stepper"><button data-a="pers" data-v="-1" aria-label="Weniger Personen">${ic('minus')}</button>${s.persons} Pers.<button data-a="pers" data-v="1" aria-label="Mehr Personen">${ic('plus')}</button></div></div>
+   ${r.c.includes('bowl')?this.vDressPick(r):''}<div class="rz-h${igOf(r).length?' ig-on':''}"><h2>Zutaten</h2>${xk?'':twiceBtn(d)}<div class="stepper"><button data-a="pers" data-v="-1" aria-label="Weniger Personen">${ic('minus')}</button>${s.persons} Pers.<button data-a="pers" data-v="1" aria-label="Mehr Personen">${ic('plus')}</button></div></div>
    <div class="rz-ing">${(()=>{const sub=n=>{const m=n.match(/\((.*?)\)/);return m?`<small>${m[1]}</small>`:''};const nm=n=>n.replace(/\s*\(.*?\)/g,'');
      const main=r.i.map((x,i)=>[i,x]).filter(([i,x])=>x[1]),sp=r.i.filter(x=>!x[1]);
      return igRows(main.map(([i,[n,q,u]])=>[i,`<div class="rz-ir"><span class="e">${emo(n)}</span><span class="n">${nm(n)}${sub(n)}</span><b>${fqg(n,q*s.persons,u)}</b></div>`]),igOf(r),'ig',sp.length?`<div class="rz-ir"><span class="e">🧂</span><span class="n">${sp.map(x=>nm(x[0])).join(', ')}<small>Gewürze nach Geschmack</small></span><b></b></div>`:'')})()}</div>
