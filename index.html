@@ -2292,6 +2292,7 @@ img,svg{-webkit-user-drag:none}
 .lcd-sg:first-child{margin-top:6px}
 .lcd-i{display:inline-grid;place-items:center;width:22px;height:22px;margin-left:8px;border-radius:50%;border:1.5px solid #A8556A;background:#fff;color:#A8556A;font:600 13px/1 Georgia,serif;font-style:italic;vertical-align:1px;padding:0}
 .acr{display:flex;gap:14px;align-items:center;margin:0 0 14px}.acr img{flex:none;width:72px;height:72px;border-radius:16px;object-fit:cover}.acr b{display:block;font-size:15.5px;font-weight:600;color:#1D1D1F;margin-bottom:2px}.acr span{display:block;font-size:14.5px;line-height:1.4;color:#5C6176}
+.sp1{display:grid;place-items:center;width:30px;height:30px;margin-top:8px;padding:0;border:0;border-radius:50%;background:#fff;color:#A8556A;box-shadow:0 0 0 1px rgba(168,85,106,.35)}.sp1 .ic{width:14px;height:14px}.sp1.on{background:#A8556A;color:#fff;box-shadow:none}
 .lk-wimg{padding-top:0}
 .lk-img{display:block;width:calc(100% + 48px);margin:0 -24px 16px;aspect-ratio:16/10;object-fit:cover;object-position:50% 35%;border-radius:30px 30px 0 0}
 .lk-rec{margin-top:16px;width:100%;flex:none;min-height:48px}
@@ -2872,23 +2873,23 @@ const RX=[
 ];
 const RM=Object.fromEntries(R.concat(RX).map(r=>[r.id,r]));
 /* V221: Lerncenter-Rezept Beurre blanc (eigene Formulierung). lc = nur über die Saucen-Kartei, feste Mengen (ohne Personen), sg = Zubereitungs-Abschnitte */
-RM.lbb={id:'lbb',n:'Beurre blanc',e:'🧈',c:['fish'],t:['#FBF3DC','#E8D7A8'],lc:'Klassische Saucen',yld:'ca. 300 g · 4 Personen',m:60,k:290,p:1,g:60,
- d:'Die klassische weiße Buttersauce: eine kräftig eingekochte Wein-Essig-Reduktion, in die kalte Butter eingeschwenkt wird – glänzend, frisch und leicht säuerlich.',
- i:[['Weißwein',420,'g'],['Weißweinessig',70,'g'],['Schalotten',2,'Stk'],['Thymian',2,'Zweige'],['Lorbeerblätter',2,'Stk'],['schwarze Pfefferkörner',8,'Stk'],['Koriandersamen',8,'Stk'],['Knoblauch',2,'Zehen'],
-    ['Gastrique (aus Teil 1)',100,'g'],['Salz',4,'g'],['Butter (kalt, gewürfelt)',200,'g']],
+RM.lbb={id:'lbb',n:'Beurre blanc',e:'🧈',c:['fish'],t:['#FBF3DC','#E8D7A8'],lc:'Klassische Saucen',yld:'ca. 400 g (400 ml) · 4 Personen',m:55,k:290,p:1,g:60,
+ d:'Die klassische weiße Buttersauce: eine kräftig eingekochte Reduktion aus Wein und Essig, in die kalte Butter eingeschwenkt wird – seidig, glänzend und von feiner Frische.',
+ i:[['Weißwein',750,'g'],['Weißweinessig',120,'g'],['Schalotten',3,'Stk'],['Thymian',3,'Zweige'],['Lorbeerblätter',2,'Stk'],['schwarze Pfefferkörner',12,'Stk'],['Koriandersamen',12,'Stk'],['Knoblauch',2,'Zehen'],
+    ['Gastrique (aus Teil 1)',130,'g'],['Salz',4,'g'],['Butter (kalt, gewürfelt)',270,'g']],
  ig:[[0,'Gastrique'],[8,'Beurre blanc']],
  em:['🍷','🫙','🧅','🌿','🍃','⚫','🌱','🧄','🥄','🧂','🧈'],
  sm:[[0,1,2,3,4,5,6,7],[],[],[8,9],[10],[],[]],
- sg:[[0,'1. Zubereitung Gastrique · ergibt ca. 100 g'],[3,'2. Zubereitung Beurre blanc · ergibt ca. 300 g']],
+ sg:[[0,'1. Zubereitung Gastrique · ca. 300 g (300 ml)'],[3,'2. Zubereitung Beurre blanc · ca. 400 g (400 ml)']],
  info:{1:'acid'},
  st:['Schalotten fein würfeln, den Knoblauch halbieren. Zusammen mit Weißwein, Weißweinessig, Thymian, Lorbeer, Pfefferkörnern und Koriandersamen in einen Topf geben.',
-     'Bei kleiner Hitze leise köcheln lassen, bis nur noch etwa ein Fünftel übrig ist – das dauert rund 40 Minuten. Zum Schluss auf die gewünschte Säurebalance abschmecken: Die Gastrique darf deutlich säuerlich sein, sollte aber nicht stechen.',
-     'Die Gastrique durch ein feines Sieb gießen und die Flüssigkeit mit einem Löffel gut ausdrücken. Die Reste im Sieb dabei nicht mit durchdrücken, sonst wird die Sauce trüb. Genau 100 g abwiegen – der Rest hält sich im Kühlschrank oder lässt sich einfrieren.',
-     'Die 100 g Gastrique in einen kleinen Topf geben, salzen und unter Rühren einmal aufkochen.',
+     'Bei kleiner Hitze leise köcheln lassen, bis etwa ein Drittel übrig ist – das dauert rund 35 Minuten. Zum Schluss auf die gewünschte Säurebalance abschmecken.',
+     'Die Gastrique durch ein feines Sieb gießen und die Flüssigkeit mit einem Löffel gut ausdrücken. Die Reste im Sieb dabei nicht mit durchdrücken, sonst wird die Sauce trüb. 130 g für die Sauce abwiegen – den Rest kühl stellen oder einfrieren.',
+     'Die 130 g Gastrique in einen kleinen Topf geben, salzen und unter Rühren einmal aufkochen.',
      'Die kalte Butter würfelweise mit dem Schneebesen einrühren. Erst nachlegen, wenn das vorige Stück fast geschmolzen ist – so bleibt die Temperatur gleichmäßig und die Sauce bindet.',
      'Hitze auf die kleinste Stufe stellen und weiterrühren, bis die ganze Butter aufgenommen ist und die Sauce seidig glänzt. Ab jetzt nicht mehr kochen lassen.',
-     'Abschmecken: Frische Säure und runde Butter sollen sich die Waage halten. Fehlt Frische, einen Spritzer Gastrique nachgeben, sonst eine Prise Salz.'],
- tip:'Gastrique lohnt sich auf Vorrat: gleich die doppelte Menge kochen und portionsweise im Eiswürfelbehälter einfrieren. Trennt sich die Sauce beim Aufwärmen, kurz mit dem Stabmixer aufmixen – dann verbindet sie sich wieder.'};
+     'Abschmecken: Frische Säure und runde Butter sollen sich die Waage halten.'],
+ tip:'Gastrique lohnt sich auf Vorrat: Was übrig bleibt, portionsweise im Eiswürfelbehälter einfrieren. Trennt sich die Sauce beim Aufwärmen, kurz mit dem Stabmixer aufmixen – dann verbindet sie sich wieder.'};
 
 /* ===== V199: Fine Dining – Bausteine (Hauptzutat, Beilage, Sauce) mit Auswahl, Ablauf-Timeline und Koch-Modus; Dressing-Wahl bei Bowls ===== */
 const FD_COMP={main:['Hauptzutat','#8E3B32'],side:['Beilage','#C9932E'],side2:['Beilage 2','#4E8A3E'],sauce:['Sauce','#6E4A9E']};
@@ -5083,11 +5084,11 @@ Phone.prototype.vLcDetail=function(r){const s=this.s,nm=n=>n.replace(/\s*\(.*?\)
    <div class="eb rz-eb2">Zubereitung</div>
    <h2 class="ap-h1 rz-t2">So gelingt's. <span>Schritt für Schritt.</span></h2>
    <div class="rz-act">${this.sayBtns()}</div>
-   <div class="steps">${r.st.map((t,k)=>`${SG[k]?`<div class="lcd-sg">${SG[k]}</div>`:''}<div class="step${(s.done[r.id]||[]).includes(k)?' ok':''}${this.speaking&&this.sayK===k?' say':''}" data-a="stepok" data-k="${k}" role="button" aria-label="Schritt ${k+1} abhaken"><div class="stx"><b><span class="n">${String(k+1).padStart(2,'0')}</span>${ic('check','ck')}</b><div class="rz-st"><p>${t}${r.info&&r.info[k]?`<button class="lcd-i" data-a="sheet" data-v="${r.info[k]}" aria-label="Säure anpassen – Info">i</button>`:''}</p>${M[k].length?`<div class="sing">${M[k].map(j=>{const [n,q,u]=r.i[j];return `<span class="sic"><span class="em">${E(j)}</span><span class="st"><span>${nm(n)}</span><i>${fq(q,u)}</i></span></span>`}).join('')}</div>`:''}</div></div></div>`).join('')}</div>
+   <div class="steps">${r.st.map((t,k)=>`${SG[k]?`<div class="lcd-sg">${SG[k]}</div>`:''}<div class="step${(s.done[r.id]||[]).includes(k)?' ok':''}${this.speaking&&this.sayK===k?' say':''}" data-a="stepok" data-k="${k}" role="button" aria-label="Schritt ${k+1} abhaken"><div class="stx"><b><span class="n">${String(k+1).padStart(2,'0')}</span>${ic('check','ck')}<button class="sp1${this.speaking&&!this.paused&&this.sayK===k?' on':''}" data-a="say1" data-s="${k}" aria-label="Schritt ${k+1} vorlesen">${ic(this.speaking&&!this.paused&&this.sayK===k?'pause':'play')}</button></b><div class="rz-st"><p>${t}${r.info&&r.info[k]?`<button class="lcd-i" data-a="sheet" data-v="${r.info[k]}" aria-label="Säure anpassen – Info">i</button>`:''}</p>${M[k].length?`<div class="sing">${M[k].map(j=>{const [n,q,u]=r.i[j];return `<span class="sic"><span class="em">${E(j)}</span><span class="st"><span>${nm(n)}</span><i>${fq(q,u)}</i></span></span>`}).join('')}</div>`:''}</div></div></div>`).join('')}</div>
    ${r.tip?`<div class="rz-tip"><b>${ic('spark')}Tipp</b><p>${r.tip}</p></div>`:''}
   </div></div>
   <div class="swipehint"></div>
-  <div class="det-top"><button class="iconbtn" data-a="back" aria-label="Zurück">${ic('left')}</button></div>
+  <div class="det-top"><button class="iconbtn" data-a="back" aria-label="Zurück">${ic('left')}</button><button class="iconbtn prb" data-a="print" data-v="rec" aria-label="Rezept drucken">${ic('printer')}</button></div>
   <div class="fade-bottom"></div>`};
 /* ----- Detail ----- */
 Phone.prototype.vDetail=function(){const s=this.s;const r=RM[s.did];if(r&&r.lc)return this.vLcDetail(r);const cat=CATNAME[r.c[0]];const E=EN[enOf(r)];
@@ -5287,17 +5288,18 @@ try{if(window.speechSynthesis){speechSynthesis.getVoices();speechSynthesis.onvoi
 function sayText(x){return x.replace(/(\d)\s*[–-]\s*(\d)/g,'$1 bis $2').replace(/\bca\.\s*/gi,'circa ').replace(/°\s*C\b/g,' Grad').replace(/(\d)\s*Min\.?(?=\s|$|[,.)])/g,'$1 Minuten')
   .replace(/(\d)\s*EL\b/g,'$1 Esslöffel').replace(/(\d)\s*TL\b/g,'$1 Teelöffel').replace(/(\d)\s*ml\b/g,'$1 Milliliter').replace(/(\d)\s*kg\b/g,'$1 Kilo').replace(/(\d)\s*g\b/g,'$1 Gramm').replace(/\bz\.\s?B\.\s*/g,'zum Beispiel ').replace(/\s*\((.*?)\)/g,', $1,')}
 /* Schritte vorlesen (ab dem ersten nicht abgehakten Schritt); nochmal tippen stoppt */
-Phone.prototype.speak=function(){const s=this.s,r=RM[s.did],sy=window.speechSynthesis,canDev=!!(sy&&window.SpeechSynthesisUtterance);
+Phone.prototype.speak=function(one){const s=this.s,r=RM[s.did],sy=window.speechSynthesis,canDev=!!(sy&&window.SpeechSynthesisUtterance);
   const useKi=()=>!!(KI&&KI.tts&&!this.noTts);
   if(this.speaking&&this.sayCtl){this.paused?this.sayCtl.resume():this.sayCtl.pause();return}
   if(!useKi()&&!canDev){this.toast('Vorlesen wird hier nicht unterstützt');return}
-  try{if(sy)sy.cancel()}catch(e){}const dn2=s.done[r.id]||[];let k=r.st.findIndex((_,i)=>!dn2.includes(i));if(k<0)k=0;let k0=k,plain=false,g=0;const n=r.st.length;this.speaking=true;this.paused=false;const self=this,voice=pickVoice(s.voice);
-  const mark=sc=>{self.sayK=k;self.scr.querySelectorAll('.step.say').forEach(x=>x.classList.remove('say'));const el=self.scr.querySelector(`.step[data-k="${k}"]`);if(el&&self.speaking){el.classList.add('say');if(sc)el.scrollIntoView({block:'center',behavior:'smooth'})}};
-  const upd=()=>{const el=self.scr.querySelector('.rz-act');if(el)el.innerHTML=self.sayBtns()};
-  const end=()=>{self.speaking=false;self.paused=false;self.sayCtl=null;self.sayK=null;self.render()};
+  try{if(sy)sy.cancel()}catch(e){}const dn2=s.done[r.id]||[];let k=r.st.findIndex((_,i)=>!dn2.includes(i));if(k<0)k=0;const solo=typeof one==='number';if(solo)k=one;this.sayOne=solo?one:null;let k0=k,plain=solo,g=0;const n=r.st.length;this.speaking=true;this.paused=false;const self=this,voice=pickVoice(s.voice);
+  const sp1=()=>self.scr.querySelectorAll('.sp1').forEach(b=>{const on=self.speaking&&!self.paused&&self.sayK===+b.dataset.s;b.classList.toggle('on',on);b.innerHTML=ic(on?'pause':'play')});
+  const mark=sc=>{self.sayK=k;sp1();self.scr.querySelectorAll('.step.say').forEach(x=>x.classList.remove('say'));const el=self.scr.querySelector(`.step[data-k="${k}"]`);if(el&&self.speaking){el.classList.add('say');if(sc)el.scrollIntoView({block:'center',behavior:'smooth'})}};
+  const upd=()=>{const el=self.scr.querySelector('.rz-act');if(el)el.innerHTML=self.sayBtns();sp1()};
+  const end=()=>{self.speaking=false;self.paused=false;self.sayCtl=null;self.sayK=null;self.sayOne=null;self.render()};
   const lead=i=>i===k0?(plain?'':i===0?`${r.n}. Zuerst: `:'Weiter geht\'s: '):i===n-1?'Und zum Schluss: ':['Dann: ','Danach: ','Als Nächstes: '][(i-k0-1)%3];
   const BYE=['Viel Vergnügen!','Lass es dir schmecken!','Bon Appétit!'];let bi=0;try{bi=+localStorage.getItem('essensplan-bye')||0;localStorage.setItem('essensplan-bye',String((bi+1)%3))}catch(e){}
-  const txt=i=>i>=n?BYE[bi%3]:lead(i)+sayText(r.st[i]);
+  const txt=i=>i>=n?BYE[bi%3]:(solo?'':lead(i))+sayText(r.st[i]);
   /* Audio-Element schon beim Antippen „aufwecken“, sonst blockiert iOS das spätere Abspielen */
   let aud=null;if(useKi()){aud=this.aud||(this.aud=new Audio());aud.onended=aud.onerror=null;try{aud.src=SIL;const pr=aud.play();if(pr&&pr.catch)pr.catch(()=>{})}catch(e){}}
   const halt=()=>{g++;try{if(sy)sy.cancel()}catch(e){}if(aud){aud.onended=aud.onerror=null;try{aud.pause()}catch(e){}}};
@@ -5306,14 +5308,14 @@ Phone.prototype.speak=function(){const s=this.s,r=RM[s.did],sy=window.speechSynt
   const dev=()=>{if(!canDev){end();return}const mg=g;
     const u=new SpeechSynthesisUtterance(txt(k));if(voice){u.voice=voice;u.lang=voice.lang}else u.lang='de-DE';u.rate=1;u.pitch=1;u.onend=()=>{if(!live(mg))return;k++;setTimeout(()=>{if(live(mg))next()},k===n?900:1800)};u.onerror=()=>{if(live(mg))end()};sy.speak(u)};
   const fall=e=>{self.noTts=true;self.toast(e&&e.status===429?'Stimmen-Kontingent aufgebraucht – ich lese mit der Gerätestimme':'Natürliche Stimme nicht erreichbar – ich lese mit der Gerätestimme');dev()};
-  const next=()=>{if(!self.speaking||self.paused||self.s.screen!=='detail')return;if(k>n){end();return}
+  const next=()=>{if(!self.speaking||self.paused||self.s.screen!=='detail')return;if(k>n||(solo&&k!==one)){end();return}
     mark(true);if(!useKi()||!aud){dev();return}
     const my=k,mg=g,ok=()=>live(mg)&&k===my;get(my).then(b=>{if(!ok())return;const url=URL.createObjectURL(b);
       aud.onended=()=>{URL.revokeObjectURL(url);if(!ok())return;k++;setTimeout(()=>{if(live(mg))next()},900)};aud.onerror=()=>{if(ok())fall()};
       aud.src=url;const pr=aud.play();if(pr&&pr.catch)pr.catch(()=>{if(ok())fall()});
       if(my+1<=n)get(my+1).catch(()=>{})}).catch(e=>{if(ok())fall(e)})};
   /* Pause hält an; Weiter liest den markierten Schritt von vorn; Schritt antippen = diesen (nochmal) vorlesen */
-  this.sayCtl={halt,pause(){halt();self.paused=true;if(k>=n)k=n-1;upd()},resume(){halt();self.paused=false;k0=k;plain=true;upd();next()},jump(i){halt();self.paused=false;k=i;k0=i;plain=true;upd();next()}};
+  this.sayCtl={halt,pause(){halt();self.paused=true;if(k>=n)k=n-1;if(solo)k=one;upd()},resume(){halt();self.paused=false;k0=k;plain=true;upd();next()},jump(i){halt();self.paused=false;k=i;k0=i;plain=true;upd();next()}};
   this.render();next()};
 
 Phone.prototype.vSettings=function(){const s=this.s,pf=s.prof,q=x=>String(x||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
@@ -5587,8 +5589,8 @@ Phone.prototype.vAI=function(){const s=this.s,a=s.ai||{step:'idle'};
 Phone.prototype.picking=function(){const s=this.s;return s.screen==='plan'&&(s.edit||!RM[s.plan[s.sel]])};
 Phone.prototype.vSheet=function(){const s=this.s;if(!s.sheet)return '';
   let c='';
-  if(s.sheet==='acid')c=`<h3>Säure anpassen</h3><p>Die Gastrique darf pur ruhig kräftig säuerlich schmecken – die Butter fängt später viel davon ab. So stimmst du sie ab:</p>
-    ${[['Zu wenig Säure?','Einen Schuss Weißweinessig (etwa 5 g) zugeben, kurz erwärmen und noch einmal probieren.'],['Säure zu spitz?','Etwas Weißwein oder Verjus einrühren und in kleinen Schritten nachschmecken.'],['Säure passt, schmeckt aber scharf?','Gastrique so lassen. Die kalte Butter macht die Sauce später rund und ausgewogen.']].map(([t,x],i)=>`<div class="acr"><img src="${IMG_L_ACID[i]}" alt="" decoding="async"><div><b>${t}</b><span>${x}</span></div></div>`).join('')}
+  if(s.sheet==='acid')c=`<h3>Säure anpassen</h3><p>Pur probiert wirkt die Gastrique bewusst etwas lebhafter als die fertige Sauce – die Butter nimmt ihr später viel von der Schärfe. So bringst du sie in Balance:</p>
+    ${[['Zu wenig Säure?','1 TL (5 g) Weißweinessig zugeben, kurz erwärmen und erneut probieren.'],['Säure zu dominant?','1–2 EL (15–30 g) Weißwein oder Verjus einrühren und in kleinen Schritten nachschmecken.'],['Säure stimmt, wirkt aber kantig?','Gastrique so lassen. Die kalte Butter rundet die Sauce später ab und bringt sie ins Gleichgewicht.']].map(([t,x],i)=>`<div class="acr"><img src="${IMG_L_ACID[i]}" alt="" decoding="async"><div><b>${t}</b><span>${x}</span></div></div>`).join('')}
     <button class="gbtn" style="width:100%;margin-top:18px" data-a="closesheet">Verstanden</button>`;
   else if(s.sheet==='energy')c=`<h3>Energiedichte</h3><p>Sie zeigt, wie viele Kalorien ein Gericht pro Gramm hat. Gerichte mit geringer Energiedichte machen satt, ohne viele Kalorien zu liefern.</p>
     ${['low','mid','high'].map(l=>`<div class="erow"><span class="ci" style="background:${EN[l][3]};color:${EN[l][2]}">${ic(EN[l][1])}</span><div><b>${EN[l][0]}</b> <span style="color:var(--a-muted);font-size:13px">${EN[l][4]}</span><small>${EN[l][5]}</small></div></div>`).join('')}
@@ -5867,6 +5869,7 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
    case 'fcoback':s.fco={step:'idle'};s.fcQ='';this.render();break;
    case 'cooksend':{const q=(s.cookQ||'').trim();if(q)this.cookAsk(q,{});break}
    case 'cookback':s.cook={step:'idle'};s.cookQ='';this.render();break;
+   case 'say1':{const k=+t.dataset.s;if(this.speaking&&this.sayCtl&&this.sayK===k){this.paused?this.sayCtl.resume():this.sayCtl.pause();break}this.stopSpeak();this.speak(k);break}
    case 'speak':this.speak();break;
    case 'speakend':this.stopSpeak();this.render();break;
    case 'dictate':this.dictate(t.dataset.k);break;
@@ -5894,8 +5897,8 @@ Phone.prototype.greetNow=function(){const s=this.s,n=(s.prof&&s.prof.name||'').t
 /* ===== V207: Drucken – einzelnes Gericht, ganze Woche, Dressings. Jede Rezeptseite = 1 A4-Blatt mit Lochrand links und Register-Reiter rechts (für eine Mappe) ===== */
 Object.assign(P,{shuffle:'<path d="M3.5 7.2h2.6c3.3 0 4.9 1.6 6.5 4.8s3.2 4.8 6.5 4.8h1.4"/><path d="M3.5 16.8h2.6c1.8 0 3-.5 4-1.4M13.4 8.6c1-.9 2.2-1.4 4-1.4h2.9"/><path d="m17.8 4.4 2.8 2.8-2.8 2.8M17.8 14 20.6 16.8 17.8 19.6"/>',printer:'<path d="M7 9V3.8h10V9"/><rect x="3.5" y="9" width="17" height="8" rx="2.2"/><path d="M7 14.5h10V20.5H7z"/><circle cx="17" cy="12" r=".6" fill="currentColor"/>'});
 /* Register: feste Reihenfolge und Farbe → in der Mappe sitzt jede Kategorie auf ihrer eigenen Höhe */
-const PR_REG=[['bowl','Bowls','#4F8F5B'],['fisch','Fisch','#3D7FB8'],['fleisch','Fleisch','#A8463E'],['veggie','Vegetarisch','#7A9A3A'],['fine','Fine Dining','#B08A4A'],['suppe','Suppe','#D9822B'],['b','Frühstück','#E0A82E'],['d','Abendessen','#6E4A9E']];
-const prReg=r=>r.meal?r.meal:r.c.includes('bowl')?'bowl':r.c.includes('fine')?'fine':r.c.includes('suppe')?'suppe':r.c[0];
+const PR_REG=[['bowl','Bowls','#4F8F5B'],['fisch','Fisch','#3D7FB8'],['fleisch','Fleisch','#A8463E'],['veggie','Vegetarisch','#7A9A3A'],['fine','Fine Dining','#B08A4A'],['suppe','Suppe','#D9822B'],['b','Frühstück','#E0A82E'],['d','Abendessen','#6E4A9E'],['sauce','Saucen','#A8556A']];
+const prReg=r=>r.lc?'sauce':r.meal?r.meal:r.c.includes('bowl')?'bowl':r.c.includes('fine')?'fine':r.c.includes('suppe')?'suppe':r.c[0];
 const prEsc=t=>String(t==null?'':t).replace(/&/g,'&amp;').replace(/</g,'&lt;');
 const prAmt=(n,q,u,P0)=>q?fqg(n,q*P0,u):'n. G.';
 const prNm=n=>n.replace(/\s*\(.*?\)/g,'');
@@ -5904,12 +5907,12 @@ const prPage=(inner,reg,foot,sub,meta)=>{const k=Math.max(0,PR_REG.findIndex(x=>
   return `<section class="prpg" data-kind="${m.kind||''}" data-n="${prEsc(m.n||'')}" data-g="${m.g||''}" style="--rc:${reg?R0[2]:'#9A4766'}">${reg?`<i class="reg"><span>${R0[1]}</span></i>`:''}
    <div class="pt"><span>Essensplan</span><span>${foot||''}<b class="pno"></b></span></div>
    <div class="kat"><h6>${reg?R0[1]:'Wochenplan'}</h6><div class="kl"><i></i><span>${sub||''}</span><i></i></div></div>${inner}</section>`};
-function prRecipe(r,P0,days){const reg=prReg(r),R0=PR_REG.find(x=>x[0]===reg)||PR_REG[0],M=r.fd?null:stepIngs(r);
+function prRecipe(r,P0,days){if(r.lc)P0=1;const reg=prReg(r),R0=PR_REG.find(x=>x[0]===reg)||PR_REG[0],M=r.fd?null:r.sm||stepIngs(r),LE=i=>(r.em&&r.em[i])||emo(r.i[i][0]),SG=Object.fromEntries((r.sg||[]).map(([k,t])=>[k,t]));
   const tags=(days||[]).map(([i,m])=>`<span class="day">${DAYS[(i%7+7)%7]}, ${dm(i)} · ${m}</span>`).join('');
-  const head=`<header><div class="ph">${r.img?`<img src="${r.img}" alt="">`:`<span>${r.e||'🍽️'}</span>`}</div><div class="hd">
-   <div class="eb" style="color:${R0[2]}">${r.c&&r.c.includes('veggie')&&reg!=='veggie'?'Vegetarisch · ':''}Nr. ${r.id.toUpperCase()}</div>
+  const head=`<header><div class="ph${r.lc?' sq':''}">${r.lc?`<img src="${r.hero||IMG_L_BB}" alt="">`:r.img?`<img src="${r.img}" alt="">`:`<span>${r.e||'🍽️'}</span>`}</div><div class="hd">
+   <div class="eb" style="color:${R0[2]}">${r.lc?'Lerncenter · '+prEsc(r.lc):`${r.c&&r.c.includes('veggie')&&reg!=='veggie'?'Vegetarisch · ':''}Nr. ${r.id.toUpperCase()}`}</div>
    <h1>${prEsc(r.n)}.</h1><p class="sub">${prEsc(r.d||r.s||'')}</p>
-   <div class="meta"><span>⏱ ${r.fd?fdHm(r.m):r.m+' Min.'}</span><span>${r.k} kcal</span><span>${r.p} g Eiweiß</span>${r.kh!=null?`<span>${r.kh} g KH</span>`:''}${r.f!=null?`<span>${r.f} g Fett</span>`:''}<span class="pp" style="background:${R0[2]}">für ${P0} ${P0===1?'Person':'Personen'}</span></div>
+   <div class="meta">${r.lc?`<span>⏱ ca. ${r.m} Min.</span><span class="pp" style="background:${R0[2]}">${prEsc(r.yld)}</span>`:`<span>⏱ ${r.fd?fdHm(r.m):r.m+' Min.'}</span><span>${r.k} kcal</span><span>${r.p} g Eiweiß</span>${r.kh!=null?`<span>${r.kh} g KH</span>`:''}${r.f!=null?`<span>${r.f} g Fett</span>`:''}<span class="pp" style="background:${R0[2]}">für ${P0} ${P0===1?'Person':'Personen'}</span>`}</div>
    ${tags?`<div class="days">${tags}</div>`:''}</div></header>`;
   let body;
   if(r.fd){const sel=fdSel({fdSel:(window.__fdSelSave||{})},r);FDCUR=r;
@@ -5917,10 +5920,10 @@ function prRecipe(r,P0,days){const reg=prReg(r),R0=PR_REG.find(x=>x[0]===reg)||P
      return `<div class="fdb" style="--c:${C[1]}"><h2><i></i>${prEsc(fdN(c.k))}: ${prEsc(o.n)}<small>Start ${fdHm(lead)} vor dem Servieren</small></h2><div class="bd"><div class="ing">${prIngs(o.i,P0)}</div>
       <div class="stp">${o.st.map((x,k)=>`<div class="s"><span class="no">${String(k+1).padStart(2,'0')}</span><p>${prEsc(x[2])}${x[3]?' <em>(läuft nebenbei)</em>':''}</p></div>`).join('')}</div></div></div>`}),tip=r.tip?`<div class="tip"><b>Tipp</b> ${prEsc(r.tip)}</div>`:'',ft=r.id.toUpperCase()+' · '+prEsc(r.n),zt='Zubereitungszeit · '+fdHm(r.m);
     return prPage(head+B.join('')+tip,reg,'Nr. '+r.id.toUpperCase(),zt,{kind:'fd',n:r.n,g:r.id})}
-  else body=`<div class="bd"><div class="ing"><h3>Zutaten</h3>${prIngs(r.i,P0,igOf(r))}</div>
-   <div class="stp"><h3>So gelingt's.</h3>${r.st.map((t,k)=>`<div class="s"><span class="no">${String(k+1).padStart(2,'0')}</span><div><p>${prEsc(t)}</p>${M&&M[k]&&M[k].length?`<div class="chips">${M[k].map(j=>{const [n,q,u]=r.i[j];return `<span>${emo(n)} ${prEsc(prNm(n))} <b>${prAmt(n,q,u,P0)}</b></span>`}).join('')}</div>`:''}</div></div>`).join('')}
+  else body=`<div class="bd"><div class="ing"><h3>Zutaten</h3>${r.em?igRows(r.i.map(([n,q,u],i)=>[i,`<div class="ir"><span class="e">${LE(i)}</span><span class="n">${prEsc(prNm(n))}</span><b>${prAmt(n,q,u,P0)}</b></div>`]),igOf(r),'ig'):prIngs(r.i,P0,igOf(r))}</div>
+   <div class="stp"><h3>So gelingt's.</h3>${r.st.map((t,k)=>`${SG[k]?`<div class="sg" style="color:${R0[2]}">${prEsc(SG[k])}</div>`:''}<div class="s"><span class="no">${String(k+1).padStart(2,'0')}</span><div><p>${prEsc(t)}</p>${M&&M[k]&&M[k].length?`<div class="chips">${M[k].map(j=>{const [n,q,u]=r.i[j];return `<span>${r.em?LE(j):emo(n)} ${prEsc(prNm(n))} <b>${prAmt(n,q,u,P0)}</b></span>`}).join('')}</div>`:''}</div></div>`).join('')}
    ${r.tip?`<div class="tip"><b>Tipp</b> ${prEsc(r.tip)}</div>`:''}</div></div>`;
-  return prPage(head+body,reg,'Nr. '+r.id.toUpperCase(),'Zubereitungszeit · '+(r.fd?fdHm(r.m):r.m+' Minuten'),{kind:'rec',n:r.n,g:r.id})}
+  return prPage(head+body,reg,r.lc?'Lerncenter':'Nr. '+r.id.toUpperCase(),'Zubereitungszeit · '+(r.fd?fdHm(r.m):r.m+' Minuten'),{kind:'rec',n:r.n,g:r.id})}
 function prDress(P0){return prPage(`<header class="sm"><div class="hd"><h1>Dressings für jede Bowl.</h1><p class="sub">Alle Varianten zum Tauschen – für ${P0} ${P0===1?'Person':'Personen'}. Im Glas kräftig schütteln, dann hält das Dressing ein paar Tage im Kühlschrank.</p></div></header>
   <div class="dg">${DRESS.map(x=>{const k=BX_DK[x.id]||[];return `<div class="dc"><div class="dh"><span class="em">${x.e}</span><div><b>${x.n}</b><small>${k[0]||'–'} kcal · ${k[3]!=null?k[3]+' g Fett':''} pro Portion</small></div></div>${prIngs(x.i.concat([['Salz, Pfeffer',0,'']]),P0)}<p>${prEsc(x.st.replace(/^Dressing:\s*/,''))}</p></div>`}).join('')}</div>`,'bowl','Dressings','Zum Tauschen · alle Varianten')}
 function prWeek(s,w,withX,P0){const days=Array.from({length:7},(_,j)=>w*7+j),use=new Map(),order=[];
@@ -5960,7 +5963,7 @@ const PR_CSS=`@page{size:A4;margin:10mm}
 #prroot header{display:flex;gap:7mm;align-items:center}
 #prroot header.sm{display:block;text-align:center;margin-bottom:10mm}#prroot header.sm h1{margin:0 0 4mm}#prroot header.sm .sub{line-height:1.55}#prroot header.sm .sub{max-width:130mm;margin:0 auto}
 #prroot .ph{flex:none;width:44mm;height:44mm;border-radius:50%;background:radial-gradient(circle,#F3EDE6,#E9DFD6);display:grid;place-items:center;overflow:hidden;font-size:34pt}
-#prroot .ph img{width:100%;height:100%;object-fit:cover}
+#prroot .ph img{width:100%;height:100%;object-fit:cover}#prroot .ph.sq{border-radius:6mm}#prroot .sg{font-size:8.5pt;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin:4mm 0 2mm}#prroot .stp h3+.sg{margin-top:0}
 #prroot .eb{margin-bottom:2.4mm;font-size:7.5pt;letter-spacing:.16em;text-transform:uppercase;color:#9A4766;font-weight:700}
 #prroot h1{margin:0 0 2.8mm;font-size:22pt;font-weight:700;letter-spacing:-.03em;line-height:1.05}
 #prroot .sub{margin:0;font-size:10.5pt;line-height:1.5;color:#6E6E73}
@@ -6067,7 +6070,9 @@ Phone.prototype.vPrint=function(){const s=this.s,P0=s.persons,k=s.prK||'rec',r=R
      ${pers}
 ${s.prReady?`<div class="pr-btns"><button class="obtn" data-a="prshare" ${s.prBusy?'disabled':''}>${ic('share')}${s.prBusy===2?'PDF …':this.prBlob?'PDF teilen':'Als PDF'}</button><button class="gbtn" data-a="prprint">${ic('printer')}Jetzt drucken</button></div>`:`<button class="gbtn pr-prep" data-a="prgo" ${tot&&!s.prBusy?'':'disabled'}>${ic('printer')}${s.prBusy?'Seiten werden vorbereitet …':tot?'Drucken':'Noch nichts geplant'}</button>`}
      <p class="pr-hint">${s.prReady?'Bereit. „Jetzt drucken“ öffnet den Druckdialog, „Als PDF“ zum Sichern oder Teilen.':'Die Seiten werden schon im Hintergrund vorbereitet, während du auswählst.'}</p>`}
-  const bowl=r&&r.c&&r.c.includes('bowl');
+  const bowl=r&&r.c&&r.c.includes('bowl');if(r&&r.lc)return `<h3>${ic('printer')} Rezept drucken</h3><p>Ein A4-Blatt mit Lochrand links und farbigem Reiter „Saucen“ – passend für deine Rezeptmappe. Mengen für ${prEsc(r.yld.replace(/ · .*/,''))}.</p>
+${s.prReady?`<div class="pr-btns"><button class="obtn" data-a="prshare" ${s.prBusy?'disabled':''}>${ic('share')}${s.prBusy===2?'PDF …':this.prBlob?'PDF teilen':'Als PDF'}</button><button class="gbtn" data-a="prprint">${ic('printer')}Jetzt drucken</button></div>`:`<button class="gbtn pr-prep" data-a="prgo" ${s.prBusy?'disabled':''}>${ic('printer')}${s.prBusy?'Seite wird vorbereitet …':'Drucken'}</button>`}
+   <p class="pr-hint">${s.prReady?'Bereit. „Jetzt drucken“ öffnet den Druckdialog, „Als PDF“ zum Sichern oder Teilen.':'Die Seite wird schon im Hintergrund vorbereitet.'}</p>`;
   return `<h3>${ic('printer')} Rezept drucken</h3><p>Ein A4-Blatt mit Lochrand links und farbigem Reiter für die Kategorie „${(PR_REG.find(x=>x[0]===prReg(r))||PR_REG[0])[1]}“ – passend für deine Rezeptmappe.</p>
    ${bowl?tg('prdr',!!s.prDr,'Alle Dressings mitdrucken','zweite Seite mit allen 6 Dressings zum Tauschen'):''}
    ${pers}
