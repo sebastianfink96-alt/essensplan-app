@@ -2881,7 +2881,7 @@ RM.lbb={id:'lbb',n:'Beurre blanc',e:'🧈',c:['fish'],t:['#FBF3DC','#E8D7A8'],lc
  em:['🍷','🫙','🧅','🌿','🍃','⚫','🌱','🧄','🥄','🧂','🧈'],
  sm:[[0,1,2,3,4,5,6,7],[],[],[8,9],[],[10],[]],
  sg:[[0,'1. Zubereitung Gastrique · ca. 300 g (ml)'],[3,'2. Zubereitung Beurre blanc · ca. 400 g (ml)']],
- info:{1:'acid'},
+ info:{1:'acid'},noCart:[8],
  st:['Schalotten fein würfeln, den Knoblauch halbieren. Zusammen mit Weißwein, Weißweinessig, Thymian, Lorbeer, Pfefferkörnern und Koriandersamen in einen weiten Topf geben.',
      'Bei kleiner Hitze köcheln lassen, bis die Flüssigkeit um etwa 80 % reduziert ist – dann bleiben rund 300 g übrig. Das dauert gut eine Stunde. Zum Schluss auf die gewünschte Säurebalance abschmecken.',
      'Die Gastrique durch ein feines Sieb gießen und die Flüssigkeit mit einem Löffel gut ausdrücken. Die Reste im Sieb dabei nicht mit durchdrücken, sonst wird die Sauce trüb. 150 g für die Sauce abwiegen – den Rest kühl stellen oder einfrieren.',
@@ -5089,7 +5089,7 @@ Phone.prototype.vLcDetail=function(r){const s=this.s,nm=n=>n.replace(/\s*\(.*?\)
   </div></div>
   <div class="swipehint"></div>
   <div class="det-top"><button class="iconbtn" data-a="back" aria-label="Zurück">${ic('left')}</button><button class="iconbtn prb" data-a="print" data-v="rec" aria-label="Rezept drucken">${ic('printer')}</button></div>
-  <div class="fade-bottom"></div>`};
+  <div class="fade-bottom"></div><div class="bottom-cta">${(s.lcCart||{})[r.id]?`<button class="gbtn done" data-a="tab" data-v="shop">${ic('check')}Zur Einkaufsliste</button>`:`<button class="gbtn" data-a="lccart">${ic('bag')}In den Einkaufswagen</button>`}</div>`};
 /* ----- Detail ----- */
 Phone.prototype.vDetail=function(){const s=this.s;const r=RM[s.did];if(r&&r.lc)return this.vLcDetail(r);const cat=CATNAME[r.c[0]];const E=EN[enOf(r)];
   const d=s.dday;let btn;const xk=r.meal;
@@ -5869,6 +5869,9 @@ Phone.prototype.click=function(e){if(this.suppressClick){e.preventDefault();retu
    case 'fcoback':s.fco={step:'idle'};s.fcQ='';this.render();break;
    case 'cooksend':{const q=(s.cookQ||'').trim();if(q)this.cookAsk(q,{});break}
    case 'cookback':s.cook={step:'idle'};s.cookQ='';this.render();break;
+   case 'lccart':{const r=RM[s.did];if(!r)break;const L=[];addNeeds(L,r.i.filter((_,i)=>!(r.noCart||[]).includes(i)).map(([n,q,u])=>[n.replace(/\s*\(.*?\)/g,''),q,u]),1,true);
+    L.forEach(n=>{const ex=s.shop.find(x=>x.key===n.key);if(ex){ex.qty+=n.qty;ex.done=false}else s.shop.push(n)});applyStock(s.shop,s.stock);
+    (s.lcCart||(s.lcCart={}))[r.id]=1;haptic();clearTimeout(this.saveT);this.saveT=setTimeout(()=>this.save(),300);this.render();this.toast(`${r.n}: ${L.length} Zutaten auf der Einkaufsliste`);break}
    case 'say1':{const k=+t.dataset.s;if(this.speaking&&this.sayCtl&&this.sayK===k){this.paused?this.sayCtl.resume():this.sayCtl.pause();break}this.stopSpeak();this.speak(k);break}
    case 'speak':this.speak();break;
    case 'speakend':this.stopSpeak();this.render();break;
