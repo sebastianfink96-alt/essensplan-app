@@ -2285,6 +2285,14 @@ img,svg{-webkit-user-drag:none}
 
 .bp-t.rt-s{position:static!important;inset:auto!important;display:block!important;font-size:44px!important;font-weight:600!important;color:#A39A93!important}
 
+/* V221: Lerncenter-Rezept (Beurre blanc) + Foto als Titel in der Kartei */
+.lcd-hero{margin:18px 0 6px;border-radius:24px;overflow:hidden;aspect-ratio:4/3;box-shadow:0 24px 40px -28px rgba(80,40,20,.55)}
+.lcd-hero img{width:100%;height:100%;object-fit:cover;object-position:50% 40%;display:block}
+.lcd-sg{margin:26px 0 10px;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#A8556A}
+.lcd-sg:first-child{margin-top:6px}
+.lk-wimg{padding-top:0}
+.lk-img{display:block;width:calc(100% + 48px);margin:0 -24px 16px;aspect-ratio:16/10;object-fit:cover;object-position:50% 35%;border-radius:30px 30px 0 0}
+.lk-rec{margin-top:16px;width:100%;flex:none;min-height:48px}
 /* V182: Fitness-Lernen mit Fotos */
 .fl-hero{position:relative;margin:20px 0 4px;border-radius:24px;overflow:hidden;aspect-ratio:16/10;box-shadow:0 26px 40px -28px rgba(0,40,20,.6)}
 .fl-hero img{width:100%;height:100%;object-fit:cover;display:block}
@@ -2623,6 +2631,7 @@ const IMG_L_PREP='img/img_l_prep-df8c447e.webp';
 const IMG_L_DUCK='img/img_l_duck-a88afeb2.webp';
 const IMG_L_WINE='img/img_l_wine-56fd8148.webp';
 const IMG_L_VINA='img/img_l_vina-6f6a4440.webp';
+const IMG_L_BB='img/img_l_bb-d3a4a96f.webp';
 const IMG_L_POT='img/img_l_pot-686fee86.webp';
 const IMG_B01='img/img_b01-0bcccceb.webp';
 const IMG_B07='img/img_b07-21a93c01.webp';
@@ -2859,6 +2868,24 @@ const RX=[
   st:["Ei 8 Minuten hart kochen und halbieren.","Radieschen und Gurke in Scheiben schneiden.","Brot mit Butter bestreichen.","Alles mit dem Käse auf einem Teller anrichten und mit Kresse und Salz bestreuen."]}
 ];
 const RM=Object.fromEntries(R.concat(RX).map(r=>[r.id,r]));
+/* V221: Lerncenter-Rezept Beurre blanc (eigene Formulierung). lc = nur über die Saucen-Kartei, feste Mengen (ohne Personen), sg = Zubereitungs-Abschnitte */
+RM.lbb={id:'lbb',n:'Beurre blanc',e:'🧈',c:['fish'],t:['#FBF3DC','#E8D7A8'],lc:'Klassische Saucen',yld:'ca. 250 ml · 4–6 Portionen',m:60,k:290,p:1,g:60,
+ d:'Die klassische weiße Buttersauce: eine kräftig eingekochte Wein-Essig-Reduktion, in die kalte Butter eingeschwenkt wird – glänzend, frisch und leicht säuerlich.',
+ i:[['Weißwein',550,'ml'],['Weißweinessig',120,'ml'],['Schalotten',3,'Stk'],['Thymian',3,'Zweige'],['schwarze Pfefferkörner',12,'Stk'],['Koriandersamen',8,'Stk'],['Knoblauch',1,'Zehe'],
+    ['Gastrique (aus Schritt 1)',90,'ml'],['Salz',4,'g'],['Butter (kalt, gewürfelt)',180,'g']],
+ ig:[[0,'Gastrique'],[7,'Beurre blanc']],
+ em:['🍷','🫙','🧅','🌿','⚫','🌱','🧄','🥄','🧂','🧈'],
+ sm:[[0,1,2,3,4,5,6],[],[],[7,8],[9],[],[]],
+ sg:[[0,'1. Zubereitung Gastrique'],[3,'2. Zubereitung Beurre blanc']],
+ st:['Schalotten fein würfeln, den Knoblauch halbieren. Zusammen mit Weißwein, Weißweinessig, Thymian, Pfefferkörnern und Koriandersamen in einen Topf geben.',
+     'Bei kleiner Hitze leise köcheln lassen, bis nur noch rund ein Fünftel der Flüssigkeit übrig ist – das dauert etwa 40 Minuten. Zwischendurch probieren: Die Säure darf deutlich sein, aber nicht stechen.',
+     'Die Gastrique durch ein feines Sieb gießen und die Flüssigkeit mit einem Löffel gut ausdrücken. Die Reste im Sieb dabei nicht mit durchdrücken, sonst wird die Sauce trüb.',
+     'Die abgemessene Gastrique in einen kleinen Topf geben, salzen und unter Rühren einmal aufkochen.',
+     'Die kalte Butter würfelweise mit dem Schneebesen einrühren. Erst nachlegen, wenn das vorige Stück fast geschmolzen ist – so bleibt die Temperatur gleichmäßig und die Sauce bindet.',
+     'Hitze auf die kleinste Stufe stellen und weiterrühren, bis die ganze Butter aufgenommen ist und die Sauce seidig glänzt. Ab jetzt nicht mehr kochen lassen.',
+     'Abschmecken: Frische Säure und runde Butter sollen sich die Waage halten. Fehlt Frische, einen Spritzer Gastrique nachgeben, sonst eine Prise Salz.'],
+ tip:'Gastrique lohnt sich auf Vorrat: gleich die doppelte Menge kochen und portionsweise im Eiswürfelbehälter einfrieren. Trennt sich die Sauce beim Aufwärmen, kurz mit dem Stabmixer aufmixen – dann verbindet sie sich wieder.'};
+
 /* ===== V199: Fine Dining – Bausteine (Hauptzutat, Beilage, Sauce) mit Auswahl, Ablauf-Timeline und Koch-Modus; Dressing-Wahl bei Bowls ===== */
 const FD_COMP={main:['Hauptzutat','#8E3B32'],side:['Beilage','#C9932E'],side2:['Beilage 2','#4E8A3E'],sauce:['Sauce','#6E4A9E']};
 /* Schritte: [Start in Minuten vor dem Servieren (negativ), Dauer in Minuten, Text, 1 = läuft nebenbei] */
@@ -3532,7 +3559,7 @@ DECKS.push(
   ['🌶️','Pfeffersauce','1 EL grob zerstoßenen Pfeffer in der Steakpfanne kurz rösten, mit 2 EL Cognac ablöschen, 100 ml Fond und 100 ml Sahne dazugeben und sämig einkochen. Mit Salz und einem Spritzer Zitrone abrunden.','Grüner Pfeffer aus dem Glas macht sie milder und fruchtiger.'],
   ['🦌','Wildsauce mit Wacholder','Bratensatz mit 150 ml Rotwein ablöschen, 5 angedrückte Wacholderbeeren, 1 Lorbeerblatt und 200 ml Wildfond dazugeben und auf ein Drittel reduzieren. 1 EL Preiselbeeren einrühren, passieren und mit kalter Butter binden.','Zu Reh, Hirsch und Wildschwein. Ein Stück dunkle Schokolade gibt Tiefe.'],
   ['🥚','Sauce béarnaise','Eine Reduktion aus 3 EL Weißweinessig, 1 Schalotte und Estragon einkochen und abseihen. Mit 2 Eigelb über dem Wasserbad cremig aufschlagen, dann 120 g flüssige Butter langsam einlaufen lassen. Mit frischem Estragon, Salz und Zitrone abschmecken.','Die Butter darf nur lauwarm sein, sonst gerinnt die Sauce.'],
-  ['🧈','Beurre blanc','1 Schalotte in 100 ml Weißwein und 2 EL Weißweinessig fast vollständig einkochen. Bei kleiner Hitze 100 g eiskalte Butter stückweise einschwenken, bis eine cremige Sauce entsteht. Salzen und sofort servieren.','Die Sauce zu gebratenem Fisch und Spargel.'],
+  ['🧈','Beurre blanc','1 Schalotte in 100 ml Weißwein und 2 EL Weißweinessig fast vollständig einkochen. Bei kleiner Hitze 100 g eiskalte Butter stückweise einschwenken, bis eine cremige Sauce entsteht. Salzen und sofort servieren.','Die Sauce zu gebratenem Fisch und Spargel.',{img:()=>IMG_L_BB,rec:'lbb'}],
   ['🍄','Pilzrahmsauce','200 g Champignons kräftig anbraten, 1 Schalotte dazugeben, mit 50 ml Weißwein ablöschen und mit 150 ml Sahne und 50 ml Fond sämig einkochen. Mit Petersilie, Salz und Pfeffer abschmecken.','Pilze erst salzen, wenn sie Farbe haben – sonst kochen sie im eigenen Saft.'],
   ['🌿','Café-de-Paris-Butter','100 g weiche Butter mit 1 TL Senf, 1 TL Tomatenmark, fein gehackter Petersilie, Estragon, Schnittlauch, 1 Sardelle, Kapern, Zitronenabrieb und einer Prise Curry verrühren. Zur Rolle formen und kalt stellen.','Eine Scheibe auf das heiße Steak legen – sie schmilzt zur Sauce.'],
   ['⚗️','Die drei Regeln','Erstens: reduzieren, bevor du salzt. Zweitens: am Ende mit kalter Butter montieren und nicht mehr kochen. Drittens: immer mit etwas Säure abschmecken – Zitrone oder ein Tropfen Essig.','']]},
@@ -3587,7 +3614,7 @@ Phone.prototype.vDeck=function(){const s=this.s,d=DECK[s.deck],n=d.cards.length,
   return `<div class="lk" style="--d1:${d.c[0]};--d2:${d.c[1]}"><div class="lk-bg"></div>
    <div class="lk-top"><button class="iconbtn" data-a="lback" aria-label="Zurück zum Lerncenter">${ic('left')}</button><div class="lk-h"><small>Kartei ${k+1}</small><b>${d.t}</b></div><span class="lk-c">1/${n}</span></div>
    <div class="lk-dots">${d.cards.map((_,i)=>`<i class="${i?'':'on'}"></i>`).join('')}<i class="end"></i></div>
-   <div class="lk-sc">${d.cards.map(([e,h,tx,tip],i)=>`<section class="lk-p"><div class="lk-card"><span class="lk-n">Karte ${i+1} von ${n}</span><span class="lk-e">${e}</span><h3>${h}</h3><p>${tx}</p>${tip?`<div class="lk-tip"><b>Tipp</b>${tip}</div>`:''}${i===0?`<span class="lk-hint">${ic('down')}wischen für die nächste Karte</span>`:''}</div></section>`).join('')}
+   <div class="lk-sc">${d.cards.map(([e,h,tx,tip,X],i)=>`<section class="lk-p"><div class="lk-card${X&&X.img?' lk-wimg':''}">${X&&X.img?`<img class="lk-img" src="${X.img()}" alt="" decoding="async">`:''}<span class="lk-n">Karte ${i+1} von ${n}</span>${X&&X.img?'':`<span class="lk-e">${e}</span>`}<h3>${h}</h3><p>${tx}</p>${tip?`<div class="lk-tip"><b>Tipp</b>${tip}</div>`:''}${X&&X.rec?`<button class="gbtn lk-rec" data-a="detail" data-id="${X.rec}">${ic('chef')}Zubereitung öffnen</button>`:''}${i===0?`<span class="lk-hint">${ic('down')}wischen für die nächste Karte</span>`:''}</div></section>`).join('')}
     <section class="lk-p"><div class="lk-card lk-done"><span class="lk-e">🎉</span><h3>Kartei geschafft!</h3><p>Du kennst jetzt alle ${n} Karten zu „${d.t}“.</p>
      ${nx?`<button class="gbtn" data-a="deck" data-v="${nx.id}">Weiter mit: ${nx.t}</button>`:''}<button class="obtn lk-back" data-a="lback">Zum Lerncenter</button></div></section>
    </div></div>`};
@@ -5037,8 +5064,29 @@ Phone.prototype.vRecipes=function(favOnly){const s=this.s;const q=s.recQ.toLower
    :hero?'':`<div class="empty-st">${favOnly||s.recCat==='fav'?'Noch keine Favoriten. Tippe bei einem Rezept auf das Herz.':'Kein Rezept gefunden.'}</div>`}
   </div></div>`};
 
+/* V221: Rezept aus dem Lerncenter (z. B. Beurre blanc) – Aufbau wie die Detailseite, Foto oben, Zutaten-Blöcke, nummerierte Zubereitungs-Abschnitte */
+Phone.prototype.vLcDetail=function(r){const s=this.s,nm=n=>n.replace(/\s*\(.*?\)/g,''),sub=n=>{const m=n.match(/\((.*?)\)/);return m?`<small>${m[1]}</small>`:''};
+  const img=r.hero||IMG_L_BB,M=r.sm||stepIngs(r),E=i=>(r.em&&r.em[i])||emo(r.i[i][0]),SG=Object.fromEntries((r.sg||[]).map(([k,t])=>[k,t]));
+  return `<div class="view det rz lcd" style="padding-bottom:120px"><div class="z">
+   <div style="height:58px"></div>
+   <div class="eb">Lerncenter · ${r.lc}</div>
+   <h1 class="ap-h1 rz-t">${r.n}.</h1>
+   <p class="rz-sub">${r.d}</p>
+   <div class="lcd-hero"><img src="${img}" alt="${r.n}" decoding="async"></div>
+   <div class="rz-meta"><span>${ic('clock')}ca. ${r.m} Min.</span><span>${ic('chef')}Sauce</span><span>${r.yld}</span></div>
+   <div class="rz-h ig-on"><h2>Zutaten</h2></div>
+   <div class="rz-ing">${igRows(r.i.map((x,i)=>[i,`<div class="rz-ir"><span class="e">${E(i)}</span><span class="n">${nm(x[0])}${sub(x[0])}</span><b>${fq(x[1],x[2])}</b></div>`]),r.ig,'ig')}</div>
+   <div class="eb rz-eb2">Zubereitung</div>
+   <h2 class="ap-h1 rz-t2">So gelingt's. <span>Schritt für Schritt.</span></h2>
+   <div class="rz-act">${this.sayBtns()}</div>
+   <div class="steps">${r.st.map((t,k)=>`${SG[k]?`<div class="lcd-sg">${SG[k]}</div>`:''}<div class="step${(s.done[r.id]||[]).includes(k)?' ok':''}${this.speaking&&this.sayK===k?' say':''}" data-a="stepok" data-k="${k}" role="button" aria-label="Schritt ${k+1} abhaken"><div class="stx"><b><span class="n">${String(k+1).padStart(2,'0')}</span>${ic('check','ck')}</b><div class="rz-st"><p>${t}</p>${M[k].length?`<div class="sing">${M[k].map(j=>{const [n,q,u]=r.i[j];return `<span class="sic"><span class="em">${E(j)}</span><span class="st"><span>${nm(n)}</span><i>${fq(q,u)}</i></span></span>`}).join('')}</div>`:''}</div></div></div>`).join('')}</div>
+   ${r.tip?`<div class="rz-tip"><b>${ic('spark')}Tipp</b><p>${r.tip}</p></div>`:''}
+  </div></div>
+  <div class="swipehint"></div>
+  <div class="det-top"><button class="iconbtn" data-a="back" aria-label="Zurück">${ic('left')}</button></div>
+  <div class="fade-bottom"></div>`};
 /* ----- Detail ----- */
-Phone.prototype.vDetail=function(){const s=this.s;const r=RM[s.did];const cat=CATNAME[r.c[0]];const E=EN[enOf(r)];
+Phone.prototype.vDetail=function(){const s=this.s;const r=RM[s.did];if(r&&r.lc)return this.vLcDetail(r);const cat=CATNAME[r.c[0]];const E=EN[enOf(r)];
   const d=s.dday;let btn;const xk=r.meal;
   if(d!==null&&d!==undefined){btn=s.plan[d]===r.id?`<button class="gbtn done" data-a="back">${ic('check')}Eingeplant</button>`:`<button class="gbtn" data-a="planfor" data-i="${d}">${ic('plus')}Einplanen</button>`}
   else btn=`<button class="gbtn" data-a="sheet" data-v="pickday">${ic('plus')}Einplanen</button>`;
